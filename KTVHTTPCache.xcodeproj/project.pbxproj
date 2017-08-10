@@ -8,12 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		9C7EDA8E1F3C0334003B6C14 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C7EDA8C1F3C0334003B6C14 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9CAF697E1F3C0713009CDAAF /* CocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CAF697B1F3C06FF009CDAAF /* CocoaHTTPServer.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9CAF697A1F3C06FF009CDAAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CAF69761F3C06FF009CDAAF /* CocoaHTTPServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C7EDA9E1F3C0377003B6C14;
+			remoteInfo = CocoaHTTPServer;
+		};
+		9CAF697C1F3C070D009CDAAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CAF69761F3C06FF009CDAAF /* CocoaHTTPServer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C7EDA9D1F3C0377003B6C14;
+			remoteInfo = CocoaHTTPServer;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		9C7EDA891F3C0334003B6C14 /* KTVHTTPCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KTVHTTPCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C7EDA8C1F3C0334003B6C14 /* KTVHTTPCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVHTTPCache.h; sourceTree = "<group>"; };
 		9C7EDA8D1F3C0334003B6C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9CAF69761F3C06FF009CDAAF /* CocoaHTTPServer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaHTTPServer.xcodeproj; path = Vendors/CocoaHTTPServer/CocoaHTTPServer.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -21,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CAF697E1F3C0713009CDAAF /* CocoaHTTPServer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -30,6 +50,7 @@
 		9C7EDA7F1F3C0334003B6C14 = {
 			isa = PBXGroup;
 			children = (
+				9CAF69761F3C06FF009CDAAF /* CocoaHTTPServer.xcodeproj */,
 				9C7EDA8B1F3C0334003B6C14 /* KTVHTTPCache */,
 				9C7EDA8A1F3C0334003B6C14 /* Products */,
 			);
@@ -50,6 +71,14 @@
 				9C7EDA8D1F3C0334003B6C14 /* Info.plist */,
 			);
 			path = KTVHTTPCache;
+			sourceTree = "<group>";
+		};
+		9CAF69771F3C06FF009CDAAF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9CAF697B1F3C06FF009CDAAF /* CocoaHTTPServer.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -78,6 +107,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9CAF697D1F3C070D009CDAAF /* PBXTargetDependency */,
 			);
 			name = KTVHTTPCache;
 			productName = KTVHTTPCache;
@@ -109,12 +139,28 @@
 			mainGroup = 9C7EDA7F1F3C0334003B6C14;
 			productRefGroup = 9C7EDA8A1F3C0334003B6C14 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9CAF69771F3C06FF009CDAAF /* Products */;
+					ProjectRef = 9CAF69761F3C06FF009CDAAF /* CocoaHTTPServer.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9C7EDA881F3C0334003B6C14 /* KTVHTTPCache */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9CAF697B1F3C06FF009CDAAF /* CocoaHTTPServer.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CocoaHTTPServer.framework;
+			remoteRef = 9CAF697A1F3C06FF009CDAAF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9C7EDA871F3C0334003B6C14 /* Resources */ = {
@@ -135,6 +181,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9CAF697D1F3C070D009CDAAF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaHTTPServer;
+			targetProxy = 9CAF697C1F3C070D009CDAAF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9C7EDA8F1F3C0334003B6C14 /* Debug */ = {
@@ -288,6 +342,7 @@
 				9C7EDA931F3C0334003B6C14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
