@@ -7,11 +7,12 @@
 //
 
 #import "KTVHCDataSourcer.h"
+#import "KTVHCDataSourceQueue.h"
 
-@interface KTVHCDataSourcer ()
+@interface KTVHCDataSourcer () <KTVHCDataSourceDelegate>
 
 @property (nonatomic, strong) id <KTVHCDataSourceProtocol> currentSource;
-@property (nonatomic, strong) NSMutableArray <id<KTVHCDataSourceProtocol>> * totalSources;
+@property (nonatomic, strong) KTVHCDataSourceQueue * sourceQueue;
 
 @end
 
@@ -26,53 +27,39 @@
 {
     if (self = [super init])
     {
-        self.totalSources = [NSMutableArray array];
+        self.sourceQueue = [KTVHCDataSourceQueue sourceQueue];
     }
     return self;
 }
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source
 {
-    if (!source) {
-        return;
-    }
-    
-    if (![self.totalSources containsObject:source])
-    {
-        [self.totalSources addObject:source];
-    }
-}
-
-- (void)popSource:(id<KTVHCDataSourceProtocol>)source
-{
-    if (!source) {
-        return;
-    }
-    
-    if ([self.totalSources containsObject:source])
-    {
-        [self.totalSources removeObject:source];
-    }
+    [self.sourceQueue putSource:source];
 }
 
 - (void)sortSources
 {
-    [self.totalSources sortUsingComparator:^NSComparisonResult(id <KTVHCDataSourceProtocol> obj1, id <KTVHCDataSourceProtocol> obj2) {
-        if (obj1.offset < obj2.offset) {
-            return NSOrderedAscending;
-        }
-        return NSOrderedDescending;
-    }];
+    [self.sourceQueue sortSources];
 }
 
 - (void)start
 {
-    
+    self.currentSource = [self.sourceQueue fetchFirstSource];
+    self.currentSource.delegate = self;
 }
 
 - (void)stop
 {
     
+}
+
+
+#pragma mark - KTVHCDataSourceDelegate
+
+- (void)sourceDidFinishRead:(id<KTVHCDataSourceProtocol>)source
+{
+    self.currentSource = [self.sourceQueue fetchNextSource:self.currentSource];
+    self.currentSource.delegate = self;
 }
 
 @end

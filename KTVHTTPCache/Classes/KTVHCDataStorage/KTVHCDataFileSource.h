@@ -24,4 +24,6 @@
 @property (nonatomic, assign, readonly) NSInteger readOffset;
 @property (nonatomic, assign, readonly) NSInteger readSize;
 
+@property (nonatomic, weak) id <KTVHCDataSourceDelegate> delegate;
+
 @end

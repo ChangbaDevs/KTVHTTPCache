@@ -1,5 +1,5 @@
 //
-//  KTVHCDataSourcer.h
+//  KTVHCDataSourceQueue.h
 //  KTVHTTPCache
 //
 //  Created by Single on 2017/8/11.
@@ -8,20 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataSourceProtocol.h"
-#import "KTVHCDataFileSource.h"
-#import "KTVHCDataNetworkSource.h"
 
-@interface KTVHCDataSourcer : NSObject
+@interface KTVHCDataSourceQueue : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)sourcer;
++ (instancetype)sourceQueue;
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source;
+- (void)popSource:(id<KTVHCDataSourceProtocol>)source;
 - (void)sortSources;
 
-- (void)start;
-- (void)stop;
+- (id<KTVHCDataSourceProtocol>)fetchFirstSource;
+- (id<KTVHCDataSourceProtocol>)fetchNextSource:(id<KTVHCDataSourceProtocol>)currentSource;
 
 @end

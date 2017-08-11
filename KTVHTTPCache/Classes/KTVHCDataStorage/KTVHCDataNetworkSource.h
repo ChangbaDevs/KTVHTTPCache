@@ -24,4 +24,6 @@ static NSInteger const KTVHCDataNetworkSourceSizeMaxVaule = -1;
 @property (nonatomic, assign, readonly) NSInteger offset;
 @property (nonatomic, assign, readonly) NSInteger size;
 
+@property (nonatomic, weak) id <KTVHCDataSourceDelegate> delegate;
+
 @end
