@@ -10,4 +10,7 @@
 
 @protocol KTVHCDataSourceProtocol <NSObject>
 
+@property (nonatomic, assign, readonly) NSInteger offset;
+@property (nonatomic, assign, readonly) NSInteger size;
+
 @end

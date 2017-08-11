@@ -29,8 +29,6 @@
 
 @property (nonatomic, copy) NSString * version;
 
-@property (nonatomic, assign, readonly) NSInteger rangeMin;
-@property (nonatomic, assign, readonly) NSInteger rangeMax;
 
 - (KTVHCDataRequest *)dataRequest;
 

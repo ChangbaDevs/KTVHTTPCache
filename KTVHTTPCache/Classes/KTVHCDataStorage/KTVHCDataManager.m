@@ -8,7 +8,7 @@
 
 #import "KTVHCDataManager.h"
 #import "KTVHCDataUnitPool.h"
-#import "KTVHCDataReaderPrivate.h"
+#import "KTVHCDataPrivate.h"
 
 @implementation KTVHCDataManager
 

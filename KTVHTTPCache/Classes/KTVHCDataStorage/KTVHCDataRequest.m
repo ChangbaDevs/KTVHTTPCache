@@ -7,10 +7,14 @@
 //
 
 #import "KTVHCDataRequest.h"
+#import "KTVHCDataPrivate.h"
 
 @interface KTVHCDataRequest ()
 
 @property (nonatomic, copy) NSString * URLString;
+
+@property (nonatomic, assign) NSInteger rangeMin;
+@property (nonatomic, assign) NSInteger rangeMax;
 
 @end
 
@@ -30,6 +34,31 @@
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
     }
     return self;
+}
+
+- (void)setHeaderFields:(NSDictionary *)headerFields
+{
+    if (_headerFields != headerFields)
+    {
+        _headerFields = headerFields;
+        
+        NSString * rangeString = [headerFields objectForKey:@"Range"];
+        if (rangeString.length > 0 && [rangeString hasPrefix:@"bytes="])
+        {
+            rangeString = [rangeString stringByReplacingOccurrencesOfString:@"bytes=" withString:@""];
+            NSArray <NSString *> * rangeArray = [rangeString componentsSeparatedByString:@"-"];
+            
+            if (rangeArray.count == 2)
+            {
+                if (rangeArray.firstObject.length > 0) {
+                    self.rangeMin = rangeArray.firstObject.integerValue;
+                }
+                if (rangeArray.lastObject.length > 0) {
+                    self.rangeMax = rangeArray.lastObject.integerValue;
+                }
+            }
+        }
+    }
 }
 
 @end

@@ -7,12 +7,11 @@
 //
 
 #import "KTVHCDataSourcer.h"
-#import "KTVHCDataFileSource.h"
-#import "KTVHCDataNetworkSource.h"
 
 @interface KTVHCDataSourcer ()
 
-@property (nonatomic, strong) NSMutableArray <id<KTVHCDataSourceProtocol>> * sources;
+@property (nonatomic, strong) id <KTVHCDataSourceProtocol> currentSource;
+@property (nonatomic, strong) NSMutableArray <id<KTVHCDataSourceProtocol>> * totalSources;
 
 @end
 
@@ -27,7 +26,7 @@
 {
     if (self = [super init])
     {
-        self.sources = [NSMutableArray array];
+        self.totalSources = [NSMutableArray array];
     }
     return self;
 }
@@ -38,9 +37,9 @@
         return;
     }
     
-    if (![self.sources containsObject:source])
+    if (![self.totalSources containsObject:source])
     {
-        [self.sources addObject:source];
+        [self.totalSources addObject:source];
     }
 }
 
@@ -50,10 +49,20 @@
         return;
     }
     
-    if ([self.sources containsObject:source])
+    if ([self.totalSources containsObject:source])
     {
-        [self.sources removeObject:source];
+        [self.totalSources removeObject:source];
     }
+}
+
+- (void)sortSources
+{
+    [self.totalSources sortUsingComparator:^NSComparisonResult(id <KTVHCDataSourceProtocol> obj1, id <KTVHCDataSourceProtocol> obj2) {
+        if (obj1.offset < obj2.offset) {
+            return NSOrderedAscending;
+        }
+        return NSOrderedDescending;
+    }];
 }
 
 - (void)start

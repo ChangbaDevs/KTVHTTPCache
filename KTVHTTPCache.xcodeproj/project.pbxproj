@@ -79,7 +79,7 @@
 		9C9249C11F3D594000647335 /* KTVHCDataUnitItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataUnitItem.m; sourceTree = "<group>"; };
 		9C9249CC1F3D84BE00647335 /* KTVHCDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataManager.h; sourceTree = "<group>"; };
 		9C9249CD1F3D84BE00647335 /* KTVHCDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataManager.m; sourceTree = "<group>"; };
-		9C9249D01F3D878C00647335 /* KTVHCDataReaderPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVHCDataReaderPrivate.h; sourceTree = "<group>"; };
+		9C9249D01F3D878C00647335 /* KTVHCDataPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVHCDataPrivate.h; sourceTree = "<group>"; };
 		9C9249D11F3D88F900647335 /* KTVHCDataSourcer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataSourcer.h; sourceTree = "<group>"; };
 		9C9249D21F3D88F900647335 /* KTVHCDataSourcer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataSourcer.m; sourceTree = "<group>"; };
 		9C9249DD1F3D899B00647335 /* KTVHCDataFileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataFileSource.h; sourceTree = "<group>"; };
@@ -122,9 +122,9 @@
 				9C9249CD1F3D84BE00647335 /* KTVHCDataManager.m */,
 				9C1699341F3D47AE00B1CA76 /* KTVHCDataRequest.h */,
 				9C1699351F3D47AE00B1CA76 /* KTVHCDataRequest.m */,
-				9C9249D01F3D878C00647335 /* KTVHCDataReaderPrivate.h */,
 				9C9249E61F3D8C3000647335 /* KTVHCDataReader.h */,
 				9C9249E71F3D8C3000647335 /* KTVHCDataReader.m */,
+				9C9249D01F3D878C00647335 /* KTVHCDataPrivate.h */,
 				9C9249B41F3D584C00647335 /* KTVHCDataUnit.h */,
 				9C9249B51F3D584C00647335 /* KTVHCDataUnit.m */,
 				9C9249C01F3D594000647335 /* KTVHCDataUnitItem.h */,

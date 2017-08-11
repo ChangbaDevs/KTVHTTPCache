@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-static NSInteger const KTVHCDataRequestRangeMinVaule = 0;
-static NSInteger const KTVHCDataRequestRangeMaxVaule = -1;
-
 @interface KTVHCDataRequest : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
@@ -19,8 +16,6 @@ static NSInteger const KTVHCDataRequestRangeMaxVaule = -1;
 + (instancetype)requestWithURLString:(NSString *)URLString;
 
 @property (nonatomic, copy, readonly) NSString * URLString;
-
-@property (nonatomic, assign) NSInteger rangeMin;      // default is KTVHCDataRequestRangeMinVaule.
-@property (nonatomic, assign) NSInteger rangeMax;      // default is KTVHCDataRequestRangeMaxVaule.
+@property (nonatomic, assign) NSDictionary * headerFields;
 
 @end

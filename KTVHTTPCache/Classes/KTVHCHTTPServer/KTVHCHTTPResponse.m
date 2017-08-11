@@ -8,12 +8,15 @@
 
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCHTTPConnection.h"
-#import "KTVHCDataRequest.h"
+#import "KTVHCDataManager.h"
 
-@interface KTVHCHTTPResponse ()
+@interface KTVHCHTTPResponse () <KTVHCDataReaderDelegate>
 
 @property (nonatomic, weak) KTVHCHTTPConnection * connection;
 @property (nonatomic, strong) KTVHCDataRequest * dataRequest;
+@property (nonatomic, strong) KTVHCDataReader * reader;
+
+@property (nonatomic, assign) BOOL waitingResponseHeader;
 
 @end
 
@@ -30,13 +33,16 @@
     {
         self.connection = connection;
         self.dataRequest = dataRequest;
+        self.reader = [KTVHCDataManager readerWithRequest:self.dataRequest];
+        self.reader.delegate = self;
+        [self.reader prepare];
     }
     return self;
 }
 
 - (UInt64)contentLength
 {
-    return 0;
+    return self.reader.contentSize;
 }
 
 - (UInt64)offset
@@ -61,17 +67,26 @@
 
 - (BOOL)delayResponseHeaders
 {
-    return NO;
+    if (!self.reader.didPrepare) {
+        self.waitingResponseHeader = YES;
+    } else {
+        self.waitingResponseHeader = NO;
+    }
+    return self.waitingResponseHeader;
 }
 
-- (NSInteger)status
-{
-    return 200;
-}
+//- (NSInteger)status
+//{
+//    return 200;
+//}
 
 - (NSDictionary *)httpHeaders
 {
-    return nil;
+    return @{
+             @"Accept-Ranges" : @"bytes",
+             @"Connection" : @"keep-alive",
+             @"Content-Type" : @"video/mp4"
+             };
 }
 
 - (BOOL)isChunked
@@ -80,6 +95,21 @@
 }
 
 - (void)connectionDidClose
+{
+    
+}
+
+
+#pragma mark - KTVHCDataReaderDelegate
+
+- (void)reaaderPrepareDidSuccess:(KTVHCDataReader *)reader
+{
+    if (self.reader.didPrepare && self.waitingResponseHeader == YES) {
+        [self.connection responseHasAvailableData:self];
+    }
+}
+
+- (void)reaaderPrepareDidFailure:(KTVHCDataReader *)reader
 {
     
 }

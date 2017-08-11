@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataSourceProtocol.h"
+#import "KTVHCDataFileSource.h"
+#import "KTVHCDataNetworkSource.h"
 
 @interface KTVHCDataSourcer : NSObject
 
@@ -18,6 +20,7 @@
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source;
 - (void)popSource:(id<KTVHCDataSourceProtocol>)source;
+- (void)sortSources;
 
 - (void)start;
 - (void)stop;

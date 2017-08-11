@@ -18,6 +18,9 @@
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
+@property (nonatomic, assign, readonly) NSInteger totalContentSize;
+@property (nonatomic, assign, readonly) NSInteger totalCacheSize;
+
 @property (nonatomic, strong, readonly) NSArray <KTVHCDataUnitItem *> * fileUnitItems;
 
 @end
