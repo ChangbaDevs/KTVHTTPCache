@@ -26,8 +26,8 @@
     if (self = [super init])
     {
         self.URLString = URLString;
-        self.rangeMin = KTVHCDataRequestRangeVaule;
-        self.rangeMax = KTVHCDataRequestRangeVaule;
+        self.rangeMin = KTVHCDataRequestRangeMinVaule;
+        self.rangeMax = KTVHCDataRequestRangeMaxVaule;
     }
     return self;
 }

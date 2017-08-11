@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-static NSInteger const KTVHCDataRequestRangeVaule = -1;
+static NSInteger const KTVHCDataRequestRangeMinVaule = 0;
+static NSInteger const KTVHCDataRequestRangeMaxVaule = -1;
 
 @interface KTVHCDataRequest : NSObject
 
@@ -19,7 +20,7 @@ static NSInteger const KTVHCDataRequestRangeVaule = -1;
 
 @property (nonatomic, copy, readonly) NSString * URLString;
 
-@property (nonatomic, assign) NSInteger rangeMin;      // default is KTVHCDataRequestRangeVaule.
-@property (nonatomic, assign) NSInteger rangeMax;      // default is KTVHCDataRequestRangeVaule.
+@property (nonatomic, assign) NSInteger rangeMin;      // default is KTVHCDataRequestRangeMinVaule.
+@property (nonatomic, assign) NSInteger rangeMax;      // default is KTVHCDataRequestRangeMaxVaule.
 
 @end

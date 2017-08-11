@@ -31,8 +31,8 @@
     {
         self.originalURLString = originalURLString;
         
-        self.rangeMin = KTVHCDataRequestRangeVaule;
-        self.rangeMax = KTVHCDataRequestRangeVaule;
+        self.rangeMin = KTVHCDataRequestRangeMinVaule;
+        self.rangeMax = KTVHCDataRequestRangeMaxVaule;
     }
     return self;
 }
