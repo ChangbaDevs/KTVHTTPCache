@@ -10,3 +10,8 @@
 
 FOUNDATION_EXPORT double CocoaHTTPServerVersionNumber;
 FOUNDATION_EXPORT const unsigned char CocoaHTTPServerVersionString[];
+
+#import <CocoaHTTPServer/HTTPServer.h>
+#import <CocoaHTTPServer/HTTPConnection.h>
+#import <CocoaHTTPServer/HTTPMessage.h>
+#import <CocoaHTTPServer/HTTPResponse.h>

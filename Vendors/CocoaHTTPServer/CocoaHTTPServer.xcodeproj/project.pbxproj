@@ -16,13 +16,13 @@
 		9CA0A6351F3C04350034965E /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A5F81F3C04350034965E /* DDRange.m */; };
 		9CA0A6361F3C04350034965E /* HTTPAuthenticationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A5F91F3C04350034965E /* HTTPAuthenticationRequest.h */; };
 		9CA0A6371F3C04350034965E /* HTTPAuthenticationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A5FA1F3C04350034965E /* HTTPAuthenticationRequest.m */; };
-		9CA0A6381F3C04350034965E /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A5FB1F3C04350034965E /* HTTPConnection.h */; };
+		9CA0A6381F3C04350034965E /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A5FB1F3C04350034965E /* HTTPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA0A6391F3C04350034965E /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A5FC1F3C04350034965E /* HTTPConnection.m */; };
 		9CA0A63A1F3C04350034965E /* HTTPLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A5FD1F3C04350034965E /* HTTPLogging.h */; };
-		9CA0A63B1F3C04350034965E /* HTTPMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A5FE1F3C04350034965E /* HTTPMessage.h */; };
+		9CA0A63B1F3C04350034965E /* HTTPMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A5FE1F3C04350034965E /* HTTPMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA0A63C1F3C04350034965E /* HTTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A5FF1F3C04350034965E /* HTTPMessage.m */; };
-		9CA0A63D1F3C04350034965E /* HTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A6001F3C04350034965E /* HTTPResponse.h */; };
-		9CA0A63E1F3C04350034965E /* HTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A6011F3C04350034965E /* HTTPServer.h */; };
+		9CA0A63D1F3C04350034965E /* HTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A6001F3C04350034965E /* HTTPResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9CA0A63E1F3C04350034965E /* HTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A6011F3C04350034965E /* HTTPServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA0A63F1F3C04350034965E /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A6021F3C04350034965E /* HTTPServer.m */; };
 		9CA0A6401F3C04350034965E /* MultipartFormDataParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A6041F3C04350034965E /* MultipartFormDataParser.h */; };
 		9CA0A6411F3C04350034965E /* MultipartFormDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A6051F3C04350034965E /* MultipartFormDataParser.m */; };
@@ -293,7 +293,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CA0A63E1F3C04350034965E /* HTTPServer.h in Headers */,
 				9CA0A63B1F3C04350034965E /* HTTPMessage.h in Headers */,
+				9CA0A63D1F3C04350034965E /* HTTPResponse.h in Headers */,
 				9CA0A6381F3C04350034965E /* HTTPConnection.h in Headers */,
 				9CA0A6421F3C04350034965E /* MultipartMessageHeader.h in Headers */,
 				9CA0A64E1F3C04350034965E /* HTTPFileResponse.h in Headers */,
@@ -312,14 +314,12 @@
 				9CA0A6301F3C04350034965E /* DDData.h in Headers */,
 				9CA0A65E1F3C04350034965E /* DDLog.h in Headers */,
 				9CA0A6321F3C04350034965E /* DDNumber.h in Headers */,
-				9CA0A63D1F3C04350034965E /* HTTPResponse.h in Headers */,
 				9C7EDAA31F3C0377003B6C14 /* CocoaHTTPServer.h in Headers */,
 				9CA0A63A1F3C04350034965E /* HTTPLogging.h in Headers */,
 				9CA0A6521F3C04350034965E /* WebSocket.h in Headers */,
 				9CA0A64C1F3C04350034965E /* HTTPErrorResponse.h in Headers */,
 				9CA0A6581F3C04350034965E /* DDAbstractDatabaseLogger.h in Headers */,
 				9CA0A6481F3C04350034965E /* HTTPDataResponse.h in Headers */,
-				9CA0A63E1F3C04350034965E /* HTTPServer.h in Headers */,
 				9CA0A6621F3C04350034965E /* ContextFilterLogFormatter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -532,7 +532,9 @@
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				INFOPLIST_FILE = CocoaHTTPServer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.CocoaHTTPServer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -550,7 +552,9 @@
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				INFOPLIST_FILE = CocoaHTTPServer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.CocoaHTTPServer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
