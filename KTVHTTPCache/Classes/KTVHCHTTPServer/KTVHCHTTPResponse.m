@@ -59,4 +59,29 @@
     return YES;
 }
 
+- (BOOL)delayResponseHeaders
+{
+    return NO;
+}
+
+- (NSInteger)status
+{
+    return 200;
+}
+
+- (NSDictionary *)httpHeaders
+{
+    return nil;
+}
+
+- (BOOL)isChunked
+{
+    return NO;
+}
+
+- (void)connectionDidClose
+{
+    
+}
+
 @end
