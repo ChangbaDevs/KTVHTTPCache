@@ -13,7 +13,12 @@
 
 @interface KTVHCHTTPRequest : HTTPMessage
 
-@property (nonatomic, copy) NSString * originalURLString;
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
++ (instancetype)requestWithOriginalURLString:(NSString *)originalURLString;
+
+@property (nonatomic, copy, readonly) NSString * originalURLString;
 
 @property (nonatomic, assign) BOOL isHeaderComplete;
 @property (nonatomic, strong) NSDictionary * allHeaderFields;
@@ -24,6 +29,8 @@
 
 @property (nonatomic, copy) NSString * version;
 
+@property (nonatomic, assign, readonly) NSInteger rangeMin;
+@property (nonatomic, assign, readonly) NSInteger rangeMax;
 
 - (KTVHCDataRequest *)dataRequest;
 

@@ -25,8 +25,8 @@
 {
     KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithURIString:path];
     
-    self.currentRequest = [[KTVHCHTTPRequest alloc] init];
-    self.currentRequest.originalURLString = url.originalURLString;
+    self.currentRequest = [KTVHCHTTPRequest requestWithOriginalURLString:url.originalURLString];
+
     self.currentRequest.isHeaderComplete = request.isHeaderComplete;
     self.currentRequest.allHeaderFields = request.allHeaderFields;
     self.currentRequest.URL = request.url;

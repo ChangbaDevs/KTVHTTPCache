@@ -12,7 +12,24 @@
 		9C7EDA8E1F3C0334003B6C14 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C7EDA8C1F3C0334003B6C14 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C8DC2841F3C57F1002F1978 /* KTVHCURLTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C8DC2821F3C57F1002F1978 /* KTVHCURLTools.h */; };
 		9C8DC2851F3C57F1002F1978 /* KTVHCURLTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8DC2831F3C57F1002F1978 /* KTVHCURLTools.m */; };
-		9C9249B01F3D4D4300647335 /* CocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CAF697B1F3C06FF009CDAAF /* CocoaHTTPServer.framework */; };
+		9C9249B61F3D584C00647335 /* KTVHCDataUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249B41F3D584C00647335 /* KTVHCDataUnit.h */; };
+		9C9249B71F3D584C00647335 /* KTVHCDataUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249B51F3D584C00647335 /* KTVHCDataUnit.m */; };
+		9C9249BA1F3D585A00647335 /* KTVHCDataUnitPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249B81F3D585A00647335 /* KTVHCDataUnitPool.h */; };
+		9C9249BB1F3D585A00647335 /* KTVHCDataUnitPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249B91F3D585A00647335 /* KTVHCDataUnitPool.m */; };
+		9C9249BE1F3D588200647335 /* KTVHCDataUnitQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249BC1F3D588200647335 /* KTVHCDataUnitQueue.h */; };
+		9C9249BF1F3D588200647335 /* KTVHCDataUnitQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249BD1F3D588200647335 /* KTVHCDataUnitQueue.m */; };
+		9C9249C21F3D594000647335 /* KTVHCDataUnitItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249C01F3D594000647335 /* KTVHCDataUnitItem.h */; };
+		9C9249C31F3D594000647335 /* KTVHCDataUnitItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249C11F3D594000647335 /* KTVHCDataUnitItem.m */; };
+		9C9249CE1F3D84BE00647335 /* KTVHCDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249CC1F3D84BE00647335 /* KTVHCDataManager.h */; };
+		9C9249CF1F3D84BE00647335 /* KTVHCDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249CD1F3D84BE00647335 /* KTVHCDataManager.m */; };
+		9C9249D31F3D88F900647335 /* KTVHCDataSourcer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249D11F3D88F900647335 /* KTVHCDataSourcer.h */; };
+		9C9249D41F3D88F900647335 /* KTVHCDataSourcer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249D21F3D88F900647335 /* KTVHCDataSourcer.m */; };
+		9C9249DF1F3D899B00647335 /* KTVHCDataFileSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249DD1F3D899B00647335 /* KTVHCDataFileSource.h */; };
+		9C9249E01F3D899B00647335 /* KTVHCDataFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249DE1F3D899B00647335 /* KTVHCDataFileSource.m */; };
+		9C9249E31F3D89B100647335 /* KTVHCDataNetworkSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249E11F3D89B100647335 /* KTVHCDataNetworkSource.h */; };
+		9C9249E41F3D89B100647335 /* KTVHCDataNetworkSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249E21F3D89B100647335 /* KTVHCDataNetworkSource.m */; };
+		9C9249E81F3D8C3000647335 /* KTVHCDataReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249E61F3D8C3000647335 /* KTVHCDataReader.h */; };
+		9C9249E91F3D8C3000647335 /* KTVHCDataReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9249E71F3D8C3000647335 /* KTVHCDataReader.m */; };
 		9CE1184D1F3C0C7E00A7AE8B /* KTVHCManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE1184B1F3C0C7E00A7AE8B /* KTVHCManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CE1184E1F3C0C7E00A7AE8B /* KTVHCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE1184C1F3C0C7E00A7AE8B /* KTVHCManager.m */; };
 		9CE118511F3C0E7B00A7AE8B /* KTVHCHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE1184F1F3C0E7B00A7AE8B /* KTVHCHTTPServer.h */; };
@@ -52,6 +69,26 @@
 		9C7EDA8D1F3C0334003B6C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C8DC2821F3C57F1002F1978 /* KTVHCURLTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCURLTools.h; sourceTree = "<group>"; };
 		9C8DC2831F3C57F1002F1978 /* KTVHCURLTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCURLTools.m; sourceTree = "<group>"; };
+		9C9249B41F3D584C00647335 /* KTVHCDataUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataUnit.h; sourceTree = "<group>"; };
+		9C9249B51F3D584C00647335 /* KTVHCDataUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataUnit.m; sourceTree = "<group>"; };
+		9C9249B81F3D585A00647335 /* KTVHCDataUnitPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataUnitPool.h; sourceTree = "<group>"; };
+		9C9249B91F3D585A00647335 /* KTVHCDataUnitPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataUnitPool.m; sourceTree = "<group>"; };
+		9C9249BC1F3D588200647335 /* KTVHCDataUnitQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataUnitQueue.h; sourceTree = "<group>"; };
+		9C9249BD1F3D588200647335 /* KTVHCDataUnitQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataUnitQueue.m; sourceTree = "<group>"; };
+		9C9249C01F3D594000647335 /* KTVHCDataUnitItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataUnitItem.h; sourceTree = "<group>"; };
+		9C9249C11F3D594000647335 /* KTVHCDataUnitItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataUnitItem.m; sourceTree = "<group>"; };
+		9C9249CC1F3D84BE00647335 /* KTVHCDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataManager.h; sourceTree = "<group>"; };
+		9C9249CD1F3D84BE00647335 /* KTVHCDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataManager.m; sourceTree = "<group>"; };
+		9C9249D01F3D878C00647335 /* KTVHCDataReaderPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVHCDataReaderPrivate.h; sourceTree = "<group>"; };
+		9C9249D11F3D88F900647335 /* KTVHCDataSourcer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataSourcer.h; sourceTree = "<group>"; };
+		9C9249D21F3D88F900647335 /* KTVHCDataSourcer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataSourcer.m; sourceTree = "<group>"; };
+		9C9249DD1F3D899B00647335 /* KTVHCDataFileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataFileSource.h; sourceTree = "<group>"; };
+		9C9249DE1F3D899B00647335 /* KTVHCDataFileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataFileSource.m; sourceTree = "<group>"; };
+		9C9249E11F3D89B100647335 /* KTVHCDataNetworkSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataNetworkSource.h; sourceTree = "<group>"; };
+		9C9249E21F3D89B100647335 /* KTVHCDataNetworkSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataNetworkSource.m; sourceTree = "<group>"; };
+		9C9249E51F3D89E500647335 /* KTVHCDataSourceProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVHCDataSourceProtocol.h; sourceTree = "<group>"; };
+		9C9249E61F3D8C3000647335 /* KTVHCDataReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataReader.h; sourceTree = "<group>"; };
+		9C9249E71F3D8C3000647335 /* KTVHCDataReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataReader.m; sourceTree = "<group>"; };
 		9CAF69761F3C06FF009CDAAF /* CocoaHTTPServer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaHTTPServer.xcodeproj; path = Vendors/CocoaHTTPServer/CocoaHTTPServer.xcodeproj; sourceTree = "<group>"; };
 		9CE1184B1F3C0C7E00A7AE8B /* KTVHCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCManager.h; sourceTree = "<group>"; };
 		9CE1184C1F3C0C7E00A7AE8B /* KTVHCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCManager.m; sourceTree = "<group>"; };
@@ -72,7 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C9249B01F3D4D4300647335 /* CocoaHTTPServer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,8 +118,28 @@
 		9C1699331F3D476A00B1CA76 /* KTVHCDataStorage */ = {
 			isa = PBXGroup;
 			children = (
+				9C9249CC1F3D84BE00647335 /* KTVHCDataManager.h */,
+				9C9249CD1F3D84BE00647335 /* KTVHCDataManager.m */,
 				9C1699341F3D47AE00B1CA76 /* KTVHCDataRequest.h */,
 				9C1699351F3D47AE00B1CA76 /* KTVHCDataRequest.m */,
+				9C9249D01F3D878C00647335 /* KTVHCDataReaderPrivate.h */,
+				9C9249E61F3D8C3000647335 /* KTVHCDataReader.h */,
+				9C9249E71F3D8C3000647335 /* KTVHCDataReader.m */,
+				9C9249B41F3D584C00647335 /* KTVHCDataUnit.h */,
+				9C9249B51F3D584C00647335 /* KTVHCDataUnit.m */,
+				9C9249C01F3D594000647335 /* KTVHCDataUnitItem.h */,
+				9C9249C11F3D594000647335 /* KTVHCDataUnitItem.m */,
+				9C9249B81F3D585A00647335 /* KTVHCDataUnitPool.h */,
+				9C9249B91F3D585A00647335 /* KTVHCDataUnitPool.m */,
+				9C9249BC1F3D588200647335 /* KTVHCDataUnitQueue.h */,
+				9C9249BD1F3D588200647335 /* KTVHCDataUnitQueue.m */,
+				9C9249D11F3D88F900647335 /* KTVHCDataSourcer.h */,
+				9C9249D21F3D88F900647335 /* KTVHCDataSourcer.m */,
+				9C9249E51F3D89E500647335 /* KTVHCDataSourceProtocol.h */,
+				9C9249DD1F3D899B00647335 /* KTVHCDataFileSource.h */,
+				9C9249DE1F3D899B00647335 /* KTVHCDataFileSource.m */,
+				9C9249E11F3D89B100647335 /* KTVHCDataNetworkSource.h */,
+				9C9249E21F3D89B100647335 /* KTVHCDataNetworkSource.m */,
 			);
 			path = KTVHCDataStorage;
 			sourceTree = "<group>";
@@ -169,14 +225,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C7EDA8E1F3C0334003B6C14 /* KTVHTTPCache.h in Headers */,
+				9C9249BA1F3D585A00647335 /* KTVHCDataUnitPool.h in Headers */,
 				9C8DC2841F3C57F1002F1978 /* KTVHCURLTools.h in Headers */,
 				9CF9551D1F3C4B6300321CF6 /* KTVHCHTTPRequest.h in Headers */,
+				9C9249B61F3D584C00647335 /* KTVHCDataUnit.h in Headers */,
+				9C9249D31F3D88F900647335 /* KTVHCDataSourcer.h in Headers */,
+				9C9249BE1F3D588200647335 /* KTVHCDataUnitQueue.h in Headers */,
 				9CF955251F3C4B9700321CF6 /* KTVHCHTTPResponse.h in Headers */,
+				9C9249DF1F3D899B00647335 /* KTVHCDataFileSource.h in Headers */,
 				9CF955191F3C357D00321CF6 /* KTVHCHTTPConnection.h in Headers */,
+				9C9249C21F3D594000647335 /* KTVHCDataUnitItem.h in Headers */,
 				9CE1184D1F3C0C7E00A7AE8B /* KTVHCManager.h in Headers */,
+				9C9249E81F3D8C3000647335 /* KTVHCDataReader.h in Headers */,
 				9C1699361F3D47AE00B1CA76 /* KTVHCDataRequest.h in Headers */,
+				9C9249CE1F3D84BE00647335 /* KTVHCDataManager.h in Headers */,
 				9CE118511F3C0E7B00A7AE8B /* KTVHCHTTPServer.h in Headers */,
 				9CE118551F3C27F400A7AE8B /* KTVHCHTTPURL.h in Headers */,
+				9C9249E31F3D89B100647335 /* KTVHCDataNetworkSource.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,12 +332,21 @@
 			files = (
 				9C1699371F3D47AE00B1CA76 /* KTVHCDataRequest.m in Sources */,
 				9CF9551A1F3C357D00321CF6 /* KTVHCHTTPConnection.m in Sources */,
+				9C9249CF1F3D84BE00647335 /* KTVHCDataManager.m in Sources */,
 				9CF955261F3C4B9700321CF6 /* KTVHCHTTPResponse.m in Sources */,
+				9C9249E91F3D8C3000647335 /* KTVHCDataReader.m in Sources */,
+				9C9249B71F3D584C00647335 /* KTVHCDataUnit.m in Sources */,
 				9CE1184E1F3C0C7E00A7AE8B /* KTVHCManager.m in Sources */,
+				9C9249E01F3D899B00647335 /* KTVHCDataFileSource.m in Sources */,
 				9C8DC2851F3C57F1002F1978 /* KTVHCURLTools.m in Sources */,
 				9CE118521F3C0E7B00A7AE8B /* KTVHCHTTPServer.m in Sources */,
+				9C9249C31F3D594000647335 /* KTVHCDataUnitItem.m in Sources */,
+				9C9249BF1F3D588200647335 /* KTVHCDataUnitQueue.m in Sources */,
+				9C9249E41F3D89B100647335 /* KTVHCDataNetworkSource.m in Sources */,
 				9CE118561F3C27F400A7AE8B /* KTVHCHTTPURL.m in Sources */,
+				9C9249BB1F3D585A00647335 /* KTVHCDataUnitPool.m in Sources */,
 				9CF9551E1F3C4B6300321CF6 /* KTVHCHTTPRequest.m in Sources */,
+				9C9249D41F3D88F900647335 /* KTVHCDataSourcer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +472,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCache;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -417,6 +492,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCache;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
