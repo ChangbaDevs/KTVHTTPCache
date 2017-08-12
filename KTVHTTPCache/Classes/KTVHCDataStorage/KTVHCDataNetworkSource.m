@@ -136,6 +136,9 @@
         [self.condition wait];
     }
     
+    [self.writingHandle closeFile];
+    self.writingHandle = nil;
+    
     [self.condition unlock];
 }
 
@@ -290,6 +293,10 @@
 
 - (void)download:(KTVHCDataDownload *)download didReceiveData:(NSData *)data
 {
+    if (self.didClose) {
+        return;
+    }
+    
     [self.condition lock];
     [self.writingHandle writeData:data];
     self.downloadSize += data.length;
