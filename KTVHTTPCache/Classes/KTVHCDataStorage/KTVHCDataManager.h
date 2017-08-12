@@ -17,8 +17,12 @@
 
 + (instancetype)manager;
 
-- (KTVHCDataReader *)readerSyncWithRequest:(KTVHCDataRequest *)request;
-- (void)readerAsyncWithRequest:(KTVHCDataRequest *)request
+
+#pragma mark - Data Reader
+
+- (KTVHCDataReader *)syncReaderWithRequest:(KTVHCDataRequest *)request;
+
+- (void)asyncReaderWithRequest:(KTVHCDataRequest *)request
              completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
 
 @end
