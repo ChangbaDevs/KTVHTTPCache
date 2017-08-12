@@ -114,6 +114,10 @@
 
 - (void)close
 {
+    if (self.didClose) {
+        return;
+    }
+    
     [self.condition lock];
     
     self.didClose = YES;

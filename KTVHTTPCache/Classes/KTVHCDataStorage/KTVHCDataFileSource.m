@@ -84,6 +84,10 @@
 
 - (void)close
 {
+    if (self.didClose) {
+        return;
+    }
+    
     self.didClose = YES;
     
     [self.readingHandle closeFile];

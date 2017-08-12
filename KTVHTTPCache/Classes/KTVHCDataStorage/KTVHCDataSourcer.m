@@ -73,6 +73,10 @@
 
 - (void)close
 {
+    if (self.didClose) {
+        return;
+    }
+    
     self.didClose = YES;
     [self.sourceQueue closeAllSource];
 }

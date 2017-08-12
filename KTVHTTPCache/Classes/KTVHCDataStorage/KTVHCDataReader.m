@@ -166,6 +166,10 @@
 
 - (void)close
 {
+    if (self.didClose) {
+        return;
+    }
+    
     self.didClose = YES;
     [self.sourcer close];
 }
@@ -235,6 +239,12 @@
     if (self.error && [self.delegate respondsToSelector:@selector(reaader:didFailure:)]) {
         [self.delegate reaader:self didFailure:self.error];
     }
+}
+
+
+- (void)dealloc
+{
+    NSLog(@"KTVHCDataReader release");
 }
 
 
