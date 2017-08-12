@@ -7,6 +7,7 @@
 //
 
 #import "KTVHCDataFileSource.h"
+#import "KTVHCDataCallback.h"
 
 @interface KTVHCDataFileSource ()
 
@@ -78,7 +79,9 @@
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
     [self.readingHandle seekToFileOffset:self.startOffset];
     if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
-        [self.fileSourceDelegate fileSourceDidFinishPrepare:self];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.fileSourceDelegate fileSourceDidFinishPrepare:self];
+        }];
     }
 }
 
@@ -122,7 +125,9 @@
 
     self.didFinishRead = YES;
     if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishRead:)]) {
-        [self.fileSourceDelegate fileSourceDidFinishRead:self];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.fileSourceDelegate fileSourceDidFinishRead:self];
+        }];
     }
 }
 

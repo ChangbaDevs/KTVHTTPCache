@@ -10,6 +10,7 @@
 #import "KTVHCDataUnit.h"
 #import "KTVHCDataPrivate.h"
 #import "KTVHCDataSourcer.h"
+#import "KTVHCDataCallback.h"
 
 @interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
 
@@ -227,7 +228,9 @@
         }
         self.didFinishPrepare = YES;
         if ([self.delegate respondsToSelector:@selector(reaaderDidFinishPrepare:)]) {
-            [self.delegate reaaderDidFinishPrepare:self];
+            [KTVHCDataCallback callbackWithBlock:^{
+                [self.delegate reaaderDidFinishPrepare:self];
+            }];
         }
     }
 }
@@ -240,7 +243,9 @@
     
     self.startWorkingCallbackToken = YES;
     if ([self.workingDelegate respondsToSelector:@selector(readerDidStartWorking:)]) {
-        [self.workingDelegate readerDidStartWorking:self];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.workingDelegate readerDidStartWorking:self];
+        }];
     }
 }
 
@@ -252,7 +257,9 @@
     
     self.stopWorkingCallbackToken = YES;
     if ([self.workingDelegate respondsToSelector:@selector(readerDidStopWorking:)]) {
-        [self.workingDelegate readerDidStopWorking:self];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.workingDelegate readerDidStopWorking:self];
+        }];
     }
 }
 
@@ -276,14 +283,10 @@
 {
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(reaader:didFailure:)]) {
-        [self.delegate reaader:self didFailure:self.error];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.delegate reaader:self didFailure:self.error];
+        }];
     }
-}
-
-
-- (void)dealloc
-{
-    NSLog(@"KTVHCDataReader release");
 }
 
 

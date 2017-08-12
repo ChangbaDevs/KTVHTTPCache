@@ -18,5 +18,6 @@
 + (instancetype)manager;
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
+- (void)asyncReaderWithRequest:(KTVHCDataRequest *)request completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
 
 @end

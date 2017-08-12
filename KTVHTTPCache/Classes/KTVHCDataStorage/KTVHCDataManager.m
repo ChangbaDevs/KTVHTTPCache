@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSCondition * condition;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * workingUnits;
+@property (nonatomic, strong) NSOperationQueue * operationQueue;
 
 @end
 
@@ -35,6 +36,7 @@
     {
         self.condition = [[NSCondition alloc] init];
         self.workingUnits = [NSMutableArray array];
+        self.operationQueue = [[NSOperationQueue alloc] init];
     }
     return self;
 }
@@ -57,6 +59,15 @@
                                                workingDelegate:self];
     [self.condition unlock];
     return reader;
+}
+
+- (void)asyncReaderWithRequest:(KTVHCDataRequest *)request completionHandler:(void (^)(KTVHCDataReader *))completionHandler
+{
+    __weak typeof(self) weakSelf = self;
+    [self.operationQueue addOperationWithBlock:^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+         completionHandler([strongSelf readerWithRequest:request]);
+    }];
 }
 
 

@@ -31,12 +31,14 @@
 {
     if (self = [super init])
     {
-        NSLog(@"KTVHCHTTPResponse create");
         self.connection = connection;
         self.dataRequest = dataRequest;
-        self.reader = [[KTVHCDataManager manager] readerWithRequest:self.dataRequest];
-        self.reader.delegate = self;
-        [self.reader prepare];
+        [[KTVHCDataManager manager] asyncReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
+            self.reader = reader;
+            self.reader.delegate = self;
+            [self.reader prepare];
+        }];
+        
     }
     return self;
 }
@@ -107,12 +109,6 @@
 - (void)reaader:(KTVHCDataReader *)reader didFailure:(NSError *)error
 {
     [self.connection responseDidAbort:self];
-}
-
-
-- (void)dealloc
-{
-    NSLog(@"KTVHCHTTPResponse release");
 }
 
 

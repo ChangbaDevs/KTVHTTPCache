@@ -8,6 +8,7 @@
 
 #import "KTVHCDataSourcer.h"
 #import "KTVHCDataSourceQueue.h"
+#import "KTVHCDataCallback.h"
 
 @interface KTVHCDataSourcer ()
 
@@ -119,7 +120,9 @@
     
     self.didFinishPrepare = YES;
     if ([self.delegate respondsToSelector:@selector(sourcerDidFinishPrepare:)]) {
-        [self.delegate sourcerDidFinishPrepare:self];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.delegate sourcerDidFinishPrepare:self];
+        }];
     }
 }
 
@@ -127,7 +130,9 @@
 {
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(sourcer:didFailure:)]) {
-        [self.delegate sourcer:self didFailure:self.error];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.delegate sourcer:self didFailure:self.error];
+        }];
     }
 }
 

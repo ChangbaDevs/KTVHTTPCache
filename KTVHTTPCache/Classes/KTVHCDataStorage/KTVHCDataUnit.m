@@ -8,6 +8,7 @@
 
 #import "KTVHCDataUnit.h"
 #import "KTVHCURLTools.h"
+#import "KTVHCDataCallback.h"
 
 @interface KTVHCDataUnit ()
 
@@ -128,7 +129,9 @@
     {
         _totalContentLength = totalContentLength;
         if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
-            [self.delegate unitDidUpdateTotalContentLength:self];
+            [KTVHCDataCallback callbackWithBlock:^{
+                [self.delegate unitDidUpdateTotalContentLength:self];
+            }];
         }
     }
 }

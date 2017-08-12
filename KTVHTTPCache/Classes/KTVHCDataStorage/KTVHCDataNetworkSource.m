@@ -10,6 +10,7 @@
 #import "KTVHCDataDownload.h"
 #import "KTVHCPathTools.h"
 #import "KTVHCDataUnitPool.h"
+#import "KTVHCDataCallback.h"
 
 @interface KTVHCDataNetworkSource () <KTVHCDataDownloadDelegate>
 
@@ -181,7 +182,9 @@
     
     self.didFinishRead = YES;
     if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishRead:)]) {
-        [self.networkSourceDelegate networkSourceDidFinishRead:self];
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.networkSourceDelegate networkSourceDidFinishRead:self];
+        }];
     }
 }
 
@@ -195,7 +198,9 @@
     {
         self.didFinishDownload = YES;
         if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
-            [self.networkSourceDelegate networkSourceDidFinishDownload:self];
+            [KTVHCDataCallback callbackWithBlock:^{
+                [self.networkSourceDelegate networkSourceDidFinishDownload:self];
+            }];
         }
     }
 }
@@ -215,11 +220,15 @@
         self.error = error;
         if (self.error.code == NSURLErrorCancelled && !self.errorCanceled) {
             if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidCanceled:)]) {
-                [self.networkSourceDelegate networkSourceDidCanceled:self];
+                [KTVHCDataCallback callbackWithBlock:^{
+                    [self.networkSourceDelegate networkSourceDidCanceled:self];
+                }];
             }
         } else {
             if ([self.networkSourceDelegate respondsToSelector:@selector(networkSource:didFailure:)]) {
-                [self.networkSourceDelegate networkSource:self didFailure:error];
+                [KTVHCDataCallback callbackWithBlock:^{
+                    [self.networkSourceDelegate networkSource:self didFailure:error];
+                }];
             }
         }
     }
@@ -250,7 +259,9 @@
         self.responseHeaderFields = response.allHeaderFields;
         self.didFinishPrepare = YES;
         if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishPrepare:)]) {
-            [self.networkSourceDelegate networkSourceDidFinishPrepare:self];
+            [KTVHCDataCallback callbackWithBlock:^{
+                [self.networkSourceDelegate networkSourceDidFinishPrepare:self];
+            }];
         }
         return YES;
     }

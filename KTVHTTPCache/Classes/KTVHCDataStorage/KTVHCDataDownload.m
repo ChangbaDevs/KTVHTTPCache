@@ -7,6 +7,7 @@
 //
 
 #import "KTVHCDataDownload.h"
+#import "KTVHCDataCallback.h"
 
 @interface KTVHCDataDownload () <NSURLSessionDataDelegate>
 
@@ -63,9 +64,9 @@
 {
     [self.lock lock];
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
-    if ([delegate respondsToSelector:@selector(download:didCompleteWithError:)]) {
+    [KTVHCDataCallback callbackWithBlock:^{
         [delegate download:self didCompleteWithError:error];
-    }
+    }];
     [self.delegateDictionary removeObjectForKey:task];
     [self.lock unlock];
 }
@@ -74,11 +75,10 @@
 {
     [self.lock lock];
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
-    BOOL result = NO;
-    if ([delegate respondsToSelector:@selector(download:didReceiveResponse:)]) {
-        result = [delegate download:self didReceiveResponse:(NSHTTPURLResponse *)response];
-    }
-    completionHandler(result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel);
+    [KTVHCDataCallback callbackWithBlock:^{
+        BOOL result = [delegate download:self didReceiveResponse:(NSHTTPURLResponse *)response];
+        completionHandler(result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel);
+    }];
     [self.lock unlock];
 }
 
@@ -86,9 +86,9 @@
 {
     [self.lock lock];
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
-    if ([delegate respondsToSelector:@selector(download:didReceiveData:)]) {
+    [KTVHCDataCallback callbackWithBlock:^{
         [delegate download:self didReceiveData:data];
-    }
+    }];
     [self.lock unlock];
 }
 
