@@ -33,12 +33,18 @@
     {
         self.connection = connection;
         self.dataRequest = dataRequest;
+        
+#if 1
+        self.reader = [[KTVHCDataManager manager] syncReaderWithRequest:self.dataRequest];
+        self.reader.delegate = self;
+        [self.reader prepare];
+#else
         [[KTVHCDataManager manager] asyncReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
             self.reader = reader;
             self.reader.delegate = self;
             [self.reader prepare];
         }];
-        
+#endif
     }
     return self;
 }

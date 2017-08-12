@@ -50,10 +50,12 @@
     
     [self.condition lock];
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URLString];
+#if 0
     while ([self.workingUnits containsObject:unit]) {
         [self.condition wait];
     }
     [self.workingUnits addObject:unit];
+#endif
     [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
                                                        request:request
