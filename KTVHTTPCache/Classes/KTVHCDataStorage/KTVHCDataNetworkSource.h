@@ -26,12 +26,13 @@ static NSInteger const KTVHCDataNetworkSourceSizeMaxVaule = -1;
 
 @interface KTVHCDataNetworkSource : NSObject <KTVHCDataSourceProtocol>
 
-+ (instancetype)sourceWithURLString:(NSString *)URLString
-                       headerFields:(NSDictionary *)headerFields
-                             offset:(NSInteger)offset
-                               size:(NSInteger)size;
++ (instancetype)sourceWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
+                         URLString:(NSString *)URLString
+                      headerFields:(NSDictionary *)headerFields
+                            offset:(NSInteger)offset
+                              size:(NSInteger)size;
 
-@property (nonatomic, weak) id <KTVHCDataNetworkSourceDelegate> networkSourceDelegate;
+@property (nonatomic, weak, readonly) id <KTVHCDataNetworkSourceDelegate> networkSourceDelegate;
 
 @property (nonatomic, copy, readonly) NSString * URLString;
 
@@ -44,7 +45,5 @@ static NSInteger const KTVHCDataNetworkSourceSizeMaxVaule = -1;
 @property (nonatomic, assign, readonly) BOOL didFinishDownload;
 
 @property (nonatomic, assign, readonly) NSInteger totalContentLength;
-
-- (void)prepareAndStart;
 
 @end

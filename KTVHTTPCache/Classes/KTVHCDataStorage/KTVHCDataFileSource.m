@@ -23,27 +23,38 @@
 
 #pragma mark - Setter
 
+@property (nonatomic, weak) id <KTVHCDataFileSourceDelegate> fileSourceDelegate;
+
 @property (nonatomic, assign) NSInteger startOffset;
 @property (nonatomic, assign) NSInteger needReadSize;
+
+
+#pragma mark - File
+
+@property (nonatomic, strong) NSFileHandle * readingHandle;
+@property (nonatomic, assign) NSInteger fileReadOffset;
 
 @end
 
 @implementation KTVHCDataFileSource
 
-+ (instancetype)sourceWithFilePath:(NSString *)filePath
++ (instancetype)sourceWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
+                          filePath:(NSString *)filePath
                             offset:(NSInteger)offset
                               size:(NSInteger)size
                        startOffset:(NSInteger)startOffset
                       needReadSize:(NSInteger)needReadSize
 {
-    return [[self alloc] initWithFilePath:filePath
+    return [[self alloc] initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
+                                 filePath:filePath
                                    offset:offset
                                      size:size
                               startOffset:startOffset
                              needReadSize:needReadSize];
 }
 
-- (instancetype)initWithFilePath:(NSString *)filePath
+- (instancetype)initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
+                        filePath:(NSString *)filePath
                           offset:(NSInteger)offset
                             size:(NSInteger)size
                      startOffset:(NSInteger)startOffset
@@ -51,8 +62,8 @@
 {
     if (self = [super init])
     {
+        self.fileSourceDelegate = delegate;
         self.filePath = filePath;
-        
         self.offset = offset;
         self.size = size;
         self.startOffset = startOffset;
@@ -61,9 +72,38 @@
     return self;
 }
 
+- (void)prepare
+{
+    self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
+    if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
+        [self.fileSourceDelegate fileSourceDidFinishPrepare:self];
+    }
+}
+
 - (NSData *)syncReadDataOfLength:(NSInteger)length
 {
-    return nil;
+    if (self.didFinishRead) {
+        return nil;
+    }
+    
+    NSData * data = [self.readingHandle readDataOfLength:length];
+    self.fileReadOffset += data.length;
+    if (self.fileReadOffset >= self.size)
+    {
+        [self callbackForFinishRead];
+    }
+    return data;
+}
+
+- (void)callbackForFinishRead
+{
+    [self.readingHandle closeFile];
+    self.readingHandle = nil;
+
+    self.didFinishRead = YES;
+    if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishRead:)]) {
+        [self.fileSourceDelegate fileSourceDidFinishRead:self];
+    }
 }
 
 @end

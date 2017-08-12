@@ -17,6 +17,7 @@
 
 @property (nonatomic, assign, readonly) BOOL didFinishRead;
 
+- (void)prepare;
 - (NSData *)syncReadDataOfLength:(NSInteger)length;
 
 @end

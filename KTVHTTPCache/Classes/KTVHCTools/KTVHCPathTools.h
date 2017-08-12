@@ -11,6 +11,7 @@
 @interface KTVHCPathTools : NSObject
 
 + (NSString *)pathForArchiver;
++ (NSString *)pathForInsertBasePath:(NSString *)path;
 + (NSString *)pathWithURLString:(NSString *)string offset:(NSInteger)offset;
 
 + (NSInteger)sizeOfItemAtFilePath:(NSString *)filePath;

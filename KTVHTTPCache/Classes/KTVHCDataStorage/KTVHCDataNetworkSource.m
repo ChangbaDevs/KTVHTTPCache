@@ -26,6 +26,8 @@
 
 #pragma mark - Setter
 
+@property (nonatomic, weak) id <KTVHCDataNetworkSourceDelegate> networkSourceDelegate;
+
 @property (nonatomic, copy) NSString * URLString;
 
 @property (nonatomic, strong) NSDictionary * requestHeaderFields;
@@ -55,21 +57,29 @@
 
 @implementation KTVHCDataNetworkSource
 
-+ (instancetype)sourceWithURLString:(NSString *)URLString headerFields:(NSDictionary *)headerFields offset:(NSInteger)offset size:(NSInteger)size
++ (instancetype)sourceWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
+                         URLString:(NSString *)URLString
+                      headerFields:(NSDictionary *)headerFields
+                            offset:(NSInteger)offset
+                              size:(NSInteger)size
 {
-    return [[self alloc] initWithURLString:URLString
-                              headerFields:headerFields
-                                    offset:offset
-                                      size:size];
+    return [[self alloc] initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
+                                URLString:URLString
+                             headerFields:headerFields
+                                   offset:offset
+                                     size:size];
 }
 
-- (instancetype)initWithURLString:(NSString *)URLString
-                     headerFields:(NSDictionary *)headerFields
-                           offset:(NSInteger)offset
-                             size:(NSInteger)size
+- (instancetype)initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
+                       URLString:(NSString *)URLString
+                    headerFields:(NSDictionary *)headerFields
+                          offset:(NSInteger)offset
+                            size:(NSInteger)size
 {
     if (self = [super init])
     {
+        self.networkSourceDelegate = delegate;
+        
         self.URLString = URLString;
         self.requestHeaderFields = headerFields;
         
@@ -81,7 +91,7 @@
     return self;
 }
 
-- (void)prepareAndStart
+- (void)prepare
 {
     NSURL * URL = [NSURL URLWithString:self.URLString];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
@@ -110,7 +120,7 @@
         return nil;
     }
     NSData * data = [self.readingHandle readDataOfLength:length];
-    self.downloadReadOffset += length;
+    self.downloadReadOffset += data.length;
     if (self.downloadReadOffset >= self.size)
     {
         [self callbackForFinishRead];
@@ -175,12 +185,13 @@
     NSRange range = [contentRange rangeOfString:@"/"];
     if (contentRange.length > 0 && range.location != NSNotFound)
     {
-        self.filePath = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
+        NSString * path = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
+        self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
+        [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
+
+        self.filePath = self.unitItem.filePath;
         self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.filePath];
         self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
-        
-        self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset filePath:self.filePath];
-        [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
         
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].integerValue;
         self.responseHeaderFields = response.allHeaderFields;

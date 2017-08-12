@@ -20,7 +20,7 @@
 
 @end
 
-@interface KTVHCDataSourcer : NSObject
+@interface KTVHCDataSourcer : NSObject <KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

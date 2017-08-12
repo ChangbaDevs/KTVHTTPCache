@@ -9,7 +9,7 @@
 #import "KTVHCDataSourcer.h"
 #import "KTVHCDataSourceQueue.h"
 
-@interface KTVHCDataSourcer () <KTVHCDataNetworkSourceDelegate>
+@interface KTVHCDataSourcer ()
 
 
 #pragma mark - Setter
@@ -57,29 +57,26 @@
     [self.sourceQueue sortSources];
     self.currentSource = [self.sourceQueue fetchFirstSource];
     self.currentNetworkSource = [self.sourceQueue fetchFirstNetworkSource];
-    self.currentNetworkSource.networkSourceDelegate = self;
 }
 
 - (void)prepare
 {
+    [self.currentSource prepare];
     if (self.currentSource != self.currentNetworkSource) {
-        [self callbackForFinishPrepare];
-    } else {
-        [self.currentNetworkSource prepareAndStart];
+        [self.currentNetworkSource prepare];
     }
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
 {
-    NSMutableData * data = [NSMutableData dataWithData:[self.currentSource syncReadDataOfLength:length]];
+    NSData * data = [self.currentSource syncReadDataOfLength:length];
     if (self.currentSource.didFinishRead)
     {
         self.currentSource = [self.sourceQueue fetchNextSource:self.currentSource];
         if (self.currentSource)
         {
-            if (data.length < length)
-            {
-                [data appendData:[self syncReadDataOfLength:length - data.length]];
+            if ([self.currentSource isKindOfClass:[KTVHCDataFileSource class]]) {
+                [self.currentSource prepare];
             }
         }
         else
@@ -114,6 +111,11 @@
 
 #pragma mark - KTVHCDataFileSourceDelegate
 
+- (void)fileSourceDidFinishPrepare:(KTVHCDataFileSource *)fileSource
+{
+    [self callbackForFinishPrepare];
+}
+
 
 #pragma mark - KTVHCDataNetworkSourceDelegate
 
@@ -125,7 +127,7 @@
 - (void)networkSourceDidFinishDownload:(KTVHCDataNetworkSource *)networkSource
 {
     self.currentNetworkSource = [self.sourceQueue fetchNextNetworkSource:self.currentNetworkSource];
-    [self.currentNetworkSource prepareAndStart];
+    [self.currentNetworkSource prepare];
 }
 
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error
