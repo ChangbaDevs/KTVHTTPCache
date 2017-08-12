@@ -234,7 +234,7 @@
         if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
             self.currentContentLength = self.totalContentLength - self.request.rangeMin;
         } else {
-            self.currentContentLength = self.request.rangeMax - self.request.rangeMin;
+            self.currentContentLength = self.request.rangeMax - self.request.rangeMin + 1;
         }
         self.didFinishPrepare = YES;
         if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {

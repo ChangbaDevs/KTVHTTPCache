@@ -37,6 +37,8 @@
     KTVHCDataRequest * dataRequest = [self.currentRequest dataRequest];
     self.currentResponse = [KTVHCHTTPResponse responseWithConnection:self dataRequest:dataRequest];
     
+    NSLog(@"%s, %@", __func__, [self.currentRequest.allHeaderFields objectForKey:@"Range"]);
+    
     return self.currentResponse;
 }
 

@@ -67,7 +67,9 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     NSData * data = [self.reader readDataOfLength:length];
+    NSLog(@"%s, %ld, %ld", __func__, self.reader.currentContentLength, self.reader.readedContentLength);
     if (self.reader.didFinishRead) {
+        NSLog(@"%s 完成", __func__);
         [self.reader close];
     }
     return data;
@@ -94,11 +96,13 @@
 
 - (void)connectionDidClose
 {
+    NSLog(@"%s", __func__);
     [self.reader close];
 }
 
 - (BOOL)isDone
 {
+    NSLog(@"%s", __func__);
     return NO;
 }
 
