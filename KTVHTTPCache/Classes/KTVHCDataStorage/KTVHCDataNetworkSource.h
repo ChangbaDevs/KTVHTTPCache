@@ -16,6 +16,7 @@ static NSInteger const KTVHCDataNetworkSourceSizeMaxVaule = -1;
 @protocol KTVHCDataNetworkSourceDelegate <NSObject>
 
 @optional
+- (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishPrepare:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishDownload:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishRead:(KTVHCDataNetworkSource *)networkSource;

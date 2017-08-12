@@ -37,6 +37,7 @@
         self.condition = [[NSCondition alloc] init];
         self.workingUnits = [NSMutableArray array];
         self.operationQueue = [[NSOperationQueue alloc] init];
+        self.operationQueue.maxConcurrentOperationCount = 1;
     }
     return self;
 }

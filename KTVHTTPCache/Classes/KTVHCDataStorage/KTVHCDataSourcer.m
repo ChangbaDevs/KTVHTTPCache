@@ -82,7 +82,7 @@
     [self.sourceQueue closeAllSource];
 }
 
-- (NSData *)syncReadDataOfLength:(NSUInteger)length
+- (NSData *)readDataOfLength:(NSUInteger)length
 {
     if (self.didClose) {
         return nil;
@@ -91,7 +91,7 @@
         return nil;
     }
     
-    NSData * data = [self.currentSource syncReadDataOfLength:length];
+    NSData * data = [self.currentSource readDataOfLength:length];
     if (self.currentSource.didFinishRead)
     {
         self.currentSource = [self.sourceQueue fetchNextSource:self.currentSource];
@@ -146,6 +146,15 @@
 
 
 #pragma mark - KTVHCDataNetworkSourceDelegate
+
+- (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource
+{
+    if ([self.delegate respondsToSelector:@selector(sourcerHasAvailableData:)]) {
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.delegate sourcerHasAvailableData:self];
+        }];
+    }
+}
 
 - (void)networkSourceDidFinishPrepare:(KTVHCDataNetworkSource *)networkSource
 {

@@ -97,7 +97,7 @@
     self.readingHandle = nil;
 }
 
-- (NSData *)syncReadDataOfLength:(NSInteger)length
+- (NSData *)readDataOfLength:(NSInteger)length
 {
     if (self.didClose) {
         return nil;

@@ -57,6 +57,7 @@
 @property (nonatomic, assign) NSInteger downloadReadOffset;
 @property (nonatomic, assign) BOOL downloadDidStart;
 @property (nonatomic, assign) BOOL downloadCompleteCalled;
+@property (nonatomic, assign) BOOL needCallHasAvailableData;
 
 @end
 
@@ -138,7 +139,7 @@
     [self.condition unlock];
 }
 
-- (NSData *)syncReadDataOfLength:(NSInteger)length
+- (NSData *)readDataOfLength:(NSInteger)length
 {
     if (self.didClose) {
         return nil;
@@ -148,17 +149,21 @@
     }
     
     [self.condition lock];
-    while (!self.didFinishDownload && ((self.downloadSize - self.downloadReadOffset) < length))
-    {
-        [self.condition wait];
-    }
+    
     if ((self.didFinishDownload || self.downloadCompleteCalled) && self.downloadReadOffset >= self.downloadSize)
     {
         [self callbackForFinishRead];
         [self.condition unlock];
         return nil;
     }
-    NSData * data = [self.readingHandle readDataOfLength:length];
+    
+    if (self.downloadSize <= self.downloadReadOffset) {
+        self.needCallHasAvailableData = YES;
+        [self.condition unlock];
+        return nil;
+    }
+    
+    NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadSize - self.downloadReadOffset, length)];
     self.downloadReadOffset += data.length;
     if (self.downloadReadOffset >= self.size)
     {
@@ -170,6 +175,20 @@
 
 
 #pragma mark - Callback
+
+- (void)callbackForHasAvailableData
+{
+    if (!self.needCallHasAvailableData) {
+        return;
+    }
+    
+    self.needCallHasAvailableData = NO;
+    if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.networkSourceDelegate networkSourceHasAvailableData:self];
+        }];
+    }
+}
 
 - (void)callbackForFinishRead
 {
@@ -275,6 +294,7 @@
     [self.writingHandle writeData:data];
     self.downloadSize += data.length;
     self.unitItem.size = self.downloadSize;
+    [self callbackForHasAvailableData];
     [self.condition signal];
     [self.condition unlock];
 }

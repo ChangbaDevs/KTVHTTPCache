@@ -12,8 +12,9 @@
 
 @protocol KTVHCDataReaderDelegate <NSObject>
 
-- (void)reaaderDidFinishPrepare:(KTVHCDataReader *)reader;
-- (void)reaader:(KTVHCDataReader *)reader didFailure:(NSError *)error;
+- (void)readerHasAvailableData:(KTVHCDataReader *)reader;
+- (void)readerDidFinishPrepare:(KTVHCDataReader *)reader;
+- (void)reader:(KTVHCDataReader *)reader didFailure:(NSError *)error;
 
 @end
 
@@ -34,6 +35,6 @@
 - (void)prepare;
 - (void)close;
 
-- (NSData *)syncReadDataOfLength:(NSUInteger)length;
+- (NSData *)readDataOfLength:(NSUInteger)length;
 
 @end

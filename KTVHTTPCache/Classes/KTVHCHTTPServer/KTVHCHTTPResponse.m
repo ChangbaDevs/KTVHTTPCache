@@ -60,7 +60,7 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
-    NSData * data = [self.reader syncReadDataOfLength:length];
+    NSData * data = [self.reader readDataOfLength:length];
     if (self.reader.didFinishRead) {
         [self.reader close];
     }
@@ -99,14 +99,19 @@
 
 #pragma mark - KTVHCDataReaderDelegate
 
-- (void)reaaderDidFinishPrepare:(KTVHCDataReader *)reader
+- (void)readerHasAvailableData:(KTVHCDataReader *)reader
+{
+    [self.connection responseHasAvailableData:self];
+}
+
+- (void)readerDidFinishPrepare:(KTVHCDataReader *)reader
 {
     if (self.reader.didFinishPrepare && self.waitingResponseHeader == YES) {
         [self.connection responseHasAvailableData:self];
     }
 }
 
-- (void)reaader:(KTVHCDataReader *)reader didFailure:(NSError *)error
+- (void)reader:(KTVHCDataReader *)reader didFailure:(NSError *)error
 {
     [self.connection responseDidAbort:self];
 }

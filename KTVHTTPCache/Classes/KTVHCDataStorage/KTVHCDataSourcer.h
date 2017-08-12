@@ -15,6 +15,7 @@
 
 @protocol KTVHCDataSourcerDelegate <NSObject>
 
+- (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer;
 - (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer;
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error;
 
@@ -41,6 +42,6 @@
 - (void)prepare;
 - (void)close;
 
-- (NSData *)syncReadDataOfLength:(NSUInteger)length;
+- (NSData *)readDataOfLength:(NSUInteger)length;
 
 @end

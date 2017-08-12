@@ -190,7 +190,7 @@
     [self callbackForStopWorking];
 }
 
-- (NSData *)syncReadDataOfLength:(NSUInteger)length
+- (NSData *)readDataOfLength:(NSUInteger)length
 {
     if (self.didClose) {
         return nil;
@@ -199,7 +199,7 @@
         return nil;
     }
     
-    NSData * data = [self.sourcer syncReadDataOfLength:length];
+    NSData * data = [self.sourcer readDataOfLength:length];;
     self.readedContentLength += data.length;
     if (self.sourcer.didFinishRead) {
         self.didFinishRead = YES;
@@ -227,9 +227,9 @@
             self.currentContentLength = self.request.rangeMax - self.request.rangeMin;
         }
         self.didFinishPrepare = YES;
-        if ([self.delegate respondsToSelector:@selector(reaaderDidFinishPrepare:)]) {
+        if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {
             [KTVHCDataCallback callbackWithBlock:^{
-                [self.delegate reaaderDidFinishPrepare:self];
+                [self.delegate readerDidFinishPrepare:self];
             }];
         }
     }
@@ -274,6 +274,15 @@
 
 #pragma mark - KTVHCDataSourcerDelegate
 
+- (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
+{
+    if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
+        [KTVHCDataCallback callbackWithBlock:^{
+            [self.delegate readerHasAvailableData:self];
+        }];
+    }
+}
+
 - (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer
 {
     [self callbackForFinishPrepare];
@@ -282,9 +291,9 @@
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error
 {
     self.error = error;
-    if (self.error && [self.delegate respondsToSelector:@selector(reaader:didFailure:)]) {
+    if (self.error && [self.delegate respondsToSelector:@selector(reader:didFailure:)]) {
         [KTVHCDataCallback callbackWithBlock:^{
-            [self.delegate reaader:self didFailure:self.error];
+            [self.delegate reader:self didFailure:self.error];
         }];
     }
 }
