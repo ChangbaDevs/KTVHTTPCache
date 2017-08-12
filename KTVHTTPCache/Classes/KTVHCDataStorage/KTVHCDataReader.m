@@ -11,13 +11,19 @@
 #import "KTVHCDataPrivate.h"
 #import "KTVHCDataSourcer.h"
 
-@interface KTVHCDataReader ()
+@interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
 
 @property (nonatomic, strong) KTVHCDataUnit * unit;
 @property (nonatomic, strong) KTVHCDataRequest * request;
 @property (nonatomic, strong) KTVHCDataSourcer * sourcer;
 
-@property (nonatomic, assign) NSInteger contentSize;
+@property (nonatomic, strong) NSError * error;
+
+@property (nonatomic, assign) BOOL didFinishPrepare;
+@property (nonatomic, assign) BOOL didFinishRead;
+
+@property (nonatomic, assign) NSInteger currentContentLength;
+@property (nonatomic, assign) NSInteger totalContentLength;
 
 @end
 
@@ -33,8 +39,8 @@
     if (self = [super init])
     {
         self.unit = unit;
+        self.unit.delegate = self;
         self.request = request;
-        self.sourcer = [KTVHCDataSourcer sourcer];
         [self setupSourcer];
     }
     return self;
@@ -42,6 +48,8 @@
 
 - (void)setupSourcer
 {
+    self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self];
+    
     // File Source
     NSInteger min = self.request.rangeMin;
     NSInteger max = self.request.rangeMax;
@@ -52,7 +60,7 @@
     NSMutableArray <KTVHCDataFileSource *> * fileSources = [NSMutableArray array];
     NSMutableArray <KTVHCDataNetworkSource *> * networkSources = [NSMutableArray array];
     
-    for (KTVHCDataUnitItem * item in self.unit.fileUnitItems)
+    for (KTVHCDataUnitItem * item in self.unit.unitItems)
     {
         NSInteger itemMin = item.offset;
         NSInteger itemMax = item.offset + item.size;
@@ -71,8 +79,8 @@
         KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithFilePath:item.filePath
                                                                         offset:item.offset
                                                                           size:item.size
-                                                                    readOffset:itemMin - item.offset
-                                                                      readSize:itemMax - itemMin];
+                                                                   startOffset:itemMin - item.offset
+                                                                  needReadSize:itemMax - itemMin];
         [fileSources addObject:source];
     }
     
@@ -93,7 +101,7 @@
     
     for (KTVHCDataFileSource * obj in fileSources)
     {
-        NSInteger delta = obj.offset + obj.readOffset - offset;
+        NSInteger delta = obj.offset + obj.startOffset - offset;
         if (delta > 0)
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
@@ -104,8 +112,8 @@
             offset += delta;
             size -= delta;
         }
-        offset += obj.readSize;
-        size -= obj.readSize;
+        offset += obj.needReadSize;
+        size -= obj.needReadSize;
     }
     
     if (size > 0)
@@ -139,17 +147,72 @@
         [self.sourcer putSource:obj];
     }
     
-    [self.sourcer sortSources];
+    [self.sourcer putSourceDidFinish];
 }
 
 - (void)prepare
 {
-    [self.delegate reaaderPrepareDidSuccess:self];
+    [self.sourcer prepare];
 }
 
-- (void)start
+- (NSData *)syncReadDataOfLength:(NSUInteger)length
 {
-    [self.sourcer start];
+    if (self.didFinishRead) {
+        return nil;
+    }
+    
+    NSData * data = [self.sourcer syncReadDataOfLength:length];
+    if (self.sourcer.didFinishRead) {
+        self.didFinishRead = YES;
+    }
+    return data;
+}
+
+
+#pragma mark - Callback
+
+- (void)callbackForFinishPrepare
+{
+    if (self.didFinishPrepare) {
+        return;
+    }
+    if (self.sourcer.didFinishPrepare && self.unit.totalContentLength > 0)
+    {
+        self.totalContentLength = self.unit.totalContentLength;
+        if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
+            self.currentContentLength = self.totalContentLength - self.request.rangeMin;
+        } else {
+            self.currentContentLength = self.request.rangeMin - self.request.rangeMin;
+        }
+        self.didFinishPrepare = YES;
+        if ([self.delegate respondsToSelector:@selector(reaaderDidFinishPrepare:)]) {
+            [self.delegate reaaderDidFinishPrepare:self];
+        }
+    }
+}
+
+
+#pragma mark - KTVHCDataUnitDelegate
+
+- (void)unitDidUpdateTotalContentLength:(KTVHCDataUnit *)unit
+{
+    [self callbackForFinishPrepare];
+}
+
+
+#pragma mark - KTVHCDataSourcerDelegate
+
+- (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer
+{
+    [self callbackForFinishPrepare];
+}
+
+- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error
+{
+    self.error = error;
+    if (self.error && [self.delegate respondsToSelector:@selector(reaader:didFailure:)]) {
+        [self.delegate reaader:self didFailure:self.error];
+    }
 }
 
 

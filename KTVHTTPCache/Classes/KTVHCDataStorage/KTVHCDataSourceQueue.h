@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataSourceProtocol.h"
+#import "KTVHCDataNetworkSource.h"
 
 @interface KTVHCDataSourceQueue : NSObject
 
@@ -22,5 +23,8 @@
 
 - (id<KTVHCDataSourceProtocol>)fetchFirstSource;
 - (id<KTVHCDataSourceProtocol>)fetchNextSource:(id<KTVHCDataSourceProtocol>)currentSource;
+
+- (KTVHCDataNetworkSource *)fetchFirstNetworkSource;
+- (KTVHCDataNetworkSource *)fetchNextNetworkSource:(KTVHCDataNetworkSource *)currentSource;
 
 @end

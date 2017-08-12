@@ -41,7 +41,6 @@
 - (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString
 {
     [self.lock lock];
-    
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (!unit)
@@ -49,9 +48,39 @@
         unit = [KTVHCDataUnit unitWithURLString:URLString];
         [self.unitQueue putUnit:unit];
     }
-    
     [self.lock unlock];
     return unit;
 }
+
+
+#pragma mark - Unit Control
+
+- (void)unit:(NSString *)unitURLString insertUnitItem:(KTVHCDataUnitItem *)unitItem
+{
+    [self.lock lock];
+    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
+    KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    [unit insertUnitItem:unitItem];
+    [self.lock unlock];
+}
+
+- (void)unit:(NSString *)unitURLString updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
+{
+    [self.lock lock];
+    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
+    KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    [unit updateRequestHeaderFields:requestHeaderFields];
+    [self.lock unlock];
+}
+
+- (void)unit:(NSString *)unitURLString updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
+{
+    [self.lock lock];
+    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
+    KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    [unit updateResponseHeaderFields:responseHeaderFields];
+    [self.lock unlock];
+}
+
 
 @end

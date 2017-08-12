@@ -11,17 +11,34 @@
 #import "KTVHCDataFileSource.h"
 #import "KTVHCDataNetworkSource.h"
 
+@class KTVHCDataSourcer;
+
+@protocol KTVHCDataSourcerDelegate <NSObject>
+
+- (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer;
+- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error;
+
+@end
+
 @interface KTVHCDataSourcer : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)sourcer;
++ (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate;
+
+@property (nonatomic, weak, readonly) id <KTVHCDataSourcerDelegate> delegate;
+
+@property (nonatomic, strong, readonly) NSError * error;
+
+@property (nonatomic, assign, readonly) BOOL didFinishPrepare;
+@property (nonatomic, assign, readonly) BOOL didFinishRead;
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source;
-- (void)sortSources;
+- (void)putSourceDidFinish;
 
-- (void)start;
-- (void)stop;
+- (void)prepare;
+
+- (NSData *)syncReadDataOfLength:(NSUInteger)length;
 
 @end

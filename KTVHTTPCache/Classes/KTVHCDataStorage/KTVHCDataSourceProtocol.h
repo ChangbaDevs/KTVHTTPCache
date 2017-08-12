@@ -8,20 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol KTVHCDataSourceProtocol;
-@protocol KTVHCDataSourceDelegate;
-
-@protocol KTVHCDataSourceDelegate <NSObject>
-
-- (void)sourceDidFinishRead:(id<KTVHCDataSourceProtocol>)source;
-
-@end
-
 @protocol KTVHCDataSourceProtocol <NSObject>
 
-@property (nonatomic, weak) id <KTVHCDataSourceDelegate> delegate;
+@property (nonatomic, copy, readonly) NSString * filePath;
 
 @property (nonatomic, assign, readonly) NSInteger offset;
 @property (nonatomic, assign, readonly) NSInteger size;
+
+@property (nonatomic, assign, readonly) BOOL didFinishRead;
+
+- (NSData *)syncReadDataOfLength:(NSInteger)length;
 
 @end

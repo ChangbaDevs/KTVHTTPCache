@@ -42,7 +42,7 @@
 
 - (UInt64)contentLength
 {
-    return self.reader.contentSize;
+    return self.reader.totalContentLength;
 }
 
 - (UInt64)offset
@@ -57,28 +57,18 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
-    return nil;
-}
-
-- (BOOL)isDone
-{
-    return YES;
+    return [self.reader syncReadDataOfLength:length];
 }
 
 - (BOOL)delayResponseHeaders
 {
-    if (!self.reader.didPrepare) {
+    if (!self.reader.didFinishPrepare) {
         self.waitingResponseHeader = YES;
     } else {
         self.waitingResponseHeader = NO;
     }
     return self.waitingResponseHeader;
 }
-
-//- (NSInteger)status
-//{
-//    return 200;
-//}
 
 - (NSDictionary *)httpHeaders
 {
@@ -89,11 +79,6 @@
              };
 }
 
-- (BOOL)isChunked
-{
-    return NO;
-}
-
 - (void)connectionDidClose
 {
     
@@ -102,16 +87,16 @@
 
 #pragma mark - KTVHCDataReaderDelegate
 
-- (void)reaaderPrepareDidSuccess:(KTVHCDataReader *)reader
+- (void)reaaderDidFinishPrepare:(KTVHCDataReader *)reader
 {
-    if (self.reader.didPrepare && self.waitingResponseHeader == YES) {
+    if (self.reader.didFinishPrepare && self.waitingResponseHeader == YES) {
         [self.connection responseHasAvailableData:self];
     }
 }
 
-- (void)reaaderPrepareDidFailure:(KTVHCDataReader *)reader
+- (void)reaader:(KTVHCDataReader *)reader didFailure:(NSError *)error
 {
-    
+    [self.connection responseDidAbort:self];
 }
 
 @end

@@ -14,7 +14,13 @@
 @property (nonatomic, copy) NSString * URLString;
 @property (nonatomic, copy) NSString * uniqueIdentifier;
 
-@property (nonatomic, strong) NSArray <KTVHCDataUnitItem *> * fileUnitItems;
+@property (nonatomic, strong) NSDictionary * requestHeaderFields;
+@property (nonatomic, strong) NSDictionary * responseHeaderFields;
+
+@property (nonatomic, assign) NSInteger totalContentLength;
+@property (nonatomic, assign) NSInteger totalCacheLength;
+
+@property (nonatomic, strong) NSMutableArray <KTVHCDataUnitItem *> * fileUnitItems;
 
 @end
 
@@ -25,11 +31,6 @@
     return [[self alloc] initWithURLString:URLString];
 }
 
-+ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString
-{
-    return [KTVHCURLTools md5:URLString];
-}
-
 - (instancetype)initWithURLString:(NSString *)URLString
 {
     if (self = [super init])
@@ -38,6 +39,52 @@
         self.uniqueIdentifier = [[self class] uniqueIdentifierWithURLString:self.URLString];
     }
     return self;
+}
+
+- (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem
+{
+    [self.fileUnitItems addObject:unitItem];
+    [self.fileUnitItems sortUsingComparator:^NSComparisonResult(KTVHCDataUnitItem * obj1, KTVHCDataUnitItem * obj2) {
+        if (obj1.offset < obj2.offset) {
+            return NSOrderedAscending;
+        }
+        return NSOrderedDescending;
+    }];
+}
+
+- (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
+{
+    self.requestHeaderFields = requestHeaderFields;
+}
+
+- (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
+{
+    self.responseHeaderFields = responseHeaderFields;
+    
+    NSString * contentRange = [self.responseHeaderFields objectForKey:@"Content-Range"];
+    NSRange range = [contentRange rangeOfString:@"/"];
+    if (contentRange.length > 0 && range.location != NSNotFound) {
+        self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].integerValue;
+    }
+}
+
+- (void)setTotalContentLength:(NSInteger)totalContentLength
+{
+    if (_totalContentLength != totalContentLength)
+    {
+        _totalContentLength = totalContentLength;
+        if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
+            [self.delegate unitDidUpdateTotalContentLength:self];
+        }
+    }
+}
+
+
+#pragma mark - Class Functions
+
++ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString
+{
+    return [KTVHCURLTools md5:URLString];
 }
 
 @end

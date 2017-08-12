@@ -82,4 +82,31 @@
     return nil;
 }
 
+- (KTVHCDataNetworkSource *)fetchFirstNetworkSource
+{
+    for (id<KTVHCDataSourceProtocol> obj in self.totalSources)
+    {
+        if ([obj isKindOfClass:[KTVHCDataNetworkSource class]]) {
+            return obj;
+        }
+    }
+    return nil;
+}
+
+- (KTVHCDataNetworkSource *)fetchNextNetworkSource:(KTVHCDataNetworkSource *)currentSource
+{
+    if ([self.totalSources containsObject:currentSource])
+    {
+        NSUInteger index = [self.totalSources indexOfObject:currentSource] + 1;
+        for (; index < self.totalSources.count; index++)
+        {
+            id <KTVHCDataSourceProtocol> obj = [self.totalSources objectAtIndex:index];
+            if ([obj isKindOfClass:[KTVHCDataNetworkSource class]]) {
+                return obj;
+            }
+        }
+    }
+    return nil;
+}
+
 @end

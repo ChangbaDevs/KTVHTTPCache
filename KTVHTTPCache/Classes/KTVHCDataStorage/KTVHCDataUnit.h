@@ -9,18 +9,44 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCDataUnitItem.h"
 
+@class KTVHCDataUnit;
+
+@protocol KTVHCDataUnitDelegate <NSObject>
+
+@optional
+- (void)unitDidUpdateTotalContentLength:(KTVHCDataUnit *)unit;
+- (void)unitDidUpdateMetadata:(KTVHCDataUnit *)unit;
+
+@end
+
 @interface KTVHCDataUnit : NSObject
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 + (instancetype)unitWithURLString:(NSString *)URLString;
 
-+ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;
+@property (nonatomic, weak) id <KTVHCDataUnitDelegate> delegate;
 
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
-@property (nonatomic, assign, readonly) NSInteger totalContentSize;
-@property (nonatomic, assign, readonly) NSInteger totalCacheSize;
+@property (nonatomic, strong, readonly) NSDictionary * requestHeaderFields;
+@property (nonatomic, strong, readonly) NSDictionary * responseHeaderFields;
 
-@property (nonatomic, strong, readonly) NSArray <KTVHCDataUnitItem *> * fileUnitItems;
+@property (nonatomic, assign, readonly) NSInteger totalContentLength;
+@property (nonatomic, assign, readonly) NSInteger totalCacheLength;
+
+@property (nonatomic, strong, readonly) NSArray <KTVHCDataUnitItem *> * unitItems;
+
+
+- (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem;
+- (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields;
+- (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields;
+
+
+#pragma mark - Class Functions
+
++ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;
 
 @end

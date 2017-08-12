@@ -12,8 +12,8 @@
 
 @protocol KTVHCDataReaderDelegate <NSObject>
 
-- (void)reaaderPrepareDidSuccess:(KTVHCDataReader *)reader;
-- (void)reaaderPrepareDidFailure:(KTVHCDataReader *)reader;
+- (void)reaaderDidFinishPrepare:(KTVHCDataReader *)reader;
+- (void)reaader:(KTVHCDataReader *)reader didFailure:(NSError *)error;
 
 @end
 
@@ -21,11 +21,16 @@
 
 @property (nonatomic, weak) id <KTVHCDataReaderDelegate> delegate;
 
-@property (nonatomic, assign, readonly) BOOL didPrepare;
+@property (nonatomic, strong, readonly) NSError * error;
 
-@property (nonatomic, assign, readonly) NSInteger contentSize;
+@property (nonatomic, assign, readonly) BOOL didFinishPrepare;
+@property (nonatomic, assign, readonly) BOOL didFinishRead;
+
+@property (nonatomic, assign, readonly) NSInteger currentContentLength;
+@property (nonatomic, assign, readonly) NSInteger totalContentLength;
 
 - (void)prepare;
-- (void)start;
+
+- (NSData *)syncReadDataOfLength:(NSUInteger)length;
 
 @end

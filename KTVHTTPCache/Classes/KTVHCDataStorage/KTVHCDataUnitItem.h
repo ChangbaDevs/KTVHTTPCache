@@ -10,9 +10,11 @@
 
 @interface KTVHCDataUnitItem : NSObject
 
-@property (nonatomic, assign) NSInteger offset;
++ (instancetype)unitItemWithOffset:(NSInteger)offset filePath:(NSString *)filePath;
+
+@property (nonatomic, assign, readonly) NSInteger offset;
 @property (nonatomic, assign) NSInteger size;
 
-@property (nonatomic, copy) NSString * filePath;
+@property (nonatomic, copy, readonly) NSString * filePath;
 
 @end

@@ -18,4 +18,11 @@
 
 - (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString;
 
+
+#pragma mark - Unit Control
+
+- (void)unit:(NSString *)unitURLString insertUnitItem:(KTVHCDataUnitItem *)unitItem;
+- (void)unit:(NSString *)unitURLString updateRequestHeaderFields:(NSDictionary *)requestHeaderFields;
+- (void)unit:(NSString *)unitURLString updateResponseHeaderFields:(NSDictionary *)responseHeaderFields;
+
 @end

@@ -10,12 +10,21 @@
 
 @interface KTVHCDataFileSource ()
 
+
+#pragma mark - Protocol
+
 @property (nonatomic, copy) NSString * filePath;
 
 @property (nonatomic, assign) NSInteger offset;
 @property (nonatomic, assign) NSInteger size;
-@property (nonatomic, assign) NSInteger readOffset;
-@property (nonatomic, assign) NSInteger readSize;
+
+@property (nonatomic, assign) BOOL didFinishRead;
+
+
+#pragma mark - Setter
+
+@property (nonatomic, assign) NSInteger startOffset;
+@property (nonatomic, assign) NSInteger needReadSize;
 
 @end
 
@@ -24,21 +33,21 @@
 + (instancetype)sourceWithFilePath:(NSString *)filePath
                             offset:(NSInteger)offset
                               size:(NSInteger)size
-                        readOffset:(NSInteger)readOffset
-                          readSize:(NSInteger)readSize
+                       startOffset:(NSInteger)startOffset
+                      needReadSize:(NSInteger)needReadSize
 {
     return [[self alloc] initWithFilePath:filePath
                                    offset:offset
                                      size:size
-                               readOffset:readOffset
-                                 readSize:readSize];
+                              startOffset:startOffset
+                             needReadSize:needReadSize];
 }
 
 - (instancetype)initWithFilePath:(NSString *)filePath
                           offset:(NSInteger)offset
                             size:(NSInteger)size
-                      readOffset:(NSInteger)readOffset
-                        readSize:(NSInteger)readSize
+                     startOffset:(NSInteger)startOffset
+                    needReadSize:(NSInteger)needReadSize
 {
     if (self = [super init])
     {
@@ -46,10 +55,15 @@
         
         self.offset = offset;
         self.size = size;
-        self.readOffset = readOffset;
-        self.readSize = readSize;
+        self.startOffset = startOffset;
+        self.needReadSize = needReadSize;
     }
     return self;
+}
+
+- (NSData *)syncReadDataOfLength:(NSInteger)length
+{
+    return nil;
 }
 
 @end

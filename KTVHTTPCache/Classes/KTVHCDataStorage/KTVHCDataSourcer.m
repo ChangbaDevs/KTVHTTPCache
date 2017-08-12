@@ -9,24 +9,39 @@
 #import "KTVHCDataSourcer.h"
 #import "KTVHCDataSourceQueue.h"
 
-@interface KTVHCDataSourcer () <KTVHCDataSourceDelegate>
+@interface KTVHCDataSourcer () <KTVHCDataNetworkSourceDelegate>
+
+
+#pragma mark - Setter
+
+@property (nonatomic, weak) id <KTVHCDataSourcerDelegate> delegate;
+
+@property (nonatomic, strong) NSError * error;
+
+@property (nonatomic, assign) BOOL didFinishPrepare;
+@property (nonatomic, assign) BOOL didFinishRead;
+
+
+#pragma mark - Sources
 
 @property (nonatomic, strong) id <KTVHCDataSourceProtocol> currentSource;
+@property (nonatomic, strong) KTVHCDataNetworkSource * currentNetworkSource;
 @property (nonatomic, strong) KTVHCDataSourceQueue * sourceQueue;
 
 @end
 
 @implementation KTVHCDataSourcer
 
-+ (instancetype)sourcer
++ (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate
 {
-    return [[self alloc] init];
+    return [[self alloc] initWithDelegate:delegate];
 }
 
-- (instancetype)init
+- (instancetype)initWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate
 {
     if (self = [super init])
     {
+        self.delegate = delegate;
         self.sourceQueue = [KTVHCDataSourceQueue sourceQueue];
     }
     return self;
@@ -37,29 +52,86 @@
     [self.sourceQueue putSource:source];
 }
 
-- (void)sortSources
+- (void)putSourceDidFinish
 {
     [self.sourceQueue sortSources];
-}
-
-- (void)start
-{
     self.currentSource = [self.sourceQueue fetchFirstSource];
-    self.currentSource.delegate = self;
+    self.currentNetworkSource = [self.sourceQueue fetchFirstNetworkSource];
+    self.currentNetworkSource.networkSourceDelegate = self;
 }
 
-- (void)stop
+- (void)prepare
 {
-    
+    if (self.currentSource != self.currentNetworkSource) {
+        [self callbackForFinishPrepare];
+    } else {
+        [self.currentNetworkSource prepareAndStart];
+    }
 }
 
-
-#pragma mark - KTVHCDataSourceDelegate
-
-- (void)sourceDidFinishRead:(id<KTVHCDataSourceProtocol>)source
+- (NSData *)syncReadDataOfLength:(NSUInteger)length
 {
-    self.currentSource = [self.sourceQueue fetchNextSource:self.currentSource];
-    self.currentSource.delegate = self;
+    NSMutableData * data = [NSMutableData dataWithData:[self.currentSource syncReadDataOfLength:length]];
+    if (self.currentSource.didFinishRead)
+    {
+        self.currentSource = [self.sourceQueue fetchNextSource:self.currentSource];
+        if (self.currentSource)
+        {
+            if (data.length < length)
+            {
+                [data appendData:[self syncReadDataOfLength:length - data.length]];
+            }
+        }
+        else
+        {
+            self.didFinishRead = YES;
+        }
+    }
+    return data;
 }
+
+
+#pragma mark - Callback
+
+- (void)callbackForFinishPrepare
+{
+    if (!self.didFinishPrepare) {
+        self.didFinishPrepare = YES;
+        if ([self.delegate respondsToSelector:@selector(sourcerDidFinishPrepare:)]) {
+            [self.delegate sourcerDidFinishPrepare:self];
+        }
+    }
+}
+
+- (void)callbackForFailure:(NSError *)error
+{
+    self.error = error;
+    if (self.error && [self.delegate respondsToSelector:@selector(sourcer:didFailure:)]) {
+        [self.delegate sourcer:self didFailure:self.error];
+    }
+}
+
+
+#pragma mark - KTVHCDataFileSourceDelegate
+
+
+#pragma mark - KTVHCDataNetworkSourceDelegate
+
+- (void)networkSourceDidFinishPrepare:(KTVHCDataNetworkSource *)networkSource
+{
+    [self callbackForFinishPrepare];
+}
+
+- (void)networkSourceDidFinishDownload:(KTVHCDataNetworkSource *)networkSource
+{
+    self.currentNetworkSource = [self.sourceQueue fetchNextNetworkSource:self.currentNetworkSource];
+    [self.currentNetworkSource prepareAndStart];
+}
+
+- (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error
+{
+    [self callbackForFailure:error];
+}
+
 
 @end

@@ -15,6 +15,7 @@
 + (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request
 {
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URLString];
+    [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit request:request];
     return reader;
 }

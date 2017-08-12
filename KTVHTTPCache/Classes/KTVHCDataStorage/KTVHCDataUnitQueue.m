@@ -12,7 +12,7 @@
 
 @property (nonatomic, copy) NSString * archiverPath;
 @property (nonatomic, strong) NSLock * lock;
-@property (nonatomic, strong) NSMutableDictionary <NSString *, KTVHCDataUnit *> * unitDictionary;
+@property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * unitArray;
 
 @end
 
@@ -29,9 +29,9 @@
     {
         self.archiverPath = archiverPath;
         self.lock = [[NSLock alloc] init];
-        self.unitDictionary = [NSKeyedUnarchiver unarchiveObjectWithFile:self.archiverPath];
-        if (!self.unitDictionary) {
-            self.unitDictionary = [[NSMutableDictionary alloc] init];
+        self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.archiverPath];
+        if (!self.unitArray) {
+            self.unitArray = [NSMutableArray array];
         }
     }
     return self;
@@ -43,11 +43,16 @@
         return nil;
     }
     
-    KTVHCDataUnit * unit = nil;
     [self.lock lock];
-    unit = [self.unitDictionary objectForKey:unit.uniqueIdentifier];
+    KTVHCDataUnit * unit = nil;
+    for (KTVHCDataUnit * obj in self.unitArray)
+    {
+        if ([obj.uniqueIdentifier isEqualToString:uniqueIdentifier]) {
+            unit = obj;
+            break;
+        }
+    }
     [self.lock unlock];
-    
     return unit;
 }
 
@@ -58,9 +63,8 @@
     }
     
     [self.lock lock];
-    if (![self.unitDictionary objectForKey:unit.uniqueIdentifier])
-    {
-        [self.unitDictionary setObject:unit forKey:unit.uniqueIdentifier];
+    if (![self.unitArray containsObject:unit]) {
+        [self.unitArray addObject:unit];
     }
     [self.lock unlock];
 }
@@ -72,9 +76,8 @@
     }
     
     [self.lock lock];
-    if ([self.unitDictionary objectForKey:unit.uniqueIdentifier])
-    {
-        [self.unitDictionary removeObjectForKey:unit.uniqueIdentifier];
+    if ([self.unitArray containsObject:unit]) {
+        [self.unitArray removeObject:unit];
     }
     [self.lock unlock];
 }
@@ -82,7 +85,7 @@
 - (void)archive
 {
     [self.lock lock];
-    [NSKeyedArchiver archiveRootObject:self.unitDictionary toFile:self.archiverPath];
+    [NSKeyedArchiver archiveRootObject:self.unitArray toFile:self.archiverPath];
     [self.lock unlock];
 }
 
