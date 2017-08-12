@@ -41,7 +41,7 @@
     return self;
 }
 
-- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
+- (KTVHCDataReader *)readerSyncWithRequest:(KTVHCDataRequest *)request
 {
     if (!request || request.URLString.length <= 0) {
         return nil;
@@ -61,12 +61,13 @@
     return reader;
 }
 
-- (void)asyncReaderWithRequest:(KTVHCDataRequest *)request completionHandler:(void (^)(KTVHCDataReader *))completionHandler
+- (void)readerAsyncWithRequest:(KTVHCDataRequest *)request
+             completionHandler:(void (^)(KTVHCDataReader *))completionHandler
 {
     __weak typeof(self) weakSelf = self;
     [self.operationQueue addOperationWithBlock:^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
-         completionHandler([strongSelf readerWithRequest:request]);
+         completionHandler([strongSelf readerSyncWithRequest:request]);
     }];
 }
 
