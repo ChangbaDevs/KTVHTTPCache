@@ -36,6 +36,7 @@
 @property (nonatomic, strong) NSError * error;
 @property (nonatomic, assign) BOOL errorCanceled;
 
+@property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishDownload;
 
@@ -94,6 +95,10 @@
 
 - (void)prepare
 {
+    if (self.didClose) {
+        return;
+    }
+    
     NSURL * URL = [NSURL URLWithString:self.URLString];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
     
@@ -109,15 +114,28 @@
 
 - (void)close
 {
+    [self.condition lock];
+    
+    self.didClose = YES;
+    
     [self.readingHandle closeFile];
     self.readingHandle = nil;
     
     [self.downloadTask cancel];
     self.downloadTask = nil;
+    
+    [self.condition unlock];
 }
 
 - (NSData *)syncReadDataOfLength:(NSInteger)length
 {
+    if (self.didClose) {
+        return nil;
+    }
+    if (self.didFinishRead) {
+        return nil;
+    }
+    
     [self.condition lock];
     while (!self.didFinishDownload && ((self.downloadSize - self.downloadReadOffset) < length))
     {
@@ -146,10 +164,29 @@
 {
     [self.readingHandle closeFile];
     self.readingHandle = nil;
+ 
+    if (self.didClose) {
+        return;
+    }
     
     self.didFinishRead = YES;
     if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishRead:)]) {
         [self.networkSourceDelegate networkSourceDidFinishRead:self];
+    }
+}
+
+- (void)callbackForFinishDownload
+{
+    if (self.didClose) {
+        return;
+    }
+    
+    if (self.downloadSize >= self.size)
+    {
+        self.didFinishDownload = YES;
+        if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
+            [self.networkSourceDelegate networkSourceDidFinishDownload:self];
+        }
     }
 }
 
@@ -159,7 +196,11 @@
 - (void)download:(KTVHCDataDownload *)download didCompleteWithError:(NSError *)error
 {
     [self.condition lock];
-    if (error)
+    
+    [self.writingHandle closeFile];
+    self.writingHandle = nil;
+    
+    if (error && !self.didClose)
     {
         self.error = error;
         if (self.error.code == NSURLErrorCancelled && !self.errorCanceled) {
@@ -172,17 +213,8 @@
             }
         }
     }
+    [self callbackForFinishDownload];
     
-    [self.writingHandle closeFile];
-    self.writingHandle = nil;
-    
-    if (self.downloadSize >= self.size)
-    {
-        self.didFinishDownload = YES;
-        if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
-            [self.networkSourceDelegate networkSourceDidFinishDownload:self];
-        }
-    }
     [self.condition signal];
     [self.condition unlock];
 }

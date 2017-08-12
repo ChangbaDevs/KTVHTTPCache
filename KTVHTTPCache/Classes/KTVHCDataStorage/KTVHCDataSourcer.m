@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) NSError * error;
 
+@property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
 
@@ -61,6 +62,9 @@
 
 - (void)prepare
 {
+    if (self.didClose) {
+        return;
+    }
     [self.currentSource prepare];
     if (self.currentSource != self.currentNetworkSource) {
         [self.currentNetworkSource prepare];
@@ -69,11 +73,19 @@
 
 - (void)close
 {
+    self.didClose = YES;
     [self.sourceQueue closeAllSource];
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
 {
+    if (self.didClose) {
+        return nil;
+    }
+    if (self.didFinishRead) {
+        return nil;
+    }
+    
     NSData * data = [self.currentSource syncReadDataOfLength:length];
     if (self.currentSource.didFinishRead)
     {

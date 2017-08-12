@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) NSError * error;
 
+@property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
 
@@ -157,16 +158,23 @@
 
 - (void)prepare
 {
+    if (self.didClose) {
+        return;
+    }
     [self.sourcer prepare];
 }
 
 - (void)close
 {
+    self.didClose = YES;
     [self.sourcer close];
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
 {
+    if (self.didClose) {
+        return nil;
+    }
     if (self.didFinishRead) {
         return nil;
     }
@@ -184,6 +192,9 @@
 
 - (void)callbackForFinishPrepare
 {
+    if (self.didClose) {
+        return;
+    }
     if (self.didFinishPrepare) {
         return;
     }

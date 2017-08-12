@@ -15,6 +15,7 @@
 @property (nonatomic, assign, readonly) NSInteger offset;
 @property (nonatomic, assign, readonly) NSInteger size;
 
+@property (nonatomic, assign, readonly) BOOL didClose;
 @property (nonatomic, assign, readonly) BOOL didFinishRead;
 
 - (void)prepare;

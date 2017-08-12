@@ -18,6 +18,7 @@
 @property (nonatomic, assign) NSInteger offset;
 @property (nonatomic, assign) NSInteger size;
 
+@property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didFinishRead;
 
 
@@ -83,12 +84,17 @@
 
 - (void)close
 {
+    self.didClose = YES;
+    
     [self.readingHandle closeFile];
     self.readingHandle = nil;
 }
 
 - (NSData *)syncReadDataOfLength:(NSInteger)length
 {
+    if (self.didClose) {
+        return nil;
+    }
     if (self.didFinishRead) {
         return nil;
     }
