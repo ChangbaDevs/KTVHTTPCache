@@ -21,6 +21,7 @@
 @property (nonatomic, assign) NSInteger totalContentLength;
 @property (nonatomic, assign) NSInteger totalCacheLength;
 
+@property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
 
 @end
@@ -72,6 +73,7 @@
 
 - (void)prepare
 {
+    self.coreLock = [[NSLock alloc] init];
     if (!self.unitItems) {
         self.unitItems = [NSMutableArray array];
     }
@@ -93,18 +95,29 @@
 
 - (void)sortUnitItems
 {
+    for (KTVHCDataUnitItem * obj in self.unitItems) {
+        [obj lock];
+    }
     [self.unitItems sortUsingComparator:^NSComparisonResult(KTVHCDataUnitItem * obj1, KTVHCDataUnitItem * obj2) {
+        NSComparisonResult result = NSOrderedDescending;
         if (obj1.offset < obj2.offset) {
-            return NSOrderedAscending;
+            result = NSOrderedAscending;
+        } else if ((obj1.offset == obj2.offset) && (obj1.size > obj2.size)) {
+            result = NSOrderedAscending;
         }
-        return NSOrderedDescending;
+        return result;
     }];
+    for (KTVHCDataUnitItem * obj in self.unitItems) {
+        [obj unlock];
+    }
 }
 
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem
 {
+    [self.coreLock lock];
     [self.unitItems addObject:unitItem];
     [self sortUnitItems];
+    [self.coreLock unlock];
 }
 
 - (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
@@ -134,6 +147,19 @@
             }];
         }
     }
+}
+
+
+#pragma mark - NSLocking
+
+- (void)lock
+{
+    [self.coreLock lock];
+}
+
+- (void)unlock
+{
+    [self.coreLock unlock];
 }
 
 

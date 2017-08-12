@@ -11,6 +11,7 @@
 
 @interface KTVHCDataUnitItem ()
 
+@property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, assign) NSInteger offset;
 @property (nonatomic, copy) NSString * path;
 @property (nonatomic, copy) NSString * filePath;
@@ -54,8 +55,32 @@
 
 - (void)prepare
 {
+    self.coreLock = [[NSLock alloc] init];
     self.filePath = [KTVHCPathTools pathForInsertBasePath:self.path];
     self.size = [KTVHCPathTools sizeOfItemAtFilePath:self.filePath];
+}
+
+
+#pragma mark - Setter
+
+- (void)setSize:(NSInteger)size
+{
+    [self lock];
+    _size = size;
+    [self unlock];
+}
+
+
+#pragma mark - NSLocking
+
+- (void)lock
+{
+    [self.coreLock lock];
+}
+
+- (void)unlock
+{
+    [self.coreLock unlock];
 }
 
 @end

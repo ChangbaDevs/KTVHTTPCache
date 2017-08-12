@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface KTVHCDataUnitItem : NSObject <NSCoding>
+@interface KTVHCDataUnitItem : NSObject <NSCoding, NSLocking>
 
 + (instancetype)unitItemWithOffset:(NSInteger)offset path:(NSString *)path;
 

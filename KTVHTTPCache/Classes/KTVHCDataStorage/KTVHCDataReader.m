@@ -76,16 +76,17 @@
     NSMutableArray <KTVHCDataFileSource *> * fileSources = [NSMutableArray array];
     NSMutableArray <KTVHCDataNetworkSource *> * networkSources = [NSMutableArray array];
     
+    [self.unit lock];
+    [self.unit sortUnitItems];
     for (KTVHCDataUnitItem * item in self.unit.unitItems)
     {
-        if (item.writing) {
-            continue;
-        }
+        [item lock];
         
         NSInteger itemMin = item.offset;
         NSInteger itemMax = item.offset + item.size - 1;
         
         if (itemMax < min || itemMin > max) {
+            [item unlock];
             continue;
         }
         
@@ -96,6 +97,8 @@
             itemMax = max;
         }
         
+        min += item.offset + (itemMin - item.offset) + (itemMax - itemMin + 1);
+        
         KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithDelegate:self.sourcer
                                                                       filePath:item.filePath
                                                                         offset:item.offset
@@ -103,7 +106,10 @@
                                                                    startOffset:itemMin - item.offset
                                                                   needReadSize:itemMax - itemMin + 1];
         [fileSources addObject:source];
+        
+        [item unlock];
     }
+    [self.unit unlock];
     
     // File Source Sort
     [fileSources sortUsingComparator:^NSComparisonResult(KTVHCDataFileSource * obj1, KTVHCDataFileSource * obj2) {

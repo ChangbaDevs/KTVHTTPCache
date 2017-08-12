@@ -52,7 +52,7 @@
 @property (nonatomic, strong) NSFileHandle * readingHandle;
 @property (nonatomic, strong) NSFileHandle * writingHandle;
 
-@property (nonatomic, strong) NSCondition * condition;
+@property (nonatomic, strong) NSLock * lock;
 @property (nonatomic, assign) NSInteger downloadSize;
 @property (nonatomic, assign) NSInteger downloadReadOffset;
 @property (nonatomic, assign) BOOL downloadDidStart;
@@ -92,7 +92,7 @@
         self.offset = offset;
         self.size = size;
         
-        self.condition = [[NSCondition alloc] init];
+        self.lock = [[NSLock alloc] init];
     }
     return self;
 }
@@ -123,7 +123,7 @@
         return;
     }
     
-    [self.condition lock];
+    [self.lock lock];
     
     self.didClose = YES;
     
@@ -132,15 +132,12 @@
     
     [self.downloadTask cancel];
     self.downloadTask = nil;
-    while (!self.downloadCompleteCalled && self.downloadDidStart) {
-        [self.condition wait];
-    }
     
     [self.writingHandle closeFile];
     self.writingHandle = nil;
     self.unitItem.writing = NO;
     
-    [self.condition unlock];
+    [self.lock unlock];
 }
 
 - (NSData *)readDataOfLength:(NSInteger)length
@@ -152,18 +149,18 @@
         return nil;
     }
     
-    [self.condition lock];
+    [self.lock lock];
     
     if ((self.didFinishDownload || self.downloadCompleteCalled) && self.downloadReadOffset >= self.downloadSize)
     {
         [self callbackForFinishRead];
-        [self.condition unlock];
+        [self.lock unlock];
         return nil;
     }
     
     if (self.downloadSize <= self.downloadReadOffset) {
         self.needCallHasAvailableData = YES;
-        [self.condition unlock];
+        [self.lock unlock];
         return nil;
     }
     
@@ -173,7 +170,7 @@
     {
         [self callbackForFinishRead];
     }
-    [self.condition unlock];
+    [self.lock unlock];
     return data;
 }
 
@@ -233,7 +230,7 @@
 
 - (void)download:(KTVHCDataDownload *)download didCompleteWithError:(NSError *)error
 {
-    [self.condition lock];
+    [self.lock lock];
     
     [self.writingHandle closeFile];
     self.writingHandle = nil;
@@ -259,8 +256,7 @@
     [self callbackForFinishDownload];
     self.downloadCompleteCalled = YES;
     
-    [self.condition broadcast];
-    [self.condition unlock];
+    [self.lock unlock];
 }
 
 - (BOOL)download:(KTVHCDataDownload *)download didReceiveResponse:(NSHTTPURLResponse *)response
@@ -300,13 +296,12 @@
         return;
     }
     
-    [self.condition lock];
+    [self.lock lock];
     [self.writingHandle writeData:data];
     self.downloadSize += data.length;
     self.unitItem.size = self.downloadSize;
     [self callbackForHasAvailableData];
-    [self.condition signal];
-    [self.condition unlock];
+    [self.lock unlock];
 }
 
 @end

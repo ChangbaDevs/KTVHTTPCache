@@ -19,7 +19,7 @@
 
 @end
 
-@interface KTVHCDataUnit : NSObject <NSCoding>
+@interface KTVHCDataUnit : NSObject <NSCoding, NSLocking>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -39,7 +39,7 @@
 
 @property (nonatomic, strong, readonly) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
 
-
+- (void)sortUnitItems;
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem;
 - (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields;
 - (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields;
