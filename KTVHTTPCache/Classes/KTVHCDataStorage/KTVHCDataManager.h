@@ -12,6 +12,11 @@
 
 @interface KTVHCDataManager : NSObject
 
-+ (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
++ (instancetype)manager;
+
+- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request error:(NSError **)error;
 
 @end

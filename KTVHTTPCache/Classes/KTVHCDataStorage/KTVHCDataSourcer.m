@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSError * error;
 
 @property (nonatomic, assign) BOOL didClose;
+@property (nonatomic, assign) BOOL didFinishClose;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
 
@@ -79,6 +80,7 @@
     
     self.didClose = YES;
     [self.sourceQueue closeAllSource];
+    [self callbackForFinishClose];
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
@@ -113,11 +115,25 @@
 
 - (void)callbackForFinishPrepare
 {
-    if (!self.didFinishPrepare) {
-        self.didFinishPrepare = YES;
-        if ([self.delegate respondsToSelector:@selector(sourcerDidFinishPrepare:)]) {
-            [self.delegate sourcerDidFinishPrepare:self];
-        }
+    if (self.didFinishPrepare) {
+        return;
+    }
+    
+    self.didFinishPrepare = YES;
+    if ([self.delegate respondsToSelector:@selector(sourcerDidFinishPrepare:)]) {
+        [self.delegate sourcerDidFinishPrepare:self];
+    }
+}
+
+- (void)callbackForFinishClose
+{
+    if (self.didFinishClose) {
+        return;
+    }
+    
+    self.didFinishClose = YES;
+    if ([self.delegate respondsToSelector:@selector(sourcerDidFinishClose:)]) {
+        [self.delegate sourcerDidFinishClose:self];
     }
 }
 
@@ -154,6 +170,13 @@
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error
 {
     [self callbackForFailure:error];
+}
+
+- (void)networkSourceDidFinishClose:(KTVHCDataNetworkSource *)networkSource
+{
+    if (self.sourceQueue.didAllFinishClose) {
+        [self callbackForFinishClose];
+    }
 }
 
 

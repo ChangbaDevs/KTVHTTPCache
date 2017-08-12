@@ -34,7 +34,8 @@
         NSLog(@"KTVHCHTTPResponse create");
         self.connection = connection;
         self.dataRequest = dataRequest;
-        self.reader = [KTVHCDataManager readerWithRequest:self.dataRequest];
+        NSError * error;
+        self.reader = [[KTVHCDataManager manager] readerWithRequest:self.dataRequest error:&error];
         self.reader.delegate = self;
         [self.reader prepare];
     }

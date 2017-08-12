@@ -13,6 +13,8 @@
 
 @interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
 
+@property (nonatomic, weak) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
+
 @property (nonatomic, strong) KTVHCDataUnit * unit;
 @property (nonatomic, strong) KTVHCDataRequest * request;
 @property (nonatomic, strong) KTVHCDataSourcer * sourcer;
@@ -22,6 +24,9 @@
 @property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
+
+@property (nonatomic, assign) BOOL stopWorkingCallbackToken;
+@property (nonatomic, assign) BOOL startWorkingCallbackToken;
 
 @property (nonatomic, assign) NSInteger currentContentLength;
 @property (nonatomic, assign) NSInteger readedContentLength;
@@ -172,6 +177,8 @@
     
     self.didClose = YES;
     [self.sourcer close];
+    
+    
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
@@ -217,6 +224,30 @@
     }
 }
 
+- (void)callbackForStartWorking
+{
+    if (self.startWorkingCallbackToken) {
+        return;
+    }
+    
+    self.startWorkingCallbackToken = YES;
+    if ([self.workingDelegate respondsToSelector:@selector(readerDidStartWorking:)]) {
+        [self.workingDelegate readerDidStartWorking:self];
+    }
+}
+
+- (void)callbackForStopWorking
+{
+    if (self.stopWorkingCallbackToken) {
+        return;
+    }
+    
+    self.stopWorkingCallbackToken = YES;
+    if ([self.workingDelegate respondsToSelector:@selector(readerDidStopWorking:)]) {
+        [self.workingDelegate readerDidStopWorking:self];
+    }
+}
+
 
 #pragma mark - KTVHCDataUnitDelegate
 
@@ -231,6 +262,11 @@
 - (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer
 {
     [self callbackForFinishPrepare];
+}
+
+- (void)sourcerDidFinishClose:(KTVHCDataSourcer *)sourcer
+{
+    [self callbackForStopWorking];
 }
 
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error

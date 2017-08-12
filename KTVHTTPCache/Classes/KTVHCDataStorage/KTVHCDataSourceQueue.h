@@ -17,6 +17,8 @@
 
 + (instancetype)sourceQueue;
 
+@property (nonatomic, assign, readonly) BOOL didAllFinishClose;
+
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source;
 - (void)popSource:(id<KTVHCDataSourceProtocol>)source;
 - (void)sortSources;

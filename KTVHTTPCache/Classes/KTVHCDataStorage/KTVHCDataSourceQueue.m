@@ -7,6 +7,8 @@
 //
 
 #import "KTVHCDataSourceQueue.h"
+#import "KTVHCDataFileSource.h"
+#import "KTVHCDataNetworkSource.h"
 
 @interface KTVHCDataSourceQueue ()
 
@@ -70,6 +72,17 @@
     {
         [obj close];
     }
+}
+
+- (BOOL)didAllFinishClose
+{
+    for (id <KTVHCDataSourceProtocol> obj in self.totalSources)
+    {
+        if (!obj.didFinishClose) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (id<KTVHCDataSourceProtocol>)fetchFirstSource
