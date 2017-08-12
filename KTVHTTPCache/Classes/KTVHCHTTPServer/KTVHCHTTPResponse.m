@@ -57,7 +57,11 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
-    return [self.reader syncReadDataOfLength:length];
+    NSData * data = [self.reader syncReadDataOfLength:length];
+    static NSUInteger l = 0;
+    l += data.length;
+    NSLog(@"%lu, %lu", l, data.length);
+    return data;
 }
 
 - (BOOL)delayResponseHeaders
@@ -82,6 +86,11 @@
 - (void)connectionDidClose
 {
     
+}
+
+- (BOOL)isDone
+{
+    return NO;
 }
 
 

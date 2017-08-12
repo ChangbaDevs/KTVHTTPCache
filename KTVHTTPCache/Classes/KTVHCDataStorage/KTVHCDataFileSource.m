@@ -75,6 +75,7 @@
 - (void)prepare
 {
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
+    [self.readingHandle seekToFileOffset:self.startOffset];
     if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
         [self.fileSourceDelegate fileSourceDidFinishPrepare:self];
     }
@@ -88,7 +89,7 @@
     
     NSData * data = [self.readingHandle readDataOfLength:length];
     self.fileReadOffset += data.length;
-    if (self.fileReadOffset >= self.size)
+    if (self.fileReadOffset >= self.needReadSize)
     {
         [self callbackForFinishRead];
     }
