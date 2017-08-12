@@ -27,9 +27,11 @@
 @property (nonatomic, assign, readonly) BOOL didFinishRead;
 
 @property (nonatomic, assign, readonly) NSInteger currentContentLength;
+@property (nonatomic, assign, readonly) NSInteger readedContentLength;
 @property (nonatomic, assign, readonly) NSInteger totalContentLength;
 
 - (void)prepare;
+- (void)close;
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length;
 

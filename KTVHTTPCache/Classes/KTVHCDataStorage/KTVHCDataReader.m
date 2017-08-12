@@ -23,6 +23,7 @@
 @property (nonatomic, assign) BOOL didFinishRead;
 
 @property (nonatomic, assign) NSInteger currentContentLength;
+@property (nonatomic, assign) NSInteger readedContentLength;
 @property (nonatomic, assign) NSInteger totalContentLength;
 
 @end
@@ -159,6 +160,11 @@
     [self.sourcer prepare];
 }
 
+- (void)close
+{
+    
+}
+
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
 {
     if (self.didFinishRead) {
@@ -166,6 +172,7 @@
     }
     
     NSData * data = [self.sourcer syncReadDataOfLength:length];
+    self.readedContentLength += data.length;
     if (self.sourcer.didFinishRead) {
         self.didFinishRead = YES;
     }
