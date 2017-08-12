@@ -12,6 +12,8 @@
 
 + (instancetype)unitItemWithOffset:(NSInteger)offset path:(NSString *)path;
 
+@property (nonatomic, assign) BOOL writing;
+
 @property (nonatomic, assign, readonly) NSInteger offset;
 @property (nonatomic, assign) NSInteger size;
 

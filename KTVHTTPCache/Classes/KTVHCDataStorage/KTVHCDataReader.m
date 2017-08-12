@@ -78,6 +78,10 @@
     
     for (KTVHCDataUnitItem * item in self.unit.unitItems)
     {
+        if (item.writing) {
+            continue;
+        }
+        
         NSInteger itemMin = item.offset;
         NSInteger itemMax = item.offset + item.size - 1;
         

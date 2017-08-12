@@ -25,16 +25,22 @@
 + (NSString *)pathWithURLString:(NSString *)string offset:(NSInteger)offset
 {
     NSString * folderName = [KTVHCURLTools md5:string];
-    NSString * fileName = [NSString stringWithFormat:@"%@_%ld", folderName, offset];
-    NSString * path = [[self pathForUnitItemDirectory:folderName] stringByAppendingPathComponent:fileName];
-    NSString * filePath = [[self  pathForDocumentDirectory] stringByAppendingPathComponent:path];
     
-    NSFileManager * fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:filePath]) {
-        [fileManager removeItemAtPath:filePath error:nil];
+    NSString * path;
+    NSInteger number = 0;
+    BOOL condition = YES;
+    while (condition)
+    {
+        NSString * fileName = [NSString stringWithFormat:@"%@_%ld_%ld", folderName, offset, number];
+        path = [[self pathForUnitItemDirectory:folderName] stringByAppendingPathComponent:fileName];
+        NSString * filePath = [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            number++;
+        } else {
+            [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
+            condition = NO;
+        }
     }
-    [fileManager createFileAtPath:filePath contents:nil attributes:nil];
-    
     return path;
 }
 

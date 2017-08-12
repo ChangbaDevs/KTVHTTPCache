@@ -138,6 +138,7 @@
     
     [self.writingHandle closeFile];
     self.writingHandle = nil;
+    self.unitItem.writing = NO;
     
     [self.condition unlock];
 }
@@ -236,6 +237,7 @@
     
     [self.writingHandle closeFile];
     self.writingHandle = nil;
+    self.unitItem.writing = NO;
     
     if (error && !self.didClose)
     {
@@ -271,6 +273,7 @@
     {
         NSString * path = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
         self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
+        self.unitItem.writing = YES;
         [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
 
         self.filePath = self.unitItem.filePath;
