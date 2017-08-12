@@ -38,6 +38,7 @@
 - (void)putSourceDidFinish;
 
 - (void)prepare;
+- (void)close;
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length;
 

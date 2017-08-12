@@ -67,6 +67,11 @@
     }
 }
 
+- (void)close
+{
+    [self.sourceQueue closeAllSource];
+}
+
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
 {
     NSData * data = [self.currentSource syncReadDataOfLength:length];

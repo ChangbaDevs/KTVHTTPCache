@@ -46,13 +46,14 @@
     return self;
 }
 
-- (void)downloadWithRequest:(NSURLRequest *)request delegate:(id<KTVHCDataDownloadDelegate>)delegate
+- (NSURLSessionDataTask *)downloadWithRequest:(NSURLRequest *)request delegate:(id<KTVHCDataDownloadDelegate>)delegate
 {
     [self.lock lock];
     NSURLSessionDataTask * task = [self.session dataTaskWithRequest:request];
     [self.delegateDictionary setObject:delegate forKey:task];
     [task resume];
     [self.lock unlock];
+    return task;
 }
 
 

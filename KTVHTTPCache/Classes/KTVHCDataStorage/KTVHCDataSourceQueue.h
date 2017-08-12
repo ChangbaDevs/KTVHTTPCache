@@ -20,6 +20,7 @@
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source;
 - (void)popSource:(id<KTVHCDataSourceProtocol>)source;
 - (void)sortSources;
+- (void)closeAllSource;
 
 - (id<KTVHCDataSourceProtocol>)fetchFirstSource;
 - (id<KTVHCDataSourceProtocol>)fetchNextSource:(id<KTVHCDataSourceProtocol>)currentSource;

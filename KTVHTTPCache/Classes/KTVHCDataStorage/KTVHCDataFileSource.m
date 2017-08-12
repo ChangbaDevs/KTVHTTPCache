@@ -81,6 +81,12 @@
     }
 }
 
+- (void)close
+{
+    [self.readingHandle closeFile];
+    self.readingHandle = nil;
+}
+
 - (NSData *)syncReadDataOfLength:(NSInteger)length
 {
     if (self.didFinishRead) {
@@ -95,6 +101,9 @@
     }
     return data;
 }
+
+
+#pragma mark - Callback
 
 - (void)callbackForFinishRead
 {

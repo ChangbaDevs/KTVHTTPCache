@@ -25,6 +25,6 @@
 
 + (instancetype)download;
 
-- (void)downloadWithRequest:(NSURLRequest *)request delegate:(id<KTVHCDataDownloadDelegate>)delegate;
+- (NSURLSessionDataTask *)downloadWithRequest:(NSURLRequest *)request delegate:(id<KTVHCDataDownloadDelegate>)delegate;
 
 @end

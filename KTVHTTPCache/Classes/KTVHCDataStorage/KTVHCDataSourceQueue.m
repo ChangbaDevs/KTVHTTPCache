@@ -64,6 +64,14 @@
     }];
 }
 
+- (void)closeAllSource
+{
+    for (id <KTVHCDataSourceProtocol> obj in self.totalSources)
+    {
+        [obj close];
+    }
+}
+
 - (id<KTVHCDataSourceProtocol>)fetchFirstSource
 {
     return self.totalSources.firstObject;

@@ -162,7 +162,7 @@
 
 - (void)close
 {
-    
+    [self.sourcer close];
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length

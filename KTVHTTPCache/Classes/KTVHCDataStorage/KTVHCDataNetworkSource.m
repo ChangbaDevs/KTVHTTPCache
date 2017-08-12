@@ -44,6 +44,7 @@
 
 #pragma mark - Download
 
+@property (nonatomic, strong) NSURLSessionDataTask * downloadTask;
 @property (nonatomic, strong) KTVHCDataUnitItem * unitItem;
 
 @property (nonatomic, strong) NSFileHandle * readingHandle;
@@ -103,7 +104,16 @@
     }
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
-    [[KTVHCDataDownload download] downloadWithRequest:request delegate:self];
+    self.downloadTask = [[KTVHCDataDownload download] downloadWithRequest:request delegate:self];
+}
+
+- (void)close
+{
+    [self.readingHandle closeFile];
+    self.readingHandle = nil;
+    
+    [self.downloadTask cancel];
+    self.downloadTask = nil;
 }
 
 - (NSData *)syncReadDataOfLength:(NSInteger)length
