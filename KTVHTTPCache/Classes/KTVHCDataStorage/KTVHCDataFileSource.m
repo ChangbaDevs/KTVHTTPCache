@@ -19,7 +19,6 @@
 @property (nonatomic, assign) NSInteger size;
 
 @property (nonatomic, assign) BOOL didClose;
-@property (nonatomic, assign) BOOL didFinishClose;
 @property (nonatomic, assign) BOOL didFinishRead;
 
 
@@ -93,8 +92,6 @@
     
     [self.readingHandle closeFile];
     self.readingHandle = nil;
-    
-    self.didFinishClose = YES;
 }
 
 - (NSData *)syncReadDataOfLength:(NSInteger)length

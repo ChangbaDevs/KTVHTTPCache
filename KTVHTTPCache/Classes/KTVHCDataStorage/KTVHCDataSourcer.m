@@ -19,7 +19,6 @@
 @property (nonatomic, strong) NSError * error;
 
 @property (nonatomic, assign) BOOL didClose;
-@property (nonatomic, assign) BOOL didFinishClose;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
 
@@ -80,7 +79,6 @@
     
     self.didClose = YES;
     [self.sourceQueue closeAllSource];
-    [self callbackForFinishClose];
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
@@ -125,18 +123,6 @@
     }
 }
 
-- (void)callbackForFinishClose
-{
-    if (self.didFinishClose) {
-        return;
-    }
-    
-    self.didFinishClose = YES;
-    if ([self.delegate respondsToSelector:@selector(sourcerDidFinishClose:)]) {
-        [self.delegate sourcerDidFinishClose:self];
-    }
-}
-
 - (void)callbackForFailure:(NSError *)error
 {
     self.error = error;
@@ -170,13 +156,6 @@
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error
 {
     [self callbackForFailure:error];
-}
-
-- (void)networkSourceDidFinishClose:(KTVHCDataNetworkSource *)networkSource
-{
-    if (self.sourceQueue.didAllFinishClose) {
-        [self callbackForFinishClose];
-    }
 }
 
 

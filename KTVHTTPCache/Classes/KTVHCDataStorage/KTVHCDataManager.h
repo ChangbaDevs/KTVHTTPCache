@@ -17,6 +17,6 @@
 
 + (instancetype)manager;
 
-- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request error:(NSError **)error;
+- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
 
 @end

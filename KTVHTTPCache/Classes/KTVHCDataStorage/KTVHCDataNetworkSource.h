@@ -19,7 +19,6 @@ static NSInteger const KTVHCDataNetworkSourceSizeMaxVaule = -1;
 - (void)networkSourceDidFinishPrepare:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishDownload:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishRead:(KTVHCDataNetworkSource *)networkSource;
-- (void)networkSourceDidFinishClose:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidCanceled:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error;
 

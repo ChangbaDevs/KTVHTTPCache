@@ -37,7 +37,6 @@
 @property (nonatomic, assign) BOOL errorCanceled;
 
 @property (nonatomic, assign) BOOL didClose;
-@property (nonatomic, assign) BOOL didFinishClose;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishDownload;
 
@@ -55,6 +54,7 @@
 @property (nonatomic, strong) NSCondition * condition;
 @property (nonatomic, assign) NSInteger downloadSize;
 @property (nonatomic, assign) NSInteger downloadReadOffset;
+@property (nonatomic, assign) BOOL downloadDidStart;
 @property (nonatomic, assign) BOOL downloadCompleteCalled;
 
 @end
@@ -111,6 +111,7 @@
     }
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
+    self.downloadDidStart = YES;
     self.downloadTask = [[KTVHCDataDownload download] downloadWithRequest:request delegate:self];
 }
 
@@ -129,8 +130,8 @@
     
     [self.downloadTask cancel];
     self.downloadTask = nil;
-    if (self.downloadCompleteCalled) {
-        [self callbackForFinishClose];
+    while (!self.downloadCompleteCalled && self.downloadDidStart) {
+        [self.condition wait];
     }
     
     [self.condition unlock];
@@ -150,7 +151,7 @@
     {
         [self.condition wait];
     }
-    if (self.didFinishDownload && self.downloadReadOffset >= self.downloadSize)
+    if ((self.didFinishDownload || self.downloadCompleteCalled) && self.downloadReadOffset >= self.downloadSize)
     {
         [self callbackForFinishRead];
         [self.condition unlock];
@@ -199,21 +200,6 @@
     }
 }
 
-- (void)callbackForFinishClose
-{
-    if (!self.didClose) {
-        return;
-    }
-    if (self.didFinishClose) {
-        return;
-    }
-    
-    self.didFinishClose = YES;
-    if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishClose:)]) {
-        [self.networkSourceDelegate networkSourceDidFinishClose:self];
-    }
-}
-
 
 #pragma mark - KTVHCDataDownloadDelegate
 
@@ -239,9 +225,8 @@
     }
     [self callbackForFinishDownload];
     self.downloadCompleteCalled = YES;
-    [self callbackForFinishClose];
     
-    [self.condition signal];
+    [self.condition broadcast];
     [self.condition unlock];
 }
 

@@ -74,17 +74,6 @@
     }
 }
 
-- (BOOL)didAllFinishClose
-{
-    for (id <KTVHCDataSourceProtocol> obj in self.totalSources)
-    {
-        if (!obj.didFinishClose) {
-            return NO;
-        }
-    }
-    return YES;
-}
-
 - (id<KTVHCDataSourceProtocol>)fetchFirstSource
 {
     return self.totalSources.firstObject;

@@ -17,6 +17,7 @@
 
 @protocol KTVHCDataReaderWorkingDelegate <NSObject>
 
+@optional
 - (void)readerDidStartWorking:(KTVHCDataReader *)reader;
 - (void)readerDidStopWorking:(KTVHCDataReader *)reader;
 
@@ -24,9 +25,13 @@
 
 @interface KTVHCDataReader (Private)
 
-+ (instancetype)readerWithUnit:(KTVHCDataUnit *)unit request:(KTVHCDataRequest *)request;
++ (instancetype)readerWithUnit:(KTVHCDataUnit *)unit
+                       request:(KTVHCDataRequest *)request
+               workingDelegate:(id <KTVHCDataReaderWorkingDelegate>)workingDelegate;
 
-@property (nonatomic, weak) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
+@property (nonatomic, weak, readonly) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
+
+@property (nonatomic, strong, readonly) KTVHCDataUnit * unit;
 
 @end
 

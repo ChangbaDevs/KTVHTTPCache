@@ -10,8 +10,9 @@
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataPrivate.h"
 
-@interface KTVHCDataManager ()
+@interface KTVHCDataManager () <KTVHCDataReaderWorkingDelegate>
 
+@property (nonatomic, strong) NSCondition * condition;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * workingUnits;
 
 @end
@@ -32,24 +33,43 @@
 {
     if (self = [super init])
     {
+        self.condition = [[NSCondition alloc] init];
         self.workingUnits = [NSMutableArray array];
     }
     return self;
 }
 
-- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request error:(NSError **)error;
+- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
 {
-    KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URLString];
-    /*
-    if ([self.workingUnits containsObject:unit])
-    {
-        * error = [NSError errorWithDomain:@"At the same time there is only one reader at work." code:-1 userInfo:nil];
+    if (!request || request.URLString.length <= 0) {
         return nil;
     }
-     */
+    
+    [self.condition lock];
+    KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URLString];
+    while ([self.workingUnits containsObject:unit]) {
+        [self.condition wait];
+    }
+    [self.workingUnits addObject:unit];
     [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
-    KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit request:request];
+    KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
+                                                       request:request
+                                               workingDelegate:self];
+    [self.condition unlock];
     return reader;
+}
+
+
+#pragma mark - KTVHCDataReaderWorkingDelegate
+
+- (void)readerDidStopWorking:(KTVHCDataReader *)reader
+{
+    [self.condition lock];
+    if ([self.workingUnits containsObject:reader.unit]) {
+        [self.workingUnits removeObject:reader.unit];
+        [self.condition signal];
+    }
+    [self.condition unlock];
 }
 
 @end

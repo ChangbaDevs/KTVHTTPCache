@@ -36,18 +36,26 @@
 
 @implementation KTVHCDataReader
 
-+ (instancetype)readerWithUnit:(KTVHCDataUnit *)unit request:(KTVHCDataRequest *)request
++ (instancetype)readerWithUnit:(KTVHCDataUnit *)unit
+                       request:(KTVHCDataRequest *)request
+               workingDelegate:(id <KTVHCDataReaderWorkingDelegate>)workingDelegate;
 {
-    return [[self alloc] initWithUnit:unit request:request];
+    return [[self alloc] initWithUnit:unit
+                              request:request
+                      workingDelegate:workingDelegate];
 }
 
-- (instancetype)initWithUnit:(KTVHCDataUnit *)unit request:(KTVHCDataRequest *)request
+- (instancetype)initWithUnit:(KTVHCDataUnit *)unit
+                     request:(KTVHCDataRequest *)request
+             workingDelegate:(id <KTVHCDataReaderWorkingDelegate>)workingDelegate;
 {
     if (self = [super init])
     {
         self.unit = unit;
         self.unit.delegate = self;
         self.request = request;
+        self.workingDelegate = workingDelegate;
+        [self callbackForStartWorking];
         [self setupSourcer];
     }
     return self;
@@ -178,7 +186,7 @@
     self.didClose = YES;
     [self.sourcer close];
     
-    
+    [self callbackForStopWorking];
 }
 
 - (NSData *)syncReadDataOfLength:(NSUInteger)length
@@ -262,11 +270,6 @@
 - (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer
 {
     [self callbackForFinishPrepare];
-}
-
-- (void)sourcerDidFinishClose:(KTVHCDataSourcer *)sourcer
-{
-    [self callbackForStopWorking];
 }
 
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error

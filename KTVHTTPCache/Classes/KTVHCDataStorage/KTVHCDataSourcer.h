@@ -16,7 +16,6 @@
 @protocol KTVHCDataSourcerDelegate <NSObject>
 
 - (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer;
-- (void)sourcerDidFinishClose:(KTVHCDataSourcer *)sourcer;
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error;
 
 @end
@@ -33,7 +32,6 @@
 @property (nonatomic, strong, readonly) NSError * error;
 
 @property (nonatomic, assign, readonly) BOOL didClose;
-@property (nonatomic, assign, readonly) BOOL didFinishClose;
 @property (nonatomic, assign, readonly) BOOL didFinishPrepare;
 @property (nonatomic, assign, readonly) BOOL didFinishRead;
 
