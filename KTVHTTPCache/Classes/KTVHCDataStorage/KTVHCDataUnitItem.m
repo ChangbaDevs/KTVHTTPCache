@@ -7,6 +7,7 @@
 //
 
 #import "KTVHCDataUnitItem.h"
+#import "KTVHCPathTools.h"
 
 @interface KTVHCDataUnitItem ()
 
@@ -28,8 +29,31 @@
     {
         self.offset = offset;
         self.filePath = filePath;
+        [self prepare];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init])
+    {
+        self.filePath = [aDecoder decodeObjectForKey:@"filePath"];
+        self.offset = [[aDecoder decodeObjectForKey:@"offset"] integerValue];
+        [self prepare];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.filePath forKey:@"filePath"];
+    [aCoder encodeObject:@(self.offset) forKey:@"offset"];
+}
+
+- (void)prepare
+{
+    self.size = [KTVHCPathTools sizeOfItemAtFilePath:self.filePath];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataUnitQueue.h"
+#import "KTVHCPathTools.h"
 
 @interface KTVHCDataUnitPool ()
 
@@ -33,7 +34,7 @@
     if (self = [super init])
     {
         self.lock = [[NSLock alloc] init];
-        self.unitQueue = [KTVHCDataUnitQueue unitQueueWithArchiverPath:@""];
+        self.unitQueue = [KTVHCDataUnitQueue unitQueueWithArchiverPath:[KTVHCPathTools pathForArchiver]];
     }
     return self;
 }
@@ -47,6 +48,7 @@
     {
         unit = [KTVHCDataUnit unitWithURLString:URLString];
         [self.unitQueue putUnit:unit];
+        [self.unitQueue archive];
     }
     [self.lock unlock];
     return unit;
@@ -61,6 +63,7 @@
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     [unit insertUnitItem:unitItem];
+    [self.unitQueue archive];
     [self.lock unlock];
 }
 
@@ -79,6 +82,7 @@
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     [unit updateResponseHeaderFields:responseHeaderFields];
+    [self.unitQueue archive];
     [self.lock unlock];
 }
 

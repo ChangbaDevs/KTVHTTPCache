@@ -73,13 +73,10 @@
         self.URLString = URLString;
         self.requestHeaderFields = headerFields;
         
-        self.filePath = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
         self.offset = offset;
         self.size = size;
         
         self.condition = [[NSCondition alloc] init];
-        self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.filePath];
-        self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
     }
     return self;
 }
@@ -178,6 +175,10 @@
     NSRange range = [contentRange rangeOfString:@"/"];
     if (contentRange.length > 0 && range.location != NSNotFound)
     {
+        self.filePath = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
+        self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.filePath];
+        self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
+        
         self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset filePath:self.filePath];
         [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
         

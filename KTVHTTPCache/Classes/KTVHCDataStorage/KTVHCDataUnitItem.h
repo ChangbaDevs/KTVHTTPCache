@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface KTVHCDataUnitItem : NSObject
+@interface KTVHCDataUnitItem : NSObject <NSCoding>
 
 + (instancetype)unitItemWithOffset:(NSInteger)offset filePath:(NSString *)filePath;
 

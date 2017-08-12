@@ -11,6 +11,11 @@
 
 @implementation KTVHCPathTools
 
++ (NSString *)pathForArchiver
+{
+    return [[self KTVHTTPCacheRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.archiver"];
+}
+
 + (NSString *)pathWithURLString:(NSString *)string offset:(NSInteger)offset
 {
     NSString * folderName = [KTVHCURLTools md5:string];
@@ -51,6 +56,21 @@
 + (NSString *)documentDirectory
 {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
+
++ (NSInteger)sizeOfItemAtFilePath:(NSString *)filePath
+{
+    if (filePath.length <= 0) {
+        return 0;
+    }
+    
+    NSError * error;
+    NSDictionary <NSFileAttributeKey, id> * attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
+    if (!error || attributes.count > 0) {
+        NSNumber * fileSize = [attributes objectForKey:NSFileSize];
+        return fileSize.integerValue;
+    }
+    return 0;
 }
 
 @end

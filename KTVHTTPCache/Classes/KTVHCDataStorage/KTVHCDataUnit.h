@@ -19,7 +19,7 @@
 
 @end
 
-@interface KTVHCDataUnit : NSObject
+@interface KTVHCDataUnit : NSObject <NSCoding>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -37,7 +37,7 @@
 @property (nonatomic, assign, readonly) NSInteger totalContentLength;
 @property (nonatomic, assign, readonly) NSInteger totalCacheLength;
 
-@property (nonatomic, strong, readonly) NSArray <KTVHCDataUnitItem *> * unitItems;
+@property (nonatomic, strong, readonly) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
 
 
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem;
