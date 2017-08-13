@@ -24,13 +24,13 @@
 + (instancetype)sourceWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                           filePath:(NSString *)filePath
                             offset:(NSInteger)offset
-                              size:(NSInteger)size
+                            length:(NSInteger)length
                        startOffset:(NSInteger)startOffset
-                      needReadSize:(NSInteger)needReadSize;
+                    needReadLength:(NSInteger)needReadLength;
 
 @property (nonatomic, weak, readonly) id <KTVHCDataFileSourceDelegate> fileSourceDelegate;
 
 @property (nonatomic, assign, readonly) NSInteger startOffset;
-@property (nonatomic, assign, readonly) NSInteger needReadSize;
+@property (nonatomic, assign, readonly) NSInteger needReadLength;
 
 @end

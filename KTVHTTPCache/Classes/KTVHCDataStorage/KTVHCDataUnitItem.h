@@ -15,7 +15,7 @@
 @property (nonatomic, assign) BOOL writing;
 
 @property (nonatomic, assign, readonly) NSInteger offset;
-@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, assign) NSInteger length;
 
 @property (nonatomic, copy, readonly) NSString * path;
 @property (nonatomic, copy, readonly) NSString * filePath;

@@ -83,7 +83,7 @@
         NSMutableArray * removeArray = [NSMutableArray array];
         for (KTVHCDataUnitItem * obj in self.unitItems)
         {
-            if (obj.size <= 0) {
+            if (obj.length <= 0) {
                 [removeArray addObject:obj];
             }
         }
@@ -102,7 +102,7 @@
         NSComparisonResult result = NSOrderedDescending;
         if (obj1.offset < obj2.offset) {
             result = NSOrderedAscending;
-        } else if ((obj1.offset == obj2.offset) && (obj1.size > obj2.size)) {
+        } else if ((obj1.offset == obj2.offset) && (obj1.length > obj2.length)) {
             result = NSOrderedAscending;
         }
         return result;

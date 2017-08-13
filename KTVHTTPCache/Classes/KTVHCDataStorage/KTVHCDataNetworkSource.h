@@ -11,7 +11,7 @@
 
 @class KTVHCDataNetworkSource;
 
-static NSInteger const KTVHCDataNetworkSourceSizeMaxVaule = -1;
+static NSInteger const KTVHCDataNetworkSourceLengthMaxVaule = -1;
 
 @protocol KTVHCDataNetworkSourceDelegate <NSObject>
 
@@ -31,7 +31,7 @@ static NSInteger const KTVHCDataNetworkSourceSizeMaxVaule = -1;
                          URLString:(NSString *)URLString
                       headerFields:(NSDictionary *)headerFields
                             offset:(NSInteger)offset
-                              size:(NSInteger)size;
+                            length:(NSInteger)length;
 
 @property (nonatomic, weak, readonly) id <KTVHCDataNetworkSourceDelegate> networkSourceDelegate;
 

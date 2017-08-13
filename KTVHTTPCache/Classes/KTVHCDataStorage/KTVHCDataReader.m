@@ -83,7 +83,7 @@
         [item lock];
         
         NSInteger itemMin = item.offset;
-        NSInteger itemMax = item.offset + item.size - 1;
+        NSInteger itemMax = item.offset + item.length - 1;
         
         if (itemMax < min || itemMin > max) {
             [item unlock];
@@ -102,9 +102,9 @@
         KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithDelegate:self.sourcer
                                                                       filePath:item.filePath
                                                                         offset:item.offset
-                                                                          size:item.size
+                                                                        length:item.length
                                                                    startOffset:itemMin - item.offset
-                                                                  needReadSize:itemMax - itemMin + 1];
+                                                                needReadLength:itemMax - itemMin + 1];
         [fileSources addObject:source];
         
         [item unlock];
@@ -135,13 +135,13 @@
                                                                                URLString:self.request.URLString
                                                                             headerFields:self.request.headerFields
                                                                                   offset:offset
-                                                                                    size:delta];
+                                                                                  length:delta];
             [networkSources addObject:source];
             offset += delta;
             size -= delta;
         }
-        offset += obj.needReadSize;
-        size -= obj.needReadSize;
+        offset += obj.needReadLength;
+        size -= obj.needReadLength;
     }
     
     if (size > 0)
@@ -152,7 +152,7 @@
                                                                                URLString:self.request.URLString
                                                                             headerFields:self.request.headerFields
                                                                                   offset:offset
-                                                                                    size:KTVHCDataNetworkSourceSizeMaxVaule];
+                                                                                  length:KTVHCDataNetworkSourceLengthMaxVaule];
             [networkSources addObject:source];
             size = 0;
         }
@@ -162,7 +162,7 @@
                                                                                URLString:self.request.URLString
                                                                             headerFields:self.request.headerFields
                                                                                   offset:offset
-                                                                                    size:size];
+                                                                                  length:size];
             [networkSources addObject:source];
             offset += size;
             size -= size;

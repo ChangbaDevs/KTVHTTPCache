@@ -20,7 +20,7 @@
 @property (nonatomic, copy) NSString * filePath;
 
 @property (nonatomic, assign) NSInteger offset;
-@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, assign) NSInteger length;
 
 @property (nonatomic, assign) BOOL didFinishRead;
 
@@ -53,7 +53,7 @@
 @property (nonatomic, strong) NSFileHandle * writingHandle;
 
 @property (nonatomic, strong) NSLock * lock;
-@property (nonatomic, assign) NSInteger downloadSize;
+@property (nonatomic, assign) NSInteger downloadLength;
 @property (nonatomic, assign) NSInteger downloadReadOffset;
 @property (nonatomic, assign) BOOL downloadDidStart;
 @property (nonatomic, assign) BOOL downloadCompleteCalled;
@@ -67,20 +67,20 @@
                          URLString:(NSString *)URLString
                       headerFields:(NSDictionary *)headerFields
                             offset:(NSInteger)offset
-                              size:(NSInteger)size
+                            length:(NSInteger)length
 {
     return [[self alloc] initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
                                 URLString:URLString
                              headerFields:headerFields
                                    offset:offset
-                                     size:size];
+                                   length:length];
 }
 
 - (instancetype)initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
                        URLString:(NSString *)URLString
                     headerFields:(NSDictionary *)headerFields
                           offset:(NSInteger)offset
-                            size:(NSInteger)size
+                          length:(NSInteger)length
 {
     if (self = [super init])
     {
@@ -90,7 +90,7 @@
         self.requestHeaderFields = headerFields;
         
         self.offset = offset;
-        self.size = size;
+        self.length = length;
         
         self.lock = [[NSLock alloc] init];
     }
@@ -106,10 +106,10 @@
     NSURL * URL = [NSURL URLWithString:self.URLString];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
     
-    if (self.size == KTVHCDataNetworkSourceSizeMaxVaule) {
+    if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
         [request setValue:[NSString stringWithFormat:@"bytes=%ld-", self.offset] forHTTPHeaderField:@"Range"];
     } else {
-        [request setValue:[NSString stringWithFormat:@"bytes=%ld-%ld", self.offset, self.offset + self.size - 1] forHTTPHeaderField:@"Range"];
+        [request setValue:[NSString stringWithFormat:@"bytes=%ld-%ld", self.offset, self.offset + self.length - 1] forHTTPHeaderField:@"Range"];
     }
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
@@ -151,22 +151,22 @@
     
     [self.lock lock];
     
-    if ((self.didFinishDownload || self.downloadCompleteCalled) && self.downloadReadOffset >= self.downloadSize)
+    if ((self.didFinishDownload || self.downloadCompleteCalled) && self.downloadReadOffset >= self.downloadLength)
     {
         [self callbackForFinishRead];
         [self.lock unlock];
         return nil;
     }
     
-    if (self.downloadSize <= self.downloadReadOffset) {
+    if (self.downloadLength <= self.downloadReadOffset) {
         self.needCallHasAvailableData = YES;
         [self.lock unlock];
         return nil;
     }
     
-    NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadSize - self.downloadReadOffset, length)];
+    NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadLength - self.downloadReadOffset, length)];
     self.downloadReadOffset += data.length;
-    if (self.downloadReadOffset >= self.size)
+    if (self.downloadReadOffset >= self.length)
     {
         [self callbackForFinishRead];
     }
@@ -214,7 +214,7 @@
         return;
     }
     
-    if (self.downloadSize >= self.size)
+    if (self.downloadLength >= self.length)
     {
         self.didFinishDownload = YES;
         if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
@@ -298,8 +298,8 @@
     
     [self.lock lock];
     [self.writingHandle writeData:data];
-    self.downloadSize += data.length;
-    self.unitItem.size = self.downloadSize;
+    self.downloadLength += data.length;
+    self.unitItem.length = self.downloadLength;
     [self callbackForHasAvailableData];
     [self.lock unlock];
 }

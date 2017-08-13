@@ -17,7 +17,7 @@
 @property (nonatomic, copy) NSString * filePath;
 
 @property (nonatomic, assign) NSInteger offset;
-@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, assign) NSInteger length;
 
 @property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didFinishRead;
@@ -28,7 +28,7 @@
 @property (nonatomic, weak) id <KTVHCDataFileSourceDelegate> fileSourceDelegate;
 
 @property (nonatomic, assign) NSInteger startOffset;
-@property (nonatomic, assign) NSInteger needReadSize;
+@property (nonatomic, assign) NSInteger needReadLength;
 
 
 #pragma mark - File
@@ -43,33 +43,33 @@
 + (instancetype)sourceWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                           filePath:(NSString *)filePath
                             offset:(NSInteger)offset
-                              size:(NSInteger)size
+                            length:(NSInteger)length
                        startOffset:(NSInteger)startOffset
-                      needReadSize:(NSInteger)needReadSize
+                    needReadLength:(NSInteger)needReadLength
 {
     return [[self alloc] initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                                  filePath:filePath
                                    offset:offset
-                                     size:size
+                                     length:length
                               startOffset:startOffset
-                             needReadSize:needReadSize];
+                             needReadLength:needReadLength];
 }
 
 - (instancetype)initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                         filePath:(NSString *)filePath
                           offset:(NSInteger)offset
-                            size:(NSInteger)size
+                          length:(NSInteger)length
                      startOffset:(NSInteger)startOffset
-                    needReadSize:(NSInteger)needReadSize
+                  needReadLength:(NSInteger)needReadLength
 {
     if (self = [super init])
     {
         self.fileSourceDelegate = delegate;
         self.filePath = filePath;
         self.offset = offset;
-        self.size = size;
+        self.length = length;
         self.startOffset = startOffset;
-        self.needReadSize = needReadSize;
+        self.needReadLength = needReadLength;
     }
     return self;
 }
@@ -108,7 +108,7 @@
     
     NSData * data = [self.readingHandle readDataOfLength:length];
     self.fileReadOffset += data.length;
-    if (self.fileReadOffset >= self.needReadSize)
+    if (self.fileReadOffset >= self.needReadLength)
     {
         [self callbackForFinishRead];
     }
