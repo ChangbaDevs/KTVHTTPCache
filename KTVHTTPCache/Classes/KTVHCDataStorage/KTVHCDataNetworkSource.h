@@ -27,6 +27,9 @@ static long long const KTVHCDataNetworkSourceLengthMaxVaule = -1;
 
 @interface KTVHCDataNetworkSource : NSObject <KTVHCDataSourceProtocol>
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 + (instancetype)sourceWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
                          URLString:(NSString *)URLString
                       headerFields:(NSDictionary *)headerFields

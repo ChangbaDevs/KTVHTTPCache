@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CocoaHTTPServer/CocoaHTTPServer.h>
 
 @class KTVHCDataRequest;
 
-@interface KTVHCHTTPRequest : HTTPMessage
+@interface KTVHCHTTPRequest : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -21,7 +20,7 @@
 @property (nonatomic, copy, readonly) NSString * originalURLString;
 
 @property (nonatomic, assign) BOOL isHeaderComplete;
-@property (nonatomic, strong) NSDictionary * allHeaderFields;
+@property (nonatomic, strong) NSDictionary * headerFields;
 
 @property (nonatomic, copy) NSURL * URL;
 @property (nonatomic, copy) NSString * method;

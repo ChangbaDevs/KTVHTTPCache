@@ -10,6 +10,9 @@
 
 @interface KTVHCHTTPURL : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 + (KTVHCHTTPURL *)URLWithURIString:(NSString *)URIString;
 + (KTVHCHTTPURL *)URLWithOriginalURLString:(NSString *)originalURLString;
 

@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <CocoaHTTPServer/CocoaHTTPServer.h>
 
 @interface KTVHCHTTPConnection : HTTPConnection

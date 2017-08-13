@@ -20,6 +20,9 @@
 
 @interface KTVHCDataReader : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 @property (nonatomic, weak) id <KTVHCDataReaderDelegate> delegate;
 
 @property (nonatomic, strong, readonly) NSError * error;

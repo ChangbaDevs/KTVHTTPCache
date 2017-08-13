@@ -21,6 +21,9 @@
 
 @interface KTVHCDataFileSource : NSObject <KTVHCDataSourceProtocol>
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 + (instancetype)sourceWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                           filePath:(NSString *)filePath
                             offset:(long long)offset

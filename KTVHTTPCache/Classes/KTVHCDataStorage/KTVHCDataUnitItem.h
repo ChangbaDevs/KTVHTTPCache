@@ -10,6 +10,9 @@
 
 @interface KTVHCDataUnitItem : NSObject <NSCoding, NSLocking>
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 + (instancetype)unitItemWithOffset:(long long)offset path:(NSString *)path;
 
 @property (nonatomic, assign) BOOL writing;
