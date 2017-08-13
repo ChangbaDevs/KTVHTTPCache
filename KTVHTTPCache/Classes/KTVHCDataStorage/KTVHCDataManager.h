@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCDataRequest.h"
 #import "KTVHCDataReader.h"
+#import "KTVHCDataCacheItem.h"
 
 @interface KTVHCDataManager : NSObject
 
@@ -24,5 +25,15 @@
 
 - (KTVHCDataReader *)serialReaderWithRequest:(KTVHCDataRequest *)request;
 - (void)serialReaderWithRequest:(KTVHCDataRequest *)request completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
+
+
+#pragma mark - Cache Control
+
+- (NSArray <KTVHCDataCacheItem *> *)fetchAllCacheItem;
+- (KTVHCDataCacheItem *)fetchCacheItemWithURLString:(NSString *)URLString;
+
+- (void)cleanAllCacheItem;
+- (void)cleanCacheItemWithURLString:(NSString *)URLString;
+
 
 @end

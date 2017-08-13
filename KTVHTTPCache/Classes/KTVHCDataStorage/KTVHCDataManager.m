@@ -93,6 +93,29 @@
 }
 
 
+#pragma mark - Cache Control
+
+- (NSArray<KTVHCDataCacheItem *> *)fetchAllCacheItem
+{
+    return nil;
+}
+
+- (KTVHCDataCacheItem *)fetchCacheItemWithURLString:(NSString *)URLString
+{
+    return nil;
+}
+
+- (void)cleanAllCacheItem
+{
+    
+}
+
+- (void)cleanCacheItemWithURLString:(NSString *)URLString
+{
+    
+}
+
+
 #pragma mark - KTVHCDataReaderWorkingDelegate
 
 - (void)readerDidStopWorking:(KTVHCDataReader *)reader
