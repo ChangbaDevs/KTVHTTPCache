@@ -47,6 +47,7 @@
         [self.deleteButton addTarget:self action:@selector(deleteButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [self.deleteButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [self.deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+        self.deleteButton.titleLabel.font = [UIFont systemFontOfSize:15];
         
         [self addSubview:self.totalLengthLabel];
         [self addSubview:self.cacheLengthLabel];
