@@ -21,6 +21,6 @@
 - (void)prepare;
 - (void)close;
 
-- (NSData *)readDataOfLength:(NSInteger)length;
+- (NSData *)readDataOfLength:(NSUInteger)length;
 
 @end

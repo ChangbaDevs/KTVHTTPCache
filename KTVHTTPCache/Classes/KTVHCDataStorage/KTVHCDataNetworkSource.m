@@ -140,7 +140,7 @@
     [self.lock unlock];
 }
 
-- (NSData *)readDataOfLength:(NSInteger)length
+- (NSData *)readDataOfLength:(NSUInteger)length
 {
     if (self.didClose) {
         return nil;
