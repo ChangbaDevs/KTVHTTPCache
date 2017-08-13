@@ -45,6 +45,14 @@
 - (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields;
 
 
+#pragma mark - Working State
+
+@property (nonatomic, assign, readonly) BOOL working;
+
+- (void)workingRetain;
+- (void)workingRelease;
+
+
 #pragma mark - Class Functions
 
 + (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;

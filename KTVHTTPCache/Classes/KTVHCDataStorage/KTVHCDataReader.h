@@ -36,7 +36,7 @@
 @property (nonatomic, assign, readonly) long long totalContentLength;
 
 - (void)prepare;
-- (void)close;
+- (void)close;      // Must Call.
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
 

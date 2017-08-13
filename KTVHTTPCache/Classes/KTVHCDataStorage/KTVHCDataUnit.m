@@ -24,6 +24,8 @@
 @property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
 
+@property (nonatomic, assign) NSInteger workingCount;
+
 @end
 
 @implementation KTVHCDataUnit
@@ -114,10 +116,10 @@
 
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem
 {
-    [self.coreLock lock];
+    [self lock];
     [self.unitItems addObject:unitItem];
     [self sortUnitItems];
-    [self.coreLock unlock];
+    [self unlock];
 }
 
 - (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
@@ -147,6 +149,31 @@
             }];
         }
     }
+}
+
+
+#pragma mark - Working State
+
+- (BOOL)working
+{
+    [self lock];
+    BOOL working = self.workingCount > 0;
+    [self unlock];
+    return working;
+}
+
+- (void)workingRetain
+{
+    [self lock];
+    self.workingCount++;
+    [self unlock];
+}
+
+- (void)workingRelease
+{
+    [self lock];
+    self.workingCount--;
+    [self unlock];
 }
 
 

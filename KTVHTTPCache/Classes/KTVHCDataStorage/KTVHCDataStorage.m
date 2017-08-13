@@ -83,6 +83,7 @@
         }
     }
     
+    [unit workingRetain];
     [self.workingUnits addObject:unit];
     [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
@@ -126,9 +127,13 @@
 - (void)readerDidStopWorking:(KTVHCDataReader *)reader
 {
     [self.condition lock];
-    if ([self.workingUnits containsObject:reader.unit]) {
-        [self.workingUnits removeObject:reader.unit];
-        [self.condition signal];
+    [reader.unit workingRelease];
+    if (!reader.unit.working)
+    {
+        if ([self.workingUnits containsObject:reader.unit]) {
+            [self.workingUnits removeObject:reader.unit];
+            [self.condition signal];
+        }
     }
     [self.condition unlock];
 }

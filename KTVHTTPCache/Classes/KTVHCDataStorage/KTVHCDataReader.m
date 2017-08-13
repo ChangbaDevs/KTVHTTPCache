@@ -308,4 +308,11 @@
     }
 }
 
+
+- (void)dealloc
+{
+    [self close];
+}
+
+
 @end
