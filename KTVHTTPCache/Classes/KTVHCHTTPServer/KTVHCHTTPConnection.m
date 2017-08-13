@@ -23,8 +23,6 @@
 
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
-    NSLog(@"%s 开始, %@", __func__, [self.currentRequest.allHeaderFields objectForKey:@"Range"]);
-    
     KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithURIString:path];
     
     self.currentRequest = [KTVHCHTTPRequest requestWithOriginalURLString:url.originalURLString];
@@ -38,8 +36,6 @@
     
     KTVHCDataRequest * dataRequest = [self.currentRequest dataRequest];
     self.currentResponse = [KTVHCHTTPResponse responseWithConnection:self dataRequest:dataRequest];
-    
-    NSLog(@"%s 结束, %@", __func__, [self.currentRequest.allHeaderFields objectForKey:@"Range"]);
     
     return self.currentResponse;
 }

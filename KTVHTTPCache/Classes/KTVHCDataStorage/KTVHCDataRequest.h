@@ -18,4 +18,7 @@
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, assign) NSDictionary * headerFields;
 
+@property (nonatomic, assign, readonly) NSInteger rangeMin;     // default is KTVHCDataRequestRangeMinVaule.
+@property (nonatomic, assign, readonly) NSInteger rangeMax;     // default is KTVHCDataRequestRangeMaxVaule.
+
 @end
