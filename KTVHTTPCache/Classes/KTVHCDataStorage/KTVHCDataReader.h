@@ -35,6 +35,9 @@
 @property (nonatomic, assign, readonly) long long readedContentLength;
 @property (nonatomic, assign, readonly) long long totalContentLength;
 
+@property (nonatomic, strong, readonly) NSDictionary * headerFields;
+@property (nonatomic, strong, readonly) NSDictionary * headerFieldsWithoutRangeAndLengt;
+
 - (void)prepare;
 - (void)close;      // Must Call.
 

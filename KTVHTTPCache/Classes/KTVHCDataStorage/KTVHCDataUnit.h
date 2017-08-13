@@ -32,7 +32,9 @@
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
 @property (nonatomic, strong, readonly) NSDictionary * requestHeaderFields;
+@property (nonatomic, strong, readonly) NSDictionary * requestHeaderFieldsWithoutRange;
 @property (nonatomic, strong, readonly) NSDictionary * responseHeaderFields;
+@property (nonatomic, strong, readonly) NSDictionary * responseHeaderFieldsWithoutRangeAndLength;
 
 @property (nonatomic, assign, readonly) long long totalContentLength;
 @property (nonatomic, assign, readonly) long long totalCacheLength;

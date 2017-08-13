@@ -217,6 +217,24 @@
     return data;
 }
 
+- (NSDictionary *)headerFields
+{
+    NSMutableDictionary * headers = [NSMutableDictionary dictionaryWithDictionary:self.unit.responseHeaderFields];
+    [headers setObject:[NSString stringWithFormat:@"%lld", self.currentContentLength]
+                forKey:@"Content-Length"];
+    [headers setObject:[NSString stringWithFormat:@"bytes %lld-%lld/%lld",
+                        self.request.rangeMin,
+                        self.request.rangeMin + self.currentContentLength - 1,
+                        self.totalContentLength]
+                forKey:@"Content-Range"];
+    return headers;
+}
+
+- (NSDictionary *)headerFieldsWithoutRangeAndLengt
+{
+    return self.unit.responseHeaderFieldsWithoutRangeAndLength;
+}
+
 
 #pragma mark - Callback
 

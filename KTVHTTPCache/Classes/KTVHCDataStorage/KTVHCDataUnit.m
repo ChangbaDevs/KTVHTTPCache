@@ -137,6 +137,9 @@
     }
 }
 
+
+#pragma mark - Setter/Getter
+
 - (void)setTotalContentLength:(long long)totalContentLength
 {
     if (_totalContentLength != totalContentLength)
@@ -160,6 +163,29 @@
     }
     [self unlock];
     return length;
+}
+
+- (NSDictionary *)requestHeaderFieldsWithoutRange
+{
+    if ([self.requestHeaderFields objectForKey:@"Range"]) {
+        NSMutableDictionary * headers = [NSMutableDictionary dictionaryWithDictionary:self.requestHeaderFields];
+        [headers removeObjectForKey:@"Range"];
+        return headers;
+    }
+    return self.requestHeaderFields;
+}
+
+- (NSDictionary *)responseHeaderFieldsWithoutRangeAndLength
+{
+    if ([self.responseHeaderFields objectForKey:@"Content-Range"]
+        || [self.responseHeaderFields objectForKey:@"Content-Length"])
+    {
+        NSMutableDictionary * headers = [NSMutableDictionary dictionaryWithDictionary:self.responseHeaderFields];
+        [headers removeObjectForKey:@"Content-Range"];
+        [headers removeObjectForKey:@"Content-Length"];
+        return headers;
+    }
+    return self.responseHeaderFields;
 }
 
 

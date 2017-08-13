@@ -81,16 +81,11 @@
 
 - (NSDictionary *)httpHeaders
 {
-    return @{
-             @"Accept-Ranges" : @"bytes",
-             @"Connection" : @"keep-alive",
-             @"Content-Type" : @"video/mp4"
-             };
+    return self.reader.headerFieldsWithoutRangeAndLengt;
 }
 
 - (UInt64)offset
 {
-    
     return self.reader.readedContentLength;
 }
 
