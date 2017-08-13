@@ -98,7 +98,7 @@
 
 - (long long)totalCacheLength
 {
-    return 0;
+    return [[KTVHCDataUnitPool unitPool] totalCacheLength];
 }
 
 - (NSArray<KTVHCDataCacheItem *> *)fetchAllCacheItem

@@ -94,6 +94,19 @@
     [self.lock unlock];
 }
 
+- (long long)totalCacheLength
+{
+    long long length = 0;
+    [self.lock lock];
+    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
+    for (KTVHCDataUnit * obj in units)
+    {
+        length += obj.totalCacheLength;
+    }
+    [self.lock unlock];
+    return length;
+}
+
 
 #pragma mark - Unit Control
 

@@ -21,6 +21,8 @@
 - (void)deleteUnitWithURLString:(NSString *)URLString;
 - (void)deleteAllUnits;
 
+@property (nonatomic, assign, readonly) long long totalCacheLength;
+
 
 #pragma mark - Unit Control
 

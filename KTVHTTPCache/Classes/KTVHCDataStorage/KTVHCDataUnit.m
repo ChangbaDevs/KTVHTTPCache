@@ -56,7 +56,6 @@
         self.requestHeaderFields = [aDecoder decodeObjectForKey:@"requestHeaderFields"];
         self.responseHeaderFields = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
         self.totalContentLength = [[aDecoder decodeObjectForKey:@"totalContentLength"] longLongValue];
-        self.totalCacheLength = [[aDecoder decodeObjectForKey:@"totalCacheLength"] longLongValue];
         self.unitItems = [aDecoder decodeObjectForKey:@"unitItems"];
         [self prepare];
     }
@@ -70,7 +69,6 @@
     [aCoder encodeObject:self.requestHeaderFields forKey:@"requestHeaderFields"];
     [aCoder encodeObject:self.responseHeaderFields forKey:@"responseHeaderFields"];
     [aCoder encodeObject:@(self.totalContentLength) forKey:@"totalContentLength"];
-    [aCoder encodeObject:@(self.totalCacheLength) forKey:@"totalCacheLength"];
     [aCoder encodeObject:self.unitItems forKey:@"unitItems"];
 }
 
@@ -150,6 +148,18 @@
             }];
         }
     }
+}
+
+- (long long)totalCacheLength
+{
+    long long length = 0;
+    [self lock];
+    for (KTVHCDataUnitItem * obj in self.unitItems)
+    {
+        length += obj.length;
+    }
+    [self unlock];
+    return length;
 }
 
 
