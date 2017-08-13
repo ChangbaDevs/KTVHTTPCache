@@ -20,9 +20,9 @@
 
 #pragma mark - Data Reader
 
-- (KTVHCDataReader *)syncReaderWithRequest:(KTVHCDataRequest *)request;
+- (KTVHCDataReader *)concurrentReaderWithRequest:(KTVHCDataRequest *)request;
 
-- (void)asyncReaderWithRequest:(KTVHCDataRequest *)request
-             completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
+- (KTVHCDataReader *)serialReaderWithRequest:(KTVHCDataRequest *)request;
+- (void)serialReaderWithRequest:(KTVHCDataRequest *)request completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
 
 @end

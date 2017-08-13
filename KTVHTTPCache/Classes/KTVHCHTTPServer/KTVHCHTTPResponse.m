@@ -34,12 +34,12 @@
         self.connection = connection;
         self.dataRequest = dataRequest;
         
-#if 0
-        self.reader = [[KTVHCDataManager manager] syncReaderWithRequest:self.dataRequest];
+#if 1
+        self.reader = [[KTVHCDataManager manager] concurrentReaderWithRequest:self.dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
 #else
-        [[KTVHCDataManager manager] asyncReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
+        [[KTVHCDataManager manager] serialReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
             self.reader = reader;
             self.reader.delegate = self;
             [self.reader prepare];

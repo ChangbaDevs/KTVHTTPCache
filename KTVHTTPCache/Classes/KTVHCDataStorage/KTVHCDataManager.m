@@ -42,7 +42,32 @@
     return self;
 }
 
-- (KTVHCDataReader *)syncReaderWithRequest:(KTVHCDataRequest *)request
+- (KTVHCDataReader *)concurrentReaderWithRequest:(KTVHCDataRequest *)request
+{
+    return [self readerWithRequest:request concurrent:YES];
+}
+
+- (KTVHCDataReader *)serialReaderWithRequest:(KTVHCDataRequest *)request
+{
+    return [self readerWithRequest:request concurrent:NO];
+}
+
+- (void)serialReaderWithRequest:(KTVHCDataRequest *)request completionHandler:(void (^)(KTVHCDataReader *))completionHandler
+{
+    if (!completionHandler) {
+        return;
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    [self.operationQueue addOperationWithBlock:^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (completionHandler) {
+            completionHandler([strongSelf serialReaderWithRequest:request]);
+        }
+    }];
+}
+
+- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request concurrent:(BOOL)concurrent;
 {
     if (!request || request.URLString.length <= 0) {
         return nil;
@@ -50,28 +75,21 @@
     
     [self.condition lock];
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URLString];
-#if 1
-    while ([self.workingUnits containsObject:unit]) {
-        [self.condition wait];
+    
+    if (!concurrent)
+    {
+        while ([self.workingUnits containsObject:unit]) {
+            [self.condition wait];
+        }
     }
+    
     [self.workingUnits addObject:unit];
-#endif
     [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
                                                        request:request
                                                workingDelegate:self];
     [self.condition unlock];
     return reader;
-}
-
-- (void)asyncReaderWithRequest:(KTVHCDataRequest *)request
-             completionHandler:(void (^)(KTVHCDataReader *))completionHandler
-{
-    __weak typeof(self) weakSelf = self;
-    [self.operationQueue addOperationWithBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-         completionHandler([strongSelf syncReaderWithRequest:request]);
-    }];
 }
 
 
