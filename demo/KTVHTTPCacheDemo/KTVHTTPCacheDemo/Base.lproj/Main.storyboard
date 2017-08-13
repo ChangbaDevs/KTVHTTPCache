@@ -154,7 +154,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="49" id="6bP-I2-zfD"/>
                                 </constraints>
-                                <state key="normal" title="Delete All Cache"/>
+                                <state key="normal" title="Delete All Cache">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="deleteAllCache:" destination="OX5-Lb-bJb" eventType="touchUpInside" id="Kwy-de-P7u"/>
                                 </connections>
