@@ -26,17 +26,25 @@
 
 #pragma mark - Data Storage
 
-- (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request;
+/**
+ *  Data Reader
+ */
++ (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request;
 
-- (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request;
-- (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
++ (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request;
++ (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
                    completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
 
-- (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem;
-- (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString;
+/**
+ *  Cache Control
+ */
++ (long long)cacheTotalCacheLength;
 
-- (void)cacheCleanAllCacheItem;
-- (void)cacheCleanCacheItemWithURLString:(NSString *)URLString;
++ (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem;
++ (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString;
+
++ (void)cacheCleanAllCacheItem;
++ (void)cacheCleanCacheItemWithURLString:(NSString *)URLString;
 
 
 @end

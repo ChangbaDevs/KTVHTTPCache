@@ -33,39 +33,44 @@
 
 #pragma mark - Data Storage
 
-- (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request
++ (long long)cacheTotalCacheLength
+{
+    return [[KTVHCDataStorage manager] totalCacheLength];
+}
+
++ (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request
 {
     return [[KTVHCDataStorage manager] concurrentReaderWithRequest:request];
 }
 
-- (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
++ (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
 {
     return [[KTVHCDataStorage manager] serialReaderWithRequest:request];
 }
 
-- (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
++ (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
                    completionHandler:(void(^)(KTVHCDataReader *))completionHandler
 {
     [[KTVHCDataStorage manager] serialReaderWithRequest:request
                                       completionHandler:completionHandler];
 }
 
-- (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem
++ (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem
 {
     return [[KTVHCDataStorage manager] fetchAllCacheItem];
 }
 
-- (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString
++ (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString
 {
     return [[KTVHCDataStorage manager] fetchCacheItemWithURLString:URLString];
 }
 
-- (void)cacheCleanAllCacheItem
++ (void)cacheCleanAllCacheItem
 {
     [[KTVHCDataStorage manager] cleanAllCacheItem];
 }
 
-- (void)cacheCleanCacheItemWithURLString:(NSString *)URLString
++ (void)cacheCleanCacheItemWithURLString:(NSString *)URLString
 {
     [[KTVHCDataStorage manager] cleanCacheItemWithURLString:URLString];
 }

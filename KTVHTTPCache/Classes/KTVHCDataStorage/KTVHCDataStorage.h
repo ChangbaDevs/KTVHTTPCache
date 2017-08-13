@@ -29,6 +29,8 @@
 
 #pragma mark - Cache Control
 
+- (long long)totalCacheLength;
+
 - (NSArray <KTVHCDataCacheItem *> *)fetchAllCacheItem;
 - (KTVHCDataCacheItem *)fetchCacheItemWithURLString:(NSString *)URLString;
 

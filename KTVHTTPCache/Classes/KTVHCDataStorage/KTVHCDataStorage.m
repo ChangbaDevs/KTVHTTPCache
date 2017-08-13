@@ -95,6 +95,11 @@
 
 #pragma mark - Cache Control
 
+- (long long)totalCacheLength
+{
+    return 0;
+}
+
 - (NSArray<KTVHCDataCacheItem *> *)fetchAllCacheItem
 {
     return nil;
