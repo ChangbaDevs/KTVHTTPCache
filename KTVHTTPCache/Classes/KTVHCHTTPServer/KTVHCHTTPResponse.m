@@ -52,7 +52,6 @@
 - (void)dealloc
 {
     [self.reader close];
-    [self.connection responseDidAbort:self];
 }
 
 
