@@ -146,6 +146,7 @@
     {
         [KTVHCPathTools deleteFolderAtPath:obj.fileFolderPath];
         [self.unitQueue popUnit:obj];
+        [self.unitQueue archive];
     }
     [self.lock unlock];
 }
