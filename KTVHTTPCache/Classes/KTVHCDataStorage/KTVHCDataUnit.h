@@ -53,6 +53,11 @@
 - (void)workingRelease;
 
 
+#pragma mark - File
+
+@property (nonatomic, copy, readonly) NSString * fileFolderPath;
+
+
 #pragma mark - Class Functions
 
 + (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;

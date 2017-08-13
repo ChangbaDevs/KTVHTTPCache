@@ -41,6 +41,10 @@
 
 - (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString
 {
+    if (URLString.length <= 0) {
+        return nil;
+    }
+    
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
@@ -54,11 +58,51 @@
     return unit;
 }
 
+- (void)deleteUnitWithURLString:(NSString *)URLString
+{
+    if (URLString.length <= 0) {
+        return;
+    }
+    
+    [self.lock lock];
+    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
+    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    if (obj && !obj.working)
+    {
+        [KTVHCPathTools deleteFolderAtPath:obj.fileFolderPath];
+        [self.unitQueue popUnit:obj];
+    }
+    [self.lock unlock];
+}
+
+- (void)deleteAllUnits
+{
+    [self.lock lock];
+    BOOL needArchive = NO;
+    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
+    for (KTVHCDataUnit * obj in units)
+    {
+        if (!obj.working) {
+            [KTVHCPathTools deleteFolderAtPath:obj.fileFolderPath];
+            [self.unitQueue popUnit:obj];
+            needArchive = YES;
+        }
+    }
+    if (needArchive) {
+        [self.unitQueue archive];
+    }
+    [self.lock unlock];
+}
+
 
 #pragma mark - Unit Control
 
 - (void)unit:(NSString *)unitURLString insertUnitItem:(KTVHCDataUnitItem *)unitItem
 {
+    if (unitURLString.length <= 0) {
+        return;
+    }
+    
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
@@ -69,6 +113,10 @@
 
 - (void)unit:(NSString *)unitURLString updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
 {
+    if (unitURLString.length <= 0) {
+        return;
+    }
+    
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
@@ -78,6 +126,10 @@
 
 - (void)unit:(NSString *)unitURLString updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
 {
+    if (unitURLString.length <= 0) {
+        return;
+    }
+    
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];

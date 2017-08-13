@@ -8,6 +8,7 @@
 
 #import "KTVHCDataUnit.h"
 #import "KTVHCURLTools.h"
+#import "KTVHCPathTools.h"
 #import "KTVHCDataCallback.h"
 
 @interface KTVHCDataUnit ()
@@ -174,6 +175,14 @@
     [self lock];
     self.workingCount--;
     [self unlock];
+}
+
+
+#pragma mark - File
+
+- (NSString *)fileFolderPath
+{
+    return [KTVHCPathTools folderPathWithURLString:self.URLString];
 }
 
 

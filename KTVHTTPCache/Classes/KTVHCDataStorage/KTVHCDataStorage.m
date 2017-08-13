@@ -113,12 +113,12 @@
 
 - (void)cleanAllCacheItem
 {
-    
+    [[KTVHCDataUnitPool unitPool] deleteAllUnits];
 }
 
 - (void)cleanCacheItemWithURLString:(NSString *)URLString
 {
-    
+    [[KTVHCDataUnitPool unitPool] deleteUnitWithURLString:URLString];
 }
 
 

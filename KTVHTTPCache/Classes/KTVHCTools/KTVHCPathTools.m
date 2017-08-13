@@ -44,6 +44,13 @@
     return path;
 }
 
++ (NSString *)folderPathWithURLString:(NSString *)URLString
+{
+    NSString * folderName = [KTVHCURLTools md5:URLString];
+    NSString * directory = [self pathForUnitItemDirectory:folderName];
+    return [[self pathForDocumentDirectory] stringByAppendingPathComponent:directory];
+}
+
 + (NSString *)pathForUnitItemDirectory:(NSString *)folderName
 {
     NSString * path = [[self pathForRootDirectory] stringByAppendingPathComponent:folderName];
@@ -85,6 +92,21 @@
         return fileSize.longLongValue;
     }
     return 0;
+}
+
++ (NSError *)deleteFolderAtPath:(NSString *)folderPath
+{
+    if (folderPath.length <= 0) {
+        return nil;
+    }
+    
+    NSError * error = nil;
+    BOOL isDirectory = NO;
+    BOOL result = [[NSFileManager defaultManager] fileExistsAtPath:folderPath isDirectory:&isDirectory];
+    if (result && isDirectory) {
+        result = [[NSFileManager defaultManager] removeItemAtPath:folderPath error:&error];
+    }
+    return error;
 }
 
 @end

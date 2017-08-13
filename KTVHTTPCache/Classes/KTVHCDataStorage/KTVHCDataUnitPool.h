@@ -18,6 +18,9 @@
 
 - (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString;
 
+- (void)deleteUnitWithURLString:(NSString *)URLString;
+- (void)deleteAllUnits;
+
 
 #pragma mark - Unit Control
 

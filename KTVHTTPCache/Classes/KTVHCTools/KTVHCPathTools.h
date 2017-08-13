@@ -13,7 +13,9 @@
 + (NSString *)pathForArchiver;
 + (NSString *)pathForInsertBasePath:(NSString *)path;
 + (NSString *)pathWithURLString:(NSString *)string offset:(long long)offset;
++ (NSString *)folderPathWithURLString:(NSString *)URLString;
 
 + (long long)sizeOfItemAtFilePath:(NSString *)filePath;
++ (NSError *)deleteFolderAtPath:(NSString *)folderPath;
 
 @end

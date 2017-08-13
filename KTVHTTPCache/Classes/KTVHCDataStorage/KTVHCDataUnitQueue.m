@@ -37,6 +37,18 @@
     return self;
 }
 
+- (NSArray <KTVHCDataUnit *> *)allUnits
+{
+    if (self.unitArray.count <= 0) {
+        return nil;
+    }
+    
+    [self.lock lock];
+    NSArray <KTVHCDataUnit *> * units = [self.unitArray copy];
+    [self.lock unlock];
+    return units;
+}
+
 - (KTVHCDataUnit *)unitWithUniqueIdentifier:(NSString *)uniqueIdentifier;
 {
     if (uniqueIdentifier.length <= 0) {

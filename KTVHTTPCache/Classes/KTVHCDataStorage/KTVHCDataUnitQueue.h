@@ -16,6 +16,7 @@
 
 + (instancetype)unitQueueWithArchiverPath:(NSString *)archiverPath;
 
+- (NSArray <KTVHCDataUnit *> *)allUnits;
 - (KTVHCDataUnit *)unitWithUniqueIdentifier:(NSString *)uniqueIdentifier;
 
 - (void)putUnit:(KTVHCDataUnit *)unit;
