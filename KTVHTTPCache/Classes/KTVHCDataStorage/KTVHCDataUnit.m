@@ -221,6 +221,16 @@
     return [KTVHCPathTools folderPathWithURLString:self.URLString];
 }
 
+- (void)deleteFiles
+{
+    [KTVHCPathTools deleteFolderAtPath:self.fileFolderPath];
+}
+
+- (BOOL)mergeFiles
+{
+    return NO;
+}
+
 
 #pragma mark - NSLocking
 

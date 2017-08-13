@@ -144,7 +144,7 @@
     KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (obj && !obj.working)
     {
-        [KTVHCPathTools deleteFolderAtPath:obj.fileFolderPath];
+        [obj deleteFiles];
         [self.unitQueue popUnit:obj];
         [self.unitQueue archive];
     }
@@ -159,12 +159,45 @@
     for (KTVHCDataUnit * obj in units)
     {
         if (!obj.working) {
-            [KTVHCPathTools deleteFolderAtPath:obj.fileFolderPath];
+            [obj deleteFiles];
             [self.unitQueue popUnit:obj];
             needArchive = YES;
         }
     }
     if (needArchive) {
+        [self.unitQueue archive];
+    }
+    [self.lock unlock];
+}
+
+- (void)mergeUnitWithURLString:(NSString *)URLString
+{
+    if (URLString.length <= 0) {
+        return;
+    }
+    
+    [self.lock lock];
+    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
+    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    BOOL success = [obj mergeFiles];
+    if (success) {
+        [self.unitQueue archive];
+    }
+    [self.lock unlock];
+}
+
+- (void)mergeAllUnits
+{
+    [self.lock lock];
+    BOOL success = NO;
+    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
+    for (KTVHCDataUnit * obj in units)
+    {
+        if ([obj mergeFiles]) {
+            success = YES;
+        }
+    }
+    if (success) {
         [self.unitQueue archive];
     }
     [self.lock unlock];

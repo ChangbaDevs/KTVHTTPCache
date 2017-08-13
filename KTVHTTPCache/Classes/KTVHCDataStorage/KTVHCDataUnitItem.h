@@ -23,4 +23,6 @@
 @property (nonatomic, copy, readonly) NSString * path;
 @property (nonatomic, copy, readonly) NSString * filePath;
 
+- (void)reloadFileLength;
+
 @end

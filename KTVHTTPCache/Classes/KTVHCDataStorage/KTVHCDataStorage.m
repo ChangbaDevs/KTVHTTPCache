@@ -121,6 +121,16 @@
     [[KTVHCDataUnitPool unitPool] deleteUnitWithURLString:URLString];
 }
 
+- (void)mergeAllCache
+{
+    [[KTVHCDataUnitPool unitPool] mergeAllUnits];
+}
+
+- (void)mergeCacheWithURLString:(NSString *)URLString
+{
+    [[KTVHCDataUnitPool unitPool] mergeUnitWithURLString:URLString];
+}
+
 
 #pragma mark - KTVHCDataReaderWorkingDelegate
 

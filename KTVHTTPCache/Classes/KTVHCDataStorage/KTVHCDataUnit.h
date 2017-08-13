@@ -59,6 +59,9 @@
 
 @property (nonatomic, copy, readonly) NSString * fileFolderPath;
 
+- (void)deleteFiles;
+- (BOOL)mergeFiles;
+
 
 #pragma mark - Class Functions
 

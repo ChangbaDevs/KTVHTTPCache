@@ -37,5 +37,8 @@
 - (void)deleteAllCache;
 - (void)deleteCacheWithURLString:(NSString *)URLString;
 
+- (void)mergeAllCache;
+- (void)mergeCacheWithURLString:(NSString *)URLString;
+
 
 @end

@@ -30,6 +30,9 @@
 - (void)deleteUnitWithURLString:(NSString *)URLString;
 - (void)deleteAllUnits;
 
+- (void)mergeUnitWithURLString:(NSString *)URLString;
+- (void)mergeAllUnits;
+
 
 #pragma mark - Unit Control
 

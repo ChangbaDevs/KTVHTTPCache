@@ -75,5 +75,15 @@
     [[KTVHCDataStorage manager] deleteCacheWithURLString:URLString];
 }
 
++ (void)cacheMergeAllCache
+{
+    [[KTVHCDataStorage manager] mergeAllCache];
+}
+
++ (void)cacheMergeCacheWtihURLString:(NSString *)URLString
+{
+    [[KTVHCDataStorage manager] mergeCacheWithURLString:URLString];
+}
+
 
 @end
