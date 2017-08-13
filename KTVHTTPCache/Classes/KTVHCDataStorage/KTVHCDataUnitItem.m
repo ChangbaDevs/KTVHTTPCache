@@ -57,6 +57,7 @@
 {
     self.coreLock = [[NSLock alloc] init];
     self.filePath = [KTVHCPathTools pathForInsertBasePath:self.path];
+    self.length = [KTVHCPathTools sizeOfItemAtFilePath:self.filePath];
 }
 
 
