@@ -13,8 +13,8 @@
 
 @property (nonatomic, copy) NSString * URLString;
 
-@property (nonatomic, assign) NSInteger rangeMin;
-@property (nonatomic, assign) NSInteger rangeMax;
+@property (nonatomic, assign) long long rangeMin;
+@property (nonatomic, assign) long long rangeMax;
 
 @end
 
@@ -51,10 +51,10 @@
             if (rangeArray.count == 2)
             {
                 if (rangeArray.firstObject.length > 0) {
-                    self.rangeMin = rangeArray.firstObject.integerValue;
+                    self.rangeMin = rangeArray.firstObject.longLongValue;
                 }
                 if (rangeArray.lastObject.length > 0) {
-                    self.rangeMax = rangeArray.lastObject.integerValue;
+                    self.rangeMax = rangeArray.lastObject.longLongValue;
                 }
             }
         }

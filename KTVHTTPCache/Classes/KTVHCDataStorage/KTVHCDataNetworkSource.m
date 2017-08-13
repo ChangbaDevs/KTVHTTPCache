@@ -19,8 +19,8 @@
 
 @property (nonatomic, copy) NSString * filePath;
 
-@property (nonatomic, assign) NSInteger offset;
-@property (nonatomic, assign) NSInteger length;
+@property (nonatomic, assign) long long offset;
+@property (nonatomic, assign) long long length;
 
 @property (nonatomic, assign) BOOL didFinishRead;
 
@@ -41,7 +41,7 @@
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishDownload;
 
-@property (nonatomic, assign) NSInteger totalContentLength;
+@property (nonatomic, assign) long long totalContentLength;
 
 
 #pragma mark - Download
@@ -53,8 +53,8 @@
 @property (nonatomic, strong) NSFileHandle * writingHandle;
 
 @property (nonatomic, strong) NSLock * lock;
-@property (nonatomic, assign) NSInteger downloadLength;
-@property (nonatomic, assign) NSInteger downloadReadOffset;
+@property (nonatomic, assign) long long downloadLength;
+@property (nonatomic, assign) long long downloadReadOffset;
 @property (nonatomic, assign) BOOL downloadDidStart;
 @property (nonatomic, assign) BOOL downloadCompleteCalled;
 @property (nonatomic, assign) BOOL needCallHasAvailableData;
@@ -66,8 +66,8 @@
 + (instancetype)sourceWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
                          URLString:(NSString *)URLString
                       headerFields:(NSDictionary *)headerFields
-                            offset:(NSInteger)offset
-                            length:(NSInteger)length
+                            offset:(long long)offset
+                            length:(long long)length
 {
     return [[self alloc] initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
                                 URLString:URLString
@@ -79,8 +79,8 @@
 - (instancetype)initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
                        URLString:(NSString *)URLString
                     headerFields:(NSDictionary *)headerFields
-                          offset:(NSInteger)offset
-                          length:(NSInteger)length
+                          offset:(long long)offset
+                          length:(long long)length
 {
     if (self = [super init])
     {
@@ -107,9 +107,9 @@
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
     
     if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
-        [request setValue:[NSString stringWithFormat:@"bytes=%ld-", self.offset] forHTTPHeaderField:@"Range"];
+        [request setValue:[NSString stringWithFormat:@"bytes=%lld-", self.offset] forHTTPHeaderField:@"Range"];
     } else {
-        [request setValue:[NSString stringWithFormat:@"bytes=%ld-%ld", self.offset, self.offset + self.length - 1] forHTTPHeaderField:@"Range"];
+        [request setValue:[NSString stringWithFormat:@"bytes=%lld-%lld", self.offset, self.offset + self.length - 1] forHTTPHeaderField:@"Range"];
     }
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
@@ -276,7 +276,7 @@
         self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.filePath];
         self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
         
-        self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].integerValue;
+        self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
         self.responseHeaderFields = response.allHeaderFields;
         self.didFinishPrepare = YES;
         if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishPrepare:)]) {

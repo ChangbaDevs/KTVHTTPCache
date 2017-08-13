@@ -38,12 +38,12 @@
 
 #pragma mark - KTVHCDataRequest
 
-static NSInteger const KTVHCDataRequestRangeMinVaule = 0;
-static NSInteger const KTVHCDataRequestRangeMaxVaule = -1;
+static long long const KTVHCDataRequestRangeMinVaule = 0;
+static long long const KTVHCDataRequestRangeMaxVaule = -1;
 
 @interface KTVHCDataRequest (Private)
 
-@property (nonatomic, assign, readonly) NSInteger rangeMin;     // default is KTVHCDataRequestRangeMinVaule.
-@property (nonatomic, assign, readonly) NSInteger rangeMax;     // default is KTVHCDataRequestRangeMaxVaule.
+@property (nonatomic, assign, readonly) long long rangeMin;     // default is KTVHCDataRequestRangeMinVaule.
+@property (nonatomic, assign, readonly) long long rangeMax;     // default is KTVHCDataRequestRangeMaxVaule.
 
 @end

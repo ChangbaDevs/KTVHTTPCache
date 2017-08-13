@@ -16,8 +16,8 @@
 
 @property (nonatomic, copy) NSString * filePath;
 
-@property (nonatomic, assign) NSInteger offset;
-@property (nonatomic, assign) NSInteger length;
+@property (nonatomic, assign) long long offset;
+@property (nonatomic, assign) long long length;
 
 @property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didFinishRead;
@@ -27,14 +27,14 @@
 
 @property (nonatomic, weak) id <KTVHCDataFileSourceDelegate> fileSourceDelegate;
 
-@property (nonatomic, assign) NSInteger startOffset;
-@property (nonatomic, assign) NSInteger needReadLength;
+@property (nonatomic, assign) long long startOffset;
+@property (nonatomic, assign) long long needReadLength;
 
 
 #pragma mark - File
 
 @property (nonatomic, strong) NSFileHandle * readingHandle;
-@property (nonatomic, assign) NSInteger fileReadOffset;
+@property (nonatomic, assign) long long fileReadOffset;
 
 @end
 
@@ -42,10 +42,10 @@
 
 + (instancetype)sourceWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                           filePath:(NSString *)filePath
-                            offset:(NSInteger)offset
-                            length:(NSInteger)length
-                       startOffset:(NSInteger)startOffset
-                    needReadLength:(NSInteger)needReadLength
+                            offset:(long long)offset
+                            length:(long long)length
+                       startOffset:(long long)startOffset
+                    needReadLength:(long long)needReadLength
 {
     return [[self alloc] initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                                  filePath:filePath
@@ -57,10 +57,10 @@
 
 - (instancetype)initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
                         filePath:(NSString *)filePath
-                          offset:(NSInteger)offset
-                          length:(NSInteger)length
-                     startOffset:(NSInteger)startOffset
-                  needReadLength:(NSInteger)needReadLength
+                          offset:(long long)offset
+                          length:(long long)length
+                     startOffset:(long long)startOffset
+                  needReadLength:(long long)needReadLength
 {
     if (self = [super init])
     {

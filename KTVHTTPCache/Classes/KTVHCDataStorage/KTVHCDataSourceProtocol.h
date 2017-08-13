@@ -12,8 +12,8 @@
 
 @property (nonatomic, copy, readonly) NSString * filePath;
 
-@property (nonatomic, assign, readonly) NSInteger offset;
-@property (nonatomic, assign, readonly) NSInteger length;
+@property (nonatomic, assign, readonly) long long offset;
+@property (nonatomic, assign, readonly) long long length;
 
 @property (nonatomic, assign, readonly) BOOL didClose;
 @property (nonatomic, assign, readonly) BOOL didFinishRead;

@@ -10,12 +10,12 @@
 
 @interface KTVHCDataUnitItem : NSObject <NSCoding, NSLocking>
 
-+ (instancetype)unitItemWithOffset:(NSInteger)offset path:(NSString *)path;
++ (instancetype)unitItemWithOffset:(long long)offset path:(NSString *)path;
 
 @property (nonatomic, assign) BOOL writing;
 
-@property (nonatomic, assign, readonly) NSInteger offset;
-@property (nonatomic, assign) NSInteger length;
+@property (nonatomic, assign, readonly) long long offset;
+@property (nonatomic, assign) long long length;
 
 @property (nonatomic, copy, readonly) NSString * path;
 @property (nonatomic, copy, readonly) NSString * filePath;

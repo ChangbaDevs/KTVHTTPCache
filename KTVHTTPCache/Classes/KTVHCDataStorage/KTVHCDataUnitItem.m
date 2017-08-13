@@ -12,7 +12,7 @@
 @interface KTVHCDataUnitItem ()
 
 @property (nonatomic, strong) NSLock * coreLock;
-@property (nonatomic, assign) NSInteger offset;
+@property (nonatomic, assign) long long offset;
 @property (nonatomic, copy) NSString * path;
 @property (nonatomic, copy) NSString * filePath;
 
@@ -20,12 +20,12 @@
 
 @implementation KTVHCDataUnitItem
 
-+ (instancetype)unitItemWithOffset:(NSInteger)offset path:(NSString *)path
++ (instancetype)unitItemWithOffset:(long long)offset path:(NSString *)path
 {
     return [[self alloc] initWithOffset:offset path:(NSString *)path];
 }
 
-- (instancetype)initWithOffset:(NSInteger)offset path:(NSString *)path
+- (instancetype)initWithOffset:(long long)offset path:(NSString *)path
 {
     if (self = [super init])
     {
@@ -41,7 +41,7 @@
     if (self = [super init])
     {
         self.path = [aDecoder decodeObjectForKey:@"path"];
-        self.offset = [[aDecoder decodeObjectForKey:@"offset"] integerValue];
+        self.offset = [[aDecoder decodeObjectForKey:@"offset"] longLongValue];
         [self prepare];
     }
     return self;
@@ -63,7 +63,7 @@
 
 #pragma mark - Setter
 
-- (void)setLength:(NSInteger)length
+- (void)setLength:(long long)length
 {
     [self lock];
     _length = length;

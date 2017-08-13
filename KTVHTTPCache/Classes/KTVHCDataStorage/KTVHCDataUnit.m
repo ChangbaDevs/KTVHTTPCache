@@ -18,8 +18,8 @@
 @property (nonatomic, strong) NSDictionary * requestHeaderFields;
 @property (nonatomic, strong) NSDictionary * responseHeaderFields;
 
-@property (nonatomic, assign) NSInteger totalContentLength;
-@property (nonatomic, assign) NSInteger totalCacheLength;
+@property (nonatomic, assign) long long totalContentLength;
+@property (nonatomic, assign) long long totalCacheLength;
 
 @property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
@@ -52,8 +52,8 @@
         self.uniqueIdentifier = [aDecoder decodeObjectForKey:@"uniqueIdentifier"];
         self.requestHeaderFields = [aDecoder decodeObjectForKey:@"requestHeaderFields"];
         self.responseHeaderFields = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
-        self.totalContentLength = [[aDecoder decodeObjectForKey:@"totalContentLength"] integerValue];
-        self.totalCacheLength = [[aDecoder decodeObjectForKey:@"totalCacheLength"] integerValue];
+        self.totalContentLength = [[aDecoder decodeObjectForKey:@"totalContentLength"] longLongValue];
+        self.totalCacheLength = [[aDecoder decodeObjectForKey:@"totalCacheLength"] longLongValue];
         self.unitItems = [aDecoder decodeObjectForKey:@"unitItems"];
         [self prepare];
     }
@@ -132,11 +132,11 @@
     NSString * contentRange = [self.responseHeaderFields objectForKey:@"Content-Range"];
     NSRange range = [contentRange rangeOfString:@"/"];
     if (contentRange.length > 0 && range.location != NSNotFound) {
-        self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].integerValue;
+        self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
     }
 }
 
-- (void)setTotalContentLength:(NSInteger)totalContentLength
+- (void)setTotalContentLength:(long long)totalContentLength
 {
     if (_totalContentLength != totalContentLength)
     {

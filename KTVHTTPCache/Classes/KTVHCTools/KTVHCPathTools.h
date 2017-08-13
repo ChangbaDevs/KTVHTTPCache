@@ -12,8 +12,8 @@
 
 + (NSString *)pathForArchiver;
 + (NSString *)pathForInsertBasePath:(NSString *)path;
-+ (NSString *)pathWithURLString:(NSString *)string offset:(NSInteger)offset;
++ (NSString *)pathWithURLString:(NSString *)string offset:(long long)offset;
 
-+ (NSInteger)sizeOfItemAtFilePath:(NSString *)filePath;
++ (long long)sizeOfItemAtFilePath:(NSString *)filePath;
 
 @end

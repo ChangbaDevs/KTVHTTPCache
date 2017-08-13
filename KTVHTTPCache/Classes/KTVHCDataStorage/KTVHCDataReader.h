@@ -28,9 +28,9 @@
 @property (nonatomic, assign, readonly) BOOL didFinishPrepare;
 @property (nonatomic, assign, readonly) BOOL didFinishRead;
 
-@property (nonatomic, assign, readonly) NSInteger currentContentLength;
-@property (nonatomic, assign, readonly) NSInteger readedContentLength;
-@property (nonatomic, assign, readonly) NSInteger totalContentLength;
+@property (nonatomic, assign, readonly) long long currentContentLength;
+@property (nonatomic, assign, readonly) long long readedContentLength;
+@property (nonatomic, assign, readonly) long long totalContentLength;
 
 - (void)prepare;
 - (void)close;

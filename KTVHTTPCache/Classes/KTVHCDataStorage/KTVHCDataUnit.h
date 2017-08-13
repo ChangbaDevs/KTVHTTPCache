@@ -34,8 +34,8 @@
 @property (nonatomic, strong, readonly) NSDictionary * requestHeaderFields;
 @property (nonatomic, strong, readonly) NSDictionary * responseHeaderFields;
 
-@property (nonatomic, assign, readonly) NSInteger totalContentLength;
-@property (nonatomic, assign, readonly) NSInteger totalCacheLength;
+@property (nonatomic, assign, readonly) long long totalContentLength;
+@property (nonatomic, assign, readonly) long long totalCacheLength;
 
 @property (nonatomic, strong, readonly) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
 

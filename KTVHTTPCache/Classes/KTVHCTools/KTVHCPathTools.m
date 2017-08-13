@@ -22,7 +22,7 @@
     return [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
 }
 
-+ (NSString *)pathWithURLString:(NSString *)string offset:(NSInteger)offset
++ (NSString *)pathWithURLString:(NSString *)string offset:(long long)offset
 {
     NSString * folderName = [KTVHCURLTools md5:string];
     
@@ -31,7 +31,7 @@
     BOOL condition = YES;
     while (condition)
     {
-        NSString * fileName = [NSString stringWithFormat:@"%@_%ld_%ld", folderName, offset, number];
+        NSString * fileName = [NSString stringWithFormat:@"%@_%lld_%ld", folderName, offset, number];
         path = [[self pathForUnitItemDirectory:folderName] stringByAppendingPathComponent:fileName];
         NSString * filePath = [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
         if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
@@ -73,7 +73,7 @@
     }
 }
 
-+ (NSInteger)sizeOfItemAtFilePath:(NSString *)filePath
++ (long long)sizeOfItemAtFilePath:(NSString *)filePath
 {
     if (filePath.length <= 0) {
         return 0;
@@ -82,7 +82,7 @@
     NSDictionary <NSFileAttributeKey, id> * attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
     if (!error || attributes.count > 0) {
         NSNumber * fileSize = [attributes objectForKey:NSFileSize];
-        return fileSize.integerValue;
+        return fileSize.longLongValue;
     }
     return 0;
 }

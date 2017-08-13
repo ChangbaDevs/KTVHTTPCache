@@ -29,9 +29,9 @@
 @property (nonatomic, assign) BOOL stopWorkingCallbackToken;
 @property (nonatomic, assign) BOOL startWorkingCallbackToken;
 
-@property (nonatomic, assign) NSInteger currentContentLength;
-@property (nonatomic, assign) NSInteger readedContentLength;
-@property (nonatomic, assign) NSInteger totalContentLength;
+@property (nonatomic, assign) long long currentContentLength;
+@property (nonatomic, assign) long long readedContentLength;
+@property (nonatomic, assign) long long totalContentLength;
 
 @end
 
@@ -67,8 +67,8 @@
     self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self];
     
     // File Source
-    NSInteger min = self.request.rangeMin;
-    NSInteger max = self.request.rangeMax;
+    long long min = self.request.rangeMin;
+    long long max = self.request.rangeMax;
     if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
         max = LONG_MAX;
     }
@@ -82,8 +82,8 @@
     {
         [item lock];
         
-        NSInteger itemMin = item.offset;
-        NSInteger itemMax = item.offset + item.length - 1;
+        long long itemMin = item.offset;
+        long long itemMax = item.offset + item.length - 1;
         
         if (itemMax < min || itemMin > max) {
             [item unlock];
@@ -120,15 +120,15 @@
     }];
     
     // Network Source
-    NSInteger offset = self.request.rangeMin;
-    NSInteger size = self.request.rangeMax - offset + 1;
+    long long offset = self.request.rangeMin;
+    long long size = self.request.rangeMax - offset + 1;
     if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
         size = LONG_MAX;
     }
     
     for (KTVHCDataFileSource * obj in fileSources)
     {
-        NSInteger delta = obj.offset + obj.startOffset - offset;
+        long long delta = obj.offset + obj.startOffset - offset;
         if (delta > 0)
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithDelegate:self.sourcer
