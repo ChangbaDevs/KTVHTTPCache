@@ -49,6 +49,12 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self.reader close];
+    [self.connection responseDidAbort:self];
+}
+
 
 #pragma mark - HTTPResponse
 
@@ -56,8 +62,8 @@
 {
     NSData * data = [self.reader readDataOfLength:length];
     if (self.reader.didFinishRead) {
-        [self.connection responseDidAbort:self];
         [self.reader close];
+        [self.connection responseDidAbort:self];
     }
     return data;
 }
@@ -121,6 +127,7 @@
 
 - (void)reader:(KTVHCDataReader *)reader didFailure:(NSError *)error
 {
+    [self.reader close];
     [self.connection responseDidAbort:self];
 }
 
