@@ -11,9 +11,9 @@
 #import "CacheItemZoneCell.h"
 #import "CacheItemView.h"
 
-@interface CacheViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface CacheViewController () <UITableViewDelegate, UITableViewDataSource, CacheItemViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView * tableView;
 @property (nonatomic, strong) NSArray <KTVHCDataCacheItem *> * cacheItems;
 
 @end
@@ -24,9 +24,17 @@
 {
     [super viewDidLoad];
     
+    [self reloadData];
+}
+
+- (void)reloadData
+{
     self.cacheItems = [KTVHTTPCache cacheFetchAllCacheItem];
     [self.tableView reloadData];
 }
+
+
+#pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -42,8 +50,7 @@
 {
     KTVHCDataCacheItemZone * zone = [[self.cacheItems objectAtIndex:indexPath.section].zones objectAtIndex:indexPath.row];
 
-    static NSString * identifier = @"CacheItemZoneCell";
-    CacheItemZoneCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    CacheItemZoneCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CacheItemZoneCell"];
     [cell configureWithOffset:zone.offset length:zone.length];
     
     return cell;
@@ -55,6 +62,7 @@
     CacheItemView * view = [[CacheItemView alloc] initWithURLString:item.URLString
                                                         totalLength:item.totalLength
                                                         cacheLength:item.cacheLength];
+    view.delegate = self;
     return view;
 }
 
@@ -62,5 +70,21 @@
 {
     return 120;
 }
+
+
+#pragma mark - CacheItemViewDelegate
+
+- (void)cacheItemView:(CacheItemView *)view deleteButtonDidClick:(NSString *)URLString
+{
+    [KTVHTTPCache cacheCleanCacheItemWithURLString:URLString];
+    [self reloadData];
+}
+
+- (IBAction)deleteAllCache:(UIButton *)sender
+{
+    [KTVHTTPCache cacheCleanAllCacheItem];
+    [self reloadData];
+}
+
 
 @end
