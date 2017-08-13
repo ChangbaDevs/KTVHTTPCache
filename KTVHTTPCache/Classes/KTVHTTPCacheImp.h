@@ -46,8 +46,8 @@
 + (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem;
 + (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString;
 
-+ (void)cacheCleanAllCacheItem;
-+ (void)cacheCleanCacheItemWithURLString:(NSString *)URLString;
++ (void)cacheDeleteAllCache;
++ (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
 
 
 @end

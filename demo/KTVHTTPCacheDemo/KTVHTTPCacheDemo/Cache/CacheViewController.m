@@ -76,13 +76,13 @@
 
 - (void)cacheItemView:(CacheItemView *)view deleteButtonDidClick:(NSString *)URLString
 {
-    [KTVHTTPCache cacheCleanCacheItemWithURLString:URLString];
+    [KTVHTTPCache cacheDeleteCacheWithURLString:URLString];
     [self reloadData];
 }
 
 - (IBAction)deleteAllCache:(UIButton *)sender
 {
-    [KTVHTTPCache cacheCleanAllCacheItem];
+    [KTVHTTPCache cacheDeleteAllCache];
     [self reloadData];
 }
 

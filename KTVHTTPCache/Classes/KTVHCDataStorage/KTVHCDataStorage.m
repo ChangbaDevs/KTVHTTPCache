@@ -111,12 +111,12 @@
     return [[KTVHCDataUnitPool unitPool] cacheItemWithURLString:URLString];
 }
 
-- (void)cleanAllCacheItem
+- (void)deleteAllCache
 {
     [[KTVHCDataUnitPool unitPool] deleteAllUnits];
 }
 
-- (void)cleanCacheItemWithURLString:(NSString *)URLString
+- (void)deleteCacheWithURLString:(NSString *)URLString
 {
     [[KTVHCDataUnitPool unitPool] deleteUnitWithURLString:URLString];
 }

@@ -65,14 +65,14 @@
     return [[KTVHCDataStorage manager] fetchCacheItemWithURLString:URLString];
 }
 
-+ (void)cacheCleanAllCacheItem
++ (void)cacheDeleteAllCache
 {
-    [[KTVHCDataStorage manager] cleanAllCacheItem];
+    [[KTVHCDataStorage manager] deleteAllCache];
 }
 
-+ (void)cacheCleanCacheItemWithURLString:(NSString *)URLString
++ (void)cacheDeleteCacheWithURLString:(NSString *)URLString
 {
-    [[KTVHCDataStorage manager] cleanCacheItemWithURLString:URLString];
+    [[KTVHCDataStorage manager] deleteCacheWithURLString:URLString];
 }
 
 
