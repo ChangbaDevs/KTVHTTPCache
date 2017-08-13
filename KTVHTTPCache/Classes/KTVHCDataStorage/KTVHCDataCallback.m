@@ -16,14 +16,22 @@
         return;
     }
     
+    static NSLock * lock = nil;
     static dispatch_queue_t queue = nil;
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        lock = [[NSLock alloc] init];
         queue = dispatch_queue_create("KTVHCDataCallbackQueue", DISPATCH_QUEUE_SERIAL);
     });
+    
+    [lock lock];
     dispatch_async(queue, ^{
-        block();
+        if (block) {
+            block();
+        }
     });
+    [lock unlock];
 }
 
 @end
