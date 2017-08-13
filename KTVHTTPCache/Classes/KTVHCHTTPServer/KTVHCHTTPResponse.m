@@ -34,7 +34,7 @@
         self.connection = connection;
         self.dataRequest = dataRequest;
         
-#if 1
+#if 0
         self.reader = [[KTVHCDataManager manager] syncReaderWithRequest:self.dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
@@ -49,27 +49,14 @@
     return self;
 }
 
-- (UInt64)contentLength
-{
-    return self.reader.totalContentLength;
-}
 
-- (UInt64)offset
-{
-    return 0;
-}
-
-- (void)setOffset:(UInt64)offset
-{
-    
-}
+#pragma mark - HTTPResponse
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     NSData * data = [self.reader readDataOfLength:length];
-    NSLog(@"%s, %ld, %ld", __func__, self.reader.currentContentLength, self.reader.readedContentLength);
     if (self.reader.didFinishRead) {
-        NSLog(@"%s 完成", __func__);
+        [self.connection responseDidAbort:self];
         [self.reader close];
     }
     return data;
@@ -77,12 +64,14 @@
 
 - (BOOL)delayResponseHeaders
 {
-    if (!self.reader.didFinishPrepare) {
-        self.waitingResponseHeader = YES;
-    } else {
-        self.waitingResponseHeader = NO;
-    }
-    return self.waitingResponseHeader;
+    BOOL waiting = !self.reader.didFinishPrepare;
+    self.waitingResponseHeader = waiting;
+    return waiting;
+}
+
+- (UInt64)contentLength
+{
+    return self.reader.totalContentLength;
 }
 
 - (NSDictionary *)httpHeaders
@@ -94,16 +83,25 @@
              };
 }
 
-- (void)connectionDidClose
+- (UInt64)offset
 {
-    NSLog(@"%s", __func__);
-    [self.reader close];
+    
+    return self.reader.readedContentLength;
+}
+
+- (void)setOffset:(UInt64)offset
+{
+    
 }
 
 - (BOOL)isDone
 {
-    NSLog(@"%s", __func__);
-    return NO;
+    return self.reader.didFinishRead;
+}
+
+- (void)connectionDidClose
+{
+    [self.reader close];
 }
 
 

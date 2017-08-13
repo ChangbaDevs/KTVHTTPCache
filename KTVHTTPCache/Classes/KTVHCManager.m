@@ -24,7 +24,9 @@
 
 + (NSString *)URLStringWithOriginalURLString:(NSString *)urlString
 {
-//    return urlString;
+#if 0
+    return urlString;
+#endif
     if ([KTVHCHTTPServer httpServer].running)
     {
         KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithOriginalURLString:urlString];

@@ -50,7 +50,7 @@
     
     [self.condition lock];
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URLString];
-#if 0
+#if 1
     while ([self.workingUnits containsObject:unit]) {
         [self.condition wait];
     }
