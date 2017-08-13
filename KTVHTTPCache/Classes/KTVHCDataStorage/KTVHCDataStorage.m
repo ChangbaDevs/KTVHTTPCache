@@ -6,11 +6,11 @@
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "KTVHCDataManager.h"
+#import "KTVHCDataStorage.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataPrivate.h"
 
-@interface KTVHCDataManager () <KTVHCDataReaderWorkingDelegate>
+@interface KTVHCDataStorage () <KTVHCDataReaderWorkingDelegate>
 
 @property (nonatomic, strong) NSCondition * condition;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * workingUnits;
@@ -18,11 +18,11 @@
 
 @end
 
-@implementation KTVHCDataManager
+@implementation KTVHCDataStorage
 
 + (instancetype)manager
 {
-    static KTVHCDataManager * obj = nil;
+    static KTVHCDataStorage * obj = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         obj = [[self alloc] init];

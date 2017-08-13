@@ -8,11 +8,35 @@
 
 #import <Foundation/Foundation.h>
 
+@class KTVHCDataReader;
+@class KTVHCDataRequest;
+@class KTVHCDataCacheItem;
+
+
 @interface KTVHTTPCache : NSObject
 
-+ (void)start:(NSError **)error;
-+ (void)stop;
 
-+ (NSString *)URLStringWithOriginalURLString:(NSString *)urlString;
+#pragma mark - HTTP Server
+
++ (void)proxyStart:(NSError **)error;
++ (void)proxyStop;
+
++ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)urlString;
+
+
+#pragma mark - Data Storage
+
+- (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request;
+
+- (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request;
+- (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
+                   completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
+
+- (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem;
+- (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString;
+
+- (void)cacheCleanAllCacheItem;
+- (void)cacheCleanCacheItemWithURLString:(NSString *)URLString;
+
 
 @end

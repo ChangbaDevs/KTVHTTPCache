@@ -12,3 +12,10 @@ FOUNDATION_EXPORT double KTVHTTPCacheVersionNumber;
 FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
 #import <KTVHTTPCache/KTVHTTPCacheImp.h>
+
+
+#pragma mark - Data Storage
+
+#import <KTVHTTPCache/KTVHCDataReader.h>
+#import <KTVHTTPCache/KTVHCDataRequest.h>
+#import <KTVHTTPCache/KTVHCDataCacheItem.h>

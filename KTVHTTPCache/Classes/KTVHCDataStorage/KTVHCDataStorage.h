@@ -11,7 +11,7 @@
 #import "KTVHCDataReader.h"
 #import "KTVHCDataCacheItem.h"
 
-@interface KTVHCDataManager : NSObject
+@interface KTVHCDataStorage : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

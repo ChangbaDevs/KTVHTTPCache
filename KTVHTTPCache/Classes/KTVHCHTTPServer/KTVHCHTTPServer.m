@@ -7,6 +7,7 @@
 //
 
 #import "KTVHCHTTPServer.h"
+#import "KTVHCHTTPURL.h"
 #import "KTVHCHTTPConnection.h"
 #import <CocoaHTTPServer/CocoaHTTPServer.h>
 
@@ -67,6 +68,19 @@
     if (self.running) {
         [self.coreHTTPServer stop];
     }
+}
+
+- (NSString *)URLStringWithOriginalURLString:(NSString *)urlString
+{
+#if 0
+    return urlString;
+#endif
+    if (self.running)
+    {
+        KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithOriginalURLString:urlString];
+        return [url proxyURLString];
+    }
+    return urlString;
 }
 
 

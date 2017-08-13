@@ -8,7 +8,7 @@
 
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCHTTPConnection.h"
-#import "KTVHCDataManager.h"
+#import "KTVHCDataStorage.h"
 
 @interface KTVHCHTTPResponse () <KTVHCDataReaderDelegate>
 
@@ -35,11 +35,11 @@
         self.dataRequest = dataRequest;
         
 #if 1
-        self.reader = [[KTVHCDataManager manager] concurrentReaderWithRequest:self.dataRequest];
+        self.reader = [[KTVHCDataStorage manager] concurrentReaderWithRequest:self.dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
 #else
-        [[KTVHCDataManager manager] serialReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
+        [[KTVHCDataStorage manager] serialReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
             self.reader = reader;
             self.reader.delegate = self;
             [self.reader prepare];

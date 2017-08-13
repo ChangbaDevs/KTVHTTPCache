@@ -22,4 +22,6 @@
 - (void)start:(NSError **)error;
 - (void)stop;
 
+- (NSString *)URLStringWithOriginalURLString:(NSString *)urlString;
+
 @end

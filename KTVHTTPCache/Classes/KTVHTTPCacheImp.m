@@ -8,31 +8,67 @@
 
 #import "KTVHTTPCacheImp.h"
 #import "KTVHCHTTPServer.h"
-#import "KTVHCHTTPURL.h"
+#import "KTVHCDataStorage.h"
 
 @implementation KTVHTTPCache
 
-+ (void)start:(NSError * __autoreleasing *)error
+
+#pragma mark - HTTP Server
+
++ (void)proxyStart:(NSError * __autoreleasing *)error
 {
     [[KTVHCHTTPServer httpServer] start:error];
 }
 
-+ (void)stop
++ (void)proxyStop
 {
     [[KTVHCHTTPServer httpServer] stop];
 }
 
-+ (NSString *)URLStringWithOriginalURLString:(NSString *)urlString
++ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)urlString
 {
-#if 0
-    return urlString;
-#endif
-    if ([KTVHCHTTPServer httpServer].running)
-    {
-        KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithOriginalURLString:urlString];
-        return [url proxyURLString];
-    }
-    return urlString;
+    return [[KTVHCHTTPServer httpServer] URLStringWithOriginalURLString:urlString];
 }
+
+
+#pragma mark - Data Storage
+
+- (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request
+{
+    return [[KTVHCDataStorage manager] concurrentReaderWithRequest:request];
+}
+
+- (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
+{
+    return [[KTVHCDataStorage manager] serialReaderWithRequest:request];
+}
+
+- (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
+                   completionHandler:(void(^)(KTVHCDataReader *))completionHandler
+{
+    [[KTVHCDataStorage manager] serialReaderWithRequest:request
+                                      completionHandler:completionHandler];
+}
+
+- (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem
+{
+    return [[KTVHCDataStorage manager] fetchAllCacheItem];
+}
+
+- (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString
+{
+    return [[KTVHCDataStorage manager] fetchCacheItemWithURLString:URLString];
+}
+
+- (void)cacheCleanAllCacheItem
+{
+    [[KTVHCDataStorage manager] cleanAllCacheItem];
+}
+
+- (void)cacheCleanCacheItemWithURLString:(NSString *)URLString
+{
+    [[KTVHCDataStorage manager] cleanCacheItemWithURLString:URLString];
+}
+
 
 @end
