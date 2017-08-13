@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataUnit.h"
+#import "KTVHCDataCacheItem.h"
 
 @interface KTVHCDataUnitPool : NSObject
 
@@ -18,10 +19,16 @@
 
 - (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString;
 
-- (void)deleteUnitWithURLString:(NSString *)URLString;
-- (void)deleteAllUnits;
+
+#pragma mark - Cache Control
 
 @property (nonatomic, assign, readonly) long long totalCacheLength;
+
+- (NSArray <KTVHCDataCacheItem *> *)allCacheItem;
+- (KTVHCDataCacheItem *)cacheItemWithURLString:(NSString *)URLString;
+
+- (void)deleteUnitWithURLString:(NSString *)URLString;
+- (void)deleteAllUnits;
 
 
 #pragma mark - Unit Control

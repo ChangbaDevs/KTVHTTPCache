@@ -33,11 +33,6 @@
 
 #pragma mark - Data Storage
 
-+ (long long)cacheTotalCacheLength
-{
-    return [[KTVHCDataStorage manager] totalCacheLength];
-}
-
 + (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request
 {
     return [[KTVHCDataStorage manager] concurrentReaderWithRequest:request];
@@ -53,6 +48,11 @@
 {
     [[KTVHCDataStorage manager] serialReaderWithRequest:request
                                       completionHandler:completionHandler];
+}
+
++ (long long)cacheTotalCacheLength
+{
+    return [[KTVHCDataStorage manager] totalCacheLength];
 }
 
 + (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem

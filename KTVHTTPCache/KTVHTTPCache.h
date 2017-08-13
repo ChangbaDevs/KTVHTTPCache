@@ -19,3 +19,4 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import <KTVHTTPCache/KTVHCDataReader.h>
 #import <KTVHTTPCache/KTVHCDataRequest.h>
 #import <KTVHTTPCache/KTVHCDataCacheItem.h>
+#import <KTVHTTPCache/KTVHCDataCacheItemZone.h>

@@ -9,6 +9,7 @@
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataUnitQueue.h"
 #import "KTVHCPathTools.h"
+#import "KTVHCDataPrivate.h"
 
 @interface KTVHCDataUnitPool ()
 
@@ -58,6 +59,80 @@
     return unit;
 }
 
+- (long long)totalCacheLength
+{
+    long long length = 0;
+    [self.lock lock];
+    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
+    for (KTVHCDataUnit * obj in units)
+    {
+        length += obj.totalCacheLength;
+    }
+    [self.lock unlock];
+    return length;
+}
+
+- (KTVHCDataCacheItem *)cacheItemWithURLString:(NSString *)URLString
+{
+    if (URLString.length <= 0) {
+        return nil;
+    }
+    
+    [self.lock lock];
+    KTVHCDataCacheItem * cacheItem = nil;
+    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
+    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    if (obj)
+    {
+        NSMutableArray * itemZones = [NSMutableArray array];
+        for (KTVHCDataUnitItem * unitItem in obj.unitItems)
+        {
+            KTVHCDataCacheItemZone * itemZone = [KTVHCDataCacheItemZone itemZoneWithOffset:unitItem.offset
+                                                                                    length:unitItem.length];
+            [itemZones addObject:itemZone];
+        }
+        if (itemZones.count <= 0) {
+            itemZones = nil;
+        }
+        cacheItem = [KTVHCDataCacheItem itemWithURLString:obj.URLString
+                                              totalLength:obj.totalContentLength
+                                              cacheLength:obj.totalCacheLength
+                                                    zones:itemZones];
+    }
+    [self.lock unlock];
+    return cacheItem;
+}
+
+- (NSArray <KTVHCDataCacheItem *> *)allCacheItem
+{
+    [self.lock lock];
+    NSMutableArray * cacheItems = [NSMutableArray array];
+    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
+    for (KTVHCDataUnit * obj in units)
+    {
+        NSMutableArray * itemZones = [NSMutableArray array];
+        for (KTVHCDataUnitItem * unitItem in obj.unitItems)
+        {
+            KTVHCDataCacheItemZone * itemZone = [KTVHCDataCacheItemZone itemZoneWithOffset:unitItem.offset
+                                                                                    length:unitItem.length];
+            [itemZones addObject:itemZone];
+        }
+        if (itemZones.count <= 0) {
+            itemZones = nil;
+        }
+        KTVHCDataCacheItem * cacheItem = [KTVHCDataCacheItem itemWithURLString:obj.URLString
+                                                                  totalLength:obj.totalContentLength
+                                                                  cacheLength:obj.totalCacheLength
+                                                                        zones:itemZones];
+        [cacheItems addObject:cacheItem];
+    }
+    if (cacheItems.count <= 0) {
+        cacheItems = nil;
+    }
+    [self.lock unlock];
+    return cacheItems;
+}
+
 - (void)deleteUnitWithURLString:(NSString *)URLString
 {
     if (URLString.length <= 0) {
@@ -92,19 +167,6 @@
         [self.unitQueue archive];
     }
     [self.lock unlock];
-}
-
-- (long long)totalCacheLength
-{
-    long long length = 0;
-    [self.lock lock];
-    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
-    for (KTVHCDataUnit * obj in units)
-    {
-        length += obj.totalCacheLength;
-    }
-    [self.lock unlock];
-    return length;
 }
 
 

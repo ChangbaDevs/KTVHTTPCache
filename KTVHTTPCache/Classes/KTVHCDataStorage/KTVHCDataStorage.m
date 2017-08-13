@@ -101,14 +101,14 @@
     return [[KTVHCDataUnitPool unitPool] totalCacheLength];
 }
 
-- (NSArray<KTVHCDataCacheItem *> *)fetchAllCacheItem
+- (NSArray <KTVHCDataCacheItem *> *)fetchAllCacheItem
 {
-    return nil;
+    return [[KTVHCDataUnitPool unitPool] allCacheItem];
 }
 
 - (KTVHCDataCacheItem *)fetchCacheItemWithURLString:(NSString *)URLString
 {
-    return nil;
+    return [[KTVHCDataUnitPool unitPool] cacheItemWithURLString:URLString];
 }
 
 - (void)cleanAllCacheItem
