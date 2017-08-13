@@ -1,16 +1,16 @@
 //
-//  KTVHCManager.m
+//  KTVHTTPCacheImp.m
 //  KTVHTTPCache
 //
-//  Created by Single on 2017/8/10.
+//  Created by Single on 2017/8/13.
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "KTVHCManager.h"
+#import "KTVHTTPCacheImp.h"
 #import "KTVHCHTTPServer.h"
 #import "KTVHCHTTPURL.h"
 
-@implementation KTVHCManager
+@implementation KTVHTTPCache
 
 + (void)start:(NSError * __autoreleasing *)error
 {
