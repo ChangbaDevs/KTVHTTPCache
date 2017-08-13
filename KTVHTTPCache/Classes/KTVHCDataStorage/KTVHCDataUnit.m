@@ -228,6 +228,10 @@
 
 - (BOOL)mergeFiles
 {
+    if (self.working || self.unitItems.count <= 1) {
+        return NO;
+    }
+    
     return NO;
 }
 
