@@ -52,14 +52,8 @@
     
     NSError * tempError = nil;
     [self.coreHTTPServer start:&tempError];
-    if (tempError)
-    {
+    if (tempError) {
         * error = tempError;
-        NSLog(@"%@, start core HTTPServer error : %@", [self class], tempError);
-    }
-    else
-    {
-        NSLog(@"%@, start core HTTPServer success", [self class]);
     }
 }
 
