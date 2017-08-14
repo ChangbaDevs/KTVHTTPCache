@@ -42,14 +42,14 @@
 
 - (void)reloadData
 {
-    MediaItem * item1 = [[MediaItem alloc] initWithTitle:@"张学友 - 我真的受伤了"
-                                               URLString:@"http://lzaiuw.changba.com/userdata/video/940071102.mp4"];
-    MediaItem * item2 = [[MediaItem alloc] initWithTitle:@"张一山 - 如果我爱你"
-                                               URLString:@"http://jinshanuwmp3.changba.com/943266496.mp4"];
-    MediaItem * item3 = [[MediaItem alloc] initWithTitle:@"范玮琪 - 是非题"
-                                               URLString:@"http://lzaiuw.changba.com/userdata/video/37CE8EEAF2A8C35F9C33DC5901307461.mp4"];
-    MediaItem * item4 = [[MediaItem alloc] initWithTitle:@"hush! - 都是你害的"
+    MediaItem * item1 = [[MediaItem alloc] initWithTitle:@"萧亚轩 - 冲动"
+                                               URLString:@"http://aliuwmp3.changba.com/userdata/video/45F6BD5E445E4C029C33DC5901307461.mp4"];
+    MediaItem * item2 = [[MediaItem alloc] initWithTitle:@"张惠妹 - 你是爱我的"
+                                               URLString:@"http://aliuwmp3.changba.com/userdata/video/3B1DDE764577E0529C33DC5901307461.mp4"];
+    MediaItem * item3 = [[MediaItem alloc] initWithTitle:@"hush! - 都是你害的"
                                                URLString:@"http://qiniuuwmp3.changba.com/941946870.mp4"];
+    MediaItem * item4 = [[MediaItem alloc] initWithTitle:@"张学友 - 我真的受伤了"
+                                               URLString:@"http://lzaiuw.changba.com/userdata/video/940071102.mp4"];
     self.medaiItems = @[item1, item2, item3, item4];
     [self.tableView reloadData];
 }
