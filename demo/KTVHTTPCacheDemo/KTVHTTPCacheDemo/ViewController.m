@@ -42,14 +42,14 @@
 
 - (void)reloadData
 {
-    MediaItem * item1 = [[MediaItem alloc] initWithTitle:@"Lindsey Stirling - Boulevard of Broken Dreams"
-                                               URLString:@"http://he.yinyuetai.com/uploads/videos/common/9A12015DCA9878CB8AE6EC60399EF29A.mp4"];
-    MediaItem * item2 = [[MediaItem alloc] initWithTitle:@"Chris Brown - Sedated"
-                                               URLString:@"http://hc.yinyuetai.com/uploads/videos/common/18AB015DCF2478E0102DC93B05179B49.mp4"];
-    MediaItem * item3 = [[MediaItem alloc] initWithTitle:@"Eminem - Not Afraid"
-                                               URLString:@"http://he.yinyuetai.com/uploads/videos/common/AC5B015C495FF0D0EE115D4E86452719.mp4"];
-    MediaItem * item4 = [[MediaItem alloc] initWithTitle:@"Eminem & Dr. Dre - Video"
-                                               URLString:@"http://hc.yinyuetai.com/uploads/videos/common/986E015D3B9151ED2BCE33A6B035D57A.mp4"];
+    MediaItem * item1 = [[MediaItem alloc] initWithTitle:@"张学友 - 我真的受伤了"
+                                               URLString:@"http://lzaiuw.changba.com/userdata/video/940071102.mp4"];
+    MediaItem * item2 = [[MediaItem alloc] initWithTitle:@"张一山 - 如果我爱你"
+                                               URLString:@"http://jinshanuwmp3.changba.com/943266496.mp4"];
+    MediaItem * item3 = [[MediaItem alloc] initWithTitle:@"范玮琪 - 是非题"
+                                               URLString:@"http://lzaiuw.changba.com/userdata/video/37CE8EEAF2A8C35F9C33DC5901307461.mp4"];
+    MediaItem * item4 = [[MediaItem alloc] initWithTitle:@"hush! - 都是你害的"
+                                               URLString:@"http://qiniuuwmp3.changba.com/941946870.mp4"];
     self.medaiItems = @[item1, item2, item3, item4];
     [self.tableView reloadData];
 }
