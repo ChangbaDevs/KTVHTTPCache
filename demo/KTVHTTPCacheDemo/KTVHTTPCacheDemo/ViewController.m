@@ -7,11 +7,10 @@
 //
 
 #import "ViewController.h"
-#import <KTVHTTPCache/KTVHTTPCache.h>
-#import <AVKit/AVKit.h>
-#import <AVFoundation/AVFoundation.h>
+#import "MediaPlayerViewController.h"
 #import "MediaItem.h"
 #import "MediaCell.h"
+#import <KTVHTTPCache/KTVHTTPCache.h>
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -85,10 +84,7 @@
     
     NSString * proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     
-    AVPlayerViewController * viewController = [[AVPlayerViewController alloc] init];
-    viewController.player = [AVPlayer playerWithURL:[NSURL URLWithString:proxyURLString]];
-    [viewController.player play];
-    
+    MediaPlayerViewController * viewController = [[MediaPlayerViewController alloc] initWithURLString:proxyURLString];
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
