@@ -35,7 +35,7 @@
 #pragma mark - File
 
 @property (nonatomic, strong) NSFileHandle * readingHandle;
-@property (nonatomic, assign) long long fileReadOffset;
+@property (nonatomic, assign) long long fileReadedLength;
 
 @end
 
@@ -112,9 +112,9 @@
         return nil;
     }
     
-    NSData * data = [self.readingHandle readDataOfLength:length];
-    self.fileReadOffset += data.length;
-    if (self.fileReadOffset >= self.needReadLength)
+    NSData * data = [self.readingHandle readDataOfLength:MIN(self.needReadLength - self.fileReadedLength, length)];
+    self.fileReadedLength += data.length;
+    if (self.fileReadedLength >= self.needReadLength)
     {
         [self callbackForFinishRead];
     }

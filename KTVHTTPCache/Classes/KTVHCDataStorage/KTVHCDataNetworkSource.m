@@ -55,8 +55,7 @@
 
 @property (nonatomic, strong) NSLock * lock;
 @property (nonatomic, assign) long long downloadLength;
-@property (nonatomic, assign) long long downloadReadOffset;
-@property (nonatomic, assign) BOOL downloadDidStart;
+@property (nonatomic, assign) long long downloadReadedLength;
 @property (nonatomic, assign) BOOL downloadCompleteCalled;
 @property (nonatomic, assign) BOOL needCallHasAvailableData;
 
@@ -118,7 +117,6 @@
     }
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
-    self.downloadDidStart = YES;
     self.downloadTask = [[KTVHCDataDownload download] downloadWithRequest:request delegate:self];
 }
 
@@ -159,7 +157,7 @@
     
     [self.lock lock];
     
-    if (self.downloadReadOffset >= self.downloadLength)
+    if (self.downloadReadedLength >= self.downloadLength)
     {
         if (self.downloadCompleteCalled)
         {
@@ -175,9 +173,9 @@
         return nil;
     }
     
-    NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadLength - self.downloadReadOffset, length)];
-    self.downloadReadOffset += data.length;
-    if (self.downloadReadOffset >= self.length)
+    NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadLength - self.downloadReadedLength, length)];
+    self.downloadReadedLength += data.length;
+    if (self.downloadReadedLength >= self.length)
     {
         [self.readingHandle closeFile];
         self.readingHandle = nil;
