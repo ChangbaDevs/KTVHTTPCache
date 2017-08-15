@@ -38,6 +38,7 @@
 @property (nonatomic, assign) BOOL errorCanceled;
 
 @property (nonatomic, assign) BOOL didClose;
+@property (nonatomic, assign) BOOL didCallPrepare;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishDownload;
 
@@ -102,6 +103,10 @@
     if (self.didClose) {
         return;
     }
+    if (self.didCallPrepare) {
+        return;
+    }
+    self.didCallPrepare = YES;
     
     NSURL * URL = [NSURL URLWithString:self.URLString];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
@@ -146,6 +151,9 @@
         return nil;
     }
     if (self.didFinishRead) {
+        return nil;
+    }
+    if (self.errorCanceled) {
         return nil;
     }
     
@@ -286,6 +294,7 @@
         }
         return YES;
     }
+    
     self.errorCanceled = YES;
     return NO;
 }

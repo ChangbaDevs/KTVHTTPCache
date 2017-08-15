@@ -20,6 +20,7 @@
 @property (nonatomic, assign) long long length;
 
 @property (nonatomic, assign) BOOL didClose;
+@property (nonatomic, assign) BOOL didCallPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
 
 
@@ -76,6 +77,11 @@
 
 - (void)prepare
 {
+    if (self.didCallPrepare) {
+        return;
+    }
+    self.didCallPrepare = YES;
+    
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
     [self.readingHandle seekToFileOffset:self.startOffset];
     if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {

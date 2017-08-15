@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSError * error;
 
 @property (nonatomic, assign) BOOL didClose;
+@property (nonatomic, assign) BOOL didCallPrepare;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
 
@@ -66,6 +67,11 @@
     if (self.didClose) {
         return;
     }
+    if (self.didCallPrepare) {
+        return;
+    }
+    self.didCallPrepare = YES;
+    
     [self.currentSource prepare];
     if (self.currentSource != self.currentNetworkSource) {
         [self.currentNetworkSource prepare];
