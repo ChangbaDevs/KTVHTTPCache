@@ -19,8 +19,6 @@ static long long const KTVHCDataNetworkSourceLengthMaxVaule = -1;
 - (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishPrepare:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishDownload:(KTVHCDataNetworkSource *)networkSource;
-- (void)networkSourceDidFinishRead:(KTVHCDataNetworkSource *)networkSource;
-- (void)networkSourceDidCanceled:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error;
 
 @end

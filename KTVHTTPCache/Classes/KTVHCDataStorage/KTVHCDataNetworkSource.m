@@ -159,15 +159,18 @@
     
     [self.lock lock];
     
-    if ((self.didFinishDownload || self.downloadCompleteCalled) && self.downloadReadOffset >= self.downloadLength)
+    if (self.downloadReadOffset >= self.downloadLength)
     {
-        [self callbackForFinishRead];
-        [self.lock unlock];
-        return nil;
-    }
-    
-    if (self.downloadLength <= self.downloadReadOffset) {
-        self.needCallHasAvailableData = YES;
+        if (self.downloadCompleteCalled)
+        {
+            [self.readingHandle closeFile];
+            self.readingHandle = nil;
+        }
+        else
+        {
+            self.needCallHasAvailableData = YES;
+        }
+        
         [self.lock unlock];
         return nil;
     }
@@ -176,8 +179,12 @@
     self.downloadReadOffset += data.length;
     if (self.downloadReadOffset >= self.length)
     {
-        [self callbackForFinishRead];
+        [self.readingHandle closeFile];
+        self.readingHandle = nil;
+        
+        self.didFinishRead = YES;
     }
+    
     [self.lock unlock];
     return data;
 }
@@ -187,6 +194,9 @@
 
 - (void)callbackForHasAvailableData
 {
+    if (self.didClose) {
+        return;
+    }
     if (!self.needCallHasAvailableData) {
         return;
     }
@@ -196,40 +206,6 @@
         [KTVHCDataCallback callbackWithBlock:^{
             [self.networkSourceDelegate networkSourceHasAvailableData:self];
         }];
-    }
-}
-
-- (void)callbackForFinishRead
-{
-    [self.readingHandle closeFile];
-    self.readingHandle = nil;
- 
-    if (self.didClose) {
-        return;
-    }
-    
-    self.didFinishRead = YES;
-    if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishRead:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
-            [self.networkSourceDelegate networkSourceDidFinishRead:self];
-        }];
-    }
-}
-
-- (void)callbackForFinishDownload
-{
-    if (self.didClose) {
-        return;
-    }
-    
-    if (self.downloadLength >= self.length)
-    {
-        self.didFinishDownload = YES;
-        if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
-            [KTVHCDataCallback callbackWithBlock:^{
-                [self.networkSourceDelegate networkSourceDidFinishDownload:self];
-            }];
-        }
     }
 }
 
@@ -244,26 +220,35 @@
     self.writingHandle = nil;
     self.unitItem.writing = NO;
     
-    if (error && !self.didClose)
+    if (!self.didClose)
     {
-        self.error = error;
-        if (self.error.code == NSURLErrorCancelled && !self.errorCanceled) {
-            if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidCanceled:)]) {
-                [KTVHCDataCallback callbackWithBlock:^{
-                    [self.networkSourceDelegate networkSourceDidCanceled:self];
-                }];
+        if (error)
+        {
+            self.error = error;
+            if (self.error.code != NSURLErrorCancelled || self.errorCanceled)
+            {
+                if ([self.networkSourceDelegate respondsToSelector:@selector(networkSource:didFailure:)]) {
+                    [KTVHCDataCallback callbackWithBlock:^{
+                        [self.networkSourceDelegate networkSource:self didFailure:error];
+                    }];
+                }
             }
-        } else {
-            if ([self.networkSourceDelegate respondsToSelector:@selector(networkSource:didFailure:)]) {
-                [KTVHCDataCallback callbackWithBlock:^{
-                    [self.networkSourceDelegate networkSource:self didFailure:error];
-                }];
+        }
+        else
+        {
+            if (self.downloadLength >= self.length)
+            {
+                self.didFinishDownload = YES;
+                if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
+                    [KTVHCDataCallback callbackWithBlock:^{
+                        [self.networkSourceDelegate networkSourceDidFinishDownload:self];
+                    }];
+                }
             }
         }
     }
-    [self callbackForFinishDownload];
-    self.downloadCompleteCalled = YES;
     
+    self.downloadCompleteCalled = YES;
     [self.lock unlock];
 }
 
