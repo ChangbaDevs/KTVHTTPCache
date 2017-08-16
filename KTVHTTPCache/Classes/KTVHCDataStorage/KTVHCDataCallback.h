@@ -16,4 +16,7 @@
 + (void)workingCallbackWithBlock:(void (^)())block;
 + (void)commonCallbackWithBlock:(void (^)())block;
 
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block;      // default is async.
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block aync:(BOOL)async;
+
 @end

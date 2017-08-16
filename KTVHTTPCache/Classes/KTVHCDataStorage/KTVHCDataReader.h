@@ -24,6 +24,7 @@
 - (instancetype)init NS_UNAVAILABLE;
 
 @property (nonatomic, weak) id <KTVHCDataReaderDelegate> delegate;
+@property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;     // a serial queue. don't block it.
 
 @property (nonatomic, strong, readonly) NSError * error;
 

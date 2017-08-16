@@ -32,6 +32,11 @@
     [self callbackWithQueue:commonQueue block:block aync:YES];
 }
 
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block
+{
+    [self callbackWithQueue:queue block:block aync:YES];
+}
+
 + (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block aync:(BOOL)async
 {
     if (!block) {

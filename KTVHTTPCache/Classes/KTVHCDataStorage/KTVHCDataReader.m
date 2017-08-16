@@ -15,6 +15,7 @@
 @interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
 
 @property (nonatomic, weak) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
+@property (nonatomic, strong) dispatch_queue_t delegateQueue;
 
 @property (nonatomic, strong) KTVHCDataUnit * unit;
 @property (nonatomic, strong) KTVHCDataRequest * request;
@@ -56,6 +57,7 @@
         self.unit.delegate = self;
         self.request = request;
         self.workingDelegate = workingDelegate;
+        self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -220,6 +222,9 @@
     return data;
 }
 
+
+#pragma mark - Setter/Getter
+
 - (NSDictionary *)headerFields
 {
     NSMutableDictionary * headers = [NSMutableDictionary dictionaryWithDictionary:self.unit.responseHeaderFields];
@@ -259,7 +264,7 @@
         }
         self.didFinishPrepare = YES;
         if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {
-            [KTVHCDataCallback commonCallbackWithBlock:^{
+            [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 [self.delegate readerDidFinishPrepare:self];
             }];
         }
@@ -294,7 +299,7 @@
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
 {
     if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             [self.delegate readerHasAvailableData:self];
         }];
     }
@@ -309,7 +314,7 @@
 {
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(reader:didFailure:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             [self.delegate reader:self didFailure:self.error];
         }];
     }
