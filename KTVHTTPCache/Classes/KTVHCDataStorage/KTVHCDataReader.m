@@ -16,6 +16,7 @@
 
 @property (nonatomic, weak) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
+@property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
 
 @property (nonatomic, strong) KTVHCDataUnit * unit;
 @property (nonatomic, strong) KTVHCDataRequest * request;
@@ -54,17 +55,18 @@
     if (self = [super init])
     {
         self.unit = unit;
-        self.unit.delegate = self;
         self.request = request;
         self.workingDelegate = workingDelegate;
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
+        self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
+        [self.unit setDelegate:self delegateQueue:self.internalDelegateQueue];
     }
     return self;
 }
 
 - (void)setupAndPrepareSourcer
 {
-    self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self];
+    self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self delegateQueue:self.internalDelegateQueue];
     
     // File Source
     long long min = self.request.rangeMin;
@@ -99,8 +101,7 @@
         
         min = item.offset + (itemMin - item.offset) + (itemMax - itemMin + 1);
         
-        KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithDelegate:self.sourcer
-                                                                      filePath:item.filePath
+        KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithFilePath:item.filePath
                                                                         offset:item.offset
                                                                         length:item.length
                                                                    startOffset:itemMin - item.offset
@@ -131,11 +132,10 @@
         long long delta = obj.offset + obj.startOffset - offset;
         if (delta > 0)
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithDelegate:self.sourcer
-                                                                               URLString:self.request.URLString
-                                                                            headerFields:self.request.headerFields
-                                                                                  offset:offset
-                                                                                  length:delta];
+            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
+                                                                             headerFields:self.request.headerFields
+                                                                                   offset:offset
+                                                                                   length:delta];
             [networkSources addObject:source];
             offset += delta;
             size -= delta;
@@ -148,21 +148,19 @@
     {
         if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule)
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithDelegate:self.sourcer
-                                                                               URLString:self.request.URLString
-                                                                            headerFields:self.request.headerFields
-                                                                                  offset:offset
-                                                                                  length:KTVHCDataNetworkSourceLengthMaxVaule];
+            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
+                                                                             headerFields:self.request.headerFields
+                                                                                   offset:offset
+                                                                                   length:KTVHCDataNetworkSourceLengthMaxVaule];
             [networkSources addObject:source];
             size = 0;
         }
         else
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithDelegate:self.sourcer
-                                                                               URLString:self.request.URLString
-                                                                            headerFields:self.request.headerFields
-                                                                                  offset:offset
-                                                                                  length:size];
+            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
+                                                                             headerFields:self.request.headerFields
+                                                                                   offset:offset
+                                                                                   length:size];
             [networkSources addObject:source];
             offset += size;
             size -= size;

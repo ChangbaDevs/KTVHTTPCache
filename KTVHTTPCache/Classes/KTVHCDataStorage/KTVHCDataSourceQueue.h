@@ -8,7 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataSourceProtocol.h"
-#import "KTVHCDataNetworkSource.h"
+
+@class KTVHCDataFileSource;
+@class KTVHCDataNetworkSource;
+
+@protocol KTVHCDataFileSourceDelegate;
+@protocol KTVHCDataNetworkSourceDelegate;
 
 @interface KTVHCDataSourceQueue : NSObject
 
@@ -19,6 +24,9 @@
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source;
 - (void)popSource:(id<KTVHCDataSourceProtocol>)source;
+
+- (void)setAllSourceDelegate:(id<KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+
 - (void)sortSources;
 - (void)closeAllSource;
 

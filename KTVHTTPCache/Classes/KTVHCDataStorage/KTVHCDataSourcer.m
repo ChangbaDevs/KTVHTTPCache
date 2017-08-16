@@ -10,12 +10,13 @@
 #import "KTVHCDataSourceQueue.h"
 #import "KTVHCDataCallback.h"
 
-@interface KTVHCDataSourcer ()
+@interface KTVHCDataSourcer () <KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>
 
 
 #pragma mark - Setter
 
 @property (nonatomic, weak) id <KTVHCDataSourcerDelegate> delegate;
+@property (nonatomic, strong) dispatch_queue_t delegateQueue;
 
 @property (nonatomic, strong) NSError * error;
 
@@ -35,16 +36,17 @@
 
 @implementation KTVHCDataSourcer
 
-+ (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate
++ (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
-    return [[self alloc] initWithDelegate:delegate];
+    return [[self alloc] initWithDelegate:delegate delegateQueue:delegateQueue];
 }
 
-- (instancetype)initWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate
+- (instancetype)initWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
     if (self = [super init])
     {
         self.delegate = delegate;
+        self.delegateQueue = delegateQueue;
         self.sourceQueue = [KTVHCDataSourceQueue sourceQueue];
     }
     return self;
@@ -58,6 +60,7 @@
 - (void)sortAndFetchSources
 {
     [self.sourceQueue sortSources];
+    [self.sourceQueue setAllSourceDelegate:self delegateQueue:self.delegateQueue];
     self.currentSource = [self.sourceQueue fetchFirstSource];
     self.currentNetworkSource = [self.sourceQueue fetchFirstNetworkSource];
 }
@@ -127,7 +130,7 @@
     
     self.didFinishPrepare = YES;
     if ([self.delegate respondsToSelector:@selector(sourcerDidFinishPrepare:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             [self.delegate sourcerDidFinishPrepare:self];
         }];
     }
@@ -137,7 +140,7 @@
 {
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(sourcer:didFailure:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             [self.delegate sourcer:self didFailure:self.error];
         }];
     }
@@ -157,7 +160,7 @@
 - (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource
 {
     if ([self.delegate respondsToSelector:@selector(sourcerHasAvailableData:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             [self.delegate sourcerHasAvailableData:self];
         }];
     }

@@ -27,6 +27,9 @@
 
 @property (nonatomic, assign) NSInteger workingCount;
 
+@property (nonatomic, weak) id <KTVHCDataUnitDelegate> delegate;
+@property (nonatomic, strong) dispatch_queue_t delegateQueue;
+
 @end
 
 @implementation KTVHCDataUnit
@@ -146,7 +149,7 @@
     {
         _totalContentLength = totalContentLength;
         if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
-            [KTVHCDataCallback commonCallbackWithBlock:^{
+            [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 [self.delegate unitDidUpdateTotalContentLength:self];
             }];
         }
@@ -186,6 +189,12 @@
         return headers;
     }
     return self.responseHeaderFields;
+}
+
+- (void)setDelegate:(id <KTVHCDataUnitDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
+{
+    self.delegate = delegate;
+    self.delegateQueue = delegateQueue;
 }
 
 

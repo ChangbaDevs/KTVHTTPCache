@@ -24,16 +24,21 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)sourceWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
-                          filePath:(NSString *)filePath
++ (instancetype)sourceWithFilePath:(NSString *)filePath
                             offset:(long long)offset
                             length:(long long)length
                        startOffset:(long long)startOffset
                     needReadLength:(long long)needReadLength;
 
-@property (nonatomic, weak, readonly) id <KTVHCDataFileSourceDelegate> fileSourceDelegate;
-
 @property (nonatomic, assign, readonly) long long startOffset;
 @property (nonatomic, assign, readonly) long long needReadLength;
+
+
+#pragma mark - Delegate
+
+@property (nonatomic, weak, readonly) id <KTVHCDataFileSourceDelegate> delegate;
+@property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
+
+- (void)setDelegate:(id <KTVHCDataFileSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
 @end

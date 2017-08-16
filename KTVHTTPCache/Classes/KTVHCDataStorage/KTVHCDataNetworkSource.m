@@ -27,7 +27,8 @@
 
 #pragma mark - Setter
 
-@property (nonatomic, weak) id <KTVHCDataNetworkSourceDelegate> networkSourceDelegate;
+@property (nonatomic, weak) id <KTVHCDataNetworkSourceDelegate> delegate;
+@property (nonatomic, strong) dispatch_queue_t delegateQueue;
 
 @property (nonatomic, copy) NSString * URLString;
 
@@ -63,29 +64,24 @@
 
 @implementation KTVHCDataNetworkSource
 
-+ (instancetype)sourceWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
-                         URLString:(NSString *)URLString
-                      headerFields:(NSDictionary *)headerFields
-                            offset:(long long)offset
-                            length:(long long)length
++ (instancetype)sourceWithURLString:(NSString *)URLString
+                       headerFields:(NSDictionary *)headerFields
+                             offset:(long long)offset
+                             length:(long long)length
 {
-    return [[self alloc] initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
-                                URLString:URLString
-                             headerFields:headerFields
-                                   offset:offset
-                                   length:length];
+    return [[self alloc] initWithURLString:URLString
+                              headerFields:headerFields
+                                    offset:offset
+                                    length:length];
 }
 
-- (instancetype)initWithDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate
-                       URLString:(NSString *)URLString
-                    headerFields:(NSDictionary *)headerFields
-                          offset:(long long)offset
-                          length:(long long)length
+- (instancetype)initWithURLString:(NSString *)URLString
+                     headerFields:(NSDictionary *)headerFields
+                           offset:(long long)offset
+                           length:(long long)length
 {
     if (self = [super init])
     {
-        self.networkSourceDelegate = delegate;
-        
         self.URLString = URLString;
         self.requestHeaderFields = headerFields;
         
@@ -95,6 +91,12 @@
         self.lock = [[NSLock alloc] init];
     }
     return self;
+}
+
+- (void)setDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
+{
+    self.delegate = delegate;
+    self.delegateQueue = delegateQueue;
 }
 
 - (void)prepare
@@ -200,9 +202,9 @@
     }
     
     self.needCallHasAvailableData = NO;
-    if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
-            [self.networkSourceDelegate networkSourceHasAvailableData:self];
+    if ([self.delegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            [self.delegate networkSourceHasAvailableData:self];
         }];
     }
 }
@@ -225,9 +227,9 @@
             self.error = error;
             if (self.error.code != NSURLErrorCancelled || self.errorCanceled)
             {
-                if ([self.networkSourceDelegate respondsToSelector:@selector(networkSource:didFailure:)]) {
-                    [KTVHCDataCallback commonCallbackWithBlock:^{
-                        [self.networkSourceDelegate networkSource:self didFailure:error];
+                if ([self.delegate respondsToSelector:@selector(networkSource:didFailure:)]) {
+                    [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                        [self.delegate networkSource:self didFailure:error];
                     }];
                 }
             }
@@ -237,9 +239,9 @@
             if (self.downloadLength >= self.length)
             {
                 self.didFinishDownload = YES;
-                if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
-                    [KTVHCDataCallback commonCallbackWithBlock:^{
-                        [self.networkSourceDelegate networkSourceDidFinishDownload:self];
+                if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
+                    [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                        [self.delegate networkSourceDidFinishDownload:self];
                     }];
                 }
             }
@@ -270,9 +272,9 @@
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
         self.responseHeaderFields = response.allHeaderFields;
         self.didFinishPrepare = YES;
-        if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishPrepare:)]) {
-            [KTVHCDataCallback commonCallbackWithBlock:^{
-                [self.networkSourceDelegate networkSourceDidFinishPrepare:self];
+        if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishPrepare:)]) {
+            [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                [self.delegate networkSourceDidFinishPrepare:self];
             }];
         }
         return YES;

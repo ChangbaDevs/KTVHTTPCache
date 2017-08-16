@@ -56,6 +56,23 @@
     }
 }
 
+- (void)setAllSourceDelegate:(id <KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
+{
+    for (id <KTVHCDataSourceProtocol> obj in self.totalSources)
+    {
+        if ([obj isKindOfClass:[KTVHCDataFileSource class]])
+        {
+            KTVHCDataFileSource * source = (KTVHCDataFileSource *)obj;
+            [source setDelegate:delegate delegateQueue:delegateQueue];
+        }
+        else if ([obj isKindOfClass:[KTVHCDataNetworkSource class]])
+        {
+            KTVHCDataNetworkSource * source = (KTVHCDataNetworkSource *)obj;
+            [source setDelegate:delegate delegateQueue:delegateQueue];
+        }
+    }
+}
+
 - (void)sortSources
 {
     [self.totalSources sortUsingComparator:^NSComparisonResult(id <KTVHCDataSourceProtocol> obj1, id <KTVHCDataSourceProtocol> obj2) {

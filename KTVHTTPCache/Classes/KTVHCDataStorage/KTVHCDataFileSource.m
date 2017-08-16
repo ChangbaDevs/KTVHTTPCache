@@ -26,10 +26,11 @@
 
 #pragma mark - Setter
 
-@property (nonatomic, weak) id <KTVHCDataFileSourceDelegate> fileSourceDelegate;
-
 @property (nonatomic, assign) long long startOffset;
 @property (nonatomic, assign) long long needReadLength;
+
+@property (nonatomic, weak) id <KTVHCDataFileSourceDelegate> delegate;
+@property (nonatomic, strong) dispatch_queue_t delegateQueue;
 
 
 #pragma mark - File
@@ -41,23 +42,20 @@
 
 @implementation KTVHCDataFileSource
 
-+ (instancetype)sourceWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
-                          filePath:(NSString *)filePath
++ (instancetype)sourceWithFilePath:(NSString *)filePath
                             offset:(long long)offset
                             length:(long long)length
                        startOffset:(long long)startOffset
                     needReadLength:(long long)needReadLength
 {
-    return [[self alloc] initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
-                                 filePath:filePath
+    return [[self alloc] initWithFilePath:filePath
                                    offset:offset
                                      length:length
                               startOffset:startOffset
                              needReadLength:needReadLength];
 }
 
-- (instancetype)initWithDelegate:(id <KTVHCDataFileSourceDelegate>)delegate
-                        filePath:(NSString *)filePath
+- (instancetype)initWithFilePath:(NSString *)filePath
                           offset:(long long)offset
                           length:(long long)length
                      startOffset:(long long)startOffset
@@ -65,7 +63,6 @@
 {
     if (self = [super init])
     {
-        self.fileSourceDelegate = delegate;
         self.filePath = filePath;
         self.offset = offset;
         self.length = length;
@@ -73,6 +70,12 @@
         self.needReadLength = needReadLength;
     }
     return self;
+}
+
+- (void)setDelegate:(id <KTVHCDataFileSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
+{
+    self.delegate = delegate;
+    self.delegateQueue = delegateQueue;
 }
 
 - (void)prepare
@@ -84,9 +87,9 @@
     
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
     [self.readingHandle seekToFileOffset:self.startOffset];
-    if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
-            [self.fileSourceDelegate fileSourceDidFinishPrepare:self];
+    if ([self.delegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            [self.delegate fileSourceDidFinishPrepare:self];
         }];
     }
 }
@@ -130,9 +133,9 @@
     self.readingHandle = nil;
 
     self.didFinishRead = YES;
-    if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishRead:)]) {
-        [KTVHCDataCallback commonCallbackWithBlock:^{
-            [self.fileSourceDelegate fileSourceDidFinishRead:self];
+    if ([self.delegate respondsToSelector:@selector(fileSourceDidFinishRead:)]) {
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            [self.delegate fileSourceDidFinishRead:self];
         }];
     }
 }

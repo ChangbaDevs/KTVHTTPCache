@@ -26,8 +26,6 @@
 
 + (instancetype)unitWithURLString:(NSString *)URLString;
 
-@property (nonatomic, weak) id <KTVHCDataUnitDelegate> delegate;
-
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
@@ -45,6 +43,14 @@
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem;
 - (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields;
 - (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields;
+
+
+#pragma mark - Delegate
+
+@property (nonatomic, weak, readonly) id <KTVHCDataUnitDelegate> delegate;
+@property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
+
+- (void)setDelegate:(id <KTVHCDataUnitDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
 
 #pragma mark - Working State

@@ -21,14 +21,15 @@
 
 @end
 
-@interface KTVHCDataSourcer : NSObject <KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>
+@interface KTVHCDataSourcer : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate;
++ (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
 @property (nonatomic, weak, readonly) id <KTVHCDataSourcerDelegate> delegate;
+@property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
 
 @property (nonatomic, strong, readonly) NSError * error;
 
