@@ -40,7 +40,7 @@
 @property (nonatomic, strong, readonly) NSDictionary * headerFieldsWithoutRangeAndLengt;
 
 - (void)prepare;
-- (void)close;      // Must Call.
+- (void)close;      // must call.
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
 
