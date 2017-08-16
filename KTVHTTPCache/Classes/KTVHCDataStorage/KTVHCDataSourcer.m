@@ -55,7 +55,7 @@
     [self.sourceQueue putSource:source];
 }
 
-- (void)putSourceDidFinish
+- (void)sortAndFetchSources
 {
     [self.sourceQueue sortSources];
     self.currentSource = [self.sourceQueue fetchFirstSource];
@@ -72,6 +72,7 @@
     }
     self.didCallPrepare = YES;
     
+    [self sortAndFetchSources];
     [self.currentSource prepare];
     if (self.currentSource != self.currentNetworkSource) {
         [self.currentNetworkSource prepare];

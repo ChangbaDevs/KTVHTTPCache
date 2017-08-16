@@ -56,12 +56,11 @@
         self.unit.delegate = self;
         self.request = request;
         self.workingDelegate = workingDelegate;
-        [self setupSourcer];
     }
     return self;
 }
 
-- (void)setupSourcer
+- (void)setupAndPrepareSourcer
 {
     self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self];
     
@@ -176,7 +175,7 @@
         [self.sourcer putSource:obj];
     }
     
-    [self.sourcer putSourceDidFinish];
+    [self.sourcer prepare];
 }
 
 - (void)prepare
@@ -189,7 +188,7 @@
     }
     self.didCallPrepare = YES;
     
-    [self.sourcer prepare];
+    [self setupAndPrepareSourcer];
 }
 
 - (void)close

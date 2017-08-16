@@ -37,7 +37,6 @@
 @property (nonatomic, assign, readonly) BOOL didFinishRead;
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source;
-- (void)putSourceDidFinish;
 
 - (void)prepare;
 - (void)close;
