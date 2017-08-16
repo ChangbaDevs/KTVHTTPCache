@@ -201,7 +201,7 @@
     
     self.needCallHasAvailableData = NO;
     if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.networkSourceDelegate networkSourceHasAvailableData:self];
         }];
     }
@@ -226,7 +226,7 @@
             if (self.error.code != NSURLErrorCancelled || self.errorCanceled)
             {
                 if ([self.networkSourceDelegate respondsToSelector:@selector(networkSource:didFailure:)]) {
-                    [KTVHCDataCallback callbackWithBlock:^{
+                    [KTVHCDataCallback commonCallbackWithBlock:^{
                         [self.networkSourceDelegate networkSource:self didFailure:error];
                     }];
                 }
@@ -238,7 +238,7 @@
             {
                 self.didFinishDownload = YES;
                 if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
-                    [KTVHCDataCallback callbackWithBlock:^{
+                    [KTVHCDataCallback commonCallbackWithBlock:^{
                         [self.networkSourceDelegate networkSourceDidFinishDownload:self];
                     }];
                 }
@@ -271,7 +271,7 @@
         self.responseHeaderFields = response.allHeaderFields;
         self.didFinishPrepare = YES;
         if ([self.networkSourceDelegate respondsToSelector:@selector(networkSourceDidFinishPrepare:)]) {
-            [KTVHCDataCallback callbackWithBlock:^{
+            [KTVHCDataCallback commonCallbackWithBlock:^{
                 [self.networkSourceDelegate networkSourceDidFinishPrepare:self];
             }];
         }

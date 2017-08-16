@@ -146,7 +146,7 @@
     {
         _totalContentLength = totalContentLength;
         if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
-            [KTVHCDataCallback callbackWithBlock:^{
+            [KTVHCDataCallback commonCallbackWithBlock:^{
                 [self.delegate unitDidUpdateTotalContentLength:self];
             }];
         }

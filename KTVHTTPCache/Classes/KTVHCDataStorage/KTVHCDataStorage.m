@@ -13,7 +13,6 @@
 @interface KTVHCDataStorage () <KTVHCDataReaderWorkingDelegate>
 
 @property (nonatomic, strong) NSCondition * condition;
-@property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * workingUnits;
 @property (nonatomic, strong) NSOperationQueue * operationQueue;
 
 @end
@@ -35,7 +34,6 @@
     if (self = [super init])
     {
         self.condition = [[NSCondition alloc] init];
-        self.workingUnits = [NSMutableArray array];
         self.operationQueue = [[NSOperationQueue alloc] init];
         self.operationQueue.maxConcurrentOperationCount = 1;
     }
@@ -78,13 +76,12 @@
     
     if (!concurrent)
     {
-        while ([self.workingUnits containsObject:unit]) {
+        while (unit.working) {
             [self.condition wait];
         }
     }
     
     [unit workingRetain];
-    [self.workingUnits addObject:unit];
     [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
                                                        request:request
@@ -140,10 +137,7 @@
     [reader.unit workingRelease];
     if (!reader.unit.working)
     {
-        if ([self.workingUnits containsObject:reader.unit]) {
-            [self.workingUnits removeObject:reader.unit];
-            [self.condition signal];
-        }
+        [self.condition signal];
     }
     [self.condition unlock];
 }

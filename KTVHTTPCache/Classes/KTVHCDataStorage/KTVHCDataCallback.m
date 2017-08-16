@@ -10,28 +10,47 @@
 
 @implementation KTVHCDataCallback
 
-+ (void)callbackWithBlock:(void (^)())block
++ (void)workingCallbackWithBlock:(void (^)())block
+{
+    static dispatch_queue_t workingQueue = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        workingQueue = dispatch_queue_create("KTVHCDataCallback_workingQueue", DISPATCH_QUEUE_SERIAL);
+    });
+    
+    [self callbackWithQueue:workingQueue block:block aync:YES];
+}
+
++ (void)commonCallbackWithBlock:(void (^)())block
+{
+    static dispatch_queue_t commonQueue = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        commonQueue = dispatch_queue_create("KTVHCDataCallback_commonQueue", DISPATCH_QUEUE_SERIAL);
+    });
+    
+    [self callbackWithQueue:commonQueue block:block aync:YES];
+}
+
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block aync:(BOOL)async
 {
     if (!block) {
         return;
     }
     
-    static NSLock * lock = nil;
-    static dispatch_queue_t queue = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        lock = [[NSLock alloc] init];
-        queue = dispatch_queue_create("KTVHCDataCallbackQueue", DISPATCH_QUEUE_SERIAL);
-    });
-    
-    [lock lock];
-    dispatch_async(queue, ^{
-        if (block) {
-            block();
-        }
-    });
-    [lock unlock];
+    if (async) {
+        dispatch_async(queue, ^{
+            if (block) {
+                block();
+            }
+        });
+    } else {
+        dispatch_sync(queue, ^{
+            if (block) {
+                block();
+            }
+        });
+    }
 }
 
 @end

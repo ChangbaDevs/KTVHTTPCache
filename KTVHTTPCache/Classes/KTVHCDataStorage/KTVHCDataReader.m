@@ -28,7 +28,6 @@
 @property (nonatomic, assign) BOOL didFinishRead;
 
 @property (nonatomic, assign) BOOL stopWorkingCallbackToken;
-@property (nonatomic, assign) BOOL startWorkingCallbackToken;
 
 @property (nonatomic, assign) long long currentContentLength;
 @property (nonatomic, assign) long long readedContentLength;
@@ -57,7 +56,6 @@
         self.unit.delegate = self;
         self.request = request;
         self.workingDelegate = workingDelegate;
-        [self callbackForStartWorking];
         [self setupSourcer];
     }
     return self;
@@ -262,24 +260,10 @@
         }
         self.didFinishPrepare = YES;
         if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {
-            [KTVHCDataCallback callbackWithBlock:^{
+            [KTVHCDataCallback commonCallbackWithBlock:^{
                 [self.delegate readerDidFinishPrepare:self];
             }];
         }
-    }
-}
-
-- (void)callbackForStartWorking
-{
-    if (self.startWorkingCallbackToken) {
-        return;
-    }
-    
-    self.startWorkingCallbackToken = YES;
-    if ([self.workingDelegate respondsToSelector:@selector(readerDidStartWorking:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
-            [self.workingDelegate readerDidStartWorking:self];
-        }];
     }
 }
 
@@ -291,7 +275,7 @@
     
     self.stopWorkingCallbackToken = YES;
     if ([self.workingDelegate respondsToSelector:@selector(readerDidStopWorking:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback workingCallbackWithBlock:^{
             [self.workingDelegate readerDidStopWorking:self];
         }];
     }
@@ -311,7 +295,7 @@
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
 {
     if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.delegate readerHasAvailableData:self];
         }];
     }
@@ -326,7 +310,7 @@
 {
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(reader:didFailure:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.delegate reader:self didFailure:self.error];
         }];
     }

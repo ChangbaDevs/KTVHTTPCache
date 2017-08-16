@@ -85,7 +85,7 @@
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
     [self.readingHandle seekToFileOffset:self.startOffset];
     if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.fileSourceDelegate fileSourceDidFinishPrepare:self];
         }];
     }
@@ -131,7 +131,7 @@
 
     self.didFinishRead = YES;
     if ([self.fileSourceDelegate respondsToSelector:@selector(fileSourceDidFinishRead:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.fileSourceDelegate fileSourceDidFinishRead:self];
         }];
     }

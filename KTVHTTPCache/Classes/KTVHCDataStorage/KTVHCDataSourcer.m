@@ -126,7 +126,7 @@
     
     self.didFinishPrepare = YES;
     if ([self.delegate respondsToSelector:@selector(sourcerDidFinishPrepare:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.delegate sourcerDidFinishPrepare:self];
         }];
     }
@@ -136,7 +136,7 @@
 {
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(sourcer:didFailure:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.delegate sourcer:self didFailure:self.error];
         }];
     }
@@ -156,7 +156,7 @@
 - (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource
 {
     if ([self.delegate respondsToSelector:@selector(sourcerHasAvailableData:)]) {
-        [KTVHCDataCallback callbackWithBlock:^{
+        [KTVHCDataCallback commonCallbackWithBlock:^{
             [self.delegate sourcerHasAvailableData:self];
         }];
     }

@@ -20,7 +20,6 @@
 @protocol KTVHCDataReaderWorkingDelegate <NSObject>
 
 @optional
-- (void)readerDidStartWorking:(KTVHCDataReader *)reader;
 - (void)readerDidStopWorking:(KTVHCDataReader *)reader;
 
 @end

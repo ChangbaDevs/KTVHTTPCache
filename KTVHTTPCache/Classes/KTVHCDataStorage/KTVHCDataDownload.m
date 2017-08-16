@@ -64,7 +64,7 @@
 {
     [self.lock lock];
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
-    [KTVHCDataCallback callbackWithBlock:^{
+    [KTVHCDataCallback commonCallbackWithBlock:^{
         [delegate download:self didCompleteWithError:error];
     }];
     [self.delegateDictionary removeObjectForKey:task];
@@ -75,7 +75,7 @@
 {
     [self.lock lock];
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
-    [KTVHCDataCallback callbackWithBlock:^{
+    [KTVHCDataCallback commonCallbackWithBlock:^{
         BOOL result = [delegate download:self didReceiveResponse:(NSHTTPURLResponse *)response];
         completionHandler(result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel);
     }];
@@ -86,7 +86,7 @@
 {
     [self.lock lock];
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
-    [KTVHCDataCallback callbackWithBlock:^{
+    [KTVHCDataCallback commonCallbackWithBlock:^{
         [delegate download:self didReceiveData:data];
     }];
     [self.lock unlock];

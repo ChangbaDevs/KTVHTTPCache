@@ -13,6 +13,7 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (void)callbackWithBlock:(void(^)())block;
++ (void)workingCallbackWithBlock:(void (^)())block;
++ (void)commonCallbackWithBlock:(void (^)())block;
 
 @end
