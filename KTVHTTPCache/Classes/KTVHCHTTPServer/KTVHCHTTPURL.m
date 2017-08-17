@@ -86,7 +86,12 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
     [params enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         [mutableString appendString:[NSString stringWithFormat:@"%@=%@&", key, obj]];
     }];
-    return [mutableString substringToIndex:mutableString.length - 1];
+    
+    NSString * result = [mutableString substringToIndex:mutableString.length - 1];
+    
+    KTVHCLogHTTPURL(@"proxy url, %@", result);
+    
+    return result;
 }
 
 - (NSInteger)listeningPort
