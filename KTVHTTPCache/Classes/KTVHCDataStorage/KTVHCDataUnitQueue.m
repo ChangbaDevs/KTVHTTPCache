@@ -39,6 +39,7 @@
         if (!self.unitArray) {
             self.unitArray = [NSMutableArray array];
         }
+        KTVHCLogDataUnitQueue(@"init unit count, %lu", self.unitArray.count);
     }
     return self;
 }
@@ -104,6 +105,9 @@
 - (void)archive
 {
     [self.lock lock];
+    
+    KTVHCLogDataUnitQueue(@"archive, %lu", self.unitArray.count);
+    
     [NSKeyedArchiver archiveRootObject:self.unitArray toFile:self.archiverPath];
     [self.lock unlock];
 }
