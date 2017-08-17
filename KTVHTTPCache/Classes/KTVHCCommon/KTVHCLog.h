@@ -88,6 +88,6 @@
 @interface KTVHCLog : NSObject
 
 + (void)setLogEnable:(BOOL)enable;
-+ (BOOL)logEnable;                          // default is YES.
++ (BOOL)logEnable;                          // default is NO.
 
 @end
