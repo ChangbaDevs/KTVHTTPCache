@@ -11,6 +11,7 @@
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataCallback.h"
 #import "KTVHCDownload.h"
+#import "KTVHCError.h"
 #import "KTVHCLog.h"
 
 
@@ -39,6 +40,7 @@
 
 @property (nonatomic, strong) NSError * error;
 @property (nonatomic, assign) BOOL errorCanceled;
+@property (nonatomic, copy) NSHTTPURLResponse * errorResponse;
 
 @property (nonatomic, assign) BOOL didClose;
 @property (nonatomic, assign) BOOL didCallPrepare;
@@ -259,6 +261,13 @@
             {
                 KTVHCLogDataNetworkSource(@"complete by error, %@, %ld",  self.URLString, error.code);
                 
+                if (self.errorCanceled && self.errorResponse) {
+                    NSError * obj = [KTVHCError errorForResponseUnavailable:self.URLString response:self.errorResponse];
+                    if (obj) {
+                        self.error = obj;
+                    }
+                }
+                
                 if ([self.delegate respondsToSelector:@selector(networkSource:didFailure:)]) {
                     [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                         [self.delegate networkSource:self didFailure:error];
@@ -327,6 +336,7 @@
     KTVHCLogDataNetworkSource(@"receive response without Content-Range\n%@\n%@\n%@", self.URLString, response.URL.absoluteString, response.allHeaderFields);
     
     self.errorCanceled = YES;
+    self.errorResponse = response;
     return NO;
 }
 
