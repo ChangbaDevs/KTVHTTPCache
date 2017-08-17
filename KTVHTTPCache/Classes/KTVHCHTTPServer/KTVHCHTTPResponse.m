@@ -68,7 +68,13 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     NSData * data = [self.reader readDataOfLength:length];
+    
+    KTVHCLogHTTPResponse(@"read data length, %@, %lu", self.dataRequest.URLString, data.length);
+    
     if (self.reader.didFinishRead) {
+        
+        KTVHCLogHTTPResponse(@"read data finished, %@", self.dataRequest.URLString);
+        
         [self.reader close];
         [self.connection responseDidAbort:self];
     }
@@ -79,16 +85,23 @@
 {
     BOOL waiting = !self.reader.didFinishPrepare;
     self.waitingResponseHeader = waiting;
+    
+    KTVHCLogHTTPResponse(@"delay response, %d", self.waitingResponseHeader);
+    
     return waiting;
 }
 
 - (UInt64)contentLength
 {
+    KTVHCLogHTTPResponse(@"conetnt length, %lld", self.reader.totalContentLength);
+    
     return self.reader.totalContentLength;
 }
 
 - (NSDictionary *)httpHeaders
 {
+    KTVHCLogHTTPResponse(@"header fields\n%@", self.reader.headerFieldsWithoutRangeAndLengt);
+    
     return self.reader.headerFieldsWithoutRangeAndLengt;
 }
 
@@ -117,11 +130,15 @@
 
 - (void)readerHasAvailableData:(KTVHCDataReader *)reader
 {
+    KTVHCLogHTTPResponse(@"has available data, %@", self.dataRequest.URLString);
+    
     [self.connection responseHasAvailableData:self];
 }
 
 - (void)readerDidFinishPrepare:(KTVHCDataReader *)reader
 {
+    KTVHCLogHTTPResponse(@"prepare finished, %@", self.dataRequest.URLString);
+    
     if (self.reader.didFinishPrepare && self.waitingResponseHeader == YES) {
         [self.connection responseHasAvailableData:self];
     }
@@ -129,6 +146,8 @@
 
 - (void)reader:(KTVHCDataReader *)reader didFailure:(NSError *)error
 {
+    KTVHCLogHTTPResponse(@"failure, %@, %ld", self.dataRequest.URLString, error.code);
+    
     [self.reader close];
     [self.connection responseDidAbort:self];
 }
