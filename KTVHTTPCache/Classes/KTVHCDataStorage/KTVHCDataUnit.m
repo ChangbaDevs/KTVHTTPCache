@@ -108,6 +108,8 @@
         [removeArray removeAllObjects];
         [self sortUnitItems];
     }
+    
+    KTVHCLogDataUnit(@"prepare result, %@, %ld", self.URLString, self.unitItems.count);
 }
 
 - (void)sortUnitItems
@@ -134,12 +136,17 @@
     [self lock];
     [self.unitItems addObject:unitItem];
     [self sortUnitItems];
+    
+    KTVHCLogDataUnit(@"insert unit item, %lld", unitItem.offset);
+    
     [self unlock];
 }
 
 - (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
 {
     self.requestHeaderFields = requestHeaderFields;
+    
+    KTVHCLogDataUnit(@"update request\n%@", self.requestHeaderFields);
 }
 
 - (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
@@ -151,6 +158,8 @@
     if (contentRange.length > 0 && range.location != NSNotFound) {
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
     }
+    
+    KTVHCLogDataUnit(@"update response\n%@", self.responseHeaderFields);
 }
 
 
@@ -161,6 +170,9 @@
     if (_totalContentLength != totalContentLength)
     {
         _totalContentLength = totalContentLength;
+        
+        KTVHCLogDataUnit(@"set total content length, %lld", totalContentLength);
+        
         if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 [self.delegate unitDidUpdateTotalContentLength:self];
@@ -225,6 +237,9 @@
 {
     [self lock];
     self.workingCount++;
+    
+    KTVHCLogDataUnit(@"working retain, %@, %ld", self.URLString, self.workingCount);
+    
     [self unlock];
 }
 
@@ -232,6 +247,9 @@
 {
     [self lock];
     self.workingCount--;
+    
+    KTVHCLogDataUnit(@"working release, %@, %ld", self.URLString, self.workingCount);
+    
     [self unlock];
 }
 
