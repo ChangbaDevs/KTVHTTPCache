@@ -56,28 +56,28 @@
 
 // HTTP Server
 
-#define KTVHCLogHTTPServer(...)             KTVHCLog(@"KTVHCHTTPServer",        KTVHCLogHTTPServerEnable,        ##__VA_ARGS__)
-#define KTVHCLogHTTPConnection(...)         KTVHCLog(@"KTVHCHTTPConnection",    KTVHCLogHTTPConnectionEnable,    ##__VA_ARGS__)
-#define KTVHCLogHTTPRequest(...)            KTVHCLog(@"KTVHCHTTPRequest",       KTVHCLogHTTPRequestEnable,       ##__VA_ARGS__)
-#define KTVHCLogHTTPResponse(...)           KTVHCLog(@"KTVHCHTTPResponse",      KTVHCLogHTTPResponseEnable,      ##__VA_ARGS__)
-#define KTVHCLogHTTPURL(...)                KTVHCLog(@"KTVHCHTTPURL",           KTVHCLogHTTPURLEnable,           ##__VA_ARGS__)
+#define KTVHCLogHTTPServer(...)             KTVHCLog(@"KTVHCHTTPServer       ", KTVHCLogHTTPServerEnable,        ##__VA_ARGS__)
+#define KTVHCLogHTTPConnection(...)         KTVHCLog(@"KTVHCHTTPConnection   ", KTVHCLogHTTPConnectionEnable,    ##__VA_ARGS__)
+#define KTVHCLogHTTPRequest(...)            KTVHCLog(@"KTVHCHTTPRequest      ", KTVHCLogHTTPRequestEnable,       ##__VA_ARGS__)
+#define KTVHCLogHTTPResponse(...)           KTVHCLog(@"KTVHCHTTPResponse     ", KTVHCLogHTTPResponseEnable,      ##__VA_ARGS__)
+#define KTVHCLogHTTPURL(...)                KTVHCLog(@"KTVHCHTTPURL          ", KTVHCLogHTTPURLEnable,           ##__VA_ARGS__)
 
 // Data Storage
 
-#define KTVHCLogDataStorage(...)            KTVHCLog(@"KTVHCDataStorage",       KTVHCLogDataStorageEnable,       ##__VA_ARGS__)
-#define KTVHCLogDataRequest(...)            KTVHCLog(@"KTVHCDataRequest",       KTVHCLogDataRequestEnable,       ##__VA_ARGS__)
-#define KTVHCLogDataReader(...)             KTVHCLog(@"KTVHCDataReader",        KTVHCLogDataReaderEnable,        ##__VA_ARGS__)
+#define KTVHCLogDataStorage(...)            KTVHCLog(@"KTVHCDataStorage      ", KTVHCLogDataStorageEnable,       ##__VA_ARGS__)
+#define KTVHCLogDataRequest(...)            KTVHCLog(@"KTVHCDataRequest      ", KTVHCLogDataRequestEnable,       ##__VA_ARGS__)
+#define KTVHCLogDataReader(...)             KTVHCLog(@"KTVHCDataReader       ", KTVHCLogDataReaderEnable,        ##__VA_ARGS__)
 
-#define KTVHCLogDataUnit(...)               KTVHCLog(@"KTVHCDataUnit",          KTVHCLogDataUnitEnable,          ##__VA_ARGS__)
-#define KTVHCLogDataUnitItem(...)           KTVHCLog(@"KTVHCDataUnitItem",      KTVHCLogDataUnitItemEnable,      ##__VA_ARGS__)
-#define KTVHCLogDataUnitPool(...)           KTVHCLog(@"KTVHCDataUnitPool",      KTVHCLogDataUnitPoolEnable,      ##__VA_ARGS__)
-#define KTVHCLogDataUnitQueue(...)          KTVHCLog(@"KTVHCDataUnitQueue",     KTVHCLogDataUnitQueueEnable,     ##__VA_ARGS__)
+#define KTVHCLogDataUnit(...)               KTVHCLog(@"KTVHCDataUnit         ", KTVHCLogDataUnitEnable,          ##__VA_ARGS__)
+#define KTVHCLogDataUnitItem(...)           KTVHCLog(@"KTVHCDataUnitItem     ", KTVHCLogDataUnitItemEnable,      ##__VA_ARGS__)
+#define KTVHCLogDataUnitPool(...)           KTVHCLog(@"KTVHCDataUnitPool     ", KTVHCLogDataUnitPoolEnable,      ##__VA_ARGS__)
+#define KTVHCLogDataUnitQueue(...)          KTVHCLog(@"KTVHCDataUnitQueue    ", KTVHCLogDataUnitQueueEnable,     ##__VA_ARGS__)
 
-#define KTVHCLogDataSourcer(...)            KTVHCLog(@"KTVHCDataSourcer",       KTVHCLogDataSourcerEnable,       ##__VA_ARGS__)
-#define KTVHCLogDataSourceQueue(...)        KTVHCLog(@"KTVHCDataSourceQueue",   KTVHCLogDataSourceQueueEnable,   ##__VA_ARGS__)
-#define KTVHCLogDataFileSource(...)         KTVHCLog(@"KTVHCDataFileSource",    KTVHCLogDataFileSourceEnable,    ##__VA_ARGS__)
+#define KTVHCLogDataSourcer(...)            KTVHCLog(@"KTVHCDataSourcer      ", KTVHCLogDataSourcerEnable,       ##__VA_ARGS__)
+#define KTVHCLogDataSourceQueue(...)        KTVHCLog(@"KTVHCDataSourceQueue  ", KTVHCLogDataSourceQueueEnable,   ##__VA_ARGS__)
+#define KTVHCLogDataFileSource(...)         KTVHCLog(@"KTVHCDataFileSource   ", KTVHCLogDataFileSourceEnable,    ##__VA_ARGS__)
 #define KTVHCLogDataNetworkSource(...)      KTVHCLog(@"KTVHCDataNetworkSource", KTVHCLogDataNetworkSourceEnable, ##__VA_ARGS__)
-#define KTVHCLogDataDownload(...)           KTVHCLog(@"KTVHCDataDownload",      KTVHCLogDataDownloadEnable,      ##__VA_ARGS__)
+#define KTVHCLogDataDownload(...)           KTVHCLog(@"KTVHCDataDownload     ", KTVHCLogDataDownloadEnable,      ##__VA_ARGS__)
 
 // Alloc & Dealloc
 
