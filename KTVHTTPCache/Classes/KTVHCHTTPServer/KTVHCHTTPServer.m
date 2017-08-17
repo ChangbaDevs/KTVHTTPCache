@@ -10,6 +10,7 @@
 #import "KTVHCHTTPURL.h"
 #import "KTVHCHTTPConnection.h"
 #import <CocoaHTTPServer/CocoaHTTPServer.h>
+#import "KTVHCLog.h"
 
 
 @interface KTVHCHTTPServer ()
@@ -58,6 +59,9 @@
     [self.coreHTTPServer start:&tempError];
     if (tempError) {
         * error = tempError;
+        KTVHCLogHTTPServer(@"start server failure : %@", tempError);
+    } else {
+        KTVHCLogHTTPServer(@"start server success");
     }
 }
 
@@ -65,6 +69,7 @@
 {
     if (self.running) {
         [self.coreHTTPServer stop];
+        KTVHCLogHTTPServer(@"stop server");
     }
 }
 
