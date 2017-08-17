@@ -81,7 +81,7 @@
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
 {
     [self.lock lock];
-    KTVHCLogDataDownload(@"receive response : %@", response.URL.absoluteString);
+    KTVHCLogDataDownload(@"receive response\n%@\n%@", response.URL.absoluteString, [(NSHTTPURLResponse *)response allHeaderFields]);
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     BOOL result = [delegate download:self didReceiveResponse:(NSHTTPURLResponse *)response];
     completionHandler(result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel);
