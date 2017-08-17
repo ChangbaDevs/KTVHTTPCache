@@ -41,6 +41,8 @@
 
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
+    KTVHCLogHTTPConnection(@"receive request, %@, %@", method, path);
+    
     KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithURIString:path];
     
     self.currentRequest = [KTVHCHTTPRequest requestWithOriginalURLString:url.originalURLString];
