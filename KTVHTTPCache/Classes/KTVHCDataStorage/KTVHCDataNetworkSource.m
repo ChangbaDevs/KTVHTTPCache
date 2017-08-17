@@ -7,14 +7,14 @@
 //
 
 #import "KTVHCDataNetworkSource.h"
-#import "KTVHCDataDownload.h"
 #import "KTVHCPathTools.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCDownload.h"
 #import "KTVHCLog.h"
 
 
-@interface KTVHCDataNetworkSource () <KTVHCDataDownloadDelegate>
+@interface KTVHCDataNetworkSource () <KTVHCDownloadDelegate>
 
 
 #pragma mark - Protocol
@@ -131,9 +131,8 @@
     } else {
         [request setValue:[NSString stringWithFormat:@"bytes=%lld-%lld", self.offset, self.offset + self.length - 1] forHTTPHeaderField:@"Range"];
     }
-    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
-    self.downloadTask = [[KTVHCDataDownload download] downloadWithRequest:request delegate:self];
+    self.downloadTask = [[KTVHCDownload download] downloadWithRequest:request delegate:self];
 }
 
 - (void)close
@@ -237,9 +236,9 @@
 }
 
 
-#pragma mark - KTVHCDataDownloadDelegate
+#pragma mark - KTVHCDownloadDelegate
 
-- (void)download:(KTVHCDataDownload *)download didCompleteWithError:(NSError *)error
+- (void)download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error
 {
     [self.lock lock];
     
@@ -295,7 +294,7 @@
     [self.lock unlock];
 }
 
-- (BOOL)download:(KTVHCDataDownload *)download didReceiveResponse:(NSHTTPURLResponse *)response
+- (BOOL)download:(KTVHCDownload *)download didReceiveResponse:(NSHTTPURLResponse *)response
 {
     [[KTVHCDataUnitPool unitPool] unit:self.URLString updateResponseHeaderFields:response.allHeaderFields];
     
@@ -331,7 +330,7 @@
     return NO;
 }
 
-- (void)download:(KTVHCDataDownload *)download didReceiveData:(NSData *)data
+- (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data
 {
     if (self.didClose) {
         return;

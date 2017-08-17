@@ -36,7 +36,10 @@
 #define KTVHCLogDataSourceQueueEnable       YES
 #define KTVHCLogDataFileSourceEnable        YES
 #define KTVHCLogDataNetworkSourceEnable     YES
-#define KTVHCLogDataDownloadEnable          YES
+
+// Download
+
+#define KTVHCLogDownloadEnable          YES
 
 // Alloc & Dealloc
 
@@ -77,7 +80,10 @@
 #define KTVHCLogDataSourceQueue(...)        KTVHCLog(@"KTVHCDataSourceQueue  ", KTVHCLogDataSourceQueueEnable,   ##__VA_ARGS__)
 #define KTVHCLogDataFileSource(...)         KTVHCLog(@"KTVHCDataFileSource   ", KTVHCLogDataFileSourceEnable,    ##__VA_ARGS__)
 #define KTVHCLogDataNetworkSource(...)      KTVHCLog(@"KTVHCDataNetworkSource", KTVHCLogDataNetworkSourceEnable, ##__VA_ARGS__)
-#define KTVHCLogDataDownload(...)           KTVHCLog(@"KTVHCDataDownload     ", KTVHCLogDataDownloadEnable,      ##__VA_ARGS__)
+
+// Download
+
+#define KTVHCLogDownload(...)               KTVHCLog(@"KTVHCDownload         ", KTVHCLogDownloadEnable,          ##__VA_ARGS__)
 
 // Alloc & Dealloc
 

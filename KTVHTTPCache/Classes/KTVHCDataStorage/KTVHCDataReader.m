@@ -202,7 +202,7 @@
     }
     self.didCallPrepare = YES;
     
-    KTVHCLogDataReader(@"call reader\n%@\n%@", self.unit.URLString, self.request.headerFields);
+    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.headerFields);
     
     [self setupAndPrepareSourcer];
 }
