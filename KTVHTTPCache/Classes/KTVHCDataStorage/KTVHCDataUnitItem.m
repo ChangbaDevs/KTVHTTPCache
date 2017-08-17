@@ -80,6 +80,9 @@
 {
     [self lock];
     _length = length;
+    
+    KTVHCLogDataUnitItem(@"set length, %lld", length);
+    
     [self unlock];
 }
 
