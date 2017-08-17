@@ -9,6 +9,7 @@
 #import "KTVHTTPCacheImp.h"
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
+#import "KTVHCDownload.h"
 #import "KTVHCLog.h"
 
 @implementation KTVHTTPCache
@@ -84,6 +85,19 @@
 + (void)cacheMergeCacheWtihURLString:(NSString *)URLString
 {
     [[KTVHCDataStorage manager] mergeCacheWithURLString:URLString];
+}
+
+
+#pragma mark - Download
+
++ (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval
+{
+    [KTVHCDownload download].timeoutInterval = timeoutInterval;
+}
+
++ (NSTimeInterval)downloadTimeoutInterval
+{
+    return [KTVHCDownload download].timeoutInterval;
 }
 
 

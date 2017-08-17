@@ -51,6 +51,12 @@
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
 
 
+#pragma mark - Download
+
++ (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval;
++ (NSTimeInterval)downloadTimeoutInterval;
+
+
 #pragma mark - Log
 
 + (void)setLogEnable:(BOOL)enable;
