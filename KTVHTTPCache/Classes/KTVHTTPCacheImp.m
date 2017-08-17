@@ -9,6 +9,7 @@
 #import "KTVHTTPCacheImp.h"
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
+#import "KTVHCLog.h"
 
 @implementation KTVHTTPCache
 
@@ -83,6 +84,19 @@
 + (void)cacheMergeCacheWtihURLString:(NSString *)URLString
 {
     [[KTVHCDataStorage manager] mergeCacheWithURLString:URLString];
+}
+
+
+#pragma mark - Log
+
++ (void)setLogEnable:(BOOL)enable
+{
+    [KTVHCLog setLogEnable:enable];
+}
+
++ (BOOL)logEnable
+{
+    return [KTVHCLog logEnable];
 }
 
 

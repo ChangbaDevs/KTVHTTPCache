@@ -50,4 +50,10 @@
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
 
 
+#pragma mark - Log
+
++ (void)setLogEnable:(BOOL)enable;
++ (BOOL)logEnable;                      // default is YES;
+
+
 @end

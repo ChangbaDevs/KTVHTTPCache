@@ -10,4 +10,16 @@
 
 @implementation KTVHCLog
 
+static BOOL logEnable = YES;
+
++ (void)setLogEnable:(BOOL)enable
+{
+    logEnable = enable;
+}
+
++ (BOOL)logEnable
+{
+    return logEnable;
+}
+
 @end
