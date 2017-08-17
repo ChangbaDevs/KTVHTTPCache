@@ -49,7 +49,7 @@
  */
 
 #if DEBUG
-#define KTVHCLog(target, enable, ...)       if (enable && [KTVHCLog logEnable]) {NSLog(@"%@ : %@", target, [NSString stringWithFormat:__VA_ARGS__]);}
+#define KTVHCLog(target, enable, ...)       if (enable && [KTVHCLog logEnable]) {NSLog(@"%@  :   %@", target, [NSString stringWithFormat:__VA_ARGS__]);}
 #else
 #define KTVHCLog(target, enable, ...)
 #endif
