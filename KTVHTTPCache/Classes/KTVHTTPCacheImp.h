@@ -54,7 +54,7 @@
 #pragma mark - Log
 
 + (void)setLogEnable:(BOOL)enable;
-+ (BOOL)logEnable;                      // default is YES;
++ (BOOL)logEnable;                      // default is YES.
 
 
 @end

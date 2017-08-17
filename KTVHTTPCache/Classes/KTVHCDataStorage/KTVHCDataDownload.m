@@ -8,6 +8,7 @@
 
 #import "KTVHCDataDownload.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCLog.h"
 
 
 @interface KTVHCDataDownload () <NSURLSessionDataDelegate>
@@ -56,6 +57,7 @@
 - (NSURLSessionDataTask *)downloadWithRequest:(NSURLRequest *)request delegate:(id<KTVHCDataDownloadDelegate>)delegate
 {
     [self.lock lock];
+    KTVHCLogDataDownload(@"add download\n%@\n%@", request.URL.absoluteString, request.allHTTPHeaderFields);
     NSURLSessionDataTask * task = [self.session dataTaskWithRequest:request];
     [self.delegateDictionary setObject:delegate forKey:task];
     [task resume];
@@ -69,6 +71,7 @@
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
     [self.lock lock];
+    KTVHCLogDataDownload(@"complete : %@, %ld", task.originalRequest.URL.absoluteString, error.code);
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
     [delegate download:self didCompleteWithError:error];
     [self.delegateDictionary removeObjectForKey:task];
@@ -78,6 +81,7 @@
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
 {
     [self.lock lock];
+    KTVHCLogDataDownload(@"receive response : %@", response.URL.absoluteString);
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     BOOL result = [delegate download:self didReceiveResponse:(NSHTTPURLResponse *)response];
     completionHandler(result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel);
@@ -87,6 +91,7 @@
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
 {
     [self.lock lock];
+    KTVHCLogDataDownload(@"receive data : %@, %lu", dataTask.originalRequest.URL.absoluteString, data.length);
     id <KTVHCDataDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     [delegate download:self didReceiveData:data];
     [self.lock unlock];
