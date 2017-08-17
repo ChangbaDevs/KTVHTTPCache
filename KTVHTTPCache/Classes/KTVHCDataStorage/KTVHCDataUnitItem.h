@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface KTVHCDataUnitItem : NSObject <NSCoding, NSLocking>
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -24,5 +26,6 @@
 @property (nonatomic, copy, readonly) NSString * filePath;
 
 - (void)reloadFileLength;
+
 
 @end

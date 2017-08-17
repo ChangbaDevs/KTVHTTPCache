@@ -10,7 +10,9 @@
 #import "KTVHCDataUnit.h"
 #import "KTVHCDataCacheItem.h"
 
+
 @interface KTVHCDataUnitPool : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -39,5 +41,6 @@
 - (void)unit:(NSString *)unitURLString insertUnitItem:(KTVHCDataUnitItem *)unitItem;
 - (void)unit:(NSString *)unitURLString updateRequestHeaderFields:(NSDictionary *)requestHeaderFields;
 - (void)unit:(NSString *)unitURLString updateResponseHeaderFields:(NSDictionary *)responseHeaderFields;
+
 
 @end

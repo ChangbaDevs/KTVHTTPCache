@@ -10,7 +10,9 @@
 
 @class KTVHCDataRequest;
 
+
 @interface KTVHCHTTPRequest : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -30,5 +32,6 @@
 
 
 - (KTVHCDataRequest *)dataRequest;
+
 
 @end

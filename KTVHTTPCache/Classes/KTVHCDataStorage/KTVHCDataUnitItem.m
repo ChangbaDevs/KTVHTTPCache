@@ -8,17 +8,23 @@
 
 #import "KTVHCDataUnitItem.h"
 #import "KTVHCPathTools.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataUnitItem ()
+
 
 @property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, assign) long long offset;
 @property (nonatomic, copy) NSString * path;
 @property (nonatomic, copy) NSString * filePath;
 
+
 @end
 
+
 @implementation KTVHCDataUnitItem
+
 
 + (instancetype)unitItemWithOffset:(long long)offset path:(NSString *)path
 {
@@ -29,6 +35,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.offset = offset;
         self.path = path;
         [self prepare];
@@ -52,6 +59,12 @@
     [aCoder encodeObject:self.path forKey:@"path"];
     [aCoder encodeObject:@(self.offset) forKey:@"offset"];
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (void)prepare
 {
@@ -89,5 +102,6 @@
 {
     [self.coreLock unlock];
 }
+
 
 @end

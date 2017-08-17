@@ -11,15 +11,33 @@
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCHTTPURL.h"
 #import "KTVHCDataRequest.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCHTTPConnection ()
+
 
 @property (nonatomic, strong) KTVHCHTTPRequest * currentRequest;
 @property (nonatomic, strong) KTVHCHTTPResponse * currentResponse;
 
+
 @end
 
+
 @implementation KTVHCHTTPConnection
+
+
+- (id)initWithAsyncSocket:(GCDAsyncSocket *)newSocket configuration:(HTTPConfig *)aConfig
+{
+    KTVHCLogAlloc(self);
+    return [super initWithAsyncSocket:newSocket configuration:aConfig];
+}
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
@@ -39,5 +57,6 @@
     
     return self.currentResponse;
 }
+
 
 @end

@@ -7,16 +7,22 @@
 //
 
 #import "KTVHCDataUnitQueue.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataUnitQueue ()
+
 
 @property (nonatomic, copy) NSString * archiverPath;
 @property (nonatomic, strong) NSLock * lock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * unitArray;
 
+
 @end
 
+
 @implementation KTVHCDataUnitQueue
+
 
 + (instancetype)unitQueueWithArchiverPath:(NSString *)archiverPath
 {
@@ -36,6 +42,7 @@
     }
     return self;
 }
+
 
 - (NSArray <KTVHCDataUnit *> *)allUnits
 {
@@ -100,5 +107,6 @@
     [NSKeyedArchiver archiveRootObject:self.unitArray toFile:self.archiverPath];
     [self.lock unlock];
 }
+
 
 @end

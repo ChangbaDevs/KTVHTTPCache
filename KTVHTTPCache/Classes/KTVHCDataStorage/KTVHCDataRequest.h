@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface KTVHCDataRequest : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -17,5 +19,6 @@
 
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, assign) NSDictionary * headerFields;
+
 
 @end

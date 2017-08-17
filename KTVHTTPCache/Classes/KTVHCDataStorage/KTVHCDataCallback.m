@@ -8,7 +8,9 @@
 
 #import "KTVHCDataCallback.h"
 
+
 @implementation KTVHCDataCallback
+
 
 + (void)workingCallbackWithBlock:(void (^)())block
 {
@@ -49,5 +51,6 @@
         });
     }
 }
+
 
 @end

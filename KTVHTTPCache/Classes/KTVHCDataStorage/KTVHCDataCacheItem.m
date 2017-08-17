@@ -9,16 +9,21 @@
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataPrivate.h"
 
+
 @interface KTVHCDataCacheItem ()
+
 
 @property (nonatomic, copy) NSString * URLString;
 @property (nonatomic, assign) long long totalLength;
 @property (nonatomic, assign) long long cacheLength;
 @property (nonatomic, strong) NSArray <KTVHCDataCacheItemZone *> * zones;
 
+
 @end
 
+
 @implementation KTVHCDataCacheItem
+
 
 + (instancetype)itemWithURLString:(NSString *)URLString
                       totalLength:(long long)totalLength
@@ -45,5 +50,6 @@
     }
     return self;
 }
+
 
 @end

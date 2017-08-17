@@ -10,6 +10,7 @@
 
 @class KTVHCDataReader;
 
+
 @protocol KTVHCDataReaderDelegate <NSObject>
 
 - (void)readerHasAvailableData:(KTVHCDataReader *)reader;
@@ -18,7 +19,9 @@
 
 @end
 
+
 @interface KTVHCDataReader : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -43,5 +46,6 @@
 - (void)close;      // must call.
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
+
 
 @end

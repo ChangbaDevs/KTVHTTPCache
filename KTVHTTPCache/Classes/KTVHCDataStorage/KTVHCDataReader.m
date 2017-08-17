@@ -11,8 +11,11 @@
 #import "KTVHCDataPrivate.h"
 #import "KTVHCDataSourcer.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
+
 
 @property (nonatomic, weak) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
@@ -35,9 +38,12 @@
 @property (nonatomic, assign) long long readedContentLength;
 @property (nonatomic, assign) long long totalContentLength;
 
+
 @end
 
+
 @implementation KTVHCDataReader
+
 
 + (instancetype)readerWithUnit:(KTVHCDataUnit *)unit
                        request:(KTVHCDataRequest *)request
@@ -54,6 +60,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.unit = unit;
         self.request = request;
         self.workingDelegate = workingDelegate;
@@ -63,6 +70,13 @@
     }
     return self;
 }
+
+- (void)dealloc
+{
+    [self close];
+    KTVHCLogDealloc(self);
+}
+
 
 - (void)setupAndPrepareSourcer
 {
@@ -316,12 +330,6 @@
             [self.delegate reader:self didFailure:self.error];
         }];
     }
-}
-
-
-- (void)dealloc
-{
-    [self close];
 }
 
 

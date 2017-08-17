@@ -9,10 +9,14 @@
 #import "KTVHCHTTPURL.h"
 #import "KTVHCHTTPServer.h"
 #import "KTVHCURLTools.h"
+#import "KTVHCLog.h"
+
 
 static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
 
+
 @implementation KTVHCHTTPURL
+
 
 + (KTVHCHTTPURL *)URLWithURIString:(NSString *)URIString
 {
@@ -28,6 +32,7 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         NSRange range = [URIString rangeOfString:@"/request?"];
         if (range.location != NSNotFound)
         {
@@ -61,10 +66,17 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         _originalURLString = [originalURLString copy];
     }
     return self;
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (NSString *)proxyURLString
 {
@@ -81,5 +93,6 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
 {
     return [KTVHCHTTPServer httpServer].listeningPort;
 }
+
 
 @end

@@ -40,8 +40,8 @@
 
 // Alloc & Dealloc
 
-#define KTVHCLogAllocEnable                     YES
-#define KTVHCLogDeallocEnable                   YES
+#define KTVHCLogAllocEnable                     NO
+#define KTVHCLogDeallocEnable                   NO
 
 
 /**
@@ -81,8 +81,8 @@
 
 // Alloc & Dealloc
 
-#define KTVHCLogAlloc(class, ...)           KTVHCLog(NSStringFromClass(class),   KTVHCLogAllocEnable,              ##__VA_ARGS__)
-#define KTVHCLogDealloc(class, ...)         KTVHCLog(NSStringFromClass(class),   KTVHCLogDeallocEnable,            ##__VA_ARGS__)
+#define KTVHCLogAlloc(obj)                  KTVHCLog(obj,                        KTVHCLogAllocEnable,              @"alloc")
+#define KTVHCLogDealloc(obj)                KTVHCLog(obj,                        KTVHCLogDeallocEnable,            @"dealloc")
 
 
 @interface KTVHCLog : NSObject

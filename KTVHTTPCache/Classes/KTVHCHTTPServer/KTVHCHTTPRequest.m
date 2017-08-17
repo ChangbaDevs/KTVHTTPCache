@@ -8,14 +8,20 @@
 
 #import "KTVHCHTTPRequest.h"
 #import "KTVHCDataRequest.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCHTTPRequest ()
 
+
 @property (nonatomic, copy) NSString * originalURLString;
+
 
 @end
 
+
 @implementation KTVHCHTTPRequest
+
 
 + (instancetype)requestWithOriginalURLString:(NSString *)originalURLString
 {
@@ -26,10 +32,17 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.originalURLString = originalURLString;
     }
     return self;
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (KTVHCDataRequest *)dataRequest
 {
@@ -37,5 +50,6 @@
     dataRequest.headerFields = self.headerFields;
     return dataRequest;
 }
+
 
 @end

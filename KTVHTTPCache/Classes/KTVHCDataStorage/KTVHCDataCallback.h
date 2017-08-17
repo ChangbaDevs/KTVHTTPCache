@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface KTVHCDataCallback : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -17,5 +19,6 @@
 
 + (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block;      // default is async.
 + (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block aync:(BOOL)async;
+
 
 @end

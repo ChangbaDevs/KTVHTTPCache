@@ -10,6 +10,7 @@
 
 @class KTVHCDataDownload;
 
+
 @protocol KTVHCDataDownloadDelegate <NSObject>
 
 - (void)download:(KTVHCDataDownload *)download didCompleteWithError:(NSError *)error;
@@ -18,7 +19,9 @@
 
 @end
 
+
 @interface KTVHCDataDownload : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -26,5 +29,6 @@
 + (instancetype)download;
 
 - (NSURLSessionDataTask *)downloadWithRequest:(NSURLRequest *)request delegate:(id<KTVHCDataDownloadDelegate>)delegate;
+
 
 @end

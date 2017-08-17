@@ -11,7 +11,9 @@
 
 @class KTVHCDataNetworkSource;
 
+
 static long long const KTVHCDataNetworkSourceLengthMaxVaule = -1;
+
 
 @protocol KTVHCDataNetworkSourceDelegate <NSObject>
 
@@ -23,7 +25,9 @@ static long long const KTVHCDataNetworkSourceLengthMaxVaule = -1;
 
 @end
 
+
 @interface KTVHCDataNetworkSource : NSObject <KTVHCDataSourceProtocol>
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -52,5 +56,6 @@ static long long const KTVHCDataNetworkSourceLengthMaxVaule = -1;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
 
 - (void)setDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+
 
 @end

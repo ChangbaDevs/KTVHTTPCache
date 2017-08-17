@@ -8,6 +8,8 @@
 
 #import "KTVHCDataFileSource.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataFileSource ()
 
@@ -38,9 +40,12 @@
 @property (nonatomic, strong) NSFileHandle * readingHandle;
 @property (nonatomic, assign) long long fileReadedLength;
 
+
 @end
 
+
 @implementation KTVHCDataFileSource
+
 
 + (instancetype)sourceWithFilePath:(NSString *)filePath
                             offset:(long long)offset
@@ -63,6 +68,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.filePath = filePath;
         self.offset = offset;
         self.length = length;
@@ -71,6 +77,12 @@
     }
     return self;
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (void)setDelegate:(id <KTVHCDataFileSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
@@ -139,5 +151,6 @@
         }];
     }
 }
+
 
 @end

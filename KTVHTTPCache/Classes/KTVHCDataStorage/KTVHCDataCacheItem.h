@@ -10,7 +10,9 @@
 
 @class KTVHCDataCacheItemZone;
 
+
 @interface KTVHCDataCacheItem : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -19,5 +21,6 @@
 @property (nonatomic, assign, readonly) long long totalLength;
 @property (nonatomic, assign, readonly) long long cacheLength;
 @property (nonatomic, strong, readonly) NSArray <KTVHCDataCacheItemZone *> * zones;
+
 
 @end

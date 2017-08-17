@@ -11,6 +11,7 @@
 
 @class KTVHCDataUnit;
 
+
 @protocol KTVHCDataUnitDelegate <NSObject>
 
 @optional
@@ -19,7 +20,9 @@
 
 @end
 
+
 @interface KTVHCDataUnit : NSObject <NSCoding, NSLocking>
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -75,5 +78,6 @@
 #pragma mark - Class Functions
 
 + (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;
+
 
 @end

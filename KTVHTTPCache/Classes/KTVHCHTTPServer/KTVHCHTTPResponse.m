@@ -9,8 +9,11 @@
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCHTTPConnection.h"
 #import "KTVHCDataStorage.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCHTTPResponse () <KTVHCDataReaderDelegate>
+
 
 @property (nonatomic, weak) KTVHCHTTPConnection * connection;
 @property (nonatomic, strong) KTVHCDataRequest * dataRequest;
@@ -18,9 +21,12 @@
 
 @property (nonatomic, assign) BOOL waitingResponseHeader;
 
+
 @end
 
+
 @implementation KTVHCHTTPResponse
+
 
 + (instancetype)responseWithConnection:(KTVHCHTTPConnection *)connection dataRequest:(KTVHCDataRequest *)dataRequest
 {
@@ -31,6 +37,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.connection = connection;
         self.dataRequest = dataRequest;
         
@@ -52,6 +59,7 @@
 - (void)dealloc
 {
     [self.reader close];
+    KTVHCLogDealloc(self);
 }
 
 

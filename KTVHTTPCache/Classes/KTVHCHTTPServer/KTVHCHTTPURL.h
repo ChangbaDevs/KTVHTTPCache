@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface KTVHCHTTPURL : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -20,5 +22,6 @@
 @property (nonatomic, copy, readonly) NSString * proxyURLString;
 
 @property (nonatomic, assign, readonly) NSInteger listeningPort;
+
 
 @end

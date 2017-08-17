@@ -9,6 +9,8 @@
 #import "KTVHCDataSourcer.h"
 #import "KTVHCDataSourceQueue.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataSourcer () <KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>
 
@@ -32,9 +34,12 @@
 @property (nonatomic, strong) KTVHCDataNetworkSource * currentNetworkSource;
 @property (nonatomic, strong) KTVHCDataSourceQueue * sourceQueue;
 
+
 @end
 
+
 @implementation KTVHCDataSourcer
+
 
 + (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
@@ -45,12 +50,19 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.delegate = delegate;
         self.delegateQueue = delegateQueue;
         self.sourceQueue = [KTVHCDataSourceQueue sourceQueue];
     }
     return self;
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source
 {
@@ -181,5 +193,6 @@
 {
     [self callbackForFailure:error];
 }
+
 
 @end

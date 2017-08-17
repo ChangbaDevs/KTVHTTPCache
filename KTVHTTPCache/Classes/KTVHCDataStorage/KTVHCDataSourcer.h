@@ -13,6 +13,7 @@
 
 @class KTVHCDataSourcer;
 
+
 @protocol KTVHCDataSourcerDelegate <NSObject>
 
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer;
@@ -21,7 +22,9 @@
 
 @end
 
+
 @interface KTVHCDataSourcer : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -43,5 +46,6 @@
 - (void)close;
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
+
 
 @end

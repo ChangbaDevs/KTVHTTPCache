@@ -11,6 +11,8 @@
 #import "KTVHCPathTools.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataNetworkSource () <KTVHCDataDownloadDelegate>
 
@@ -60,9 +62,12 @@
 @property (nonatomic, assign) BOOL downloadCompleteCalled;
 @property (nonatomic, assign) BOOL needCallHasAvailableData;
 
+
 @end
 
+
 @implementation KTVHCDataNetworkSource
+
 
 + (instancetype)sourceWithURLString:(NSString *)URLString
                        headerFields:(NSDictionary *)headerFields
@@ -82,6 +87,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.URLString = URLString;
         self.requestHeaderFields = headerFields;
         
@@ -92,6 +98,12 @@
     }
     return self;
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (void)setDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
@@ -297,5 +309,6 @@
     [self callbackForHasAvailableData];
     [self.lock unlock];
 }
+
 
 @end

@@ -26,6 +26,7 @@
 
 @interface KTVHCDataReader (Private)
 
+
 + (instancetype)readerWithUnit:(KTVHCDataUnit *)unit
                        request:(KTVHCDataRequest *)request
                workingDelegate:(id <KTVHCDataReaderWorkingDelegate>)workingDelegate;
@@ -33,6 +34,7 @@
 @property (nonatomic, weak, readonly) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
 
 @property (nonatomic, strong, readonly) KTVHCDataUnit * unit;
+
 
 @end
 
@@ -44,8 +46,10 @@ static long long const KTVHCDataRequestRangeMaxVaule = -1;
 
 @interface KTVHCDataRequest (Private)
 
+
 @property (nonatomic, assign, readonly) long long rangeMin;     // default is KTVHCDataRequestRangeMinVaule.
 @property (nonatomic, assign, readonly) long long rangeMax;     // default is KTVHCDataRequestRangeMaxVaule.
+
 
 @end
 
@@ -54,15 +58,19 @@ static long long const KTVHCDataRequestRangeMaxVaule = -1;
 
 @interface KTVHCDataCacheItem (Private)
 
+
 + (instancetype)itemWithURLString:(NSString *)URLString
                       totalLength:(long long)totalLength
                       cacheLength:(long long)cacheLength
                             zones:(NSArray <KTVHCDataCacheItemZone *> *)zones;
 
+
 @end
 
 @interface KTVHCDataCacheItemZone (Private)
 
+
 + (instancetype)itemZoneWithOffset:(long long)offset length:(long long)length;
+
 
 @end

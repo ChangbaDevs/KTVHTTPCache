@@ -11,14 +11,19 @@
 #import "KTVHCPathTools.h"
 #import "KTVHCDataPrivate.h"
 
+
 @interface KTVHCDataUnitPool ()
+
 
 @property (nonatomic, strong) NSLock * lock;
 @property (nonatomic, strong) KTVHCDataUnitQueue * unitQueue;
 
+
 @end
 
+
 @implementation KTVHCDataUnitPool
+
 
 + (instancetype)unitPool
 {
@@ -39,6 +44,7 @@
     }
     return self;
 }
+
 
 - (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString
 {

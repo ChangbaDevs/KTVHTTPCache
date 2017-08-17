@@ -9,15 +9,20 @@
 #import "KTVHCDataStorage.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataPrivate.h"
+#import "KTVHCLog.h"
 
 @interface KTVHCDataStorage () <KTVHCDataReaderWorkingDelegate>
+
 
 @property (nonatomic, strong) NSCondition * condition;
 @property (nonatomic, strong) NSOperationQueue * operationQueue;
 
+
 @end
 
+
 @implementation KTVHCDataStorage
+
 
 + (instancetype)manager
 {
@@ -39,6 +44,7 @@
     }
     return self;
 }
+
 
 - (KTVHCDataReader *)concurrentReaderWithRequest:(KTVHCDataRequest *)request
 {
@@ -141,5 +147,6 @@
     }
     [self.condition unlock];
 }
+
 
 @end

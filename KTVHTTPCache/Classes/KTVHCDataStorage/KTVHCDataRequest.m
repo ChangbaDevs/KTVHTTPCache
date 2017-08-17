@@ -8,17 +8,23 @@
 
 #import "KTVHCDataRequest.h"
 #import "KTVHCDataPrivate.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataRequest ()
+
 
 @property (nonatomic, copy) NSString * URLString;
 
 @property (nonatomic, assign) long long rangeMin;
 @property (nonatomic, assign) long long rangeMax;
 
+
 @end
 
+
 @implementation KTVHCDataRequest
+
 
 + (instancetype)requestWithURLString:(NSString *)URLString
 {
@@ -29,12 +35,22 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.URLString = URLString;
         self.rangeMin = KTVHCDataRequestRangeMinVaule;
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
     }
     return self;
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
+
+#pragma mark - Setter/Getter
+
 
 - (void)setHeaderFields:(NSDictionary *)headerFields
 {
@@ -60,5 +76,6 @@
         }
     }
 }
+
 
 @end

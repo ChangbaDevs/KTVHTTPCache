@@ -9,7 +9,9 @@
 #import "KTVHCDataDownload.h"
 #import "KTVHCDataCallback.h"
 
+
 @interface KTVHCDataDownload () <NSURLSessionDataDelegate>
+
 
 @property (nonatomic, strong) NSURLSession * session;
 @property (nonatomic, strong) NSURLSessionConfiguration * sessionConfiguration;
@@ -18,9 +20,12 @@
 @property (nonatomic, strong) NSMutableDictionary <NSURLSessionTask *, id<KTVHCDataDownloadDelegate>> * delegateDictionary;
 @property (nonatomic, strong) NSLock * lock;
 
+
 @end
 
+
 @implementation KTVHCDataDownload
+
 
 + (instancetype)download
 {
@@ -46,6 +51,7 @@
     }
     return self;
 }
+
 
 - (NSURLSessionDataTask *)downloadWithRequest:(NSURLRequest *)request delegate:(id<KTVHCDataDownloadDelegate>)delegate
 {
@@ -85,5 +91,6 @@
     [delegate download:self didReceiveData:data];
     [self.lock unlock];
 }
+
 
 @end

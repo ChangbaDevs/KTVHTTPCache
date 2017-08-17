@@ -15,7 +15,9 @@
 @protocol KTVHCDataFileSourceDelegate;
 @protocol KTVHCDataNetworkSourceDelegate;
 
+
 @interface KTVHCDataSourceQueue : NSObject
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -35,5 +37,6 @@
 
 - (KTVHCDataNetworkSource *)fetchFirstNetworkSource;
 - (KTVHCDataNetworkSource *)fetchNextNetworkSource:(KTVHCDataNetworkSource *)currentSource;
+
 
 @end

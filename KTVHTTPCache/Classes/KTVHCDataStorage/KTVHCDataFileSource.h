@@ -11,6 +11,7 @@
 
 @class KTVHCDataFileSource;
 
+
 @protocol KTVHCDataFileSourceDelegate <NSObject>
 
 @optional
@@ -19,7 +20,9 @@
 
 @end
 
+
 @interface KTVHCDataFileSource : NSObject <KTVHCDataSourceProtocol>
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -40,5 +43,6 @@
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
 
 - (void)setDelegate:(id <KTVHCDataFileSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+
 
 @end

@@ -9,14 +9,20 @@
 #import "KTVHCDataSourceQueue.h"
 #import "KTVHCDataFileSource.h"
 #import "KTVHCDataNetworkSource.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataSourceQueue ()
 
+
 @property (nonatomic, strong) NSMutableArray <id<KTVHCDataSourceProtocol>> * totalSources;
+
 
 @end
 
+
 @implementation KTVHCDataSourceQueue
+
 
 + (instancetype)sourceQueue
 {
@@ -27,9 +33,15 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.totalSources = [NSMutableArray array];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
 }
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source
@@ -135,5 +147,6 @@
     }
     return nil;
 }
+
 
 @end

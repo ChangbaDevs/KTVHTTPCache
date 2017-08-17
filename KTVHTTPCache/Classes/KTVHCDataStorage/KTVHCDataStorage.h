@@ -13,6 +13,7 @@
 
 @interface KTVHCDataStorage : NSObject
 
+
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 

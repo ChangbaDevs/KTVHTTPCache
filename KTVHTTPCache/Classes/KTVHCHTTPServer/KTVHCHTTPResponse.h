@@ -12,11 +12,14 @@
 @class KTVHCHTTPConnection;
 @class KTVHCDataRequest;
 
+
 @interface KTVHCHTTPResponse : NSObject <HTTPResponse>
+
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
 + (instancetype)responseWithConnection:(KTVHCHTTPConnection *)connection dataRequest:(KTVHCDataRequest *)dataRequest;
+
 
 @end

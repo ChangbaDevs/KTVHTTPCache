@@ -10,8 +10,11 @@
 #import "KTVHCURLTools.h"
 #import "KTVHCPathTools.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCLog.h"
+
 
 @interface KTVHCDataUnit ()
+
 
 @property (nonatomic, copy) NSString * URLString;
 @property (nonatomic, copy) NSString * uniqueIdentifier;
@@ -30,9 +33,12 @@
 @property (nonatomic, weak) id <KTVHCDataUnitDelegate> delegate;
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
 
+
 @end
 
+
 @implementation KTVHCDataUnit
+
 
 + (instancetype)unitWithURLString:(NSString *)URLString
 {
@@ -43,6 +49,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.URLString = URLString;
         self.uniqueIdentifier = [[self class] uniqueIdentifierWithURLString:self.URLString];
         [self prepare];
@@ -74,6 +81,12 @@
     [aCoder encodeObject:@(self.totalContentLength) forKey:@"totalContentLength"];
     [aCoder encodeObject:self.unitItems forKey:@"unitItems"];
 }
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (void)prepare
 {
@@ -264,5 +277,6 @@
 {
     return [KTVHCURLTools md5:URLString];
 }
+
 
 @end

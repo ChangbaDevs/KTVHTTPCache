@@ -9,14 +9,19 @@
 #import "KTVHCDataCacheItemZone.h"
 #import "KTVHCDataPrivate.h"
 
+
 @interface KTVHCDataCacheItemZone ()
+
 
 @property (nonatomic, assign) long long offset;
 @property (nonatomic, assign) long long length;
 
+
 @end
 
+
 @implementation KTVHCDataCacheItemZone
+
 
 + (instancetype)itemZoneWithOffset:(long long)offset length:(long long)length
 {
@@ -32,5 +37,6 @@
     }
     return self;
 }
+
 
 @end
