@@ -35,6 +35,8 @@
 
 @property (nonatomic, copy) NSString * URLString;
 
+@property (nonatomic, strong) NSMutableURLRequest * request;
+
 @property (nonatomic, strong) NSDictionary * requestHeaderFields;
 @property (nonatomic, strong) NSDictionary * responseHeaderFields;
 
@@ -126,15 +128,15 @@
     KTVHCLogDataNetworkSource(@"call prepare");
     
     NSURL * URL = [NSURL URLWithString:self.URLString];
-    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
+    self.request = [NSMutableURLRequest requestWithURL:URL];
     
     if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
-        [request setValue:[NSString stringWithFormat:@"bytes=%lld-", self.offset] forHTTPHeaderField:@"Range"];
+        [self.request setValue:[NSString stringWithFormat:@"bytes=%lld-", self.offset] forHTTPHeaderField:@"Range"];
     } else {
-        [request setValue:[NSString stringWithFormat:@"bytes=%lld-%lld", self.offset, self.offset + self.length - 1] forHTTPHeaderField:@"Range"];
+        [self.request setValue:[NSString stringWithFormat:@"bytes=%lld-%lld", self.offset, self.offset + self.length - 1] forHTTPHeaderField:@"Range"];
     }
     
-    self.downloadTask = [[KTVHCDownload download] downloadWithRequest:request delegate:self];
+    self.downloadTask = [[KTVHCDownload download] downloadWithRequest:self.request delegate:self];
 }
 
 - (void)close
@@ -262,7 +264,7 @@
                 KTVHCLogDataNetworkSource(@"complete by error, %@, %ld",  self.URLString, error.code);
                 
                 if (self.errorCanceled && self.errorResponse) {
-                    NSError * obj = [KTVHCError errorForResponseUnavailable:self.URLString response:self.errorResponse];
+                    NSError * obj = [KTVHCError errorForResponseUnavailable:self.URLString request:self.request response:self.errorResponse];
                     if (obj) {
                         self.error = obj;
                     }

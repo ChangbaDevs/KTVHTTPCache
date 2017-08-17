@@ -22,7 +22,9 @@ typedef NS_ENUM(NSInteger, KTVHCErrorCode)
 @interface KTVHCError : NSObject
 
 
-+ (NSError *)errorForResponseUnavailable:(NSString *)URLString response:(NSHTTPURLResponse *)response;
++ (NSError *)errorForResponseUnavailable:(NSString *)URLString
+                                 request:(NSURLRequest *)request
+                                response:(NSHTTPURLResponse *)response;
 
 
 @end

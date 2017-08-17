@@ -15,9 +15,14 @@ NSString * const KTVHCErrorDomainResponseUnavailable = @"KTVHCErrorDomainRespons
 @implementation KTVHCError
 
 
-+ (NSError *)errorForResponseUnavailable:(NSString *)URLString response:(NSHTTPURLResponse *)response
++ (NSError *)errorForResponseUnavailable:(NSString *)URLString
+                                 request:(NSURLRequest *)request
+                                response:(NSHTTPURLResponse *)response
 {
     if (URLString.length <= 0) {
+        return nil;
+    }
+    if (request.allHTTPHeaderFields.count <= 0) {
         return nil;
     }
     if (response.URL.absoluteString.length <= 0) {
@@ -30,6 +35,7 @@ NSString * const KTVHCErrorDomainResponseUnavailable = @"KTVHCErrorDomainRespons
     NSError * error = [NSError errorWithDomain:KTVHCErrorDomainResponseUnavailable
                                           code:KTVHCErrorCodeResponseUnavailable
                                       userInfo:@{@"originalURL" : URLString,
+                                                 @"requestHeader" : request.allHTTPHeaderFields,
                                                  @"responseURL" : response.URL.absoluteString,
                                                  @"responseHeader" : response.allHeaderFields}];
     return error;
