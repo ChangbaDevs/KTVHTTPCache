@@ -202,6 +202,8 @@
     }
     self.didCallPrepare = YES;
     
+    KTVHCLogDataReader(@"call reader, %@", self.unit.URLString);
+    
     [self setupAndPrepareSourcer];
 }
 
@@ -210,10 +212,11 @@
     if (self.didClose) {
         return;
     }
-    
     self.didClose = YES;
-    [self.sourcer close];
     
+    KTVHCLogDataReader(@"call close, %@", self.unit.URLString);
+    
+    [self.sourcer close];
     [self callbackForStopWorking];
 }
 
@@ -228,7 +231,13 @@
     
     NSData * data = [self.sourcer readDataOfLength:length];;
     self.readedContentLength += data.length;
+    
+    KTVHCLogDataReader(@"read length : %lu", data.length);
+    
     if (self.sourcer.didFinishRead) {
+        
+        KTVHCLogDataReader(@"read finished, %@", self.unit.URLString);
+        
         self.didFinishRead = YES;
     }
     return data;
@@ -275,8 +284,15 @@
             self.currentContentLength = self.request.rangeMax - self.request.rangeMin + 1;
         }
         self.didFinishPrepare = YES;
+        
         if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {
+         
+            KTVHCLogDataReader(@"callback for prepare begin, %@", self.unit.URLString);
+            
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                
+                KTVHCLogDataReader(@"callback for prepare end, %@", self.unit.URLString);
+                
                 [self.delegate readerDidFinishPrepare:self];
             }];
         }
@@ -288,10 +304,16 @@
     if (self.stopWorkingCallbackToken) {
         return;
     }
-    
     self.stopWorkingCallbackToken = YES;
+    
     if ([self.workingDelegate respondsToSelector:@selector(readerDidStopWorking:)]) {
+        
+        KTVHCLogDataReader(@"callback for stop working begin, %@", self.unit.URLString);
+        
         [KTVHCDataCallback workingCallbackWithBlock:^{
+            
+            KTVHCLogDataReader(@"callback for stop working end, %@", self.unit.URLString);
+            
             [self.workingDelegate readerDidStopWorking:self];
         }];
     }
@@ -311,7 +333,13 @@
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
 {
     if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
+        
+        KTVHCLogDataReader(@"callback for has available data begin, %@", self.unit.URLString);
+        
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            
+            KTVHCLogDataReader(@"callback for has available data end, %@", self.unit.URLString);
+            
             [self.delegate readerHasAvailableData:self];
         }];
     }
@@ -326,7 +354,13 @@
 {
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(reader:didFailure:)]) {
+        
+        KTVHCLogDataReader(@"callback for failure begin, %@, %ld", self.unit.URLString, error.code);
+        
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            
+            KTVHCLogDataReader(@"callback for failure end, %@, %ld", self.unit.URLString, error.code);
+            
             [self.delegate reader:self didFailure:self.error];
         }];
     }
