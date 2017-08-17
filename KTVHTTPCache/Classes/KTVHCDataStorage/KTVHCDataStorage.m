@@ -48,11 +48,15 @@
 
 - (KTVHCDataReader *)concurrentReaderWithRequest:(KTVHCDataRequest *)request
 {
+    KTVHCLogDataStorage(@"concurrent reader, %@", request.URLString);
+    
     return [self readerWithRequest:request concurrent:YES];
 }
 
 - (KTVHCDataReader *)serialReaderWithRequest:(KTVHCDataRequest *)request
 {
+    KTVHCLogDataStorage(@"serial reader sync, %@", request.URLString);
+    
     return [self readerWithRequest:request concurrent:NO];
 }
 
@@ -62,10 +66,15 @@
         return;
     }
     
+    KTVHCLogDataStorage(@"serial reader async begin, %@", request.URLString);
+    
     __weak typeof(self) weakSelf = self;
     [self.operationQueue addOperationWithBlock:^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (completionHandler) {
+            
+            KTVHCLogDataStorage(@"serial reader async end, %@", request.URLString);
+            
             completionHandler([strongSelf serialReaderWithRequest:request]);
         }
     }];
@@ -82,8 +91,13 @@
     
     if (!concurrent)
     {
-        while (unit.working) {
+        while (unit.working)
+        {
+            KTVHCLogDataStorage(@"wait begin, %@", request.URLString);
+            
             [self.condition wait];
+            
+            KTVHCLogDataStorage(@"wait end, %@", request.URLString);
         }
     }
     
@@ -92,6 +106,10 @@
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
                                                        request:request
                                                workingDelegate:self];
+    
+    
+    KTVHCLogDataStorage(@"create reader finished, %@", request.URLString);
+    
     [self.condition unlock];
     return reader;
 }
@@ -140,9 +158,14 @@
 - (void)readerDidStopWorking:(KTVHCDataReader *)reader
 {
     [self.condition lock];
+    
+    KTVHCLogDataStorage(@"reader did stop working, %@", reader.unit.URLString);
+    
     [reader.unit workingRelease];
     if (!reader.unit.working)
     {
+        KTVHCLogDataStorage(@"send signal, %@", reader.unit.URLString);
+        
         [self.condition signal];
     }
     [self.condition unlock];
