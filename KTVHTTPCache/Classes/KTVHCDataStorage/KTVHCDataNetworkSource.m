@@ -121,6 +121,8 @@
     }
     self.didCallPrepare = YES;
     
+    KTVHCLogDataFileSource(@"call prepare");
+    
     NSURL * URL = [NSURL URLWithString:self.URLString];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
     
@@ -139,6 +141,8 @@
     if (self.didClose) {
         return;
     }
+    
+    KTVHCLogDataFileSource(@"call close");
     
     [self.lock lock];
     
@@ -175,11 +179,15 @@
     {
         if (self.downloadCompleteCalled)
         {
+            KTVHCLogDataFileSource(@"read data error : %lld, %lld, %lld", self.downloadReadedLength, self.downloadLength, self.length);
+            
             [self.readingHandle closeFile];
             self.readingHandle = nil;
         }
         else
         {
+            KTVHCLogDataFileSource(@"read data set need call");
+            
             self.needCallHasAvailableData = YES;
         }
         
@@ -189,8 +197,13 @@
     
     NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadLength - self.downloadReadedLength, length)];
     self.downloadReadedLength += data.length;
+    
+    KTVHCLogDataFileSource(@"read data : %lu, %lld, %lld, %lld", data.length, self.downloadReadedLength, self.downloadLength, self.length);
+    
     if (self.downloadReadedLength >= self.length)
     {
+        KTVHCLogDataFileSource(@"read data finished");
+        
         [self.readingHandle closeFile];
         self.readingHandle = nil;
         
@@ -213,6 +226,8 @@
         return;
     }
     
+    KTVHCLogDataFileSource(@"has available data");
+    
     self.needCallHasAvailableData = NO;
     if ([self.delegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
@@ -232,30 +247,46 @@
     self.writingHandle = nil;
     self.unitItem.writing = NO;
     
-    if (!self.didClose)
+    if (self.didClose)
+    {
+        KTVHCLogDataFileSource(@"complete but did close, %@, %ld", self.URLString, error.code);
+    }
+    else
     {
         if (error)
         {
             self.error = error;
             if (self.error.code != NSURLErrorCancelled || self.errorCanceled)
             {
+                KTVHCLogDataFileSource(@"complete by error, %@, %ld",  self.URLString, error.code);
+                
                 if ([self.delegate respondsToSelector:@selector(networkSource:didFailure:)]) {
                     [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                         [self.delegate networkSource:self didFailure:error];
                     }];
                 }
             }
+            else
+            {
+                KTVHCLogDataFileSource(@"complete by cancel, %@, %ld",  self.URLString, error.code);
+            }
         }
         else
         {
             if (self.downloadLength >= self.length)
             {
+                KTVHCLogDataFileSource(@"complete by donwload finished, %@", self.URLString);
+                
                 self.didFinishDownload = YES;
                 if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
                     [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                         [self.delegate networkSourceDidFinishDownload:self];
                     }];
                 }
+            }
+            else
+            {
+                KTVHCLogDataFileSource(@"complete by unkonwn, %@", self.URLString);
             }
         }
     }
@@ -272,6 +303,8 @@
     NSRange range = [contentRange rangeOfString:@"/"];
     if (contentRange.length > 0 && range.location != NSNotFound)
     {
+        KTVHCLogDataFileSource(@"receive response\n%@\n%@", self.URLString, response.URL.absoluteString);
+        
         NSString * path = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
         self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
         self.unitItem.writing = YES;
@@ -292,6 +325,8 @@
         return YES;
     }
     
+    KTVHCLogDataFileSource(@"receive response without Content-Range\n%@\n%@\n%@", self.URLString, response.URL.absoluteString, response.allHeaderFields);
+    
     self.errorCanceled = YES;
     return NO;
 }
@@ -306,6 +341,9 @@
     [self.writingHandle writeData:data];
     self.downloadLength += data.length;
     self.unitItem.length = self.downloadLength;
+    
+    KTVHCLogDataFileSource(@"receive data, %llu, %llu", self.downloadLength, self.unitItem.length);
+    
     [self callbackForHasAvailableData];
     [self.lock unlock];
 }
