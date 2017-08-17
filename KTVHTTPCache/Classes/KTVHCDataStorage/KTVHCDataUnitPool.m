@@ -58,7 +58,7 @@
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (!unit)
     {
-        KTVHCLogDataUnit(@"new unit, %@", URLString);
+        KTVHCLogDataUnitPool(@"new unit, %@", URLString);
         
         unit = [KTVHCDataUnit unitWithURLString:URLString];
         [self.unitQueue putUnit:unit];
@@ -171,7 +171,7 @@
     {
         if (!obj.working)
         {
-            KTVHCLogDataUnit(@"delete unit 2, %@", obj.URLString);
+            KTVHCLogDataUnitPool(@"delete unit 2, %@", obj.URLString);
             
             [obj deleteFiles];
             [self.unitQueue popUnit:obj];
@@ -226,7 +226,7 @@
         return;
     }
     
-    KTVHCLogDataUnit(@"insert unit item :%@", unitItem);
+    KTVHCLogDataUnitPool(@"insert unit item :%@", unitItem);
     
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
@@ -242,7 +242,7 @@
         return;
     }
     
-    KTVHCLogDataUnit(@"update request header fields\n%@", requestHeaderFields);
+    KTVHCLogDataUnitPool(@"update request header fields\n%@", requestHeaderFields);
     
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
@@ -257,7 +257,7 @@
         return;
     }
     
-    KTVHCLogDataUnit(@"update response header fields\n%@", responseHeaderFields);
+    KTVHCLogDataUnitPool(@"update response header fields\n%@", responseHeaderFields);
     
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
