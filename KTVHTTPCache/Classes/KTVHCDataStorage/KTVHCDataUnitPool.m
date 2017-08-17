@@ -10,6 +10,7 @@
 #import "KTVHCDataUnitQueue.h"
 #import "KTVHCPathTools.h"
 #import "KTVHCDataPrivate.h"
+#import "KTVHCLog.h"
 
 
 @interface KTVHCDataUnitPool ()
@@ -57,6 +58,8 @@
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (!unit)
     {
+        KTVHCLogDataUnit(@"new unit, %@", URLString);
+        
         unit = [KTVHCDataUnit unitWithURLString:URLString];
         [self.unitQueue putUnit:unit];
         [self.unitQueue archive];
@@ -150,6 +153,8 @@
     KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (obj && !obj.working)
     {
+        KTVHCLogDataUnit(@"delete unit 1, %@", URLString);
+        
         [obj deleteFiles];
         [self.unitQueue popUnit:obj];
         [self.unitQueue archive];
@@ -164,7 +169,10 @@
     NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
     for (KTVHCDataUnit * obj in units)
     {
-        if (!obj.working) {
+        if (!obj.working)
+        {
+            KTVHCLogDataUnit(@"delete unit 2, %@", obj.URLString);
+            
             [obj deleteFiles];
             [self.unitQueue popUnit:obj];
             needArchive = YES;
@@ -218,6 +226,8 @@
         return;
     }
     
+    KTVHCLogDataUnit(@"insert unit item :%@", unitItem);
+    
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
@@ -232,6 +242,8 @@
         return;
     }
     
+    KTVHCLogDataUnit(@"update request header fields\n%@", requestHeaderFields);
+    
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
@@ -244,6 +256,8 @@
     if (unitURLString.length <= 0) {
         return;
     }
+    
+    KTVHCLogDataUnit(@"update response header fields\n%@", responseHeaderFields);
     
     [self.lock lock];
     NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
