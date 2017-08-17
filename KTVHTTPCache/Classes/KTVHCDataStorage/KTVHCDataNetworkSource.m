@@ -121,7 +121,7 @@
     }
     self.didCallPrepare = YES;
     
-    KTVHCLogDataFileSource(@"call prepare");
+    KTVHCLogDataNetworkSource(@"call prepare");
     
     NSURL * URL = [NSURL URLWithString:self.URLString];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
@@ -142,7 +142,7 @@
         return;
     }
     
-    KTVHCLogDataFileSource(@"call close");
+    KTVHCLogDataNetworkSource(@"call close");
     
     [self.lock lock];
     
@@ -179,14 +179,14 @@
     {
         if (self.downloadCompleteCalled)
         {
-            KTVHCLogDataFileSource(@"read data error : %lld, %lld, %lld", self.downloadReadedLength, self.downloadLength, self.length);
+            KTVHCLogDataNetworkSource(@"read data error : %lld, %lld, %lld", self.downloadReadedLength, self.downloadLength, self.length);
             
             [self.readingHandle closeFile];
             self.readingHandle = nil;
         }
         else
         {
-            KTVHCLogDataFileSource(@"read data set need call");
+            KTVHCLogDataNetworkSource(@"read data set need call");
             
             self.needCallHasAvailableData = YES;
         }
@@ -198,11 +198,11 @@
     NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadLength - self.downloadReadedLength, length)];
     self.downloadReadedLength += data.length;
     
-    KTVHCLogDataFileSource(@"read data : %lu, %lld, %lld, %lld", data.length, self.downloadReadedLength, self.downloadLength, self.length);
+    KTVHCLogDataNetworkSource(@"read data : %lu, %lld, %lld, %lld", data.length, self.downloadReadedLength, self.downloadLength, self.length);
     
     if (self.downloadReadedLength >= self.length)
     {
-        KTVHCLogDataFileSource(@"read data finished");
+        KTVHCLogDataNetworkSource(@"read data finished");
         
         [self.readingHandle closeFile];
         self.readingHandle = nil;
@@ -226,7 +226,7 @@
         return;
     }
     
-    KTVHCLogDataFileSource(@"has available data");
+    KTVHCLogDataNetworkSource(@"has available data");
     
     self.needCallHasAvailableData = NO;
     if ([self.delegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
@@ -249,7 +249,7 @@
     
     if (self.didClose)
     {
-        KTVHCLogDataFileSource(@"complete but did close, %@, %ld", self.URLString, error.code);
+        KTVHCLogDataNetworkSource(@"complete but did close, %@, %ld", self.URLString, error.code);
     }
     else
     {
@@ -258,7 +258,7 @@
             self.error = error;
             if (self.error.code != NSURLErrorCancelled || self.errorCanceled)
             {
-                KTVHCLogDataFileSource(@"complete by error, %@, %ld",  self.URLString, error.code);
+                KTVHCLogDataNetworkSource(@"complete by error, %@, %ld",  self.URLString, error.code);
                 
                 if ([self.delegate respondsToSelector:@selector(networkSource:didFailure:)]) {
                     [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
@@ -268,14 +268,14 @@
             }
             else
             {
-                KTVHCLogDataFileSource(@"complete by cancel, %@, %ld",  self.URLString, error.code);
+                KTVHCLogDataNetworkSource(@"complete by cancel, %@, %ld",  self.URLString, error.code);
             }
         }
         else
         {
             if (self.downloadLength >= self.length)
             {
-                KTVHCLogDataFileSource(@"complete by donwload finished, %@", self.URLString);
+                KTVHCLogDataNetworkSource(@"complete by donwload finished, %@", self.URLString);
                 
                 self.didFinishDownload = YES;
                 if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishDownload:)]) {
@@ -286,7 +286,7 @@
             }
             else
             {
-                KTVHCLogDataFileSource(@"complete by unkonwn, %@", self.URLString);
+                KTVHCLogDataNetworkSource(@"complete by unkonwn, %@", self.URLString);
             }
         }
     }
@@ -303,7 +303,7 @@
     NSRange range = [contentRange rangeOfString:@"/"];
     if (contentRange.length > 0 && range.location != NSNotFound)
     {
-        KTVHCLogDataFileSource(@"receive response\n%@\n%@", self.URLString, response.URL.absoluteString);
+        KTVHCLogDataNetworkSource(@"receive response\n%@\n%@", self.URLString, response.URL.absoluteString);
         
         NSString * path = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
         self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
@@ -325,7 +325,7 @@
         return YES;
     }
     
-    KTVHCLogDataFileSource(@"receive response without Content-Range\n%@\n%@\n%@", self.URLString, response.URL.absoluteString, response.allHeaderFields);
+    KTVHCLogDataNetworkSource(@"receive response without Content-Range\n%@\n%@\n%@", self.URLString, response.URL.absoluteString, response.allHeaderFields);
     
     self.errorCanceled = YES;
     return NO;
@@ -342,7 +342,7 @@
     self.downloadLength += data.length;
     self.unitItem.length = self.downloadLength;
     
-    KTVHCLogDataFileSource(@"receive data, %llu, %llu", self.downloadLength, self.unitItem.length);
+    KTVHCLogDataNetworkSource(@"receive data, %llu, %llu", self.downloadLength, self.unitItem.length);
     
     [self callbackForHasAvailableData];
     [self.lock unlock];

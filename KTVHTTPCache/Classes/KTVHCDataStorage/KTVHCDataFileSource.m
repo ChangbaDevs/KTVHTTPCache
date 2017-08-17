@@ -97,6 +97,8 @@
     }
     self.didCallPrepare = YES;
     
+    KTVHCLogDataFileSource(@"call prepare");
+    
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
     [self.readingHandle seekToFileOffset:self.startOffset];
     if ([self.delegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
@@ -111,8 +113,9 @@
     if (self.didClose) {
         return;
     }
-    
     self.didClose = YES;
+    
+    KTVHCLogDataFileSource(@"call close");
     
     [self.readingHandle closeFile];
     self.readingHandle = nil;
@@ -129,8 +132,13 @@
     
     NSData * data = [self.readingHandle readDataOfLength:MIN(self.needReadLength - self.fileReadedLength, length)];
     self.fileReadedLength += data.length;
+    
+    KTVHCLogDataFileSource(@"read data : %lu, %lld, %lld", data.length, self.fileReadedLength, self.needReadLength);
+    
     if (self.fileReadedLength >= self.needReadLength)
     {
+        KTVHCLogDataFileSource(@"read data finished");
+        
         [self callbackForFinishRead];
     }
     return data;
