@@ -305,32 +305,46 @@
 
 - (BOOL)download:(KTVHCDownload *)download didReceiveResponse:(NSHTTPURLResponse *)response
 {
-    [[KTVHCDataUnitPool unitPool] unit:self.URLString updateResponseHeaderFields:response.allHeaderFields];
-    
     NSString * contentRange = [response.allHeaderFields objectForKey:@"Content-Range"];
     NSRange range = [contentRange rangeOfString:@"/"];
+    
     if (contentRange.length > 0 && range.location != NSNotFound)
     {
         KTVHCLogDataNetworkSource(@"receive response\n%@\n%@", self.URLString, response.URL.absoluteString);
-        
-        NSString * path = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
-        self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
-        self.unitItem.writing = YES;
-        [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
-
-        self.filePath = self.unitItem.filePath;
-        self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.filePath];
-        self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
-        
+     
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
-        self.responseHeaderFields = response.allHeaderFields;
-        self.didFinishPrepare = YES;
-        if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishPrepare:)]) {
-            [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-                [self.delegate networkSourceDidFinishPrepare:self];
-            }];
+        
+        long long contentLength = [[response.allHeaderFields objectForKey:@"Content-Length"] longLongValue];
+        
+        if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
+            self.length = self.totalContentLength - self.offset;
         }
-        return YES;
+        
+        if (contentLength > 0 && contentLength == self.length)
+        {
+            // Unit & Unit Item
+            [[KTVHCDataUnitPool unitPool] unit:self.URLString updateResponseHeaderFields:response.allHeaderFields];
+            
+            NSString * path = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
+            self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
+            self.unitItem.writing = YES;
+            [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
+            
+            // File Handle
+            self.filePath = self.unitItem.filePath;
+            self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.filePath];
+            self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
+            
+            self.responseHeaderFields = response.allHeaderFields;
+            
+            self.didFinishPrepare = YES;
+            if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishPrepare:)]) {
+                [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                    [self.delegate networkSourceDidFinishPrepare:self];
+                }];
+            }
+            return YES;
+        }
     }
     
     KTVHCLogDataNetworkSource(@"receive response without Content-Range\n%@\n%@\n%@", self.URLString, response.URL.absoluteString, response.allHeaderFields);
