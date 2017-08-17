@@ -101,6 +101,7 @@
     
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
     [self.readingHandle seekToFileOffset:self.startOffset];
+    
     if ([self.delegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             [self.delegate fileSourceDidFinishPrepare:self];
@@ -139,25 +140,12 @@
     {
         KTVHCLogDataFileSource(@"read data finished");
         
-        [self callbackForFinishRead];
+        [self.readingHandle closeFile];
+        self.readingHandle = nil;
+        
+        self.didFinishRead = YES;
     }
     return data;
-}
-
-
-#pragma mark - Callback
-
-- (void)callbackForFinishRead
-{
-    [self.readingHandle closeFile];
-    self.readingHandle = nil;
-
-    self.didFinishRead = YES;
-    if ([self.delegate respondsToSelector:@selector(fileSourceDidFinishRead:)]) {
-        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-            [self.delegate fileSourceDidFinishRead:self];
-        }];
-    }
 }
 
 

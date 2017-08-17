@@ -16,7 +16,6 @@
 
 @optional
 - (void)fileSourceDidFinishPrepare:(KTVHCDataFileSource *)fileSource;
-- (void)fileSourceDidFinishRead:(KTVHCDataFileSource *)fileSource;
 
 @end
 
