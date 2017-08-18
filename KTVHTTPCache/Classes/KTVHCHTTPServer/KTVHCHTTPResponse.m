@@ -69,7 +69,7 @@
 {
     NSData * data = [self.reader readDataOfLength:length];
     
-    KTVHCLogHTTPResponse(@"read data length, %@, %lu", self.dataRequest.URLString, data.length);
+    KTVHCLogHTTPResponse(@"read data length, %lu, %@", data.length, self.dataRequest.URLString);
     
     if (self.reader.didFinishRead) {
         
@@ -146,7 +146,7 @@
 
 - (void)reader:(KTVHCDataReader *)reader didFailure:(NSError *)error
 {
-    KTVHCLogHTTPResponse(@"failure, %@, %ld", self.dataRequest.URLString, error.code);
+    KTVHCLogHTTPResponse(@"failure, %ld, %@", error.code, self.dataRequest.URLString);
     
     [self.reader close];
     [self.connection responseDidAbort:self];

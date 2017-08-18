@@ -82,7 +82,7 @@
 {
     [self.lock lock];
     
-    KTVHCLogDownload(@"complete, %@, %ld", task.originalRequest.URL.absoluteString, error.code);
+    KTVHCLogDownload(@"complete, %ld, %@", error.code, task.originalRequest.URL.absoluteString);
     
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
     [delegate download:self didCompleteWithError:error];
@@ -106,7 +106,7 @@
 {
     [self.lock lock];
     
-    KTVHCLogDownload(@"receive data, %@, %lu", dataTask.originalRequest.URL.absoluteString, data.length);
+    KTVHCLogDownload(@"receive data, %lu, %@", data.length, dataTask.originalRequest.URL.absoluteString);
     
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     [delegate download:self didReceiveData:data];

@@ -367,7 +367,7 @@
     self.downloadLength += data.length;
     self.unitItem.length = self.downloadLength;
     
-    KTVHCLogDataNetworkSource(@"receive data, %llu, %llu", self.downloadLength, self.unitItem.length);
+    KTVHCLogDataNetworkSource(@"receive data, %lu, %llu, %llu", data.length, self.downloadLength, self.unitItem.length);
     
     [self callbackForHasAvailableData];
     [self.lock unlock];
