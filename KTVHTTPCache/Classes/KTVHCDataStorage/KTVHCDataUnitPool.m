@@ -169,9 +169,25 @@
     }
     
     [self.lock lock];
+    
     BOOL needArchive = NO;
     long long currentSize = 0;
+    
     NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
+    
+#if 1
+    [units sortedArrayUsingComparator:^NSComparisonResult(KTVHCDataUnit * obj1, KTVHCDataUnit * obj2) {
+        NSTimeInterval timeInterval1 = obj1.lastItemCerateInterval;
+        NSTimeInterval timeInterval2 = obj2.lastItemCerateInterval;
+        if (timeInterval1 < timeInterval2) {
+            return NSOrderedAscending;
+        } else if (timeInterval1 == timeInterval2 && obj1.createTimeInterval < obj2.createTimeInterval) {
+            return NSOrderedAscending;
+        }
+        return NSOrderedDescending;
+    }];
+#endif
+    
     for (KTVHCDataUnit * obj in units)
     {
         if (!obj.working)

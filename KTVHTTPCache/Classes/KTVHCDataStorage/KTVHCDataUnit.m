@@ -221,6 +221,21 @@
     return self.responseHeaderFields;
 }
 
+- (NSTimeInterval)lastItemCerateInterval
+{
+    [self lock];
+    NSTimeInterval timeInterval = self.createTimeInterval;
+    for (KTVHCDataUnitItem * obj in self.unitItems)
+    {
+        if (obj.createTimeInterval > timeInterval)
+        {
+            timeInterval = obj.createTimeInterval;
+        }
+    }
+    [self unlock];
+    return timeInterval;
+}
+
 - (void)setDelegate:(id <KTVHCDataUnitDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
     self.delegate = delegate;
