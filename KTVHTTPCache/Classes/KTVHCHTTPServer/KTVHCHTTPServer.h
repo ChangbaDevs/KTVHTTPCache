@@ -15,7 +15,7 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)httpServer;
++ (instancetype)server;
 
 @property (nonatomic, assign, readonly) BOOL running;
 

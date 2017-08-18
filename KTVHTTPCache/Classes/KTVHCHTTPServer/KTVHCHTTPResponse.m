@@ -42,7 +42,7 @@
         self.dataRequest = dataRequest;
         
 #if 1
-        self.reader = [[KTVHCDataStorage manager] concurrentReaderWithRequest:self.dataRequest];
+        self.reader = [[KTVHCDataStorage storage] concurrentReaderWithRequest:self.dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
 #else

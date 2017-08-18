@@ -96,7 +96,7 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
 
 - (NSInteger)listeningPort
 {
-    return [KTVHCHTTPServer httpServer].listeningPort;
+    return [KTVHCHTTPServer server].listeningPort;
 }
 
 

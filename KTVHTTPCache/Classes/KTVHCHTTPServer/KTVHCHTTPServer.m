@@ -27,7 +27,7 @@
 
 #pragma mark - Init
 
-+ (instancetype)httpServer
++ (instancetype)server
 {
     static KTVHCHTTPServer * obj = nil;
     static dispatch_once_t onceToken;

@@ -17,7 +17,7 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)manager;
++ (instancetype)storage;
 
 
 #pragma mark - Data Reader

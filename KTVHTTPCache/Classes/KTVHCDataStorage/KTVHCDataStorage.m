@@ -24,7 +24,7 @@
 @implementation KTVHCDataStorage
 
 
-+ (instancetype)manager
++ (instancetype)storage
 {
     static KTVHCDataStorage * obj = nil;
     static dispatch_once_t onceToken;

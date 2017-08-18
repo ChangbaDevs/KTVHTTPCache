@@ -19,17 +19,17 @@
 
 + (void)proxyStart:(NSError * __autoreleasing *)error
 {
-    [[KTVHCHTTPServer httpServer] start:error];
+    [[KTVHCHTTPServer server] start:error];
 }
 
 + (void)proxyStop
 {
-    [[KTVHCHTTPServer httpServer] stop];
+    [[KTVHCHTTPServer server] stop];
 }
 
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)urlString
 {
-    return [[KTVHCHTTPServer httpServer] URLStringWithOriginalURLString:urlString];
+    return [[KTVHCHTTPServer server] URLStringWithOriginalURLString:urlString];
 }
 
 
@@ -37,64 +37,64 @@
 
 + (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request
 {
-    return [[KTVHCDataStorage manager] concurrentReaderWithRequest:request];
+    return [[KTVHCDataStorage storage] concurrentReaderWithRequest:request];
 }
 
 + (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
 {
-    return [[KTVHCDataStorage manager] serialReaderWithRequest:request];
+    return [[KTVHCDataStorage storage] serialReaderWithRequest:request];
 }
 
 + (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
                    completionHandler:(void(^)(KTVHCDataReader *))completionHandler
 {
-    [[KTVHCDataStorage manager] serialReaderWithRequest:request
+    [[KTVHCDataStorage storage] serialReaderWithRequest:request
                                       completionHandler:completionHandler];
 }
 
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength
 {
-    [KTVHCDataStorage manager].maxCacheLength = maxCacheLength;
+    [KTVHCDataStorage storage].maxCacheLength = maxCacheLength;
 }
 
 + (long long)cacheMaxCacheLength
 {
-    return [KTVHCDataStorage manager].maxCacheLength;
+    return [KTVHCDataStorage storage].maxCacheLength;
 }
 
 + (long long)cacheTotalCacheLength
 {
-    return [[KTVHCDataStorage manager] totalCacheLength];
+    return [[KTVHCDataStorage storage] totalCacheLength];
 }
 
 + (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem
 {
-    return [[KTVHCDataStorage manager] fetchAllCacheItem];
+    return [[KTVHCDataStorage storage] fetchAllCacheItem];
 }
 
 + (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString
 {
-    return [[KTVHCDataStorage manager] fetchCacheItemWithURLString:URLString];
+    return [[KTVHCDataStorage storage] fetchCacheItemWithURLString:URLString];
 }
 
 + (void)cacheDeleteAllCache
 {
-    [[KTVHCDataStorage manager] deleteAllCache];
+    [[KTVHCDataStorage storage] deleteAllCache];
 }
 
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString
 {
-    [[KTVHCDataStorage manager] deleteCacheWithURLString:URLString];
+    [[KTVHCDataStorage storage] deleteCacheWithURLString:URLString];
 }
 
 + (void)cacheMergeAllCache
 {
-    [[KTVHCDataStorage manager] mergeAllCache];
+    [[KTVHCDataStorage storage] mergeAllCache];
 }
 
 + (void)cacheMergeCacheWtihURLString:(NSString *)URLString
 {
-    [[KTVHCDataStorage manager] mergeCacheWithURLString:URLString];
+    [[KTVHCDataStorage storage] mergeCacheWithURLString:URLString];
 }
 
 
