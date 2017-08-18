@@ -38,6 +38,7 @@
 {
     if (self = [super init])
     {
+        self.maxCacheLength = 500 * 1024 * 1024;
         self.condition = [[NSCondition alloc] init];
         self.operationQueue = [[NSOperationQueue alloc] init];
         self.operationQueue.maxConcurrentOperationCount = 1;

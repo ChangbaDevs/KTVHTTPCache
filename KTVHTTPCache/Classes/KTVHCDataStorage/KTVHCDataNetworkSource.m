@@ -7,6 +7,7 @@
 //
 
 #import "KTVHCDataNetworkSource.h"
+#import "KTVHCDataStorage.h"
 #import "KTVHCPathTools.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataCallback.h"
@@ -50,6 +51,7 @@
 @property (nonatomic, assign) BOOL didFinishDownload;
 
 @property (nonatomic, assign) long long totalContentLength;
+@property (nonatomic, assign) long long currentContentLength;
 
 
 #pragma mark - Download
@@ -263,10 +265,24 @@
             {
                 KTVHCLogDataNetworkSource(@"complete by error, %@, %ld",  self.URLString, error.code);
                 
-                if (self.errorCanceled && self.errorResponse) {
-                    NSError * obj = [KTVHCError errorForResponseUnavailable:self.URLString request:self.request response:self.errorResponse];
-                    if (obj) {
-                        self.error = obj;
+                if (self.errorCanceled)
+                {
+                    if (self.errorResponse)
+                    {
+                        NSError * obj = [KTVHCError errorForResponseUnavailable:self.URLString request:self.request response:self.errorResponse];
+                        if (obj) {
+                            self.error = obj;
+                        }
+                    }
+                    else
+                    {
+                        NSError * obj = [KTVHCError errorForNotEnoughDiskSpace:self.totalContentLength
+                                                                       request:self.currentContentLength
+                                                              totalCacheLength:[KTVHCDataStorage storage].totalCacheLength
+                                                                maxCacheLength:[KTVHCDataStorage storage].maxCacheLength];
+                        if (obj) {
+                            self.error = obj;
+                        }
                     }
                 }
                 
@@ -315,15 +331,28 @@
         KTVHCLogDataNetworkSource(@"receive response\n%@\n%@", self.URLString, response.URL.absoluteString);
      
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
-        
-        long long contentLength = [[response.allHeaderFields objectForKey:@"Content-Length"] longLongValue];
+        self.currentContentLength = [[response.allHeaderFields objectForKey:@"Content-Length"] longLongValue];
         
         if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
             self.length = self.totalContentLength - self.offset;
         }
         
-        if (contentLength > 0 && contentLength == self.length)
+        if (self.currentContentLength > 0 && self.currentContentLength == self.length)
         {
+            // Check Cache
+            long long delta = [KTVHCDataStorage storage].totalCacheLength + self.currentContentLength - [KTVHCDataStorage storage].maxCacheLength;
+            if (delta > 0)
+            {
+                [[KTVHCDataUnitPool unitPool] deleteUnitsWithMinSize:delta];
+                
+                delta = [KTVHCDataStorage storage].totalCacheLength + self.currentContentLength - [KTVHCDataStorage storage].maxCacheLength;
+                if (delta > 0)
+                {
+                    self.errorCanceled = YES;
+                    return NO;
+                }
+            }
+            
             // Unit & Unit Item
             [[KTVHCDataUnitPool unitPool] unit:self.URLString updateResponseHeaderFields:response.allHeaderFields];
             

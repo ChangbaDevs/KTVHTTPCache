@@ -30,7 +30,7 @@
 
 #pragma mark - Cache Control
 
-@property (nonatomic, assign) long long maxCacheLength;
+@property (nonatomic, assign) long long maxCacheLength;     // default is 500m.
 
 - (long long)totalCacheLength;
 
