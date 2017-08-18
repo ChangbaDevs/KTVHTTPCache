@@ -15,6 +15,9 @@
 
 
 @property (nonatomic, strong) NSLock * coreLock;
+
+@property (nonatomic, assign) NSTimeInterval createTimeInterval;
+
 @property (nonatomic, assign) long long offset;
 @property (nonatomic, copy) NSString * path;
 @property (nonatomic, copy) NSString * filePath;
@@ -36,6 +39,7 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        self.createTimeInterval = [NSDate date].timeIntervalSince1970;
         self.offset = offset;
         self.path = path;
         [self prepare];
@@ -47,6 +51,7 @@
 {
     if (self = [super init])
     {
+        self.createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
         self.path = [aDecoder decodeObjectForKey:@"path"];
         self.offset = [[aDecoder decodeObjectForKey:@"offset"] longLongValue];
         [self prepare];
@@ -56,6 +61,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [aCoder encodeObject:@(self.createTimeInterval) forKey:@"createTimeInterval"];
     [aCoder encodeObject:self.path forKey:@"path"];
     [aCoder encodeObject:@(self.offset) forKey:@"offset"];
 }

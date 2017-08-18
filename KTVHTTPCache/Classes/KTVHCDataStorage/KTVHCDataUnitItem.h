@@ -17,6 +17,8 @@
 
 + (instancetype)unitItemWithOffset:(long long)offset path:(NSString *)path;
 
+@property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;
+
 @property (nonatomic, assign) BOOL writing;
 
 @property (nonatomic, assign, readonly) long long offset;

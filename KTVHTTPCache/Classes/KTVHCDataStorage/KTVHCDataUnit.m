@@ -19,6 +19,8 @@
 @property (nonatomic, copy) NSString * URLString;
 @property (nonatomic, copy) NSString * uniqueIdentifier;
 
+@property (nonatomic, assign) NSTimeInterval createTimeInterval;
+
 @property (nonatomic, strong) NSDictionary * requestHeaderFields;
 @property (nonatomic, strong) NSDictionary * responseHeaderFields;
 
@@ -52,6 +54,7 @@
         KTVHCLogAlloc(self);
         self.URLString = URLString;
         self.uniqueIdentifier = [[self class] uniqueIdentifierWithURLString:self.URLString];
+        self.createTimeInterval = [NSDate date].timeIntervalSince1970;
         [self prepare];
     }
     return self;
@@ -63,6 +66,7 @@
     {
         self.URLString = [aDecoder decodeObjectForKey:@"URLString"];
         self.uniqueIdentifier = [aDecoder decodeObjectForKey:@"uniqueIdentifier"];
+        self.createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
         self.requestHeaderFields = [aDecoder decodeObjectForKey:@"requestHeaderFields"];
         self.responseHeaderFields = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
         self.totalContentLength = [[aDecoder decodeObjectForKey:@"totalContentLength"] longLongValue];
@@ -76,6 +80,7 @@
 {
     [aCoder encodeObject:self.URLString forKey:@"URLString"];
     [aCoder encodeObject:self.uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [aCoder encodeObject:@(self.createTimeInterval) forKey:@"createTimeInterval"];
     [aCoder encodeObject:self.requestHeaderFields forKey:@"requestHeaderFields"];
     [aCoder encodeObject:self.responseHeaderFields forKey:@"responseHeaderFields"];
     [aCoder encodeObject:@(self.totalContentLength) forKey:@"totalContentLength"];

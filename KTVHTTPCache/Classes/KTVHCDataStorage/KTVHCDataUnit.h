@@ -32,6 +32,8 @@
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
+@property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;
+
 @property (nonatomic, strong, readonly) NSDictionary * requestHeaderFields;
 @property (nonatomic, strong, readonly) NSDictionary * requestHeaderFieldsWithoutRange;
 @property (nonatomic, strong, readonly) NSDictionary * responseHeaderFields;
