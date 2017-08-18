@@ -30,6 +30,8 @@
 
 #pragma mark - Cache Control
 
+@property (nonatomic, assign) long long maxCacheLength;
+
 - (long long)totalCacheLength;
 
 - (NSArray <KTVHCDataCacheItem *> *)fetchAllCacheItem;

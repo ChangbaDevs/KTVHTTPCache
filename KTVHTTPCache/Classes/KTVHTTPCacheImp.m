@@ -52,6 +52,16 @@
                                       completionHandler:completionHandler];
 }
 
++ (void)cacheSetMaxCacheLength:(long long)maxCacheLength
+{
+    [KTVHCDataStorage manager].maxCacheLength = maxCacheLength;
+}
+
++ (long long)cacheMaxCacheLength
+{
+    return [KTVHCDataStorage manager].maxCacheLength;
+}
+
 + (long long)cacheTotalCacheLength
 {
     return [[KTVHCDataStorage manager] totalCacheLength];

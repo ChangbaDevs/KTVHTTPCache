@@ -42,6 +42,9 @@
 /**
  *  Cache Control
  */
++ (void)cacheSetMaxCacheLength:(long long)maxCacheLength;
++ (long long)cacheMaxCacheLength;
+
 + (long long)cacheTotalCacheLength;
 
 + (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem;
