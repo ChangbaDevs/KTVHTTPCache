@@ -30,6 +30,7 @@
 - (KTVHCDataCacheItem *)cacheItemWithURLString:(NSString *)URLString;
 
 - (void)deleteUnitWithURLString:(NSString *)URLString;
+- (void)deleteUnitsWithMinSize:(long long)minSize;
 - (void)deleteAllUnits;
 
 - (void)mergeUnitWithURLString:(NSString *)URLString;

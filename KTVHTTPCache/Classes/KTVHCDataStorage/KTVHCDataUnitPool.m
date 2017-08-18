@@ -162,6 +162,38 @@
     [self.lock unlock];
 }
 
+- (void)deleteUnitsWithMinSize:(long long)minSize
+{
+    if (minSize <= 0) {
+        return;
+    }
+    
+    [self.lock lock];
+    BOOL needArchive = NO;
+    long long currentSize = 0;
+    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
+    for (KTVHCDataUnit * obj in units)
+    {
+        if (!obj.working)
+        {
+            KTVHCLogDataUnitPool(@"delete unit 2, %@", obj.URLString);
+            
+            currentSize += obj.totalCacheLength;
+            [obj deleteFiles];
+            [self.unitQueue popUnit:obj];
+            needArchive = YES;
+        }
+        if (currentSize >= minSize)
+        {
+            break;
+        }
+    }
+    if (needArchive) {
+        [self.unitQueue archive];
+    }
+    [self.lock unlock];
+}
+
 - (void)deleteAllUnits
 {
     [self.lock lock];
