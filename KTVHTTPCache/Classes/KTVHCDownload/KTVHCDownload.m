@@ -46,10 +46,12 @@
         self.timeoutInterval = 30.0f;
         
         self.sessionDelegateQueue = [[NSOperationQueue alloc] init];
+        self.sessionDelegateQueue.qualityOfService = NSQualityOfServiceUserInteractive;
         
         self.sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
         self.sessionConfiguration.timeoutIntervalForRequest = self.timeoutInterval;
         self.sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+        
         
         self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
                                                      delegate:self
@@ -73,6 +75,7 @@
     request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     
     NSURLSessionDataTask * task = [self.session dataTaskWithRequest:request];
+    task.priority = 1.0;
     [self.delegateDictionary setObject:delegate forKey:task];
     [task resume];
     
@@ -104,6 +107,16 @@
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     BOOL result = [delegate download:self didReceiveResponse:(NSHTTPURLResponse *)response];
     completionHandler(result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel);
+    [self.lock unlock];
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler
+{
+    [self.lock lock];
+    
+    KTVHCLogDownload(@"will perform HTTP redirection\n%@\n%@\n%@\n%@", response.URL.absoluteString, [(NSHTTPURLResponse *)response allHeaderFields], request.URL.absoluteString, request.allHTTPHeaderFields);
+
+    completionHandler(request);
     [self.lock unlock];
 }
 
