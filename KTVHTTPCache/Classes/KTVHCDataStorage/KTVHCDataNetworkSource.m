@@ -132,6 +132,28 @@
     NSURL * URL = [NSURL URLWithString:self.URLString];
     self.request = [NSMutableURLRequest requestWithURL:URL];
     
+    static NSArray <NSString *> * availableHeaderKeys = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        availableHeaderKeys = @[@"User-Agent",
+                                @"Connection",
+                                @"Accept",
+                                @"Accept-Encoding",
+                                @"Accept-Language"];
+    });
+    
+    [self.requestHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL * stop) {
+        for (NSString * availableHeaderKey in availableHeaderKeys)
+        {
+            if ([key isEqualToString:availableHeaderKey])
+            {
+                [self.request setValue:obj forHTTPHeaderField:key];
+            }
+        }
+    }];
+    
+    [self.request setValue:URL.host forHTTPHeaderField:@"Host"];
+    
     if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
         [self.request setValue:[NSString stringWithFormat:@"bytes=%lld-", self.offset] forHTTPHeaderField:@"Range"];
     } else {

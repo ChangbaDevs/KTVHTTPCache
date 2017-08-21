@@ -44,8 +44,13 @@
         self.lock = [[NSLock alloc] init];
         self.delegateDictionary = [NSMutableDictionary dictionary];
         self.timeoutInterval = 30.0f;
+        
         self.sessionDelegateQueue = [[NSOperationQueue alloc] init];
+        
         self.sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        self.sessionConfiguration.timeoutIntervalForRequest = self.timeoutInterval;
+        self.sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+        
         self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
                                                      delegate:self
                                                 delegateQueue:self.sessionDelegateQueue];
