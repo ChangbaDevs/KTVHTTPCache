@@ -152,8 +152,6 @@
         }
     }];
     
-    [self.request setValue:URL.host forHTTPHeaderField:@"Host"];
-    
     if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
         [self.request setValue:[NSString stringWithFormat:@"bytes=%lld-", self.offset] forHTTPHeaderField:@"Range"];
     } else {
