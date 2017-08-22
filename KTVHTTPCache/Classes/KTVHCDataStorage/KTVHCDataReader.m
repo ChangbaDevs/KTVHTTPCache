@@ -115,7 +115,7 @@
         
         min = item.offset + (itemMin - item.offset) + (itemMax - itemMin + 1);
         
-        KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithFilePath:item.filePath
+        KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithFilePath:item.absolutePath
                                                                         offset:item.offset
                                                                         length:item.length
                                                                    startOffset:itemMin - item.offset

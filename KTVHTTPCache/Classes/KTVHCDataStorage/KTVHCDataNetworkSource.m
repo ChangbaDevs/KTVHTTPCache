@@ -376,13 +376,13 @@
             // Unit & Unit Item
             [[KTVHCDataUnitPool unitPool] unit:self.URLString updateResponseHeaderFields:response.allHeaderFields];
             
-            NSString * path = [KTVHCPathTools relativePathForFileWithURLString:self.URLString offset:self.offset];
-            self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
+            NSString * relativePath = [KTVHCPathTools relativePathForFileWithURLString:self.URLString offset:self.offset];
+            self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset relativePath:relativePath];
             self.unitItem.writing = YES;
             [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
             
             // File Handle
-            self.filePath = self.unitItem.filePath;
+            self.filePath = self.unitItem.absolutePath;
             self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.filePath];
             self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
             

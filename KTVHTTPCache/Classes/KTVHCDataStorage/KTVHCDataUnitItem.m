@@ -19,8 +19,8 @@
 @property (nonatomic, assign) NSTimeInterval createTimeInterval;
 
 @property (nonatomic, assign) long long offset;
-@property (nonatomic, copy) NSString * path;
-@property (nonatomic, copy) NSString * filePath;
+@property (nonatomic, copy) NSString * relativePath;
+@property (nonatomic, copy) NSString * absolutePath;
 
 
 @end
@@ -29,19 +29,19 @@
 @implementation KTVHCDataUnitItem
 
 
-+ (instancetype)unitItemWithOffset:(long long)offset path:(NSString *)path
++ (instancetype)unitItemWithOffset:(long long)offset relativePath:(NSString *)relativePath
 {
-    return [[self alloc] initWithOffset:offset path:(NSString *)path];
+    return [[self alloc] initWithOffset:offset relativePath:relativePath];
 }
 
-- (instancetype)initWithOffset:(long long)offset path:(NSString *)path
+- (instancetype)initWithOffset:(long long)offset relativePath:(NSString *)relativePath
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
         self.createTimeInterval = [NSDate date].timeIntervalSince1970;
         self.offset = offset;
-        self.path = path;
+        self.relativePath = relativePath;
         [self prepare];
     }
     return self;
@@ -52,7 +52,7 @@
     if (self = [super init])
     {
         self.createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
-        self.path = [aDecoder decodeObjectForKey:@"path"];
+        self.relativePath = [aDecoder decodeObjectForKey:@"relativePath"];
         self.offset = [[aDecoder decodeObjectForKey:@"offset"] longLongValue];
         [self prepare];
     }
@@ -62,7 +62,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:@(self.createTimeInterval) forKey:@"createTimeInterval"];
-    [aCoder encodeObject:self.path forKey:@"path"];
+    [aCoder encodeObject:self.relativePath forKey:@"relativePath"];
     [aCoder encodeObject:@(self.offset) forKey:@"offset"];
 }
 
@@ -75,8 +75,8 @@
 - (void)prepare
 {
     self.coreLock = [[NSLock alloc] init];
-    self.filePath = [KTVHCPathTools absolutePathWithRelativePath:self.path];
-    self.length = [KTVHCPathTools sizeOfItemAtFilePath:self.filePath];
+    self.absolutePath = [KTVHCPathTools absolutePathWithRelativePath:self.relativePath];
+    self.length = [KTVHCPathTools sizeOfItemAtFilePath:self.absolutePath];
 }
 
 
@@ -95,7 +95,7 @@
 - (void)reloadFileLength
 {
     [self lock];
-    _length = [KTVHCPathTools sizeOfItemAtFilePath:self.filePath];
+    _length = [KTVHCPathTools sizeOfItemAtFilePath:self.absolutePath];
     [self unlock];
 }
 
