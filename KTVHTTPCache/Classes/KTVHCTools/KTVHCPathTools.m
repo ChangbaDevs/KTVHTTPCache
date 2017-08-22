@@ -20,7 +20,7 @@
 
 + (NSString *)absolutePathForArchiver
 {
-    NSString * relativePath = [[self relativePathForRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.archiver"];
+    NSString * relativePath = [[self relativePathForRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.archive"];
     return [self absolutePathWithRelativePath:relativePath];
 }
 
