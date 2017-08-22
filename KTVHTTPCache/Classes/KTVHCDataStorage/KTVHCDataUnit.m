@@ -276,14 +276,14 @@
 
 #pragma mark - File
 
-- (NSString *)fileFolderPath
+- (NSString *)absolutePathForFileDirectory
 {
     return [KTVHCPathTools absolutePathForDirectoryWithURLString:self.URLString];
 }
 
 - (void)deleteFiles
 {
-    [KTVHCPathTools deleteFolderAtPath:self.fileFolderPath];
+    [KTVHCPathTools deleteFolderAtPath:self.absolutePathForFileDirectory];
 }
 
 - (BOOL)mergeFiles

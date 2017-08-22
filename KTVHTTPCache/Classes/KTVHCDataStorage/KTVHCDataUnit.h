@@ -72,7 +72,7 @@
 
 #pragma mark - File
 
-@property (nonatomic, copy, readonly) NSString * fileFolderPath;
+@property (nonatomic, copy, readonly) NSString * absolutePathForFileDirectory;
 
 - (void)deleteFiles;
 - (BOOL)mergeFiles;
