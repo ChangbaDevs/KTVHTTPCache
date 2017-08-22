@@ -52,9 +52,19 @@
  */
 
 #if DEBUG
-#define KTVHCLog(target, enable, ...)       if (enable && [KTVHCLog logEnable]) {NSLog(@"%@  :   %@", target, [NSString stringWithFormat:__VA_ARGS__]);}
+
+#define KTVHCLog(target, enable, ...)                                                                       \
+if (enable && [KTVHCLog logEnable])                                                                         \
+{                                                                                                           \
+    NSString * va_args = [NSString stringWithFormat:__VA_ARGS__];                                           \
+    NSString * log = [NSString stringWithFormat:@"%@  %@  :   %@", [NSDate date], target, va_args];         \
+    NSLog(@"%@", log);                                                                                      \
+}
+
 #else
+
 #define KTVHCLog(target, enable, ...)
+
 #endif
 
 // HTTP Server
