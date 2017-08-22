@@ -115,12 +115,12 @@
 
 + (void)setLogEnable:(BOOL)enable
 {
-    [KTVHCLog setLogEnable:enable];
+    [KTVHCLog log].logEnable = enable;
 }
 
 + (BOOL)logEnable
 {
-    return [KTVHCLog logEnable];
+    return [KTVHCLog log].logEnable;
 }
 
 

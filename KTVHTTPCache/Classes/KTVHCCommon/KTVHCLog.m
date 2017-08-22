@@ -8,18 +8,33 @@
 
 #import "KTVHCLog.h"
 
+
+@interface KTVHCLog ()
+
+@end
+
+
 @implementation KTVHCLog
 
-static BOOL logEnable = NO;
 
-+ (void)setLogEnable:(BOOL)enable
++ (instancetype)log
 {
-    logEnable = enable;
+    static KTVHCLog * obj = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        obj = [[self alloc] init];
+    });
+    return obj;
 }
 
-+ (BOOL)logEnable
+- (instancetype)init
 {
-    return logEnable;
+    if (self = [super init])
+    {
+        self.logEnable = NO;
+    }
+    return self;
 }
+
 
 @end

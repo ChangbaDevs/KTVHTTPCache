@@ -53,8 +53,8 @@
 
 #if DEBUG
 
-#define KTVHCLog(target, enable, ...)                                                                       \
-if (enable && [KTVHCLog logEnable])                                                                         \
+#define KTVHCLogging(target, enable, ...)                                                                       \
+if (enable && [KTVHCLog log].logEnable)                                                                         \
 {                                                                                                           \
     NSString * va_args = [NSString stringWithFormat:__VA_ARGS__];                                           \
     NSString * log = [NSString stringWithFormat:@"%@  %@  :   %@", [NSDate date], target, va_args];         \
@@ -63,47 +63,53 @@ if (enable && [KTVHCLog logEnable])                                             
 
 #else
 
-#define KTVHCLog(target, enable, ...)
+#define KTVHCLogging(target, enable, ...)
 
 #endif
 
 // HTTP Server
 
-#define KTVHCLogHTTPServer(...)             KTVHCLog(@"KTVHCHTTPServer       ", KTVHCLogHTTPServerEnable,        ##__VA_ARGS__)
-#define KTVHCLogHTTPConnection(...)         KTVHCLog(@"KTVHCHTTPConnection   ", KTVHCLogHTTPConnectionEnable,    ##__VA_ARGS__)
-#define KTVHCLogHTTPRequest(...)            KTVHCLog(@"KTVHCHTTPRequest      ", KTVHCLogHTTPRequestEnable,       ##__VA_ARGS__)
-#define KTVHCLogHTTPResponse(...)           KTVHCLog(@"KTVHCHTTPResponse     ", KTVHCLogHTTPResponseEnable,      ##__VA_ARGS__)
-#define KTVHCLogHTTPURL(...)                KTVHCLog(@"KTVHCHTTPURL          ", KTVHCLogHTTPURLEnable,           ##__VA_ARGS__)
+#define KTVHCLogHTTPServer(...)             KTVHCLogging(@"KTVHCHTTPServer       ", KTVHCLogHTTPServerEnable,        ##__VA_ARGS__)
+#define KTVHCLogHTTPConnection(...)         KTVHCLogging(@"KTVHCHTTPConnection   ", KTVHCLogHTTPConnectionEnable,    ##__VA_ARGS__)
+#define KTVHCLogHTTPRequest(...)            KTVHCLogging(@"KTVHCHTTPRequest      ", KTVHCLogHTTPRequestEnable,       ##__VA_ARGS__)
+#define KTVHCLogHTTPResponse(...)           KTVHCLogging(@"KTVHCHTTPResponse     ", KTVHCLogHTTPResponseEnable,      ##__VA_ARGS__)
+#define KTVHCLogHTTPURL(...)                KTVHCLogging(@"KTVHCHTTPURL          ", KTVHCLogHTTPURLEnable,           ##__VA_ARGS__)
 
 // Data Storage
 
-#define KTVHCLogDataStorage(...)            KTVHCLog(@"KTVHCDataStorage      ", KTVHCLogDataStorageEnable,       ##__VA_ARGS__)
-#define KTVHCLogDataRequest(...)            KTVHCLog(@"KTVHCDataRequest      ", KTVHCLogDataRequestEnable,       ##__VA_ARGS__)
-#define KTVHCLogDataReader(...)             KTVHCLog(@"KTVHCDataReader       ", KTVHCLogDataReaderEnable,        ##__VA_ARGS__)
+#define KTVHCLogDataStorage(...)            KTVHCLogging(@"KTVHCDataStorage      ", KTVHCLogDataStorageEnable,       ##__VA_ARGS__)
+#define KTVHCLogDataRequest(...)            KTVHCLogging(@"KTVHCDataRequest      ", KTVHCLogDataRequestEnable,       ##__VA_ARGS__)
+#define KTVHCLogDataReader(...)             KTVHCLogging(@"KTVHCDataReader       ", KTVHCLogDataReaderEnable,        ##__VA_ARGS__)
 
-#define KTVHCLogDataUnit(...)               KTVHCLog(@"KTVHCDataUnit         ", KTVHCLogDataUnitEnable,          ##__VA_ARGS__)
-#define KTVHCLogDataUnitItem(...)           KTVHCLog(@"KTVHCDataUnitItem     ", KTVHCLogDataUnitItemEnable,      ##__VA_ARGS__)
-#define KTVHCLogDataUnitPool(...)           KTVHCLog(@"KTVHCDataUnitPool     ", KTVHCLogDataUnitPoolEnable,      ##__VA_ARGS__)
-#define KTVHCLogDataUnitQueue(...)          KTVHCLog(@"KTVHCDataUnitQueue    ", KTVHCLogDataUnitQueueEnable,     ##__VA_ARGS__)
+#define KTVHCLogDataUnit(...)               KTVHCLogging(@"KTVHCDataUnit         ", KTVHCLogDataUnitEnable,          ##__VA_ARGS__)
+#define KTVHCLogDataUnitItem(...)           KTVHCLogging(@"KTVHCDataUnitItem     ", KTVHCLogDataUnitItemEnable,      ##__VA_ARGS__)
+#define KTVHCLogDataUnitPool(...)           KTVHCLogging(@"KTVHCDataUnitPool     ", KTVHCLogDataUnitPoolEnable,      ##__VA_ARGS__)
+#define KTVHCLogDataUnitQueue(...)          KTVHCLogging(@"KTVHCDataUnitQueue    ", KTVHCLogDataUnitQueueEnable,     ##__VA_ARGS__)
 
-#define KTVHCLogDataSourcer(...)            KTVHCLog(@"KTVHCDataSourcer      ", KTVHCLogDataSourcerEnable,       ##__VA_ARGS__)
-#define KTVHCLogDataSourceQueue(...)        KTVHCLog(@"KTVHCDataSourceQueue  ", KTVHCLogDataSourceQueueEnable,   ##__VA_ARGS__)
-#define KTVHCLogDataFileSource(...)         KTVHCLog(@"KTVHCDataFileSource   ", KTVHCLogDataFileSourceEnable,    ##__VA_ARGS__)
-#define KTVHCLogDataNetworkSource(...)      KTVHCLog(@"KTVHCDataNetworkSource", KTVHCLogDataNetworkSourceEnable, ##__VA_ARGS__)
+#define KTVHCLogDataSourcer(...)            KTVHCLogging(@"KTVHCDataSourcer      ", KTVHCLogDataSourcerEnable,       ##__VA_ARGS__)
+#define KTVHCLogDataSourceQueue(...)        KTVHCLogging(@"KTVHCDataSourceQueue  ", KTVHCLogDataSourceQueueEnable,   ##__VA_ARGS__)
+#define KTVHCLogDataFileSource(...)         KTVHCLogging(@"KTVHCDataFileSource   ", KTVHCLogDataFileSourceEnable,    ##__VA_ARGS__)
+#define KTVHCLogDataNetworkSource(...)      KTVHCLogging(@"KTVHCDataNetworkSource", KTVHCLogDataNetworkSourceEnable, ##__VA_ARGS__)
 
 // Download
 
-#define KTVHCLogDownload(...)               KTVHCLog(@"KTVHCDownload         ", KTVHCLogDownloadEnable,          ##__VA_ARGS__)
+#define KTVHCLogDownload(...)               KTVHCLogging(@"KTVHCDownload         ", KTVHCLogDownloadEnable,          ##__VA_ARGS__)
 
 // Alloc & Dealloc
 
-#define KTVHCLogAlloc(obj)                  KTVHCLog(obj, KTVHCLogAllocEnable,   @"alloc")
-#define KTVHCLogDealloc(obj)                KTVHCLog(obj, KTVHCLogDeallocEnable, @"dealloc")
+#define KTVHCLogAlloc(obj)                  KTVHCLogging(obj, KTVHCLogAllocEnable,   @"alloc")
+#define KTVHCLogDealloc(obj)                KTVHCLogging(obj, KTVHCLogDeallocEnable, @"dealloc")
 
 
 @interface KTVHCLog : NSObject
 
-+ (void)setLogEnable:(BOOL)enable;
-+ (BOOL)logEnable;                          // default is NO.
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
++ (instancetype)log;
+
+@property (nonatomic, assign) BOOL logEnable;       // default is NO.
+
 
 @end
