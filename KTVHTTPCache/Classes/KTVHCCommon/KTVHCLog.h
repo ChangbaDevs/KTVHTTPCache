@@ -39,7 +39,7 @@
 
 // Download
 
-#define KTVHCLogDownloadEnable          YES
+#define KTVHCLogDownloadEnable              YES
 
 // Alloc & Dealloc
 
@@ -58,7 +58,6 @@ if (enable && [KTVHCLog log].logEnable)                                         
 {                                                                                        \
     NSString * va_args = [NSString stringWithFormat:__VA_ARGS__];                        \
     NSString * log = [NSString stringWithFormat:@"%@  :   %@", target, va_args];         \
-    [[KTVHCLog log] recordLog:log];                                                         \
     NSLog(@"%@", log);                                                                   \
 }
 
