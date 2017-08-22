@@ -8,18 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface KTVHCPathTools : NSObject
 
-+ (NSString *)pathForArchiver;
-+ (NSString *)pathForLog;
 
-+ (NSString *)pathForInsertBasePath:(NSString *)path;
-+ (NSString *)pathWithURLString:(NSString *)string offset:(long long)offset;
-+ (NSString *)folderPathWithURLString:(NSString *)URLString;
++ (NSString *)absolutePathWithRelativePath:(NSString *)relativePath;
++ (NSString *)absolutePathForArchiver;
++ (NSString *)absolutePathForLog;
++ (NSString *)absolutePathForDirectoryWithURLString:(NSString *)URLString;
++ (NSString *)relativePathForFileWithURLString:(NSString *)URLString offset:(long long)offset;
+
++ (void)createFolderIfNeed:(NSString *)folderPath;
++ (void)createFileIfNeed:(NSString *)filePath;
++ (NSError *)deleteFolderAtPath:(NSString *)folderPath;
++ (NSError *)deleteFileAtPath:(NSString *)filePath;
 
 + (long long)sizeOfItemAtFilePath:(NSString *)filePath;
 
-+ (NSError *)deleteFolderAtPath:(NSString *)folderPath;
-+ (NSError *)deleteFileAtPath:(NSString *)filePath;
 
 @end

@@ -9,95 +9,100 @@
 #import "KTVHCPathTools.h"
 #import "KTVHCURLTools.h"
 
+
 @implementation KTVHCPathTools
 
-+ (NSString *)pathForArchiver
+
++ (NSString *)absolutePathWithRelativePath:(NSString *)relativePath
 {
-    NSString * path = [[self pathForRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.archiver"];
-    return [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
+    return [[self basePath] stringByAppendingPathComponent:relativePath];
 }
 
-+ (NSString *)pathForLog
++ (NSString *)absolutePathForArchiver
 {
-    NSString * path = [[self pathForRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.log"];
-    return [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
+    NSString * relativePath = [[self relativePathForRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.archiver"];
+    return [self absolutePathWithRelativePath:relativePath];
 }
 
-+ (NSString *)pathForInsertBasePath:(NSString *)path
++ (NSString *)absolutePathForLog
 {
-    return [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
+    NSString * relativePath = [[self relativePathForRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.log"];
+    return [self absolutePathWithRelativePath:relativePath];
 }
 
-+ (NSString *)pathWithURLString:(NSString *)string offset:(long long)offset
++ (NSString *)relativePathForFileWithURLString:(NSString *)URLString offset:(long long)offset
 {
-    NSString * folderName = [KTVHCURLTools md5:string];
+    NSString * folderName = [KTVHCURLTools md5:URLString];
     
-    NSString * path;
+    NSString * relativePath;
     NSInteger number = 0;
     BOOL condition = YES;
     while (condition)
     {
         NSString * fileName = [NSString stringWithFormat:@"%@_%lld_%ld", folderName, offset, number];
-        path = [[self pathForUnitItemDirectory:folderName] stringByAppendingPathComponent:fileName];
-        NSString * filePath = [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        relativePath = [[self relativePathForUnitItemDirectory:folderName] stringByAppendingPathComponent:fileName];
+        NSString * absolutePath = [self absolutePathWithRelativePath:relativePath];
+        
+        if ([[NSFileManager defaultManager] fileExistsAtPath:absolutePath]) {
             number++;
         } else {
-            [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
+            [[NSFileManager defaultManager] createFileAtPath:absolutePath contents:nil attributes:nil];
             condition = NO;
         }
     }
-    return path;
+    return relativePath;
 }
 
-+ (NSString *)folderPathWithURLString:(NSString *)URLString
++ (NSString *)absolutePathForDirectoryWithURLString:(NSString *)URLString
 {
-    NSString * folderName = [KTVHCURLTools md5:URLString];
-    NSString * directory = [self pathForUnitItemDirectory:folderName];
-    return [[self pathForDocumentDirectory] stringByAppendingPathComponent:directory];
+    NSString * directoryName = [KTVHCURLTools md5:URLString];
+    NSString * directoryPath = [self relativePathForUnitItemDirectory:directoryName];
+    return [self absolutePathWithRelativePath:directoryPath];
 }
 
-+ (NSString *)pathForUnitItemDirectory:(NSString *)folderName
++ (NSString *)relativePathForUnitItemDirectory:(NSString *)folderName
 {
-    NSString * path = [[self pathForRootDirectory] stringByAppendingPathComponent:folderName];
+    NSString * path = [[self relativePathForRootDirectory] stringByAppendingPathComponent:folderName];
     [self createFolderIfNeed:path];
     return path;
 }
 
-+ (NSString *)pathForRootDirectory
++ (NSString *)relativePathForRootDirectory
 {
     static NSString * rootDirectory = @"KTVHTTPCache";
     [self createFolderIfNeed:rootDirectory];
     return rootDirectory;
 }
 
-+ (NSString *)pathForDocumentDirectory
++ (NSString *)basePath
 {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
-+ (void)createFolderIfNeed:(NSString *)path
++ (void)createFolderIfNeed:(NSString *)folderPath
 {
-    path = [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
+    if (![folderPath hasPrefix:[self basePath]])
+    {
+        folderPath = [self absolutePathWithRelativePath:folderPath];
+    }
     BOOL isDirectory;
-    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
+    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:folderPath isDirectory:&isDirectory];
     if (!isExists || !isDirectory) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:folderPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
 }
 
-+ (long long)sizeOfItemAtFilePath:(NSString *)filePath
++ (void)createFileIfNeed:(NSString *)filePath
 {
-    if (filePath.length <= 0) {
-        return 0;
+    if (![filePath hasPrefix:[self basePath]])
+    {
+        filePath = [self absolutePathWithRelativePath:filePath];
     }
-    NSError * error;
-    NSDictionary <NSFileAttributeKey, id> * attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
-    if (!error || attributes.count > 0) {
-        NSNumber * fileSize = [attributes objectForKey:NSFileSize];
-        return fileSize.longLongValue;
+    BOOL isDirectory;
+    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
+    if (!isExists || isDirectory) {
+        [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
     }
-    return 0;
 }
 
 + (NSError *)deleteFolderAtPath:(NSString *)folderPath
@@ -129,5 +134,20 @@
     }
     return error;
 }
+
++ (long long)sizeOfItemAtFilePath:(NSString *)filePath
+{
+    if (filePath.length <= 0) {
+        return 0;
+    }
+    NSError * error;
+    NSDictionary <NSFileAttributeKey, id> * attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
+    if (!error || attributes.count > 0) {
+        NSNumber * fileSize = [attributes objectForKey:NSFileSize];
+        return fileSize.longLongValue;
+    }
+    return 0;
+}
+
 
 @end

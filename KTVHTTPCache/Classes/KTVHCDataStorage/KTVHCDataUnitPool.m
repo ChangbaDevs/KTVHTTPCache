@@ -41,7 +41,7 @@
     if (self = [super init])
     {
         self.lock = [[NSLock alloc] init];
-        self.unitQueue = [KTVHCDataUnitQueue unitQueueWithArchiverPath:[KTVHCPathTools pathForArchiver]];
+        self.unitQueue = [KTVHCDataUnitQueue unitQueueWithArchiverPath:[KTVHCPathTools absolutePathForArchiver]];
     }
     return self;
 }

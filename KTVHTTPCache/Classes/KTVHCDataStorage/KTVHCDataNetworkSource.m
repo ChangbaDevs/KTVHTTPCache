@@ -376,7 +376,7 @@
             // Unit & Unit Item
             [[KTVHCDataUnitPool unitPool] unit:self.URLString updateResponseHeaderFields:response.allHeaderFields];
             
-            NSString * path = [KTVHCPathTools pathWithURLString:self.URLString offset:self.offset];
+            NSString * path = [KTVHCPathTools relativePathForFileWithURLString:self.URLString offset:self.offset];
             self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset path:path];
             self.unitItem.writing = YES;
             [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];

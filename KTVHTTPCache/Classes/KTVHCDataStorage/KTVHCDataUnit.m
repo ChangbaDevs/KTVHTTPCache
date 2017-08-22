@@ -278,7 +278,7 @@
 
 - (NSString *)fileFolderPath
 {
-    return [KTVHCPathTools folderPathWithURLString:self.URLString];
+    return [KTVHCPathTools absolutePathForDirectoryWithURLString:self.URLString];
 }
 
 - (void)deleteFiles

@@ -54,7 +54,7 @@
     }
     if (!self.createLogAndFileHandleToken)
     {
-        [self createLogAndFileHandleToken];
+        [self createLogAndFileHandle];
         self.createLogAndFileHandleToken = YES;
     }
     if (!self.writingHandle) {
@@ -74,7 +74,7 @@
 {
     [self.lock lock];
     
-    [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools pathForLog]];
+    [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools absolutePathForLog]];
 
     [self.lock unlock];
 }
@@ -83,8 +83,8 @@
 {
     [self.lock lock];
     
-    [[NSFileManager defaultManager] createFileAtPath:self.logFilePath contents:nil attributes:nil];
-    self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools pathForLog]];
+    [KTVHCPathTools createFileIfNeed:[KTVHCPathTools absolutePathForLog]];
+    self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools absolutePathForLog]];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWillTerminate:)
                                                  name:UIApplicationWillTerminateNotification
@@ -95,7 +95,17 @@
 
 - (NSString *)logFilePath
 {
-    return [KTVHCPathTools pathForLog];
+    NSString * path = nil;
+    
+    [self.lock lock];
+    
+    long long logFileSize = [KTVHCPathTools sizeOfItemAtFilePath:[KTVHCPathTools absolutePathForLog]];
+    if (logFileSize > 0) {
+        path = [KTVHCPathTools absolutePathForLog];
+    }
+    
+    [self.lock unlock];
+    return path;
 }
 
 
