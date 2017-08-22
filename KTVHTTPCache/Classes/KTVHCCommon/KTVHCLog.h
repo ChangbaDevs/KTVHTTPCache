@@ -53,12 +53,12 @@
 
 #if DEBUG
 
-#define KTVHCLogging(target, enable, ...)                                                                       \
-if (enable && [KTVHCLog log].logEnable)                                                                         \
-{                                                                                                           \
-    NSString * va_args = [NSString stringWithFormat:__VA_ARGS__];                                           \
-    NSString * log = [NSString stringWithFormat:@"%@  %@  :   %@", [NSDate date], target, va_args];         \
-    NSLog(@"%@", log);                                                                                      \
+#define KTVHCLogging(target, enable, ...)                                                \
+if (enable && [KTVHCLog log].logEnable)                                                  \
+{                                                                                        \
+    NSString * va_args = [NSString stringWithFormat:__VA_ARGS__];                        \
+    NSString * log = [NSString stringWithFormat:@"%@  :   %@", target, va_args];         \
+    NSLog(@"%@", log);                                                                   \
 }
 
 #else
