@@ -17,6 +17,12 @@
     return [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
 }
 
++ (NSString *)pathForLog
+{
+    NSString * path = [[self pathForRootDirectory] stringByAppendingPathComponent:@"KTVHTTPCache.log"];
+    return [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
+}
+
 + (NSString *)pathForInsertBasePath:(NSString *)path
 {
     return [[self pathForDocumentDirectory] stringByAppendingPathComponent:path];
@@ -105,6 +111,21 @@
     BOOL result = [[NSFileManager defaultManager] fileExistsAtPath:folderPath isDirectory:&isDirectory];
     if (result && isDirectory) {
         result = [[NSFileManager defaultManager] removeItemAtPath:folderPath error:&error];
+    }
+    return error;
+}
+
++ (NSError *)deleteFileAtPath:(NSString *)filePath
+{
+    if (filePath.length <= 0) {
+        return nil;
+    }
+    
+    NSError * error = nil;
+    BOOL isDirectory = NO;
+    BOOL result = [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
+    if (result && !isDirectory) {
+        result = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
     }
     return error;
 }

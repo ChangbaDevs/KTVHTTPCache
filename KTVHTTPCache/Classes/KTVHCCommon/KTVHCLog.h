@@ -58,6 +58,7 @@ if (enable && [KTVHCLog log].logEnable)                                         
 {                                                                                        \
     NSString * va_args = [NSString stringWithFormat:__VA_ARGS__];                        \
     NSString * log = [NSString stringWithFormat:@"%@  :   %@", target, va_args];         \
+    [[KTVHCLog log] recordLog:log];                                                         \
     NSLog(@"%@", log);                                                                   \
 }
 
@@ -110,6 +111,10 @@ if (enable && [KTVHCLog log].logEnable)                                         
 + (instancetype)log;
 
 @property (nonatomic, assign) BOOL logEnable;       // default is NO.
+@property (nonatomic, copy, readonly) NSString * logFilePath;
+
+- (void)recordLog:(NSString *)log;
+- (void)deleteLog;
 
 
 @end
