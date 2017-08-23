@@ -113,14 +113,24 @@
 
 #pragma mark - Log
 
++ (BOOL)logEnable
+{
+    return [KTVHCLog log].logEnable;
+}
+
 + (void)setLogEnable:(BOOL)enable
 {
     [KTVHCLog log].logEnable = enable;
 }
 
-+ (BOOL)logEnable
++ (NSString *)logFilePath
 {
-    return [KTVHCLog log].logEnable;
+    return [KTVHCLog log].logFilePath;
+}
+
++ (void)deleteLog
+{
+    [[KTVHCLog log] deleteLog];
 }
 
 

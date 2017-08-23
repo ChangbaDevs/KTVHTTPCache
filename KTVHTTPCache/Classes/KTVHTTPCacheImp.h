@@ -69,5 +69,8 @@
 + (BOOL)logEnable;
 + (void)setLogEnable:(BOOL)enable;
 
++ (NSString *)logFilePath;      // nullable
++ (void)deleteLog;
+
 
 @end
