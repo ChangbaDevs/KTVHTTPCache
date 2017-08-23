@@ -62,8 +62,12 @@
 
 #pragma mark - Log
 
+/**
+ *  DEBUG   : default is NO.
+ *  RELEASE : default is YES.
+ */
++ (BOOL)logEnable;
 + (void)setLogEnable:(BOOL)enable;
-+ (BOOL)logEnable;                      // default is NO.
 
 
 @end

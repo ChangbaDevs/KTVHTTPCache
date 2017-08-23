@@ -37,7 +37,11 @@
 {
     if (self = [super init])
     {
+#if DEBUG
+        self.logEnable = YES;
+#else
         self.logEnable = NO;
+#endif
         self.lock = [[NSLock alloc] init];
         [self deleteLog];
     }
