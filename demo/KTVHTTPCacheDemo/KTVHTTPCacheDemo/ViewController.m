@@ -31,8 +31,6 @@
 
 - (void)startHTTPServer
 {
-    [KTVHTTPCache setLogEnable:YES];
-    
     NSError * error;
     [KTVHTTPCache proxyStart:&error];
     if (error) {
