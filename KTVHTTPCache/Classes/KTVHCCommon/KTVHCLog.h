@@ -87,7 +87,7 @@ if ([KTVHCLog log].logEnable && record_enable)                                  
 
 // HTTP Server
 
-#define KTVHCLogHTTPServer(...)             KTVHCLogging(@"KTVHCHTTPServer       ", KTVHCLogEnableValueLog(HTTPServer),        KTVHCLogEnableValueRecord(HTTPServer),       ##__VA_ARGS__)
+#define KTVHCLogHTTPServer(...)             KTVHCLogging(@"KTVHCHTTPServer       ", KTVHCLogEnableValueLog(HTTPServer),        KTVHCLogEnableValueRecord(HTTPServer),        ##__VA_ARGS__)
 #define KTVHCLogHTTPConnection(...)         KTVHCLogging(@"KTVHCHTTPConnection   ", KTVHCLogEnableValueLog(HTTPConnection),    KTVHCLogEnableValueRecord(HTTPConnection),    ##__VA_ARGS__)
 #define KTVHCLogHTTPRequest(...)            KTVHCLogging(@"KTVHCHTTPRequest      ", KTVHCLogEnableValueLog(HTTPRequest),       KTVHCLogEnableValueRecord(HTTPRequest),       ##__VA_ARGS__)
 #define KTVHCLogHTTPResponse(...)           KTVHCLogging(@"KTVHCHTTPResponse     ", KTVHCLogEnableValueLog(HTTPResponse),      KTVHCLogEnableValueRecord(HTTPResponse),      ##__VA_ARGS__)
