@@ -147,7 +147,7 @@
         if (delta > 0)
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.headerFields
+                                                                             headerFields:self.request.allHTTPHeaderFields
                                                                                    offset:offset
                                                                                    length:delta];
             [networkSources addObject:source];
@@ -163,7 +163,7 @@
         if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule)
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.headerFields
+                                                                             headerFields:self.request.allHTTPHeaderFields
                                                                                    offset:offset
                                                                                    length:KTVHCDataNetworkSourceLengthMaxVaule];
             [networkSources addObject:source];
@@ -172,7 +172,7 @@
         else
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.headerFields
+                                                                             headerFields:self.request.allHTTPHeaderFields
                                                                                    offset:offset
                                                                                    length:size];
             [networkSources addObject:source];
@@ -202,7 +202,7 @@
     }
     self.didCallPrepare = YES;
     
-    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.headerFields);
+    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.allHTTPHeaderFields);
     
     [self setupAndPrepareSourcer];
 }

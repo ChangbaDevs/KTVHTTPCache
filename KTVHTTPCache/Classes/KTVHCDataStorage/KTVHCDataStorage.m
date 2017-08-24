@@ -103,7 +103,7 @@
     }
     
     [unit workingRetain];
-    [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
+    [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.allHTTPHeaderFields];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
                                                        request:request
                                                workingDelegate:self];

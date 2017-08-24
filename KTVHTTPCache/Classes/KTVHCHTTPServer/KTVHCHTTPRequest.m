@@ -46,8 +46,8 @@
 
 - (KTVHCDataRequest *)dataRequest
 {
-    KTVHCDataRequest * dataRequest = [KTVHCDataRequest requestWithURLString:self.originalURLString];
-    dataRequest.headerFields = self.headerFields;
+    KTVHCDataRequest * dataRequest = [KTVHCDataRequest requestWithURLString:self.originalURLString
+                                                        allHTTPHeaderFields:self.headerFields];
     return dataRequest;
 }
 
