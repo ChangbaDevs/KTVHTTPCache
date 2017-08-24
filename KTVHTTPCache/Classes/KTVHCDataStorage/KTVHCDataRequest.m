@@ -39,7 +39,6 @@
         KTVHCLogAlloc(self);
         self.rangeMin = KTVHCDataRequestRangeMinVaule;
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
-        
         self.URLString = URLString;
         self.allHTTPHeaderFields = allHTTPHeaderFields;
     }
