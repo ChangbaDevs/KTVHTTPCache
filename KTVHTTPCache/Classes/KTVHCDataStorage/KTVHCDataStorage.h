@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVHCDataRequest.h"
 #import "KTVHCDataReader.h"
+#import "KTVHCDataRequest.h"
+#import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
 
 @interface KTVHCDataStorage : NSObject

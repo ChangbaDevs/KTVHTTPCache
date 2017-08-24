@@ -25,6 +25,7 @@
 @property (nonatomic, strong) KTVHCDataSourcer * sourcer;
 
 @property (nonatomic, strong) KTVHCDataRequest * request;
+@property (nonatomic, strong) KTVHCDataResponse * response;
 
 @property (nonatomic, strong) NSError * error;
 
@@ -33,11 +34,9 @@
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
 
-@property (nonatomic, assign) BOOL stopWorkingCallbackToken;
+@property (nonatomic, assign) long long readOffset;
 
-@property (nonatomic, assign) long long currentContentLength;
-@property (nonatomic, assign) long long readedContentLength;
-@property (nonatomic, assign) long long totalContentLength;
+@property (nonatomic, assign) BOOL stopWorkingCallbackToken;
 
 
 @end
@@ -78,6 +77,60 @@
     KTVHCLogDealloc(self);
 }
 
+
+- (void)prepare
+{
+    if (self.didClose) {
+        return;
+    }
+    if (self.didCallPrepare) {
+        return;
+    }
+    self.didCallPrepare = YES;
+    
+    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.allHTTPHeaderFields);
+    
+    [self setupAndPrepareSourcer];
+}
+
+- (void)close
+{
+    if (self.didClose) {
+        return;
+    }
+    self.didClose = YES;
+    
+    KTVHCLogDataReader(@"call close, %@", self.unit.URLString);
+    
+    [self.sourcer close];
+    [self callbackForStopWorking];
+}
+
+- (NSData *)readDataOfLength:(NSUInteger)length
+{
+    if (self.didClose) {
+        return nil;
+    }
+    if (self.didFinishRead) {
+        return nil;
+    }
+    
+    NSData * data = [self.sourcer readDataOfLength:length];;
+    self.readOffset += data.length;
+    
+    KTVHCLogDataReader(@"read length : %lu", data.length);
+    
+    if (self.sourcer.didFinishRead) {
+        
+        KTVHCLogDataReader(@"read finished, %@", self.unit.URLString);
+        
+        self.didFinishRead = YES;
+    }
+    return data;
+}
+
+
+#pragma mark - Setup
 
 - (void)setupAndPrepareSourcer
 {
@@ -193,76 +246,32 @@
     [self.sourcer prepare];
 }
 
-- (void)prepare
+- (void)setupResponse
 {
-    if (self.didClose) {
-        return;
-    }
-    if (self.didCallPrepare) {
-        return;
-    }
-    self.didCallPrepare = YES;
+    long long totalContentLength = self.unit.totalContentLength;
     
-    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.allHTTPHeaderFields);
-    
-    [self setupAndPrepareSourcer];
-}
-
-- (void)close
-{
-    if (self.didClose) {
-        return;
-    }
-    self.didClose = YES;
-    
-    KTVHCLogDataReader(@"call close, %@", self.unit.URLString);
-    
-    [self.sourcer close];
-    [self callbackForStopWorking];
-}
-
-- (NSData *)readDataOfLength:(NSUInteger)length
-{
-    if (self.didClose) {
-        return nil;
-    }
-    if (self.didFinishRead) {
-        return nil;
+    long long currentContentLength = 0;
+    if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
+        currentContentLength = totalContentLength - self.request.rangeMin;
+    } else {
+        currentContentLength = self.request.rangeMax - self.request.rangeMin + 1;
     }
     
-    NSData * data = [self.sourcer readDataOfLength:length];;
-    self.readedContentLength += data.length;
+    NSDictionary * headerFieldsWithoutRangeAndLength = self.unit.responseHeaderFieldsWithoutRangeAndLength;
+    NSMutableDictionary * headerFields = [NSMutableDictionary dictionaryWithDictionary:headerFieldsWithoutRangeAndLength];
     
-    KTVHCLogDataReader(@"read length : %lu", data.length);
+    [headerFields setObject:[NSString stringWithFormat:@"%lld", currentContentLength]
+                     forKey:@"Content-Length"];
+    [headerFields setObject:[NSString stringWithFormat:@"bytes %lld-%lld/%lld",
+                             self.request.rangeMin,
+                             self.request.rangeMin + currentContentLength - 1,
+                             totalContentLength]
+                     forKey:@"Content-Range"];
     
-    if (self.sourcer.didFinishRead) {
-        
-        KTVHCLogDataReader(@"read finished, %@", self.unit.URLString);
-        
-        self.didFinishRead = YES;
-    }
-    return data;
-}
-
-
-#pragma mark - Setter/Getter
-
-- (NSDictionary *)headerFields
-{
-    NSMutableDictionary * headers = [NSMutableDictionary dictionaryWithDictionary:self.unit.responseHeaderFields];
-    [headers setObject:[NSString stringWithFormat:@"%lld", self.currentContentLength]
-                forKey:@"Content-Length"];
-    [headers setObject:[NSString stringWithFormat:@"bytes %lld-%lld/%lld",
-                        self.request.rangeMin,
-                        self.request.rangeMin + self.currentContentLength - 1,
-                        self.totalContentLength]
-                forKey:@"Content-Range"];
-    return headers;
-}
-
-- (NSDictionary *)headerFieldsWithoutRangeAndLengt
-{
-    return self.unit.responseHeaderFieldsWithoutRangeAndLength;
+    self.response = [KTVHCDataResponse responseWithCurrentContentLength:currentContentLength
+                                                     totalContentLength:totalContentLength
+                                                           headerFields:headerFields
+                                      headerFieldsWithoutRangeAndLength:headerFieldsWithoutRangeAndLength];
 }
 
 
@@ -278,12 +287,8 @@
     }
     if (self.sourcer.didFinishPrepare && self.unit.totalContentLength > 0)
     {
-        self.totalContentLength = self.unit.totalContentLength;
-        if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
-            self.currentContentLength = self.totalContentLength - self.request.rangeMin;
-        } else {
-            self.currentContentLength = self.request.rangeMax - self.request.rangeMin + 1;
-        }
+        [self setupResponse];
+        
         self.didFinishPrepare = YES;
         
         if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {

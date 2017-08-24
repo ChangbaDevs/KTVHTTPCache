@@ -8,6 +8,7 @@
 
 #import "KTVHCDataReader.h"
 #import "KTVHCDataRequest.h"
+#import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataCacheItemZone.h"
 
@@ -49,6 +50,20 @@ static long long const KTVHCDataRequestRangeMaxVaule = -1;
 
 @property (nonatomic, assign, readonly) long long rangeMin;     // default is KTVHCDataRequestRangeMinVaule.
 @property (nonatomic, assign, readonly) long long rangeMax;     // default is KTVHCDataRequestRangeMaxVaule.
+
+
+@end
+
+
+#pragma mark - KTVHCDataResponse
+
+@interface KTVHCDataResponse (Private)
+
+
++ (instancetype)responseWithCurrentContentLength:(long long)currentContentLength
+                              totalContentLength:(long long)totalContentLength
+                                    headerFields:(NSDictionary *)headerFields
+               headerFieldsWithoutRangeAndLength:(NSDictionary *)headerFieldsWithoutRangeAndLength;
 
 
 @end

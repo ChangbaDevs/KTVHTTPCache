@@ -93,21 +93,21 @@
 
 - (UInt64)contentLength
 {
-    KTVHCLogHTTPResponse(@"conetnt length, %lld", self.reader.totalContentLength);
+    KTVHCLogHTTPResponse(@"conetnt length, %lld", self.reader.response.totalContentLength);
     
-    return self.reader.totalContentLength;
+    return self.reader.response.totalContentLength;
 }
 
 - (NSDictionary *)httpHeaders
 {
-    KTVHCLogHTTPResponse(@"header fields\n%@", self.reader.headerFieldsWithoutRangeAndLengt);
+    KTVHCLogHTTPResponse(@"header fields\n%@", self.reader.response.headerFieldsWithoutRangeAndLength);
     
-    return self.reader.headerFieldsWithoutRangeAndLengt;
+    return self.reader.response.headerFieldsWithoutRangeAndLength;
 }
 
 - (UInt64)offset
 {
-    return self.reader.readedContentLength;
+    return self.reader.readOffset;
 }
 
 - (void)setOffset:(UInt64)offset

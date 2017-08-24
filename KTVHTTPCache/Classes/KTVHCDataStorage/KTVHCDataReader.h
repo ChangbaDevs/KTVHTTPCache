@@ -10,6 +10,7 @@
 
 @class KTVHCDataReader;
 @class KTVHCDataRequest;
+@class KTVHCDataResponse;
 
 
 @protocol KTVHCDataReaderDelegate <NSObject>
@@ -31,6 +32,7 @@
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;     // a serial queue. don't block it.
 
 @property (nonatomic, strong, readonly) KTVHCDataRequest * request;
+@property (nonatomic, strong, readonly) KTVHCDataResponse * response;
 
 @property (nonatomic, strong, readonly) NSError * error;
 
@@ -38,12 +40,7 @@
 @property (nonatomic, assign, readonly) BOOL didFinishPrepare;
 @property (nonatomic, assign, readonly) BOOL didFinishRead;
 
-@property (nonatomic, assign, readonly) long long currentContentLength;
-@property (nonatomic, assign, readonly) long long readedContentLength;
-@property (nonatomic, assign, readonly) long long totalContentLength;
-
-@property (nonatomic, strong, readonly) NSDictionary * headerFields;
-@property (nonatomic, strong, readonly) NSDictionary * headerFieldsWithoutRangeAndLengt;
+@property (nonatomic, assign, readonly) long long readOffset;
 
 - (void)prepare;
 - (void)close;      // must call.
