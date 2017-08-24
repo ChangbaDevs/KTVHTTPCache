@@ -41,6 +41,7 @@
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
         self.URLString = URLString;
         self.allHTTPHeaderFields = allHTTPHeaderFields;
+        [self setupRange];
     }
     return self;
 }
@@ -51,29 +52,21 @@
 }
 
 
-#pragma mark - Setter/Getter
-
-
-- (void)setAllHTTPHeaderFields:(NSDictionary *)allHTTPHeaderFields
+- (void)setupRange
 {
-    if (_allHTTPHeaderFields != allHTTPHeaderFields)
+    NSString * rangeString = [self.allHTTPHeaderFields objectForKey:@"Range"];
+    if (rangeString.length > 0 && [rangeString hasPrefix:@"bytes="])
     {
-        _allHTTPHeaderFields = [allHTTPHeaderFields copy];
+        rangeString = [rangeString stringByReplacingOccurrencesOfString:@"bytes=" withString:@""];
+        NSArray <NSString *> * rangeArray = [rangeString componentsSeparatedByString:@"-"];
         
-        NSString * rangeString = [_allHTTPHeaderFields objectForKey:@"Range"];
-        if (rangeString.length > 0 && [rangeString hasPrefix:@"bytes="])
+        if (rangeArray.count == 2)
         {
-            rangeString = [rangeString stringByReplacingOccurrencesOfString:@"bytes=" withString:@""];
-            NSArray <NSString *> * rangeArray = [rangeString componentsSeparatedByString:@"-"];
-            
-            if (rangeArray.count == 2)
-            {
-                if (rangeArray.firstObject.length > 0) {
-                    self.rangeMin = rangeArray.firstObject.longLongValue;
-                }
-                if (rangeArray.lastObject.length > 0) {
-                    self.rangeMax = rangeArray.lastObject.longLongValue;
-                }
+            if (rangeArray.firstObject.length > 0) {
+                self.rangeMin = rangeArray.firstObject.longLongValue;
+            }
+            if (rangeArray.lastObject.length > 0) {
+                self.rangeMax = rangeArray.lastObject.longLongValue;
             }
         }
     }
