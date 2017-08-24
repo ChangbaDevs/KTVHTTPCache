@@ -48,7 +48,7 @@
     self.currentRequest = [KTVHCHTTPRequest requestWithOriginalURLString:url.originalURLString];
 
     self.currentRequest.isHeaderComplete = request.isHeaderComplete;
-    self.currentRequest.headerFields = request.allHeaderFields;
+    self.currentRequest.allHTTPHeaderFields = request.allHeaderFields;
     self.currentRequest.URL = request.url;
     self.currentRequest.method = request.method;
     self.currentRequest.statusCode = request.statusCode;

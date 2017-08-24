@@ -22,7 +22,7 @@
 @property (nonatomic, copy, readonly) NSString * originalURLString;
 
 @property (nonatomic, assign) BOOL isHeaderComplete;
-@property (nonatomic, strong) NSDictionary * headerFields;
+@property (nonatomic, strong) NSDictionary * allHTTPHeaderFields;
 
 @property (nonatomic, copy) NSURL * URL;
 @property (nonatomic, copy) NSString * method;
