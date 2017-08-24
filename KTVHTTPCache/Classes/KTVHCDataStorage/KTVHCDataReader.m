@@ -22,8 +22,9 @@
 @property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
 
 @property (nonatomic, strong) KTVHCDataUnit * unit;
-@property (nonatomic, strong) KTVHCDataRequest * request;
 @property (nonatomic, strong) KTVHCDataSourcer * sourcer;
+
+@property (nonatomic, strong) KTVHCDataRequest * request;
 
 @property (nonatomic, strong) NSError * error;
 
