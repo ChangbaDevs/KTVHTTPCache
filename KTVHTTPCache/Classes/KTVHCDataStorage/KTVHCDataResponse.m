@@ -8,6 +8,7 @@
 
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataPrivate.h"
+#import "KTVHCLog.h"
 
 
 @interface KTVHCDataResponse ()
@@ -46,6 +47,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         self.currentContentLength = currentContentLength;
         self.totalContentLength = totalContentLength;
         self.headerFields = headerFields;
@@ -55,6 +57,10 @@
     return self;
 }
 
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
 
 
 @end
