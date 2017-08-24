@@ -39,8 +39,8 @@ static long long const KTVHCDataNetworkSourceLengthMaxVaule = -1;
 
 @property (nonatomic, copy, readonly) NSString * URLString;
 
-@property (nonatomic, strong, readonly) NSDictionary * requestHeaderFields;
-@property (nonatomic, strong, readonly) NSDictionary * responseHeaderFields;
+@property (nonatomic, copy, readonly) NSDictionary * requestHeaderFields;
+@property (nonatomic, copy, readonly) NSDictionary * responseHeaderFields;
 
 @property (nonatomic, strong, readonly) NSError * error;
 

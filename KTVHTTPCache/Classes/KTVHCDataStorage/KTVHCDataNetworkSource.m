@@ -38,8 +38,8 @@
 
 @property (nonatomic, strong) NSMutableURLRequest * request;
 
-@property (nonatomic, strong) NSDictionary * requestHeaderFields;
-@property (nonatomic, strong) NSDictionary * responseHeaderFields;
+@property (nonatomic, copy) NSDictionary * requestHeaderFields;
+@property (nonatomic, copy) NSDictionary * responseHeaderFields;
 
 @property (nonatomic, strong) NSError * error;
 @property (nonatomic, assign) BOOL errorCanceled;

@@ -35,10 +35,10 @@
 @property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;
 @property (nonatomic, assign, readonly) NSTimeInterval lastItemCerateInterval;
 
-@property (nonatomic, strong, readonly) NSDictionary * requestHeaderFields;
-@property (nonatomic, strong, readonly) NSDictionary * requestHeaderFieldsWithoutRange;
-@property (nonatomic, strong, readonly) NSDictionary * responseHeaderFields;
-@property (nonatomic, strong, readonly) NSDictionary * responseHeaderFieldsWithoutRangeAndLength;
+@property (nonatomic, copy, readonly) NSDictionary * requestHeaderFields;
+@property (nonatomic, copy, readonly) NSDictionary * requestHeaderFieldsWithoutRange;
+@property (nonatomic, copy, readonly) NSDictionary * responseHeaderFields;
+@property (nonatomic, copy, readonly) NSDictionary * responseHeaderFieldsWithoutRangeAndLength;
 
 @property (nonatomic, assign, readonly) long long totalContentLength;
 @property (nonatomic, assign, readonly) long long totalCacheLength;

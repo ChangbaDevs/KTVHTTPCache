@@ -21,8 +21,8 @@
 
 @property (nonatomic, assign) NSTimeInterval createTimeInterval;
 
-@property (nonatomic, strong) NSDictionary * requestHeaderFields;
-@property (nonatomic, strong) NSDictionary * responseHeaderFields;
+@property (nonatomic, copy) NSDictionary * requestHeaderFields;
+@property (nonatomic, copy) NSDictionary * responseHeaderFields;
 
 @property (nonatomic, assign) long long totalContentLength;
 @property (nonatomic, assign) long long totalCacheLength;
