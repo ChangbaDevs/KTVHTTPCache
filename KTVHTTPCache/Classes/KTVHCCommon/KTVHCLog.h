@@ -128,8 +128,8 @@ if ([KTVHCLog log].logEnable && record_enable)                                  
 + (instancetype)log;
 
 /**
- *  DEBUG   : default is NO.
- *  RELEASE : default is YES.
+ *  DEBUG   : default is YES.
+ *  RELEASE : default is NO.
  */
 @property (nonatomic, assign) BOOL logEnable;
 @property (nonatomic, copy, readonly) NSString * logFilePath;
