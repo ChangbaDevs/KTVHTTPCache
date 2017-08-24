@@ -88,7 +88,7 @@
     }
     self.didCallPrepare = YES;
     
-    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.allHTTPHeaderFields);
+    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.headerFields);
     
     [self setupAndPrepareSourcer];
 }
@@ -201,7 +201,7 @@
         if (delta > 0)
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.allHTTPHeaderFields
+                                                                             headerFields:self.request.headerFields
                                                                                    offset:offset
                                                                                    length:delta];
             [networkSources addObject:source];
@@ -217,7 +217,7 @@
         if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule)
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.allHTTPHeaderFields
+                                                                             headerFields:self.request.headerFields
                                                                                    offset:offset
                                                                                    length:KTVHCDataNetworkSourceLengthMaxVaule];
             [networkSources addObject:source];
@@ -226,7 +226,7 @@
         else
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.allHTTPHeaderFields
+                                                                             headerFields:self.request.headerFields
                                                                                    offset:offset
                                                                                    length:size];
             [networkSources addObject:source];

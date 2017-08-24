@@ -15,7 +15,7 @@
 
 
 @property (nonatomic, copy) NSString * URLString;
-@property (nonatomic, copy) NSDictionary * allHTTPHeaderFields;
+@property (nonatomic, copy) NSDictionary * headerFields;
 
 @property (nonatomic, assign) long long rangeMin;
 @property (nonatomic, assign) long long rangeMax;
@@ -27,12 +27,12 @@
 @implementation KTVHCDataRequest
 
 
-+ (instancetype)requestWithURLString:(NSString *)URLString allHTTPHeaderFields:(NSDictionary *)allHTTPHeaderFields
++ (instancetype)requestWithURLString:(NSString *)URLString headerFields:(NSDictionary *)headerFields
 {
-    return [[self alloc] initWithURLString:URLString allHTTPHeaderFields:allHTTPHeaderFields];
+    return [[self alloc] initWithURLString:URLString headerFields:headerFields];
 }
 
-- (instancetype)initWithURLString:(NSString *)URLString allHTTPHeaderFields:(NSDictionary *)allHTTPHeaderFields
+- (instancetype)initWithURLString:(NSString *)URLString headerFields:(NSDictionary *)headerFields
 {
     if (self = [super init])
     {
@@ -40,7 +40,7 @@
         self.rangeMin = KTVHCDataRequestRangeMinVaule;
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
         self.URLString = URLString;
-        self.allHTTPHeaderFields = allHTTPHeaderFields;
+        self.headerFields = headerFields;
         [self setupRange];
     }
     return self;
@@ -54,7 +54,7 @@
 
 - (void)setupRange
 {
-    NSString * rangeString = [self.allHTTPHeaderFields objectForKey:@"Range"];
+    NSString * rangeString = [self.headerFields objectForKey:@"Range"];
     if (rangeString.length > 0 && [rangeString hasPrefix:@"bytes="])
     {
         rangeString = [rangeString stringByReplacingOccurrencesOfString:@"bytes=" withString:@""];

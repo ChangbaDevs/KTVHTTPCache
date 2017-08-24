@@ -15,10 +15,10 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)requestWithURLString:(NSString *)URLString allHTTPHeaderFields:(NSDictionary *)allHTTPHeaderFields;
++ (instancetype)requestWithURLString:(NSString *)URLString headerFields:(NSDictionary *)headerFields;
 
 @property (nonatomic, copy, readonly) NSString * URLString;
-@property (nonatomic, copy, readonly) NSDictionary * allHTTPHeaderFields;
+@property (nonatomic, copy, readonly) NSDictionary * headerFields;
 
 
 @end
