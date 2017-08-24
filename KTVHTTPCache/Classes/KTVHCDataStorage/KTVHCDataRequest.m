@@ -37,10 +37,11 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
-        self.URLString = URLString;
-        self.allHTTPHeaderFields = allHTTPHeaderFields;
         self.rangeMin = KTVHCDataRequestRangeMinVaule;
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
+        
+        self.URLString = URLString;
+        self.allHTTPHeaderFields = allHTTPHeaderFields;
     }
     return self;
 }
