@@ -11,7 +11,7 @@
 #import "KTVHCDataPrivate.h"
 #import "KTVHCLog.h"
 
-@interface KTVHCDataStorage () <KTVHCDataReaderWorkingDelegate>
+@interface KTVHCDataStorage () <KTVHCDataUnitWorkingDelegate>
 
 
 @property (nonatomic, strong) NSCondition * condition;
@@ -96,18 +96,16 @@
         {
             KTVHCLogDataStorage(@"wait begin, %@", request.URLString);
             
+            unit.workingDelegate = self;
             [self.condition wait];
             
             KTVHCLogDataStorage(@"wait end, %@", request.URLString);
         }
     }
     
-    [unit workingRetain];
     [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
-                                                       request:request
-                                               workingDelegate:self];
-    
+                                                       request:request];
     
     KTVHCLogDataStorage(@"create reader finished, %@", request.URLString);
     
@@ -154,21 +152,18 @@
 }
 
 
-#pragma mark - KTVHCDataReaderWorkingDelegate
+#pragma mark - KTVHCDataUnitWorkingDelegate
 
-- (void)readerDidStopWorking:(KTVHCDataReader *)reader
+- (void)unitDidStopWorking:(KTVHCDataUnit *)unit
 {
     [self.condition lock];
     
-    KTVHCLogDataStorage(@"reader did stop working, %@", reader.unit.URLString);
+    KTVHCLogDataStorage(@"unit did stop working begin, %@", unit.URLString);
     
-    [reader.unit workingRelease];
-    if (!reader.unit.working)
-    {
-        KTVHCLogDataStorage(@"send signal, %@", reader.unit.URLString);
-        
-        [self.condition signal];
-    }
+    [self.condition signal];
+    
+    KTVHCLogDataStorage(@"unit did stop working end, %@", unit.URLString);
+    
     [self.condition unlock];
 }
 

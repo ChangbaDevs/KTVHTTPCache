@@ -17,7 +17,6 @@
 @interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
 
 
-@property (nonatomic, weak) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
 @property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
 
@@ -36,8 +35,6 @@
 
 @property (nonatomic, assign) long long readOffset;
 
-@property (nonatomic, assign) BOOL stopWorkingCallbackToken;
-
 
 @end
 
@@ -47,23 +44,20 @@
 
 + (instancetype)readerWithUnit:(KTVHCDataUnit *)unit
                        request:(KTVHCDataRequest *)request
-               workingDelegate:(id <KTVHCDataReaderWorkingDelegate>)workingDelegate;
 {
     return [[self alloc] initWithUnit:unit
-                              request:request
-                      workingDelegate:workingDelegate];
+                              request:request];
 }
 
 - (instancetype)initWithUnit:(KTVHCDataUnit *)unit
                      request:(KTVHCDataRequest *)request
-             workingDelegate:(id <KTVHCDataReaderWorkingDelegate>)workingDelegate;
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
         self.unit = unit;
+        [self.unit workingRetain];
         self.request = request;
-        self.workingDelegate = workingDelegate;
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
         [self.unit setDelegate:self delegateQueue:self.internalDelegateQueue];
@@ -103,7 +97,7 @@
     KTVHCLogDataReader(@"call close, %@", self.unit.URLString);
     
     [self.sourcer close];
-    [self callbackForStopWorking];
+    [self.unit workingRelease];
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length
@@ -302,26 +296,6 @@
                 [self.delegate readerDidFinishPrepare:self];
             }];
         }
-    }
-}
-
-- (void)callbackForStopWorking
-{
-    if (self.stopWorkingCallbackToken) {
-        return;
-    }
-    self.stopWorkingCallbackToken = YES;
-    
-    if ([self.workingDelegate respondsToSelector:@selector(readerDidStopWorking:)]) {
-        
-        KTVHCLogDataReader(@"callback for stop working begin, %@", self.unit.URLString);
-        
-        [KTVHCDataCallback workingCallbackWithBlock:^{
-            
-            KTVHCLogDataReader(@"callback for stop working end, %@", self.unit.URLString);
-            
-            [self.workingDelegate readerDidStopWorking:self];
-        }];
     }
 }
 

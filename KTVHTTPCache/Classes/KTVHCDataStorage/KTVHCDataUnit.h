@@ -21,6 +21,14 @@
 @end
 
 
+@protocol KTVHCDataUnitWorkingDelegate <NSObject>
+
+@optional
+- (void)unitDidStopWorking:(KTVHCDataUnit *)unit;
+
+@end
+
+
 @interface KTVHCDataUnit : NSObject <NSCoding, NSLocking>
 
 
@@ -63,6 +71,8 @@
 
 
 #pragma mark - Working State
+
+@property (nonatomic, weak) id <KTVHCDataUnitWorkingDelegate> workingDelegate;
 
 @property (nonatomic, assign, readonly) BOOL working;
 

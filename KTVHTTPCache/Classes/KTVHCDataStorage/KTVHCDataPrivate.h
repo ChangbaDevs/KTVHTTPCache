@@ -18,21 +18,11 @@
 
 #pragma mark - KTVHCDataReader
 
-@protocol KTVHCDataReaderWorkingDelegate <NSObject>
-
-@optional
-- (void)readerDidStopWorking:(KTVHCDataReader *)reader;
-
-@end
-
 @interface KTVHCDataReader (Private)
 
 
 + (instancetype)readerWithUnit:(KTVHCDataUnit *)unit
-                       request:(KTVHCDataRequest *)request
-               workingDelegate:(id <KTVHCDataReaderWorkingDelegate>)workingDelegate;
-
-@property (nonatomic, weak, readonly) id <KTVHCDataReaderWorkingDelegate> workingDelegate;
+                       request:(KTVHCDataRequest *)request;
 
 @property (nonatomic, strong, readonly) KTVHCDataUnit * unit;
 

@@ -270,6 +270,23 @@
     
     KTVHCLogDataUnit(@"working release, %@, %ld", self.URLString, self.workingCount);
     
+    if (self.workingCount <= 0)
+    {
+        if ([self.workingDelegate respondsToSelector:@selector(unitDidStopWorking:)])
+        {
+            KTVHCLogDataUnit(@"working release callback add, %@, %ld", self.URLString, self.workingCount);
+            
+            [KTVHCDataCallback workingCallbackWithBlock:^{
+                
+                KTVHCLogDataUnit(@"working release callback begin, %@, %ld", self.URLString, self.workingCount);
+                
+                [self.workingDelegate unitDidStopWorking:self];
+                
+                KTVHCLogDataUnit(@"working release callback end, %@, %ld", self.URLString, self.workingCount);
+            }];
+        }
+    }
+    
     [self unlock];
 }
 

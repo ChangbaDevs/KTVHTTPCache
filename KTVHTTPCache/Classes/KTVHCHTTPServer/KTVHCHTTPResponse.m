@@ -46,7 +46,7 @@
         self.reader.delegate = self;
         [self.reader prepare];
 #else
-        [[KTVHCDataStorage manager] serialReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
+        [[KTVHCDataStorage storage] serialReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
             self.reader = reader;
             self.reader.delegate = self;
             [self.reader prepare];
