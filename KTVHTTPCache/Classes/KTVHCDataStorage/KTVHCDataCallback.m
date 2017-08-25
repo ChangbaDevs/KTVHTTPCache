@@ -20,15 +20,15 @@
         workingQueue = dispatch_queue_create("KTVHCDataCallback_workingQueue", DISPATCH_QUEUE_SERIAL);
     });
     
-    [self callbackWithQueue:workingQueue block:block aync:YES];
+    [self callbackWithQueue:workingQueue block:block async:YES];
 }
 
 + (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block
 {
-    [self callbackWithQueue:queue block:block aync:YES];
+    [self callbackWithQueue:queue block:block async:YES];
 }
 
-+ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block aync:(BOOL)async
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block async:(BOOL)async
 {
     if (!queue) {
         return;
