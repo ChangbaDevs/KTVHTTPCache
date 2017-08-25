@@ -132,7 +132,6 @@
     NSURL * URL = [NSURL URLWithString:self.URLString];
     self.request = [NSMutableURLRequest requestWithURL:URL];
     
-    /*
     static NSArray <NSString *> * availableHeaderKeys = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -146,13 +145,12 @@
     [self.requestHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL * stop) {
         for (NSString * availableHeaderKey in availableHeaderKeys)
         {
-            if ([key isEqualToString:availableHeaderKey])
+            if ([key isEqualToString:availableHeaderKey] && ![obj containsString:@"AppleCoreMedia/"])
             {
                 [self.request setValue:obj forHTTPHeaderField:key];
             }
         }
     }];
-    */
     
     if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
         [self.request setValue:[NSString stringWithFormat:@"bytes=%lld-", self.offset] forHTTPHeaderField:@"Range"];
