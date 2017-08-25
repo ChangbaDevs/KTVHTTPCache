@@ -178,7 +178,9 @@
     [self.readingHandle closeFile];
     self.readingHandle = nil;
     
-    [self.downloadTask cancel];
+    if (!self.downloadCompleteCalled) {
+        [self.downloadTask cancel];
+    }
     self.downloadTask = nil;
     
     [self.writingHandle closeFile];

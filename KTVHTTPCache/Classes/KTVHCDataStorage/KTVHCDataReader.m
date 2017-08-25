@@ -29,9 +29,11 @@
 @property (nonatomic, strong) NSError * error;
 
 @property (nonatomic, assign) BOOL didClose;
-@property (nonatomic, assign) BOOL didCallPrepare;
 @property (nonatomic, assign) BOOL didFinishPrepare;
 @property (nonatomic, assign) BOOL didFinishRead;
+
+@property (nonatomic, assign) BOOL didCallPrepare;
+@property (nonatomic, assign) BOOL didCallFailure;
 
 @property (nonatomic, assign) long long readOffset;
 
@@ -340,7 +342,14 @@
     if (self.didClose) {
         return;
     }
+    if (self.didCallFailure) {
+        return;
+    }
+    self.didCallFailure = YES;
+    
     self.error = error;
+    [self close];
+    
     if (self.error && [self.delegate respondsToSelector:@selector(reader:didFailure:)]) {
         
         KTVHCLogDataReader(@"callback for failure begin, %@, %ld", self.unit.URLString, error.code);
