@@ -338,6 +338,9 @@
 
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
 {
+    if (self.didClose) {
+        return;
+    }
     if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
         
         KTVHCLogDataReader(@"callback for has available data begin, %@", self.unit.URLString);
@@ -358,6 +361,9 @@
 
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error
 {
+    if (self.didClose) {
+        return;
+    }
     self.error = error;
     if (self.error && [self.delegate respondsToSelector:@selector(reader:didFailure:)]) {
         
