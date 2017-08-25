@@ -119,6 +119,8 @@
         KTVHCLogDataReader(@"read finished, %@", self.unit.URLString);
         
         self.didFinishRead = YES;
+        
+        [self close];
     }
     return data;
 }
