@@ -31,6 +31,8 @@
 @property (nonatomic, weak) id <KTVHCDataReaderDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;     // a serial queue. don't block it.
 
+@property (nonatomic, strong) id object;
+
 @property (nonatomic, strong, readonly) KTVHCDataRequest * request;
 @property (nonatomic, strong, readonly) KTVHCDataResponse * response;
 
