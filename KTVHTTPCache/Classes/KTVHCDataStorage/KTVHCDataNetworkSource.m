@@ -158,12 +158,9 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     });
     
     [self.requestHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL * stop) {
-        for (NSString * availableHeaderKey in availableHeaderKeys)
+        if ([availableHeaderKeys containsObject:key] && ![obj containsString:@"AppleCoreMedia/"])
         {
-            if ([key isEqualToString:availableHeaderKey] && ![obj containsString:@"AppleCoreMedia/"])
-            {
-                [self.request setValue:obj forHTTPHeaderField:key];
-            }
+            [self.request setValue:obj forHTTPHeaderField:key];
         }
     }];
     
