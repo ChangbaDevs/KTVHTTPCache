@@ -7,6 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KTVHCCommon.h"
+
+
+typedef NSString * KTVHCDataContentType;
+
+KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeVideo;
+KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeAudio;
 
 
 @interface KTVHCDataRequest : NSObject
@@ -19,6 +26,13 @@
 
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, copy, readonly) NSDictionary * headerFields;
+
+/**
+ *  default vaules:
+ *  KTVHCDataContentTypeVideo
+ *  KTVHCDataContentTypeVideo
+ */
+@property (nonatomic, copy) NSArray <KTVHCDataContentType> * acceptContentTypes;
 
 
 @end

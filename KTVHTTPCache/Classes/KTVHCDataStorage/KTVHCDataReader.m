@@ -200,6 +200,7 @@
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
                                                                              headerFields:self.request.headerFields
+                                                                 acceptContentTypePrefixs:self.request.acceptContentTypes
                                                                                    offset:offset
                                                                                    length:delta];
             [networkSources addObject:source];
@@ -216,6 +217,7 @@
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
                                                                              headerFields:self.request.headerFields
+                                                                 acceptContentTypePrefixs:self.request.acceptContentTypes
                                                                                    offset:offset
                                                                                    length:KTVHCDataNetworkSourceLengthMaxVaule];
             [networkSources addObject:source];
@@ -225,6 +227,7 @@
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
                                                                              headerFields:self.request.headerFields
+                                                                 acceptContentTypePrefixs:self.request.acceptContentTypes
                                                                                    offset:offset
                                                                                    length:size];
             [networkSources addObject:source];

@@ -11,7 +11,7 @@
 		9C0DE66F1F45A002003561E5 /* KTVHCDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0DE66D1F45A002003561E5 /* KTVHCDownload.m */; };
 		9C0DE6721F45A6F0003561E5 /* KTVHCError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C0DE6701F45A6F0003561E5 /* KTVHCError.h */; };
 		9C0DE6731F45A6F0003561E5 /* KTVHCError.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0DE6711F45A6F0003561E5 /* KTVHCError.m */; };
-		9C0DE6771F45A778003561E5 /* KTVHCCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C0DE6751F45A778003561E5 /* KTVHCCommon.h */; };
+		9C0DE6771F45A778003561E5 /* KTVHCCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C0DE6751F45A778003561E5 /* KTVHCCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C1699361F3D47AE00B1CA76 /* KTVHCDataRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C1699341F3D47AE00B1CA76 /* KTVHCDataRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C1699371F3D47AE00B1CA76 /* KTVHCDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1699351F3D47AE00B1CA76 /* KTVHCDataRequest.m */; };
 		9C6C4AFB1F4ED22100699C4E /* KTVHCDataResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C6C4AF91F4ED22100699C4E /* KTVHCDataResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -304,6 +304,7 @@
 				9C6C4AFB1F4ED22100699C4E /* KTVHCDataResponse.h in Headers */,
 				9CD08A571F453437000F036F /* KTVHCLog.h in Headers */,
 				9C0DE66E1F45A002003561E5 /* KTVHCDownload.h in Headers */,
+				9C0DE6771F45A778003561E5 /* KTVHCCommon.h in Headers */,
 				9C0DE6721F45A6F0003561E5 /* KTVHCError.h in Headers */,
 				9CA3C5421F3FFFC500D857EA /* KTVHCDataCacheItem.h in Headers */,
 				9CA8C7AE1F404DD4004854BC /* KTVHCDataCacheItemZone.h in Headers */,
@@ -315,7 +316,6 @@
 				9C9249BE1F3D588200647335 /* KTVHCDataUnitQueue.h in Headers */,
 				9CF955251F3C4B9700321CF6 /* KTVHCHTTPResponse.h in Headers */,
 				9C9249DF1F3D899B00647335 /* KTVHCDataFileSource.h in Headers */,
-				9C0DE6771F45A778003561E5 /* KTVHCCommon.h in Headers */,
 				9CF955191F3C357D00321CF6 /* KTVHCHTTPConnection.h in Headers */,
 				9C9249C21F3D594000647335 /* KTVHCDataUnitItem.h in Headers */,
 				9C924A1B1F3E403300647335 /* KTVHCPathTools.h in Headers */,

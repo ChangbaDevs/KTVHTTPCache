@@ -34,6 +34,7 @@ static long long const KTVHCDataNetworkSourceLengthMaxVaule = -1;
 
 + (instancetype)sourceWithURLString:(NSString *)URLString
                        headerFields:(NSDictionary *)headerFields
+           acceptContentTypePrefixs:(NSArray <NSString *> *)acceptContentTypePrefixs
                              offset:(long long)offset
                              length:(long long)length;
 

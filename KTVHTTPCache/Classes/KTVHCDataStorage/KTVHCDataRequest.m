@@ -11,6 +11,10 @@
 #import "KTVHCLog.h"
 
 
+NSString * const KTVHCDataContentTypeVideo = @"video/";
+NSString * const KTVHCDataContentTypeAudio = @"audio/";
+
+
 @interface KTVHCDataRequest ()
 
 
@@ -41,6 +45,7 @@
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
         self.URLString = URLString;
         self.headerFields = headerFields;
+        self.acceptContentTypes = @[KTVHCDataContentTypeVideo, KTVHCDataContentTypeAudio];
         [self setupRange];
     }
     return self;

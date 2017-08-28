@@ -148,6 +148,10 @@
 
 - (void)callbackForFinishPrepare
 {
+    if (self.didClose) {
+        return;
+    }
+    
     if (self.didFinishPrepare) {
         return;
     }
