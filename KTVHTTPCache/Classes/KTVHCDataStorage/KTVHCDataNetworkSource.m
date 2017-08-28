@@ -193,6 +193,7 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     }
     self.downloadTask = nil;
     
+    [self.writingHandle synchronizeFile];
     [self.writingHandle closeFile];
     self.writingHandle = nil;
     self.unitItem.writing = NO;
@@ -385,6 +386,7 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
 {
     [self.lock lock];
     
+    [self.writingHandle synchronizeFile];
     [self.writingHandle closeFile];
     self.writingHandle = nil;
     self.unitItem.writing = NO;
