@@ -38,19 +38,23 @@
     if (self = [super init])
     {
 #if DEBUG
-        self.logEnable = YES;
+        self.consoleLogEnable = YES;
 #else
-        self.logEnable = NO;
+        self.consoleLogEnable = NO;
 #endif
+        self.recordLogEnable = NO;
         self.lock = [[NSLock alloc] init];
-        [self deleteLog];
+        [self deleteRecordLog];
     }
     return self;
 }
 
-- (void)recordLog:(NSString *)log
+- (void)addRecordLog:(NSString *)log
 {
-    if (!self.logEnable) {
+    if (!self.consoleLogEnable) {
+        return;
+    }
+    if (!self.recordLogEnable) {
         return;
     }
     if (log.length <= 0) {
@@ -74,7 +78,7 @@
     [self.lock unlock];
 }
 
-- (void)deleteLog
+- (void)deleteRecordLog
 {
     [self.lock lock];
     

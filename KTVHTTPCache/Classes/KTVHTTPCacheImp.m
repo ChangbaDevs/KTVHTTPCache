@@ -105,37 +105,47 @@
 
 #pragma mark - Download
 
-+ (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval
-{
-    [KTVHCDownload download].timeoutInterval = timeoutInterval;
-}
-
 + (NSTimeInterval)downloadTimeoutInterval
 {
     return [KTVHCDownload download].timeoutInterval;
 }
 
++ (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval
+{
+    [KTVHCDownload download].timeoutInterval = timeoutInterval;
+}
+
 
 #pragma mark - Log
 
-+ (BOOL)logEnable
++ (BOOL)logConsoleLogEnable
 {
-    return [KTVHCLog log].logEnable;
+    return [KTVHCLog log].consoleLogEnable;
 }
 
-+ (void)setLogEnable:(BOOL)enable
++ (void)logSetConsoleLogEnable:(BOOL)consoleLogEnable
 {
-    [KTVHCLog log].logEnable = enable;
+    [KTVHCLog log].consoleLogEnable = consoleLogEnable;
 }
 
-+ (NSString *)logFilePath
++ (BOOL)logRecordLogEnable
 {
-    return [KTVHCLog log].logFilePath;
+    return [KTVHCLog log].recordLogEnable;
 }
 
-+ (void)deleteLog
++ (void)logSetRecordLogEnable:(BOOL)recordLogEnable
 {
-    [[KTVHCLog log] deleteLog];
+    [KTVHCLog log].recordLogEnable = recordLogEnable;
+}
+
++ (NSString *)logRecordLogFilePath
+{
+    return [KTVHCLog log].recordLogFilePath;
+}
+
++ (void)logDeleteRecordLog
+{
+    [[KTVHCLog log] deleteRecordLog];
 }
 
 

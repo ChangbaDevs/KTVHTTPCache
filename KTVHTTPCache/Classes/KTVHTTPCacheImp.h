@@ -58,8 +58,8 @@
 
 #pragma mark - Download
 
-+ (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval;
 + (NSTimeInterval)downloadTimeoutInterval;
++ (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval;
 
 
 #pragma mark - Log
@@ -68,11 +68,17 @@
  *  DEBUG   : default is YES.
  *  RELEASE : default is NO.
  */
-+ (BOOL)logEnable;
-+ (void)setLogEnable:(BOOL)enable;
++ (BOOL)logConsoleLogEnable;
++ (void)logSetConsoleLogEnable:(BOOL)consoleLogEnable;
 
-+ (NSString *)logFilePath;      // nullable
-+ (void)deleteLog;
+/**
+ *  DEBUG & RELEASE : default is NO.
+ */
++ (BOOL)logRecordLogEnable;
++ (void)logSetRecordLogEnable:(BOOL)recordLogEnable;
+
++ (NSString *)logRecordLogFilePath;      // nullable
++ (void)logDeleteRecordLog;
 
 
 @end
