@@ -22,6 +22,8 @@
 
 #pragma mark - HTTP Server
 
++ (BOOL)proxyIsRunning;
+
 + (void)proxyStart:(NSError **)error;
 + (void)proxyStop;
 

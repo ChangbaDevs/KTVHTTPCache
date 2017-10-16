@@ -17,6 +17,11 @@
 
 #pragma mark - HTTP Server
 
++ (BOOL)proxyIsRunning
+{
+    return [KTVHCHTTPServer server].running;
+}
+
 + (void)proxyStart:(NSError * __autoreleasing *)error
 {
     [[KTVHCHTTPServer server] start:error];
