@@ -67,13 +67,19 @@
     
     KTVHCLogDownload(@"add download\n%@\n%@", request.URL.absoluteString, request.allHTTPHeaderFields);
     
+    // mutable
     if (![request isKindOfClass:[NSMutableURLRequest class]]) {
         request = [request mutableCopy];
     }
     
+    // config
     request.timeoutInterval = self.timeoutInterval;
     request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    [self.commonHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+        [request setValue:obj forHTTPHeaderField:key];
+    }];
     
+    // setup
     NSURLSessionDataTask * task = [self.session dataTaskWithRequest:request];
     task.priority = 1.0;
     [self.delegateDictionary setObject:delegate forKey:task];

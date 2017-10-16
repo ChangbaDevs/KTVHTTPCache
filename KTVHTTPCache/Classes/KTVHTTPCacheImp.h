@@ -61,6 +61,12 @@
 + (NSTimeInterval)downloadTimeoutInterval;
 + (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval;
 
+/**
+ *  Common Header Fields.
+ */
++ (NSDictionary <NSString *, NSString *> *)downloadCommonHeaderFields;
++ (void)downloadSetCommonHeaderFields:(NSDictionary <NSString *, NSString *> *)commonHeaderFields;
+
 
 #pragma mark - Log
 

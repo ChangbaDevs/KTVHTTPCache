@@ -29,6 +29,7 @@
 + (instancetype)download;
 
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;       // default is 30.0s.
+@property (nonatomic, copy) NSDictionary <NSString *, NSString *> * commonHeaderFields;      // default is nil.
 
 - (NSURLSessionDataTask *)downloadWithRequest:(NSMutableURLRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate;
 

@@ -115,6 +115,16 @@
     [KTVHCDownload download].timeoutInterval = timeoutInterval;
 }
 
++ (NSDictionary <NSString *, NSString *> *)downloadCommonHeaderFields
+{
+    return [KTVHCDownload download].commonHeaderFields;
+}
+
++ (void)downloadSetCommonHeaderFields:(NSDictionary <NSString *, NSString *> *)commonHeaderFields
+{
+    [KTVHCDownload download].commonHeaderFields = commonHeaderFields;
+}
+
 
 #pragma mark - Log
 
