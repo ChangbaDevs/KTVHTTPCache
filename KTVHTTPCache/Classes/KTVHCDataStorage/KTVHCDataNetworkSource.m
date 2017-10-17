@@ -318,13 +318,21 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
 
 - (BOOL)checkResponseContentRangeAndConfigProperty:(NSHTTPURLResponse *)response
 {
+    NSString * contentLength = [response.allHeaderFields objectForKey:@"Content-Length"];
     NSString * contentRange = [response.allHeaderFields objectForKey:@"Content-Range"];
     NSRange range = [contentRange rangeOfString:@"/"];
+    
+    if (!contentLength) {
+        contentLength = [response.allHeaderFields objectForKey:@"content-length"];
+    }
+    if (!contentRange) {
+        contentRange = [response.allHeaderFields objectForKey:@"content-range"];
+    }
     
     if (contentRange.length > 0 && range.location != NSNotFound)
     {
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
-        self.currentContentLength = [[response.allHeaderFields objectForKey:@"Content-Length"] longLongValue];
+        self.currentContentLength = [contentLength longLongValue];
         
         if (self.length == KTVHCDataNetworkSourceLengthMaxVaule) {
             self.length = self.totalContentLength - self.offset;

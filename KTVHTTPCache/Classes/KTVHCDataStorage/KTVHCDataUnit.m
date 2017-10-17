@@ -159,6 +159,10 @@
     self.responseHeaderFields = responseHeaderFields;
     
     NSString * contentRange = [self.responseHeaderFields objectForKey:@"Content-Range"];
+    if (!contentRange) {
+        contentRange = [self.responseHeaderFields objectForKey:@"content-range"];
+    }
+    
     NSRange range = [contentRange rangeOfString:@"/"];
     if (contentRange.length > 0 && range.location != NSNotFound) {
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
@@ -211,11 +215,15 @@
 - (NSDictionary *)responseHeaderFieldsWithoutRangeAndLength
 {
     if ([self.responseHeaderFields objectForKey:@"Content-Range"]
-        || [self.responseHeaderFields objectForKey:@"Content-Length"])
+        || [self.responseHeaderFields objectForKey:@"Content-Length"]
+        || [self.responseHeaderFields objectForKey:@"content-range"]
+        || [self.responseHeaderFields objectForKey:@"content-length"])
     {
         NSMutableDictionary * headers = [NSMutableDictionary dictionaryWithDictionary:self.responseHeaderFields];
         [headers removeObjectForKey:@"Content-Range"];
         [headers removeObjectForKey:@"Content-Length"];
+        [headers removeObjectForKey:@"content-range"];
+        [headers removeObjectForKey:@"content-length"];
         return headers;
     }
     return self.responseHeaderFields;
