@@ -33,6 +33,7 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         NSRange range = [URIString rangeOfString:@"/request?"];
         if (range.location != NSNotFound)
         {
@@ -58,6 +59,8 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
                 }
             }
         }
+        
+        KTVHCLogHTTPURL(@"URI, %@, original url, %@", URIString, _originalURLString);
     }
     return self;
 }
@@ -67,7 +70,10 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         _originalURLString = [originalURLString copy];
+        
+        KTVHCLogHTTPURL(@"original url, %@", _originalURLString);
     }
     return self;
 }

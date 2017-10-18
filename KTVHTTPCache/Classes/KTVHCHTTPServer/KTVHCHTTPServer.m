@@ -39,10 +39,16 @@
 
 - (instancetype)init
 {
-    if (self = [super init]) {
-        
+    if (self = [super init])
+    {
+        KTVHCLogAlloc(self);
     }
     return self;
+}
+
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
 }
 
 

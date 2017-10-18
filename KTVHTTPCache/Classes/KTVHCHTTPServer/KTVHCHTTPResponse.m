@@ -38,8 +38,11 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.connection = connection;
         self.dataRequest = dataRequest;
+        
+        KTVHCLogHTTPResponse(@"data request\n%@\n%@", self.dataRequest.URLString, self.dataRequest.headerFields);
         
 #if 1
         self.reader = [[KTVHCDataStorage storage] concurrentReaderWithRequest:self.dataRequest];
@@ -59,6 +62,7 @@
 - (void)dealloc
 {
     [self.reader close];
+    
     KTVHCLogDealloc(self);
 }
 
@@ -107,21 +111,27 @@
 
 - (UInt64)offset
 {
+    KTVHCLogHTTPResponse(@"offset, %lld", self.reader.readOffset);
+    
     return self.reader.readOffset;
 }
 
 - (void)setOffset:(UInt64)offset
 {
-    
+    KTVHCLogHTTPResponse(@"set offset, %lld, %lld", offset, self.reader.readOffset);
 }
 
 - (BOOL)isDone
 {
+    KTVHCLogHTTPResponse(@"check done, %d", self.reader.didFinishRead);
+    
     return self.reader.didFinishRead;
 }
 
 - (void)connectionDidClose
 {
+    KTVHCLogHTTPResponse(@"connection did close, %lld, %lld", self.reader.response.currentContentLength, self.reader.readOffset);
+    
     [self.reader close];
 }
 
@@ -140,6 +150,9 @@
     KTVHCLogHTTPResponse(@"prepare finished, %@", self.dataRequest.URLString);
     
     if (self.reader.didFinishPrepare && self.waitingResponseHeader == YES) {
+        
+        KTVHCLogHTTPResponse(@"prepare finished call, %@", self.dataRequest.URLString);
+        
         [self.connection responseHasAvailableData:self];
     }
 }

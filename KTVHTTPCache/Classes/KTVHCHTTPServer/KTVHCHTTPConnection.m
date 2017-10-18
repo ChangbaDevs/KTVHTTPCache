@@ -30,6 +30,7 @@
 - (id)initWithAsyncSocket:(GCDAsyncSocket *)newSocket configuration:(HTTPConfig *)aConfig
 {
     KTVHCLogAlloc(self);
+    
     return [super initWithAsyncSocket:newSocket configuration:aConfig];
 }
 

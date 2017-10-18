@@ -51,6 +51,7 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.delegate = delegate;
         self.delegateQueue = delegateQueue;
         self.sourceQueue = [KTVHCDataSourceQueue sourceQueue];
@@ -66,6 +67,8 @@
 
 - (void)putSource:(id<KTVHCDataSourceProtocol>)source
 {
+    KTVHCLogDataSourcer(@"put source, %@", source);
+    
     [self.sourceQueue putSource:source];
 }
 

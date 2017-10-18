@@ -41,6 +41,8 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
+        
         self.lock = [[NSLock alloc] init];
         self.delegateDictionary = [NSMutableDictionary dictionary];
         self.timeoutInterval = 30.0f;
@@ -60,12 +62,17 @@
     return self;
 }
 
+- (void)dealloc
+{
+    KTVHCLogDealloc(self);
+}
+
 
 - (NSURLSessionDataTask *)downloadWithRequest:(NSMutableURLRequest *)request delegate:(id <KTVHCDownloadDelegate>)delegate
 {
     [self.lock lock];
     
-    KTVHCLogDownload(@"add download\n%@\n%@", request.URL.absoluteString, request.allHTTPHeaderFields);
+    KTVHCLogDownload(@"add download begin\n%@\n%@", request.URL.absoluteString, request.allHTTPHeaderFields);
     
     // mutable
     if (![request isKindOfClass:[NSMutableURLRequest class]]) {
@@ -84,6 +91,8 @@
     task.priority = 1.0;
     [self.delegateDictionary setObject:delegate forKey:task];
     [task resume];
+    
+    KTVHCLogDownload(@"add download end\n%@\n%@", request.URL.absoluteString, request.allHTTPHeaderFields);
     
     [self.lock unlock];
     return task;
@@ -112,7 +121,12 @@
     
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     BOOL result = [delegate download:self didReceiveResponse:(NSHTTPURLResponse *)response];
-    completionHandler(result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel);
+    
+    NSURLSessionResponseDisposition responseDisposition = result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel;
+    
+    KTVHCLogDownload(@"response disposition, %ld", responseDisposition);
+    
+    completionHandler(responseDisposition);
     [self.lock unlock];
 }
 
@@ -130,10 +144,13 @@
 {
     [self.lock lock];
     
-    KTVHCLogDownload(@"receive data, %lu, %@", data.length, dataTask.originalRequest.URL.absoluteString);
+    KTVHCLogDownload(@"receive data begin, %lu, %@", data.length, dataTask.originalRequest.URL.absoluteString);
     
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     [delegate download:self didReceiveData:data];
+    
+    KTVHCLogDownload(@"receive data end, %lu, %@", data.length, dataTask.originalRequest.URL.absoluteString);
+    
     [self.lock unlock];
 }
 

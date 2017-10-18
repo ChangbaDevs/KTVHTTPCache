@@ -33,7 +33,10 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.originalURLString = originalURLString;
+        
+        KTVHCLogHTTPRequest(@"original url, %@", self.originalURLString);
     }
     return self;
 }

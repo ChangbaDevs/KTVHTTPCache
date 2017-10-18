@@ -41,12 +41,15 @@ NSString * const KTVHCDataContentTypeAudio = @"audio/";
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.rangeMin = KTVHCDataRequestRangeMinVaule;
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
         self.URLString = URLString;
         self.headerFields = headerFields;
         self.acceptContentTypes = @[KTVHCDataContentTypeVideo, KTVHCDataContentTypeAudio];
         [self setupRange];
+        
+        KTVHCLogDataRequest(@"did setup\n%@\nrange, %lld, %lld\n%@", self.URLString, self.rangeMin, self.rangeMax, self.headerFields);
     }
     return self;
 }

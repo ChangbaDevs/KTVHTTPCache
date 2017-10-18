@@ -48,11 +48,14 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.currentContentLength = currentContentLength;
         self.totalContentLength = totalContentLength;
         self.headerFields = headerFields;
         self.headerFieldsWithoutRangeAndLength = headerFieldsWithoutRangeAndLength;
         self.contentType = [self.headerFields objectForKey:@"Content-Type"];
+        
+        KTVHCLogDataResponse(@"did setup\n%@\n%@\n%@\n%lld, %lld", self.contentType, self.headerFields, self.headerFieldsWithoutRangeAndLength, self.currentContentLength, self.totalContentLength);
     }
     return self;
 }

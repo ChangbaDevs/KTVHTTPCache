@@ -57,6 +57,7 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.unit = unit;
         [self.unit workingRetain];
         self.request = request;

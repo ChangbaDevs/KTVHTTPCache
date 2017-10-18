@@ -69,11 +69,14 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.filePath = filePath;
         self.offset = offset;
         self.length = length;
         self.startOffset = startOffset;
         self.needReadLength = needReadLength;
+        
+        KTVHCLogDataFileSource(@"did setup, %lld, %lld, %lld, %lld", self.offset, self.length, self.startOffset, self.needReadLength);
     }
     return self;
 }

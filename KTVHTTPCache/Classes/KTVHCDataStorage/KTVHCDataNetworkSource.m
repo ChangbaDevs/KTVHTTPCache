@@ -108,6 +108,7 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
+        
         self.URLString = URLString;
         self.requestHeaderFields = headerFields;
         self.acceptContentTypePrefixs = acceptContentTypePrefixs;
@@ -116,6 +117,8 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
         self.length = length;
         
         self.lock = [[NSLock alloc] init];
+        
+        KTVHCLogDataNetworkSource(@"did setup\n%@\n%@\n%@\noffset, %lld, length, %lld", self.URLString, self.requestHeaderFields, self.acceptContentTypePrefixs, self.offset, self.length);
     }
     return self;
 }
@@ -179,7 +182,7 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
         return;
     }
     
-    KTVHCLogDataNetworkSource(@"call close");
+    KTVHCLogDataNetworkSource(@"call close begin");
     
     [self.lock lock];
     
@@ -197,6 +200,8 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     [self.writingHandle closeFile];
     self.writingHandle = nil;
     self.unitItem.writing = NO;
+    
+    KTVHCLogDataNetworkSource(@"call close end");
     
     [self.lock unlock];
 }
