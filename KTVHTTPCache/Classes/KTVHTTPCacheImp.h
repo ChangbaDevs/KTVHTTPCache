@@ -86,5 +86,11 @@
 + (NSString *)logRecordLogFilePath;      // nullable
 + (void)logDeleteRecordLog;
 
+/**
+ *  Error
+ */
++ (NSError *)logLastError;
++ (NSArray <NSError *> *)logAllErrors;
+
 
 @end

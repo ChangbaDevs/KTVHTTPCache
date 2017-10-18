@@ -132,5 +132,11 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 - (void)addRecordLog:(NSString *)log;
 - (void)deleteRecordLog;
 
+/**
+ *  Error
+ */
+- (NSError *)lastError;
+- (NSArray <NSError *> *)allErrors;
+- (void)addError:(NSError *)error;
 
 @end

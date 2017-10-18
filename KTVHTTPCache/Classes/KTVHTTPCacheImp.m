@@ -158,5 +158,15 @@
     [[KTVHCLog log] deleteRecordLog];
 }
 
++ (NSError *)logLastError
+{
+    return [[KTVHCLog log] lastError];
+}
+
++ (NSArray<NSError *> *)logAllErrors
+{
+    return [[KTVHCLog log] allErrors];
+}
+
 
 @end

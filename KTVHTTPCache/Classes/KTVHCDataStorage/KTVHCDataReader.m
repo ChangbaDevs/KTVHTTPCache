@@ -354,16 +354,23 @@
     self.error = error;
     [self close];
     
-    if (self.error && [self.delegate respondsToSelector:@selector(reader:didFailure:)]) {
+    if (self.error)
+    {
+        KTVHCLogDataReader(@"record error : %@", self.error);
         
-        KTVHCLogDataReader(@"callback for failure begin, %@, %ld", self.unit.URLString, error.code);
+        [[KTVHCLog log] addError:self.error];
         
-        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+        if ([self.delegate respondsToSelector:@selector(reader:didFailure:)])
+        {
+            KTVHCLogDataReader(@"callback for failure begin, %@, %ld", self.unit.URLString, error.code);
             
-            KTVHCLogDataReader(@"callback for failure end, %@, %ld", self.unit.URLString, error.code);
-            
-            [self.delegate reader:self didFailure:self.error];
-        }];
+            [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                
+                KTVHCLogDataReader(@"callback for failure end, %@, %ld", self.unit.URLString, error.code);
+                
+                [self.delegate reader:self didFailure:self.error];
+            }];
+        }
     }
 }
 

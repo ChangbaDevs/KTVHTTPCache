@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSFileHandle * writingHandle;
 @property (nonatomic, assign) BOOL createLogAndFileHandleToken;
 
+@property (nonatomic, strong) NSMutableArray <NSError *> * internalErrors;
+
 @end
 
 
@@ -44,6 +46,7 @@
 #endif
         self.recordLogEnable = NO;
         self.lock = [[NSLock alloc] init];
+        self.internalErrors = [NSMutableArray array];
         [self deleteRecordLog];
     }
     return self;
@@ -114,6 +117,32 @@
     
     [self.lock unlock];
     return path;
+}
+
+- (NSError *)lastError
+{
+    if (self.internalErrors.count > 0)
+    {
+        return self.internalErrors.lastObject;
+    }
+    return nil;
+}
+
+- (NSArray<NSError *> *)allErrors
+{
+    if (self.internalErrors.count > 0)
+    {
+        return [self.internalErrors copy];
+    }
+    return nil;
+}
+
+- (void)addError:(NSError *)error
+{
+    if (error && [error isKindOfClass:[NSError class]])
+    {
+        [self.internalErrors addObject:error];
+    }
 }
 
 
