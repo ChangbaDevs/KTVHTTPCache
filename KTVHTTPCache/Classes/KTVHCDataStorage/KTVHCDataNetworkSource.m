@@ -307,6 +307,9 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
 - (BOOL)checkResponeContentType:(NSHTTPURLResponse *)response
 {
     NSString * contentType = [response.allHeaderFields objectForKey:@"Content-Type"];
+    if (!contentType) {
+        contentType = [response.allHeaderFields objectForKey:@"content-type"];
+    }
     
     if (contentType.length > 0)
     {

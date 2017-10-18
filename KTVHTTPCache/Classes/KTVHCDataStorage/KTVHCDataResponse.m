@@ -54,6 +54,9 @@
         self.headerFields = headerFields;
         self.headerFieldsWithoutRangeAndLength = headerFieldsWithoutRangeAndLength;
         self.contentType = [self.headerFields objectForKey:@"Content-Type"];
+        if (!self.contentType) {
+            self.contentType = [self.headerFields objectForKey:@"content-type"];
+        }
         
         KTVHCLogDataResponse(@"did setup\n%@\n%@\n%@\n%lld, %lld", self.contentType, self.headerFields, self.headerFieldsWithoutRangeAndLength, self.currentContentLength, self.totalContentLength);
     }
