@@ -70,6 +70,9 @@
 
 #pragma mark - Log
 
+/**
+ *  Console & Record
+ */
 + (void)logAddLog:(NSString *)log;
 
 /**
