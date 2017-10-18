@@ -20,6 +20,10 @@ static BOOL const KTVHCLog_##target##_RecordLogEnable = record_log_enable;
 #define KTVHCLogEnableValueConsoleLog(target)          KTVHCLog_##target##_ConsoleLogEnable
 #define KTVHCLogEnableValueRecordLog(target)       KTVHCLog_##target##_RecordLogEnable
 
+// Common
+
+KTVHCLogEnable(Common,            YES, YES)
+
 // HTTP Server
 
 KTVHCLogEnable(HTTPServer,        YES, YES)
@@ -72,6 +76,10 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
     }                                                                               \
 }
 
+
+// Common
+
+#define KTVHCLogCommon(...)                 KTVHCLogging(@"KTVHCCommon           ", KTVHCLogEnableValueConsoleLog(Common),            KTVHCLogEnableValueRecordLog(Common),            ##__VA_ARGS__)
 
 // HTTP Server
 

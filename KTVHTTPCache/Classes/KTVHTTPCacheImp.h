@@ -70,6 +70,8 @@
 
 #pragma mark - Log
 
++ (void)logAddLog:(NSString *)log;
+
 /**
  *  DEBUG   : default is YES.
  *  RELEASE : default is NO.

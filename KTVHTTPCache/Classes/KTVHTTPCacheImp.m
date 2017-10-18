@@ -128,6 +128,14 @@
 
 #pragma mark - Log
 
++ (void)logAddLog:(NSString *)log
+{
+    if (log.length > 0)
+    {
+        KTVHCLogCommon(@"%@", log);
+    }
+}
+
 + (BOOL)logConsoleLogEnable
 {
     return [KTVHCLog log].consoleLogEnable;
