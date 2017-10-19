@@ -104,7 +104,7 @@
     [self.lock unlock];
 }
 
-- (NSString *)logFilePath
+- (NSString *)recordLogFilePath
 {
     NSString * path = nil;
     
