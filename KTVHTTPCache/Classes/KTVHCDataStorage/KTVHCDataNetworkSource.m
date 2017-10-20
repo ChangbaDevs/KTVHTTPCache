@@ -315,7 +315,7 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     {
         for (NSString * obj in self.acceptContentTypePrefixs)
         {
-            if ([contentType hasPrefix:obj])
+            if ([[contentType lowercaseString] hasPrefix:[obj lowercaseString]])
             {
                 return YES;
             }

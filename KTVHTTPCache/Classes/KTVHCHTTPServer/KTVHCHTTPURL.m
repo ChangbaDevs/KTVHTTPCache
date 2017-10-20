@@ -13,6 +13,7 @@
 
 
 static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
+static NSString * const KTVHCHTTPURL_Placeholder_Param = @"placeholder=single";
 
 
 @implementation KTVHCHTTPURL
@@ -34,7 +35,7 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
     {
         KTVHCLogAlloc(self);
         
-        NSRange range = [URIString rangeOfString:@"/request?"];
+        NSRange range = [URIString rangeOfString:[NSString stringWithFormat:@"%@&", KTVHCHTTPURL_Placeholder_Param]];
         if (range.location != NSNotFound)
         {
             URIString = [URIString substringFromIndex:range.location + range.length];
@@ -86,14 +87,18 @@ static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
 
 - (NSString *)proxyURLString
 {
-    NSDictionary <NSString *, id> * params = @{KTVHCHTTPURL_KEY_originalURL : [KTVHCURLTools URLEncode:self.originalURLString]};
+    NSString * lastPathComponent = [NSURL URLWithString:self.originalURLString].lastPathComponent;
+    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://localhost:%ld/request-%@?%@",
+                                       self.listeningPort,
+                                       lastPathComponent,
+                                       KTVHCHTTPURL_Placeholder_Param];
     
-    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://localhost:%ld/request?", self.listeningPort];
+    NSDictionary <NSString *, id> * params = @{KTVHCHTTPURL_KEY_originalURL : [KTVHCURLTools URLEncode:self.originalURLString]};
     [params enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [mutableString appendString:[NSString stringWithFormat:@"%@=%@&", key, obj]];
+        [mutableString appendString:[NSString stringWithFormat:@"&%@=%@", key, obj]];
     }];
     
-    NSString * result = [mutableString substringToIndex:mutableString.length - 1];
+    NSString * result = [mutableString copy];
     
     KTVHCLogHTTPURL(@"proxy url, %@", result);
     

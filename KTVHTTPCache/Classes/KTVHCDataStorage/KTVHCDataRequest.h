@@ -14,6 +14,7 @@ typedef NSString * KTVHCDataContentType;
 
 KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeVideo;
 KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeAudio;
+KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeOctetStream;
 
 
 @interface KTVHCDataRequest : NSObject
