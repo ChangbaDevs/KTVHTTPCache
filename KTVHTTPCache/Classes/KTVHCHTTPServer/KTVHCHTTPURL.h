@@ -9,19 +9,28 @@
 #import <Foundation/Foundation.h>
 
 
+typedef NS_ENUM(NSUInteger, KTVHCHTTPURLType)
+{
+    KTVHCHTTPURLTypePing,
+    KTVHCHTTPURLTypeContent,
+};
+
+
 @interface KTVHCHTTPURL : NSObject
 
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (KTVHCHTTPURL *)URLWithURIString:(NSString *)URIString;
++ (KTVHCHTTPURL *)URLForPing;
++ (KTVHCHTTPURL *)URLWithServerURIString:(NSString *)serverURIString;
 + (KTVHCHTTPURL *)URLWithOriginalURLString:(NSString *)originalURLString;
 
+@property (nonatomic, assign, readonly) KTVHCHTTPURLType type;
 @property (nonatomic, copy, readonly) NSString * originalURLString;
-@property (nonatomic, copy, readonly) NSString * proxyURLString;
 
-@property (nonatomic, assign, readonly) NSInteger listeningPort;
+- (NSURL *)proxyURLWithServerPort:(NSInteger)serverPort;
+- (NSString *)proxyURLStringWithServerPort:(NSInteger)serverPort;
 
 
 @end

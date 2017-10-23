@@ -19,8 +19,6 @@
 
 @property (nonatomic, assign, readonly) BOOL running;
 
-@property (nonatomic, assign, readonly) NSInteger listeningPort;
-
 - (void)start:(NSError **)error;
 - (void)stop;
 

@@ -7,41 +7,94 @@
 //
 
 #import "KTVHCHTTPURL.h"
-#import "KTVHCHTTPServer.h"
 #import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
 
 
-static NSString * const KTVHCHTTPURL_KEY_originalURL = @"originalURL";
-static NSString * const KTVHCHTTPURL_Placeholder_Param = @"placeholder=single";
+static NSString * const KTVHCHTTPURL_Domain = @"localhost";
+
+static NSString * const KTVHCHTTPURL_Key_OriginalURL = @"originalURL";
+static NSString * const KTVHCHTTPURL_Key_RequestType = @"requestType";
+
+static NSString * const KTVHCHTTPURL_Vaule_RequestType_Content = @"content";
+static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
+
+
+@interface KTVHCHTTPURL ()
+
+@property (nonatomic, assign) KTVHCHTTPURLType type;
+@property (nonatomic, copy) NSString * originalURLString;
+
+@end
 
 
 @implementation KTVHCHTTPURL
 
 
-+ (KTVHCHTTPURL *)URLWithURIString:(NSString *)URIString
+#pragma mark - Ping
+
++ (KTVHCHTTPURL *)URLForPing
 {
-    return [[self alloc] initWithURIString:URIString];
+    return [[self alloc] initForPing];
 }
+
+- (KTVHCHTTPURL *)initForPing
+{
+    if (self = [super init])
+    {
+        KTVHCLogAlloc(self);
+        
+        self.type = KTVHCHTTPURLTypePing;
+        self.originalURLString = @"KTVHCHTTPURLPingResponseFile";
+        
+        KTVHCLogHTTPURL(@"Ping, original url, %@", _originalURLString);
+    }
+    return self;
+}
+
+
+#pragma mark - Content
 
 + (KTVHCHTTPURL *)URLWithOriginalURLString:(NSString *)originalURLString
 {
     return [[self alloc] initWithOriginalURLString:originalURLString];
 }
 
-- (instancetype)initWithURIString:(NSString *)URIString
+- (instancetype)initWithOriginalURLString:(NSString *)originalURLString
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
         
-        NSRange range = [URIString rangeOfString:[NSString stringWithFormat:@"%@&", KTVHCHTTPURL_Placeholder_Param]];
-        if (range.location != NSNotFound)
+        self.type = KTVHCHTTPURLTypeContent;
+        self.originalURLString = [originalURLString copy];
+        
+        KTVHCLogHTTPURL(@"Content, original url, %@", self.originalURLString);
+    }
+    return self;
+}
+
+
+#pragma mark - Server URI
+
++ (KTVHCHTTPURL *)URLWithServerURIString:(NSString *)serverURIString
+{
+    return [[self alloc] initWithServerURIString:serverURIString];
+}
+
+- (instancetype)initWithServerURIString:(NSString *)serverURIString
+{
+    if (self = [super init])
+    {
+        KTVHCLogAlloc(self);
+        
+        NSRange requestTypeRange = [serverURIString rangeOfString:[NSString stringWithFormat:@"%@=", KTVHCHTTPURL_Key_RequestType]];
+        if (requestTypeRange.location != NSNotFound)
         {
-            URIString = [URIString substringFromIndex:range.location + range.length];
+            NSString * valueString = [serverURIString substringFromIndex:requestTypeRange.location];
             
             NSCharacterSet * delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&"];
-            NSScanner * scanner = [[NSScanner alloc] initWithString:URIString];
+            NSScanner * scanner = [[NSScanner alloc] initWithString:valueString];
             while (![scanner isAtEnd])
             {
                 NSString * pairString = nil;
@@ -53,28 +106,26 @@ static NSString * const KTVHCHTTPURL_Placeholder_Param = @"placeholder=single";
                     NSString * key = pair.firstObject;
                     NSString * value = pair.lastObject;
                     
-                    if ([key isEqualToString:KTVHCHTTPURL_KEY_originalURL])
+                    if ([key isEqualToString:KTVHCHTTPURL_Key_OriginalURL])
                     {
-                        _originalURLString = [[KTVHCURLTools URLDecode:value] copy];
+                        self.originalURLString = [[KTVHCURLTools URLDecode:value] copy];
+                    }
+                    else if ([key isEqualToString:KTVHCHTTPURL_Key_RequestType])
+                    {
+                        if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Ping])
+                        {
+                            self.type = KTVHCHTTPURLTypePing;
+                        }
+                        else if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Content])
+                        {
+                            self.type = KTVHCHTTPURLTypeContent;
+                        }
                     }
                 }
             }
         }
         
-        KTVHCLogHTTPURL(@"URI, %@, original url, %@", URIString, _originalURLString);
-    }
-    return self;
-}
-
-- (instancetype)initWithOriginalURLString:(NSString *)originalURLString
-{
-    if (self = [super init])
-    {
-        KTVHCLogAlloc(self);
-        
-        _originalURLString = [originalURLString copy];
-        
-        KTVHCLogHTTPURL(@"original url, %@", _originalURLString);
+        KTVHCLogHTTPURL(@"Server URI, %@, original url, %@, type, %ld", serverURIString, self.originalURLString, self.type);
     }
     return self;
 }
@@ -85,15 +136,35 @@ static NSString * const KTVHCHTTPURL_Placeholder_Param = @"placeholder=single";
 }
 
 
-- (NSString *)proxyURLString
+#pragma mark - Getter
+
+- (NSURL *)proxyURLWithServerPort:(NSInteger)serverPort
+{
+    NSString * proxyURLString = [self proxyURLStringWithServerPort:serverPort];
+    return [NSURL URLWithString:proxyURLString];
+}
+
+- (NSString *)proxyURLStringWithServerPort:(NSInteger)serverPort
 {
     NSString * lastPathComponent = [NSURL URLWithString:self.originalURLString].lastPathComponent;
-    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://localhost:%ld/request-%@?%@",
-                                       self.listeningPort,
-                                       lastPathComponent,
-                                       KTVHCHTTPURL_Placeholder_Param];
+    NSString * requestType = KTVHCHTTPURL_Vaule_RequestType_Content;
+    switch (self.type)
+    {
+        case KTVHCHTTPURLTypePing:
+            requestType = KTVHCHTTPURL_Vaule_RequestType_Ping;
+            break;
+        default:
+            break;
+    }
     
-    NSDictionary <NSString *, id> * params = @{KTVHCHTTPURL_KEY_originalURL : [KTVHCURLTools URLEncode:self.originalURLString]};
+    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://%@:%ld/request-%@?%@=%@",
+                                       KTVHCHTTPURL_Domain,
+                                       serverPort,
+                                       lastPathComponent,
+                                       KTVHCHTTPURL_Key_RequestType,
+                                       requestType];
+    
+    NSDictionary <NSString *, id> * params = @{KTVHCHTTPURL_Key_OriginalURL : [KTVHCURLTools URLEncode:self.originalURLString]};
     [params enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         [mutableString appendString:[NSString stringWithFormat:@"&%@=%@", key, obj]];
     }];
@@ -103,11 +174,6 @@ static NSString * const KTVHCHTTPURL_Placeholder_Param = @"placeholder=single";
     KTVHCLogHTTPURL(@"proxy url, %@", result);
     
     return result;
-}
-
-- (NSInteger)listeningPort
-{
-    return [KTVHCHTTPServer server].listeningPort;
 }
 
 

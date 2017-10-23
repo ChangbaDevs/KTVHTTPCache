@@ -12,4 +12,8 @@
 
 @interface KTVHCHTTPConnection : HTTPConnection
 
+
++ (NSString *)responsePingTokenString;
+
+
 @end
