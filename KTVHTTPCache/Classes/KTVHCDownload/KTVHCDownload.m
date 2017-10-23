@@ -8,6 +8,7 @@
 
 #import "KTVHCDownload.h"
 #import "KTVHCLog.h"
+#import <UIKit/UIKit.h>
 
 
 @interface KTVHCDownload () <NSURLSessionDataDelegate>
@@ -58,6 +59,16 @@
         self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
                                                      delegate:self
                                                 delegateQueue:self.sessionDelegateQueue];
+        
+        // Notification
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationDidEnterBackground:)
+                                                     name:UIApplicationDidEnterBackgroundNotification
+                                                   object:[UIApplication sharedApplication]];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWillEnterForeground:)
+                                                     name:UIApplicationWillEnterForegroundNotification
+                                                   object:[UIApplication sharedApplication]];
     }
     return self;
 }
@@ -67,6 +78,8 @@
     KTVHCLogDealloc(self);
 }
 
+
+#pragma mark - Download
 
 - (NSURLSessionDataTask *)downloadWithRequest:(NSMutableURLRequest *)request delegate:(id <KTVHCDownloadDelegate>)delegate
 {
@@ -110,6 +123,10 @@
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
     [delegate download:self didCompleteWithError:error];
     [self.delegateDictionary removeObjectForKey:task];
+    if (self.delegateDictionary.count <= 0)
+    {
+        [self cleanBackgroundTaskAsync];
+    }
     [self.lock unlock];
 }
 
@@ -152,6 +169,60 @@
     KTVHCLogDownload(@"receive data end, %lu, %@", data.length, dataTask.originalRequest.URL.absoluteString);
     
     [self.lock unlock];
+}
+
+
+#pragma mark - Notification
+
+static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification
+{
+    [self cleanBackgroundTask];
+    
+    [self.lock lock];
+    if (self.delegateDictionary.count > 0)
+    {
+        backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            [self cleanBackgroundTask];
+        }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(300 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self cleanBackgroundTask];
+        });
+    }
+    [self.lock unlock];
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification
+{
+    [self cleanBackgroundTask];
+}
+
+- (void)cleanBackgroundTask
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+    });
+    
+    if (backgroundTaskIdentifier != UIBackgroundTaskInvalid)
+    {
+        [[UIApplication sharedApplication] endBackgroundTask:backgroundTaskIdentifier];
+        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+    }
+}
+
+- (void)cleanBackgroundTaskAsync
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.lock lock];
+        if (self.delegateDictionary.count <= 0)
+        {
+            [self cleanBackgroundTask];
+        }
+        [self.lock unlock];
+    });
 }
 
 
