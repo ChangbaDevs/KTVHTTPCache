@@ -187,8 +187,12 @@ static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
             [self cleanBackgroundTask];
         }];
         
+        UIBackgroundTaskIdentifier blockIdentifier = backgroundTaskIdentifier;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(300 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self cleanBackgroundTask];
+            if (blockIdentifier == backgroundTaskIdentifier)
+            {
+                [self cleanBackgroundTask];
+            }
         });
     }
     [self.lock unlock];
