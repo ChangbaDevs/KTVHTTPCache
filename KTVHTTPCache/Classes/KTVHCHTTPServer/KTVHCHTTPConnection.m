@@ -25,9 +25,11 @@
 
 - (id)initWithAsyncSocket:(GCDAsyncSocket *)newSocket configuration:(HTTPConfig *)aConfig
 {
-    KTVHCLogAlloc(self);
-    
-    return [super initWithAsyncSocket:newSocket configuration:aConfig];
+    if (self = [super initWithAsyncSocket:newSocket configuration:aConfig])
+    {
+        KTVHCLogAlloc(self);
+    }
+    return self;
 }
 
 - (void)dealloc
