@@ -42,7 +42,7 @@
 
 /* Begin PBXFileReference section */
 		9C29F2B21F4064280079C49B /* CocoaHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServer.framework; path = "../../Vendors/CocoaHTTPServer/build/Debug-iphoneos/CocoaHTTPServer.framework"; sourceTree = "<group>"; };
-		9C7A44B81F3C09CF00ED01BA /* KTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C7A44B81F3C09CF00ED01BA /* KTVHTTPCache.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KTVHTTPCache.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C7A44BC1F3C09CF00ED01BA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9C7A44BE1F3C09CF00ED01BA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9C7A44BF1F3C09CF00ED01BA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 		9C7A44B91F3C09CF00ED01BA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9C7A44B81F3C09CF00ED01BA /* KTV.app */,
+				9C7A44B81F3C09CF00ED01BA /* KTVHTTPCache.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,7 +186,7 @@
 			);
 			name = KTVHTTPCacheDemo;
 			productName = KTVHTTPCacheDemo;
-			productReference = 9C7A44B81F3C09CF00ED01BA /* KTV.app */;
+			productReference = 9C7A44B81F3C09CF00ED01BA /* KTVHTTPCache.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -396,11 +396,11 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				DEVELOPMENT_TEAM = TW8SS868PP;
 				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemo;
-				PRODUCT_NAME = KTV;
+				PRODUCT_NAME = KTVHTTPCache;
 			};
 			name = Debug;
 		};
@@ -411,11 +411,11 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				DEVELOPMENT_TEAM = TW8SS868PP;
 				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemo;
-				PRODUCT_NAME = KTV;
+				PRODUCT_NAME = KTVHTTPCache;
 			};
 			name = Release;
 		};
