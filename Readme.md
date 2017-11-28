@@ -118,3 +118,27 @@ http://changba.com/video | application/octet-stream | NO
 项目已经开源，GitHub 地址： https://github.com/ChangbaDevs/KTVHTTPCache
 
 对重度影音类应用而言，音视频缓存属于比较重要的一环，对稳定性也有比较高的要求，我们在这上走过一些弯路、踩过一些坑。希望 KTVHTTPCache 的开源能给大家带来一些帮助。也非常欢迎大家在项目中使用，如果遇到问题可以在 GitHub 提 Issue 给我。
+
+## Installation
+
+#### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+
+You can install Carthage with Homebrew using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate KTVHTTPCache into your Xcode project using Carthage, specify it in your Cartfile:
+
+```
+github "ChangbaDevs/KTVHTTPCache" "master"
+```
+Note: Since this repo has no tag by now, use `master` as alternative in your Cartfile.
+
+Run `carthage update` to build the framework and drag the built `KTVHTTPCache.framework` and `CocoaHTTPServer.framework` into your Xcode project.
+
+
