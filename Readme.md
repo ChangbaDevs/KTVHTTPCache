@@ -1,10 +1,10 @@
-# KTVHTTPCache
+# 唱吧 iOS 音视频缓存处理框架
 
 
 
 ## 项目介绍
 
-KTVHTTPCache 是一个处理 HTTP 网络缓存的框架。设计之初是为了解决音视频在线播放的缓存问题。但其应用场景不仅限于音视频在线播放，也可以用于图片加载、文件下载、普通网络请求等场景。
+唱吧 iOS 团队为了解决音视频在线播放的缓存问题，开发了 KTVHTTPCache 这个框架。设计之初是为了解决音视频在线播放的缓存问题，但其本质是对 HTTP 请求进行缓存，对传输内容并没有限制，因此应用场景不限于音视频在线播放，也可以用于文件下载、图片加载、普通网络请求等场景。
 
 
 ### 技术背景
@@ -92,7 +92,7 @@ AVPlayer * player = [AVPlayer playerWithURL:[NSURL URLWithString:URLString]];
 
 #### 1. Content-Type 和 Path Extension
 
-AVPlay 在播放时会优先根据 Response Header 中的 Content-Type 判断当前资源是否可以播放。当 Content-Type 无法给出有效信息时再去判断 URL 中的 Path Extension。
+AVPlayer 在播放时会优先根据 Response Header 中的 Content-Type 判断当前资源是否可以播放。当 Content-Type 无法给出有效信息时再去判断 URL 中的 Path Extension。
 
 对应关系如下：
 
