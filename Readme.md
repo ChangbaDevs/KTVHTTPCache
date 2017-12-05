@@ -55,6 +55,10 @@ KTVHTTPCache 由 HTTP Server 和 Data Storage 两大模块组成。前者负责�
 
 ### 使用示例
 
+```ruby
+pod 'KTVHTTPCache', '~> 1.0.0'
+```
+
 ```
 // 使用简单，基本可以忽略集成成本
 
