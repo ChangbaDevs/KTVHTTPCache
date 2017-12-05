@@ -14,9 +14,9 @@
 		9C0DE6771F45A778003561E5 /* KTVHCCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C0DE6751F45A778003561E5 /* KTVHCCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C1699361F3D47AE00B1CA76 /* KTVHCDataRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C1699341F3D47AE00B1CA76 /* KTVHCDataRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C1699371F3D47AE00B1CA76 /* KTVHCDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1699351F3D47AE00B1CA76 /* KTVHCDataRequest.m */; };
+		9C4D70FD1FD68C9C00459DE0 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C4D70FB1FD68C9C00459DE0 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C6C4AFB1F4ED22100699C4E /* KTVHCDataResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C6C4AF91F4ED22100699C4E /* KTVHCDataResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C6C4AFC1F4ED22100699C4E /* KTVHCDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6C4AFA1F4ED22100699C4E /* KTVHCDataResponse.m */; };
-		9C7EDA8E1F3C0334003B6C14 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C7EDA8C1F3C0334003B6C14 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C8DC2841F3C57F1002F1978 /* KTVHCURLTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C8DC2821F3C57F1002F1978 /* KTVHCURLTools.h */; };
 		9C8DC2851F3C57F1002F1978 /* KTVHCURLTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8DC2831F3C57F1002F1978 /* KTVHCURLTools.m */; };
 		9C9249B61F3D584C00647335 /* KTVHCDataUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C9249B41F3D584C00647335 /* KTVHCDataUnit.h */; };
@@ -91,11 +91,11 @@
 		9C0DE6751F45A778003561E5 /* KTVHCCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCCommon.h; sourceTree = "<group>"; };
 		9C1699341F3D47AE00B1CA76 /* KTVHCDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataRequest.h; sourceTree = "<group>"; };
 		9C1699351F3D47AE00B1CA76 /* KTVHCDataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataRequest.m; sourceTree = "<group>"; };
+		9C4D70FB1FD68C9C00459DE0 /* KTVHTTPCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KTVHTTPCache.h; path = Framework/KTVHTTPCache.h; sourceTree = SOURCE_ROOT; };
+		9C4D70FC1FD68C9C00459DE0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Framework/Info.plist; sourceTree = SOURCE_ROOT; };
 		9C6C4AF91F4ED22100699C4E /* KTVHCDataResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataResponse.h; sourceTree = "<group>"; };
 		9C6C4AFA1F4ED22100699C4E /* KTVHCDataResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataResponse.m; sourceTree = "<group>"; };
 		9C7EDA891F3C0334003B6C14 /* KTVHTTPCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KTVHTTPCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9C7EDA8C1F3C0334003B6C14 /* KTVHTTPCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVHTTPCache.h; sourceTree = "<group>"; };
-		9C7EDA8D1F3C0334003B6C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C8DC2821F3C57F1002F1978 /* KTVHCURLTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCURLTools.h; sourceTree = "<group>"; };
 		9C8DC2831F3C57F1002F1978 /* KTVHCURLTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCURLTools.m; sourceTree = "<group>"; };
 		9C9249B41F3D584C00647335 /* KTVHCDataUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHCDataUnit.h; sourceTree = "<group>"; };
@@ -227,8 +227,8 @@
 		9C7EDA8B1F3C0334003B6C14 /* KTVHTTPCache */ = {
 			isa = PBXGroup;
 			children = (
-				9C7EDA8C1F3C0334003B6C14 /* KTVHTTPCache.h */,
-				9C7EDA8D1F3C0334003B6C14 /* Info.plist */,
+				9C4D70FC1FD68C9C00459DE0 /* Info.plist */,
+				9C4D70FB1FD68C9C00459DE0 /* KTVHTTPCache.h */,
 				9CE118491F3C0AF400A7AE8B /* Classes */,
 			);
 			path = KTVHTTPCache;
@@ -306,7 +306,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C7EDA8E1F3C0334003B6C14 /* KTVHTTPCache.h in Headers */,
+				9C4D70FD1FD68C9C00459DE0 /* KTVHTTPCache.h in Headers */,
 				9CA3C5461F40025400D857EA /* KTVHTTPCacheImp.h in Headers */,
 				9C9249E81F3D8C3000647335 /* KTVHCDataReader.h in Headers */,
 				9C1699361F3D47AE00B1CA76 /* KTVHCDataRequest.h in Headers */,
@@ -584,11 +584,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = KTVHTTPCache/Info.plist;
+				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
+				MODULEMAP_PRIVATE_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCache;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -605,11 +606,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = KTVHTTPCache/Info.plist;
+				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
+				MODULEMAP_PRIVATE_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCache;
 				PRODUCT_NAME = "$(TARGET_NAME)";

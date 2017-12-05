@@ -9,24 +9,20 @@
 #import <UIKit/UIKit.h>
 
 
-FOUNDATION_EXPORT double KTVHTTPCacheVersionNumber;
-FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
-
-
 #pragma mark - Interface
 
-#import <KTVHTTPCache/KTVHTTPCacheImp.h>
+#import "KTVHTTPCacheImp.h"
 
 
 #pragma mark - Data Storage
 
-#import <KTVHTTPCache/KTVHCDataReader.h>
-#import <KTVHTTPCache/KTVHCDataRequest.h>
-#import <KTVHTTPCache/KTVHCDataResponse.h>
-#import <KTVHTTPCache/KTVHCDataCacheItem.h>
-#import <KTVHTTPCache/KTVHCDataCacheItemZone.h>
+#import "KTVHCDataReader.h"
+#import "KTVHCDataRequest.h"
+#import "KTVHCDataResponse.h"
+#import "KTVHCDataCacheItem.h"
+#import "KTVHCDataCacheItemZone.h"
 
 
 #pragma mark - Common
 
-#import <KTVHTTPCache/KTVHCCommon.h>
+#import "KTVHCCommon.h"
