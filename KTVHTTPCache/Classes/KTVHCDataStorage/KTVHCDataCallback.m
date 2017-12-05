@@ -12,7 +12,7 @@
 @implementation KTVHCDataCallback
 
 
-+ (void)workingCallbackWithBlock:(void (^)())block
++ (void)workingCallbackWithBlock:(void (^)(void))block
 {
     static dispatch_queue_t workingQueue = nil;
     static dispatch_once_t onceToken;
@@ -23,12 +23,12 @@
     [self callbackWithQueue:workingQueue block:block async:YES];
 }
 
-+ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block
 {
     [self callbackWithQueue:queue block:block async:YES];
 }
 
-+ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block async:(BOOL)async
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block async:(BOOL)async
 {
     if (!queue) {
         return;

@@ -578,7 +578,7 @@
 		9C7EDA921F3C0334003B6C14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_STRICT_PROTOTYPES = NO;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -589,7 +589,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_PRIVATE_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
+				MODULEMAP_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
+				MODULEMAP_PRIVATE_FILE = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCache;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -600,7 +601,7 @@
 		9C7EDA931F3C0334003B6C14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_STRICT_PROTOTYPES = NO;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -611,7 +612,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_PRIVATE_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
+				MODULEMAP_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
+				MODULEMAP_PRIVATE_FILE = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCache;
 				PRODUCT_NAME = "$(TARGET_NAME)";

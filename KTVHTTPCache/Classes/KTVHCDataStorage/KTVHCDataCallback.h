@@ -15,10 +15,10 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (void)workingCallbackWithBlock:(void (^)())block;
++ (void)workingCallbackWithBlock:(void (^)(void))block;
 
-+ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block;      // default is async.
-+ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)())block async:(BOOL)async;
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block;      // default is async.
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block async:(BOOL)async;
 
 
 @end
