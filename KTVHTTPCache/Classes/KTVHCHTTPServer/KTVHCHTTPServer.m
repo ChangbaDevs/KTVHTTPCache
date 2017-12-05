@@ -9,7 +9,7 @@
 #import "KTVHCHTTPServer.h"
 #import "KTVHCHTTPURL.h"
 #import "KTVHCHTTPConnection.h"
-#import <CocoaHTTPServer/CocoaHTTPServer.h>
+#import "KTVHCHTTPHeader.h"
 #import "KTVHCLog.h"
 
 

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CocoaHTTPServer/CocoaHTTPServer.h>
+#import "KTVHCHTTPHeader.h"
 
 
 @interface KTVHCHTTPConnection : HTTPConnection
