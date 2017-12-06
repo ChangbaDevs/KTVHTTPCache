@@ -76,8 +76,7 @@
 + (void)logAddLog:(NSString *)log;
 
 /**
- *  DEBUG   : default is YES.
- *  RELEASE : default is NO.
+ *  DEBUG & RELEASE : default is NO.
  */
 + (BOOL)logConsoleLogEnable;
 + (void)logSetConsoleLogEnable:(BOOL)consoleLogEnable;

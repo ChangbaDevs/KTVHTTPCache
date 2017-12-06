@@ -39,11 +39,7 @@
 {
     if (self = [super init])
     {
-#if DEBUG
-        self.consoleLogEnable = YES;
-#else
         self.consoleLogEnable = NO;
-#endif
         self.recordLogEnable = NO;
         self.lock = [[NSLock alloc] init];
         self.internalErrors = [NSMutableArray array];

@@ -127,7 +127,7 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 + (instancetype)log;
 
 /**
- *  DEBUG   : default is YES.
+ *  DEBUG   : default is NO.
  *  RELEASE : default is NO.
  */
 @property (nonatomic, assign) BOOL consoleLogEnable;
