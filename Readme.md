@@ -53,11 +53,31 @@ KTVHTTPCache 由 HTTP Server 和 Data Storage 两大模块组成。前者负责�
 它们由 Data Sourcer 进行管理，对外仅暴露一个 Read Data 的接口，根据当前的 Read Offset 自行选择向外界提供数据的 Source。
 
 
-### 使用示例
+## Installation
+
+#### Installation with CocoaPods
+
+To integrate KTVHTTPCache into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
 pod 'KTVHTTPCache', '~> 1.0.0'
 ```
+
+Run `pod install`
+
+#### Installation with Carthage
+
+To integrate KTVHTTPCache into your Xcode project using Carthage, specify it in your Cartfile:
+
+```ogdl
+github "ChangbaDevs/KTVHTTPCache" ~> 1.0.0
+```
+
+Run `carthage update` to build the framework and drag the built `KTVHTTPCache.framework` and `CocoaHTTPServer.framework` into your Xcode project.
+
+
+
+### 使用示例
 
 ```
 // 使用简单，基本可以忽略集成成本
