@@ -159,10 +159,10 @@
             continue;
         }
         
-        if (min >= itemMin) {
+        if (min > itemMin) {
             itemMin = min;
         }
-        if (max <= itemMax) {
+        if (max < itemMax) {
             itemMax = max;
         }
         
