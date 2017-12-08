@@ -11,6 +11,7 @@
 #import "KTVHCDataStorage.h"
 #import "KTVHCDownload.h"
 #import "KTVHCLog.h"
+#import "KTVHCURLTools.h"
 
 @implementation KTVHTTPCache
 
@@ -35,6 +36,10 @@
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)urlString
 {
     return [[KTVHCHTTPServer server] URLStringWithOriginalURLString:urlString];
+}
+
++ (void)proxyCacheFilter:(NSString *(^)(NSString *originURL))cacheFilter {
+    [KTVHCURLTools sharedInstance].cacheFilter = cacheFilter;
 }
 
 
