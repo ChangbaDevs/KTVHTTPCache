@@ -53,14 +53,15 @@ KTVHTTPCache 由 HTTP Server 和 Data Storage 两大模块组成。前者负责�
 它们由 Data Sourcer 进行管理，对外仅暴露一个 Read Data 的接口，根据当前的 Read Offset 自行选择向外界提供数据的 Source。
 
 鉴权去重问题，提供一个filter接口，示例:
-'''
-[KTVHTTPCache proxyCacheFilter:^NSString *(NSString *originURL) {
+
+```
+  [KTVHTTPCache proxyCacheFilter:^NSString *(NSString *originURL) {
         NSURL *url = [NSURL URLWithString:originURL];
         url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
         NSLog(@"[CacheFilter]%@", url);
         return [url absoluteString];
     }];
-'''
+```
 
 
 ## Installation
