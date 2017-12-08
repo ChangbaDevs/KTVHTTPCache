@@ -28,12 +28,17 @@ static char base64EncodingTable[64] = {
     return instance;
 }
 
-- (NSString *)toolMd5:(NSString *)URLString {
+- (NSString *)filterURL:(NSString *)URLString {
     NSString *url = [URLString copy];
     if (self.cacheFilter) {
         url = self.cacheFilter(url);
     }
-    const char *value = [URLString UTF8String];
+    return url;
+}
+
+- (NSString *)toolMd5:(NSString *)URLString {
+    NSString *url = [self filterURL:URLString];
+    const char *value = [url UTF8String];
 
     unsigned char outputBuffer[CC_MD5_DIGEST_LENGTH];
     CC_MD5(value, (CC_LONG) strlen(value), outputBuffer);
