@@ -103,7 +103,11 @@
     KTVHCLogDataFileSource(@"call prepare");
     
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
-    [self.readingHandle seekToFileOffset:self.startOffset];
+    @try {
+        [self.readingHandle seekToFileOffset:self.startOffset];
+    }@catch (NSException *exception) {
+        
+    }
     
     if ([self.delegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
