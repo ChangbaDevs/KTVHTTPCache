@@ -88,9 +88,4 @@
 - (BOOL)mergeFiles;
 
 
-#pragma mark - Class Functions
-
-+ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;
-
-
 @end
