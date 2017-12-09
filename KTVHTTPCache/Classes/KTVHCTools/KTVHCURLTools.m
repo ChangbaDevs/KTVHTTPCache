@@ -11,6 +11,11 @@
 
 @implementation KTVHCURLTools
 
++ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString
+{
+    return [self md5:URLString];
+}
+
 + (NSString *)md5:(NSString *)URLString
 {
     const char *value = [URLString UTF8String];

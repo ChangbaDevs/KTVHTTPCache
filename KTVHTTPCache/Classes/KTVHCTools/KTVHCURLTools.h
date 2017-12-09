@@ -10,8 +10,7 @@
 
 @interface KTVHCURLTools : NSObject
 
-+ (NSString *)md5:(NSString *)URLString;
-+ (NSString *)base64:(NSString *)URLString;
++ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;
 
 + (NSString *)URLEncode:(NSString *)URLString;
 + (NSString *)URLDecode:(NSString *)URLString;

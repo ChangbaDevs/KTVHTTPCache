@@ -32,7 +32,7 @@
 
 + (NSString *)relativePathForFileWithURLString:(NSString *)URLString offset:(long long)offset
 {
-    NSString * folderName = [KTVHCURLTools md5:URLString];
+    NSString * folderName = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     
     NSString * relativePath;
     NSInteger number = 0;
@@ -55,7 +55,7 @@
 
 + (NSString *)absolutePathForDirectoryWithURLString:(NSString *)URLString
 {
-    NSString * directoryName = [KTVHCURLTools md5:URLString];
+    NSString * directoryName = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     NSString * directoryPath = [self relativePathForUnitItemDirectory:directoryName];
     return [self absolutePathWithRelativePath:directoryPath];
 }

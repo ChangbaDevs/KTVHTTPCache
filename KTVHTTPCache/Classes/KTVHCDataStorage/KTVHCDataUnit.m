@@ -338,7 +338,7 @@
 
 + (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString
 {
-    return [KTVHCURLTools md5:URLString];
+    return [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
 }
 
 
