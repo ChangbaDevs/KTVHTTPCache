@@ -16,8 +16,6 @@ typedef NSString *_Nullable (^KTVCacheFilter)(NSString *_Nullable url);
 
 + (instancetype)sharedInstance;
 
-- (NSString *)filterURL:(NSString *)URLString;
-
 + (NSString *)md5:(NSString *)URLString;
 
 + (NSString *)base64:(NSString *)URLString;

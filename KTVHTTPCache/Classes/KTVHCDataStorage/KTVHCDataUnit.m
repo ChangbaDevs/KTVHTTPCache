@@ -53,7 +53,7 @@
     {
         KTVHCLogAlloc(self);
         self.URLString = URLString;
-        self.uniqueIdentifier = [[self class] uniqueIdentifierWithURLString:[[KTVHCURLTools sharedInstance] filterURL:self.URLString]];
+        self.uniqueIdentifier = [[self class] uniqueIdentifierWithURLString:self.URLString];
         self.createTimeInterval = [NSDate date].timeIntervalSince1970;
         [self prepare];
     }
@@ -99,7 +99,7 @@
     if (!self.unitItems) {
         self.unitItems = [NSMutableArray array];
     }
-
+    
     if (self.unitItems.count > 0)
     {
         NSMutableArray * removeArray = [NSMutableArray array];
@@ -113,7 +113,7 @@
         [removeArray removeAllObjects];
         [self sortUnitItems];
     }
-
+    
     KTVHCLogDataUnit(@"prepare result, %@, %ld", self.URLString, self.unitItems.count);
 }
 
@@ -141,33 +141,33 @@
     [self lock];
     [self.unitItems addObject:unitItem];
     [self sortUnitItems];
-
+    
     KTVHCLogDataUnit(@"insert unit item, %lld", unitItem.offset);
-
+    
     [self unlock];
 }
 
 - (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
 {
     self.requestHeaderFields = requestHeaderFields;
-
+    
     KTVHCLogDataUnit(@"update request\n%@", self.requestHeaderFields);
 }
 
 - (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
 {
     self.responseHeaderFields = responseHeaderFields;
-
+    
     NSString * contentRange = [self.responseHeaderFields objectForKey:@"Content-Range"];
     if (!contentRange) {
         contentRange = [self.responseHeaderFields objectForKey:@"content-range"];
     }
-
+    
     NSRange range = [contentRange rangeOfString:@"/"];
     if (contentRange.length > 0 && range.location != NSNotFound) {
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
     }
-
+    
     KTVHCLogDataUnit(@"update response\n%@", self.responseHeaderFields);
 }
 
@@ -179,9 +179,9 @@
     if (_totalContentLength != totalContentLength)
     {
         _totalContentLength = totalContentLength;
-
+        
         KTVHCLogDataUnit(@"set total content length, %lld", totalContentLength);
-
+        
         if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 [self.delegate unitDidUpdateTotalContentLength:self];
@@ -265,9 +265,9 @@
 {
     [self lock];
     self.workingCount++;
-
+    
     KTVHCLogDataUnit(@"working retain, %@, %ld", self.URLString, self.workingCount);
-
+    
     [self unlock];
 }
 
@@ -275,26 +275,26 @@
 {
     [self lock];
     self.workingCount--;
-
+    
     KTVHCLogDataUnit(@"working release, %@, %ld", self.URLString, self.workingCount);
-
+    
     if (self.workingCount <= 0)
     {
         if ([self.workingDelegate respondsToSelector:@selector(unitDidStopWorking:)])
         {
             KTVHCLogDataUnit(@"working release callback add, %@, %ld", self.URLString, self.workingCount);
-
+            
             [KTVHCDataCallback workingCallbackWithBlock:^{
-
+                
                 KTVHCLogDataUnit(@"working release callback begin, %@, %ld", self.URLString, self.workingCount);
-
+                
                 [self.workingDelegate unitDidStopWorking:self];
-
+                
                 KTVHCLogDataUnit(@"working release callback end, %@, %ld", self.URLString, self.workingCount);
             }];
         }
     }
-
+    
     [self unlock];
 }
 
@@ -316,7 +316,7 @@
     if (self.working || self.unitItems.count <= 1) {
         return NO;
     }
-
+    
     return NO;
 }
 
