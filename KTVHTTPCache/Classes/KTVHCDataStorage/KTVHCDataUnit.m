@@ -53,7 +53,7 @@
     {
         KTVHCLogAlloc(self);
         self.URLString = URLString;
-        self.uniqueIdentifier = [[self class] uniqueIdentifierWithURLString:self.URLString];
+        self.uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:self.URLString];
         self.createTimeInterval = [NSDate date].timeIntervalSince1970;
         [self prepare];
     }
@@ -331,14 +331,6 @@
 - (void)unlock
 {
     [self.coreLock unlock];
-}
-
-
-#pragma mark - Class Functions
-
-+ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString
-{
-    return [KTVHCURLTools md5:URLString];
 }
 
 

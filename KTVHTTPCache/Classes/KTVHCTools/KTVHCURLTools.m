@@ -9,7 +9,41 @@
 #import "KTVHCURLTools.h"
 #import <CommonCrypto/CommonCrypto.h>
 
+
 @implementation KTVHCURLTools
+
+
++ (instancetype)URLTools
+{
+    static KTVHCURLTools * obj = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        obj = [[self alloc] init];
+    });
+    return obj;
+}
+
+- (NSString *)archiveURLStringWithURLString:(NSString *)URLString
+{
+    if (self.archiveURLFilterBlock && URLString.length > 0)
+    {
+        NSString * resultURLString = self.archiveURLFilterBlock(URLString);
+        if (resultURLString.length > 0)
+        {
+            return resultURLString;
+        }
+    }
+    return URLString;
+}
+
+
+#pragma mark - Class Functions
+
++ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString
+{
+    URLString = [[KTVHCURLTools URLTools] archiveURLStringWithURLString:URLString];
+    return [self md5:URLString];
+}
 
 + (NSString *)md5:(NSString *)URLString
 {
@@ -169,5 +203,6 @@ static char base64EncodingTable[64] = {
 {
     return [URLString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
+
 
 @end

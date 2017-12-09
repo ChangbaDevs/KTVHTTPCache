@@ -8,8 +8,9 @@
 
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataUnitQueue.h"
-#import "KTVHCPathTools.h"
 #import "KTVHCDataPrivate.h"
+#import "KTVHCPathTools.h"
+#import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
 
 
@@ -54,7 +55,7 @@
     }
     
     [self.lock lock];
-    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
+    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (!unit)
     {
@@ -89,7 +90,7 @@
     
     [self.lock lock];
     KTVHCDataCacheItem * cacheItem = nil;
-    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
+    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (obj)
     {
@@ -149,7 +150,7 @@
     }
     
     [self.lock lock];
-    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
+    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (obj && !obj.working)
     {
@@ -239,7 +240,7 @@
     }
     
     [self.lock lock];
-    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:URLString];
+    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     BOOL success = [obj mergeFiles];
     if (success) {
@@ -277,7 +278,7 @@
     KTVHCLogDataUnitPool(@"insert unit item :%@", unitItem);
     
     [self.lock lock];
-    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
+    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     [unit insertUnitItem:unitItem];
     [self.unitQueue archive];
@@ -293,7 +294,7 @@
     KTVHCLogDataUnitPool(@"update request header fields\n%@", requestHeaderFields);
     
     [self.lock lock];
-    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
+    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     [unit updateRequestHeaderFields:requestHeaderFields];
     [self.lock unlock];
@@ -308,7 +309,7 @@
     KTVHCLogDataUnitPool(@"update response header fields\n%@", responseHeaderFields);
     
     [self.lock lock];
-    NSString * uniqueIdentifier = [KTVHCDataUnit uniqueIdentifierWithURLString:unitURLString];
+    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:unitURLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     [unit updateResponseHeaderFields:responseHeaderFields];
     [self.unitQueue archive];
