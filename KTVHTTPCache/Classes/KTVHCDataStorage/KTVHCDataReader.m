@@ -159,14 +159,14 @@
             continue;
         }
         
-        if (min >= itemMin) {
+        if (min > itemMin) {
             itemMin = min;
         }
-        if (max <= itemMax) {
+        if (max < itemMax) {
             itemMax = max;
         }
         
-        min = item.offset + (itemMin - item.offset) + (itemMax - itemMin + 1);
+        min = itemMax + 1;
         
         KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithFilePath:item.absolutePath
                                                                         offset:item.offset
