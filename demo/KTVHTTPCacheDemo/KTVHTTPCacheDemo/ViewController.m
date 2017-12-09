@@ -38,6 +38,11 @@
     } else {
         NSLog(@"Proxy Start Success");
     }
+    
+    [KTVHTTPCache cacheSetURLFilterForArchive:^NSString *(NSString * originalURLString) {
+        NSLog(@"URL Filter reviced URL, %@", originalURLString);
+        return originalURLString;
+    }];
 }
 
 - (void)reloadData
