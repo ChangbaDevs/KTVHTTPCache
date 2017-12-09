@@ -42,6 +42,13 @@
                    completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
 
 /**
+ *  URL Filter
+ *
+ *  High frequency call. Make it simple.
+ */
++ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString * originalURLString))URLFilterBlock;
+
+/**
  *  Cache Control
  */
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength;

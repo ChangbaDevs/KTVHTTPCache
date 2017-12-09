@@ -10,6 +10,7 @@
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
 #import "KTVHCDownload.h"
+#import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
 
 @implementation KTVHTTPCache
@@ -55,6 +56,11 @@
 {
     [[KTVHCDataStorage storage] serialReaderWithRequest:request
                                       completionHandler:completionHandler];
+}
+
++ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString *))URLFilterBlock
+{
+    [KTVHCURLTools URLTools].archiveURLFilterBlock = URLFilterBlock;
 }
 
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength
