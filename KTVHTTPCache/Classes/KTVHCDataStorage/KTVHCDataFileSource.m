@@ -107,7 +107,7 @@
     @try {
         [self.readingHandle seekToFileOffset:self.startOffset];
     } @catch (NSException *exception) {
-        KTVHCLogDataSourcer(@"seek file exception, %@, %@, %@, %ld, %ld, %ld, %ld",
+        KTVHCLogDataSourcer(@"seek file exception, %@, %@, %@, %lld, %lld, %lld, %lld",
                             exception.name,
                             exception.reason,
                             exception.userInfo,
