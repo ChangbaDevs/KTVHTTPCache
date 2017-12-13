@@ -103,10 +103,18 @@
     KTVHCLogDataFileSource(@"call prepare");
     
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.filePath];
+    
     @try {
         [self.readingHandle seekToFileOffset:self.startOffset];
-    }@catch (NSException *exception) {
-        
+    } @catch (NSException *exception) {
+        KTVHCLogDataSourcer(@"seek file exception, %@, %@, %@, %lld, %lld, %lld, %lld",
+                            exception.name,
+                            exception.reason,
+                            exception.userInfo,
+                            self.length,
+                            self.offset,
+                            self.startOffset,
+                            self.needReadLength);
     }
     
     if ([self.delegate respondsToSelector:@selector(fileSourceDidFinishPrepare:)]) {
