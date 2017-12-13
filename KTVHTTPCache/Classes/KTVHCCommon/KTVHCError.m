@@ -12,6 +12,7 @@
 NSString * const KTVHCErrorDomainResponseUnavailable    = @"KTVHCErrorDomainResponseUnavailable";       // player error
 NSString * const KTVHCErrorDomainNotEnoughDiskSpace     = @"KTVHCErrorDomainNotEnoughDiskSpace";        // player error
 
+NSString * const KTVHCOperationFailingURLResponseErrorKey = @"KTVHCOperationFailingURLResponseErrorKey";
 
 @implementation KTVHCError
 
@@ -38,7 +39,9 @@ NSString * const KTVHCErrorDomainNotEnoughDiskSpace     = @"KTVHCErrorDomainNotE
                                       userInfo:@{@"originalURL" : URLString,
                                                  @"requestHeader" : request.allHTTPHeaderFields,
                                                  @"responseURL" : response.URL.absoluteString,
-                                                 @"responseHeader" : response.allHeaderFields}];
+                                                 @"responseHeader" : response.allHeaderFields,
+                                                 KTVHCOperationFailingURLResponseErrorKey : response
+                                                 }];
     return error;
 }
 

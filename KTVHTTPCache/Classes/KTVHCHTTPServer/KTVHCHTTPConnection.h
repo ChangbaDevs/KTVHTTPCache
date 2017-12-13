@@ -15,5 +15,6 @@
 
 + (NSString *)responsePingTokenString;
 
+- (void)handleErrorWithFailingResponse:(NSHTTPURLResponse *)response;
 
 @end

@@ -13,6 +13,7 @@
 KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorDomainResponseUnavailable;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorDomainNotEnoughDiskSpace;
 
+KTVHTTPCACHE_EXTERN NSString * const KTVHCOperationFailingURLResponseErrorKey;
 
 typedef NS_ENUM(NSInteger, KTVHCErrorCode)
 {
