@@ -33,7 +33,7 @@ KTVHTTPCache 由 HTTP Server 和 Data Storage 两大模块组成。前者负责�
 ![KTVHTTPCache Flow Chart](http://oxl6mxy2t.bkt.clouddn.com/changba/KTVHTTPCache-flow-chart.jpeg)
 
 ##### 下面简述一下工作流程：
-1. Client 发出的请求被 HTTP Srever 接收到，HTTP Server 通过分析 HTTP Request 创建用于访问 Data Storage 的 Data Request 对象。
+1. Client 发出的请求被 HTTP Server 接收到，HTTP Server 通过分析 HTTP Request 创建用于访问 Data Storage 的 Data Request 对象。
 2. HTTP Server 使用 Data Request 创建 Data Reader，并以此作为从 Data Storage 获取数据的通道。
 3. Data Reader 分析 Data Request 中的 Range 创建对应的网络数据源 Data Network Source 和文件数据源 Data File Source，并通过 Data Sourcer 进行管理。
 4. Data Sourcer 开始加载数据。
