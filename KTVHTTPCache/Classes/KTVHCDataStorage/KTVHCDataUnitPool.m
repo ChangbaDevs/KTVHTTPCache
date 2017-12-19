@@ -178,8 +178,8 @@
     
 #if 1
     [units sortedArrayUsingComparator:^NSComparisonResult(KTVHCDataUnit * obj1, KTVHCDataUnit * obj2) {
-        NSTimeInterval timeInterval1 = obj1.lastItemCerateInterval;
-        NSTimeInterval timeInterval2 = obj2.lastItemCerateInterval;
+        NSTimeInterval timeInterval1 = obj1.lastItemCreateInterval;
+        NSTimeInterval timeInterval2 = obj2.lastItemCreateInterval;
         if (timeInterval1 < timeInterval2) {
             return NSOrderedAscending;
         } else if (timeInterval1 == timeInterval2 && obj1.createTimeInterval < obj2.createTimeInterval) {
