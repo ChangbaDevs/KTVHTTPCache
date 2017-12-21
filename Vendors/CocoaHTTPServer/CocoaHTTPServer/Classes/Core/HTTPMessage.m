@@ -60,17 +60,32 @@
 
 - (NSString *)version
 {
-	return (__bridge_transfer NSString *)CFHTTPMessageCopyVersion(message);
+    CFStringRef versionRef = CFHTTPMessageCopyVersion(message);
+    NSString *version = (__bridge NSString *)versionRef;
+    if (versionRef) {
+        CFRelease(versionRef);
+    }
+    return version;
 }
 
 - (NSString *)method
 {
-	return (__bridge_transfer NSString *)CFHTTPMessageCopyRequestMethod(message);
+    CFStringRef methodRef = CFHTTPMessageCopyRequestMethod(message);
+    NSString *method = (__bridge NSString *)methodRef;
+    if (methodRef) {
+        CFRelease(methodRef);
+    }
+    return method;
 }
 
 - (NSURL *)url
 {
-	return (__bridge_transfer NSURL *)CFHTTPMessageCopyRequestURL(message);
+    CFURLRef urlRef = CFHTTPMessageCopyRequestURL(message);
+    NSURL *url = (__bridge NSURL *)urlRef;
+    if (urlRef) {
+        CFRelease(urlRef);
+    }
+    return url;
 }
 
 - (NSInteger)statusCode
@@ -80,12 +95,22 @@
 
 - (NSDictionary *)allHeaderFields
 {
-	return (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(message);
+    CFDictionaryRef dictionaryRef = CFHTTPMessageCopyAllHeaderFields(message);
+    NSDictionary *dictionary= (__bridge NSDictionary *)dictionaryRef;
+    if (dictionaryRef) {
+        CFRelease(dictionaryRef);
+    }
+    return dictionary;
 }
 
 - (NSString *)headerField:(NSString *)headerField
 {
-	return (__bridge_transfer NSString *)CFHTTPMessageCopyHeaderFieldValue(message, (__bridge CFStringRef)headerField);
+    CFStringRef headerRef = CFHTTPMessageCopyHeaderFieldValue(message, (__bridge CFStringRef)headerField);
+    NSString *header = (__bridge NSString *)headerRef;
+    if (headerRef) {
+        CFRelease(headerRef);
+    }
+    return header;
 }
 
 - (void)setHeaderField:(NSString *)headerField value:(NSString *)headerFieldValue
@@ -97,12 +122,22 @@
 
 - (NSData *)messageData
 {
-	return (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(message);
+    CFDataRef dataRef = CFHTTPMessageCopySerializedMessage(message);
+    NSData *data = (__bridge NSData *)dataRef;
+    if (dataRef) {
+        CFRelease(dataRef);
+    }
+    return data;
 }
 
 - (NSData *)body
 {
-	return (__bridge_transfer NSData *)CFHTTPMessageCopyBody(message);
+    CFDataRef bodyRef = CFHTTPMessageCopyBody(message);
+    NSData *body = (__bridge NSData *)bodyRef;
+    if (bodyRef) {
+        CFRelease(bodyRef);
+    }
+    return body;
 }
 
 - (void)setBody:(NSData *)body
