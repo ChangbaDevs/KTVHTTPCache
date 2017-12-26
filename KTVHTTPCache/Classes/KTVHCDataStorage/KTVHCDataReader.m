@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
 @property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
+@property (nonatomic, strong) NSRecursiveLock * interfaceLock;
 
 @property (nonatomic, strong) KTVHCDataUnit * unit;
 @property (nonatomic, strong) KTVHCDataSourcer * sourcer;
@@ -64,6 +65,7 @@
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
         [self.unit setDelegate:self delegateQueue:self.internalDelegateQueue];
+        self.interfaceLock = [[NSRecursiveLock alloc] init];
     }
     return self;
 }
@@ -87,7 +89,9 @@
     
     KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.headerFields);
     
+    [self.interfaceLock lock];
     [self setupAndPrepareSourcer];
+    [self.interfaceLock unlock];
 }
 
 - (void)close
@@ -99,8 +103,10 @@
     
     KTVHCLogDataReader(@"call close, %@", self.unit.URLString);
     
+    [self.interfaceLock lock];
     [self.sourcer close];
     [self.unit workingRelease];
+    [self.interfaceLock unlock];
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length
@@ -112,6 +118,7 @@
         return nil;
     }
     
+    [self.interfaceLock lock];
     NSData * data = [self.sourcer readDataOfLength:length];;
     self.readOffset += data.length;
     
@@ -125,6 +132,7 @@
         
         [self close];
     }
+    [self.interfaceLock unlock];
     return data;
 }
 
