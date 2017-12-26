@@ -92,13 +92,6 @@
     [self unlock];
 }
 
-- (void)reloadFileLength
-{
-    [self lock];
-    _length = [KTVHCPathTools sizeOfItemAtFilePath:self.absolutePath];
-    [self unlock];
-}
-
 
 #pragma mark - NSLocking
 
