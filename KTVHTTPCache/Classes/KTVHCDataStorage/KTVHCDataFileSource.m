@@ -37,6 +37,7 @@
 
 #pragma mark - File
 
+@property (nonatomic, strong) NSLock * lock;
 @property (nonatomic, strong) NSFileHandle * readingHandle;
 @property (nonatomic, assign) long long fileReadedLength;
 
@@ -75,6 +76,7 @@
         self.length = length;
         self.startOffset = startOffset;
         self.needReadLength = needReadLength;
+        self.lock = [[NSLock alloc] init];
         
         KTVHCLogDataFileSource(@"did setup, %lld, %lld, %lld, %lld", self.offset, self.length, self.startOffset, self.needReadLength);
     }
@@ -129,12 +131,15 @@
     if (self.didClose) {
         return;
     }
+    
+    [self.lock lock];
     self.didClose = YES;
     
     KTVHCLogDataFileSource(@"call close");
     
     [self.readingHandle closeFile];
     self.readingHandle = nil;
+    [self.lock unlock];
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length
@@ -146,6 +151,7 @@
         return nil;
     }
     
+    [self.lock lock];
     NSData * data = [self.readingHandle readDataOfLength:MIN(self.needReadLength - self.fileReadedLength, length)];
     self.fileReadedLength += data.length;
     
@@ -160,6 +166,7 @@
         
         self.didFinishRead = YES;
     }
+    [self.lock unlock];
     return data;
 }
 

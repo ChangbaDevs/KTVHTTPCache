@@ -31,7 +31,8 @@ KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeOctetStream;
 /**
  *  default vaules:
  *  KTVHCDataContentTypeVideo
- *  KTVHCDataContentTypeVideo
+ *  KTVHCDataContentTypeAudio
+ *  KTVHCDataContentTypeOctetStream
  */
 @property (nonatomic, copy) NSArray <KTVHCDataContentType> * acceptContentTypes;
 
