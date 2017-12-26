@@ -14,7 +14,6 @@
 
 
 @property (nonatomic, copy) NSString * archiverPath;
-@property (nonatomic, strong) NSLock * lock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * unitArray;
 
 
@@ -34,7 +33,6 @@
     if (self = [super init])
     {
         self.archiverPath = archiverPath;
-        self.lock = [[NSLock alloc] init];
         self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.archiverPath];
         if (!self.unitArray) {
             self.unitArray = [NSMutableArray array];
@@ -51,9 +49,7 @@
         return nil;
     }
     
-    [self.lock lock];
     NSArray <KTVHCDataUnit *> * units = [self.unitArray copy];
-    [self.lock unlock];
     return units;
 }
 
@@ -63,7 +59,6 @@
         return nil;
     }
     
-    [self.lock lock];
     KTVHCDataUnit * unit = nil;
     for (KTVHCDataUnit * obj in self.unitArray)
     {
@@ -72,7 +67,6 @@
             break;
         }
     }
-    [self.lock unlock];
     return unit;
 }
 
@@ -82,11 +76,9 @@
         return;
     }
     
-    [self.lock lock];
     if (![self.unitArray containsObject:unit]) {
         [self.unitArray addObject:unit];
     }
-    [self.lock unlock];
 }
 
 - (void)popUnit:(KTVHCDataUnit *)unit
@@ -95,21 +87,18 @@
         return;
     }
     
-    [self.lock lock];
     if ([self.unitArray containsObject:unit]) {
         [self.unitArray removeObject:unit];
     }
-    [self.lock unlock];
 }
 
 - (void)archive
 {
-    [self.lock lock];
-    
-    KTVHCLogDataUnitQueue(@"archive, %lu", self.unitArray.count);
+    KTVHCLogDataUnitQueue(@"archive begin, %lu", self.unitArray.count);
     
     [NSKeyedArchiver archiveRootObject:self.unitArray toFile:self.archiverPath];
-    [self.lock unlock];
+    
+    KTVHCLogDataUnitQueue(@"archive end, %lu", self.unitArray.count);
 }
 
 
