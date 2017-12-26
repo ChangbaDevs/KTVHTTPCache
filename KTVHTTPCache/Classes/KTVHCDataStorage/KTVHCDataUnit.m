@@ -229,7 +229,7 @@
     return self.responseHeaderFields;
 }
 
-- (NSTimeInterval)lastItemCerateInterval
+- (NSTimeInterval)lastItemCreateInterval
 {
     [self lock];
     NSTimeInterval timeInterval = self.createTimeInterval;

@@ -176,8 +176,8 @@
         NSComparisonResult result = NSOrderedDescending;
         [obj1 lock];
         [obj2 lock];
-        NSTimeInterval timeInterval1 = obj1.lastItemCerateInterval;
-        NSTimeInterval timeInterval2 = obj2.lastItemCerateInterval;
+        NSTimeInterval timeInterval1 = obj1.lastItemCreateInterval;
+        NSTimeInterval timeInterval2 = obj2.lastItemCreateInterval;
         if (timeInterval1 < timeInterval2) {
             result = NSOrderedAscending;
         } else if (timeInterval1 == timeInterval2 && obj1.createTimeInterval < obj2.createTimeInterval) {

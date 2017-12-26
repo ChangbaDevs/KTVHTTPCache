@@ -41,7 +41,7 @@
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
 @property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;
-@property (nonatomic, assign, readonly) NSTimeInterval lastItemCerateInterval;
+@property (nonatomic, assign, readonly) NSTimeInterval lastItemCreateInterval;
 
 @property (nonatomic, copy, readonly) NSDictionary * requestHeaderFields;
 @property (nonatomic, copy, readonly) NSDictionary * requestHeaderFieldsWithoutRange;
