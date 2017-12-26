@@ -14,7 +14,7 @@
 @interface KTVHCDataUnitItem ()
 
 
-@property (nonatomic, strong) NSLock * coreLock;
+@property (nonatomic, strong) NSRecursiveLock * coreLock;
 
 @property (nonatomic, assign) NSTimeInterval createTimeInterval;
 
@@ -74,7 +74,7 @@
 
 - (void)prepare
 {
-    self.coreLock = [[NSLock alloc] init];
+    self.coreLock = [[NSRecursiveLock alloc] init];
     self.absolutePath = [KTVHCPathTools absolutePathWithRelativePath:self.relativePath];
     self.length = [KTVHCPathTools sizeOfItemAtFilePath:self.absolutePath];
 }

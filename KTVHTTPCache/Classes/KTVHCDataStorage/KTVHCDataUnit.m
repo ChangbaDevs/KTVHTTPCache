@@ -27,7 +27,7 @@
 @property (nonatomic, assign) long long totalContentLength;
 @property (nonatomic, assign) long long totalCacheLength;
 
-@property (nonatomic, strong) NSLock * coreLock;
+@property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
 
 @property (nonatomic, assign) NSInteger workingCount;
@@ -95,7 +95,9 @@
 
 - (void)prepare
 {
-    self.coreLock = [[NSLock alloc] init];
+    self.coreLock = [[NSRecursiveLock alloc] init];
+    
+    [self lock];
     if (!self.unitItems) {
         self.unitItems = [NSMutableArray array];
     }
@@ -115,13 +117,13 @@
     }
     
     KTVHCLogDataUnit(@"prepare result, %@, %ld", self.URLString, self.unitItems.count);
+    
+    [self unlock];
 }
 
 - (void)sortUnitItems
 {
-    for (KTVHCDataUnitItem * obj in self.unitItems) {
-        [obj lock];
-    }
+    [self lock];
     [self.unitItems sortUsingComparator:^NSComparisonResult(KTVHCDataUnitItem * obj1, KTVHCDataUnitItem * obj2) {
         NSComparisonResult result = NSOrderedDescending;
         if (obj1.offset < obj2.offset) {
@@ -131,9 +133,7 @@
         }
         return result;
     }];
-    for (KTVHCDataUnitItem * obj in self.unitItems) {
-        [obj unlock];
-    }
+    [self unlock];
 }
 
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem
@@ -255,25 +255,25 @@
 
 - (BOOL)working
 {
-    [self lock];
+    [self.coreLock lock];
     BOOL working = self.workingCount > 0;
-    [self unlock];
+    [self.coreLock unlock];
     return working;
 }
 
 - (void)workingRetain
 {
-    [self lock];
+    [self.coreLock lock];
     self.workingCount++;
     
     KTVHCLogDataUnit(@"working retain, %@, %ld", self.URLString, self.workingCount);
     
-    [self unlock];
+    [self.coreLock unlock];
 }
 
 - (void)workingRelease
 {
-    [self lock];
+    [self.coreLock lock];
     self.workingCount--;
     
     KTVHCLogDataUnit(@"working release, %@, %ld", self.URLString, self.workingCount);
@@ -295,7 +295,7 @@
         }
     }
     
-    [self unlock];
+    [self.coreLock unlock];
 }
 
 
@@ -326,10 +326,16 @@
 - (void)lock
 {
     [self.coreLock lock];
+    for (KTVHCDataUnitItem * obj in self.unitItems) {
+        [obj lock];
+    }
 }
 
 - (void)unlock
 {
+    for (KTVHCDataUnitItem * obj in self.unitItems) {
+        [obj unlock];
+    }
     [self.coreLock unlock];
 }
 

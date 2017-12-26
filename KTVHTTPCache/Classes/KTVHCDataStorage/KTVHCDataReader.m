@@ -157,13 +157,10 @@
     [self.unit sortUnitItems];
     for (KTVHCDataUnitItem * item in self.unit.unitItems)
     {
-        [item lock];
-        
         long long itemMin = item.offset;
         long long itemMax = item.offset + item.length - 1;
         
         if (itemMax < min || itemMin > max) {
-            [item unlock];
             continue;
         }
         
@@ -182,8 +179,6 @@
                                                                    startOffset:itemMin - item.offset
                                                                 needReadLength:itemMax - itemMin + 1];
         [fileSources addObject:source];
-        
-        [item unlock];
     }
     [self.unit unlock];
     
