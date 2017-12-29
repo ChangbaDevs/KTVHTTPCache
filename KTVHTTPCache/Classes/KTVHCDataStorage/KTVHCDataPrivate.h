@@ -41,6 +41,8 @@ static long long const KTVHCDataRequestRangeMaxVaule = -1;
 @property (nonatomic, assign, readonly) long long rangeMin;     // default is KTVHCDataRequestRangeMinVaule.
 @property (nonatomic, assign, readonly) long long rangeMax;     // default is KTVHCDataRequestRangeMaxVaule.
 
+- (void)updateRangeMaxIfNeeded:(long long)ensureTotalContentLength;
+
 
 @end
 

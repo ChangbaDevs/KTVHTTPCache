@@ -61,7 +61,10 @@
         
         self.unit = unit;
         [self.unit workingRetain];
+        
         self.request = request;
+        [self.request updateRangeMaxIfNeeded:self.unit.totalContentLength];
+        
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
         [self.unit setDelegate:self delegateQueue:self.internalDelegateQueue];

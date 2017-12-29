@@ -85,5 +85,12 @@ NSString * const KTVHCDataContentTypeApplicationOctetStream = @"application/octe
     }
 }
 
+- (void)updateRangeMaxIfNeeded:(long long)ensureTotalContentLength
+{
+    if (self.rangeMax == KTVHCDataRequestRangeMaxVaule && ensureTotalContentLength > 0) {
+        self.rangeMax = ensureTotalContentLength - 1;
+    }
+}
+
 
 @end
