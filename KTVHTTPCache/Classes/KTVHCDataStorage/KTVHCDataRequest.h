@@ -14,7 +14,8 @@ typedef NSString * KTVHCDataContentType;
 
 KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeVideo;
 KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeAudio;
-KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeOctetStream;
+KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeApplicationMPEG4;
+KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeApplicationOctetStream;
 
 
 @interface KTVHCDataRequest : NSObject
@@ -32,7 +33,8 @@ KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeOctetStream;
  *  default vaules:
  *  KTVHCDataContentTypeVideo
  *  KTVHCDataContentTypeAudio
- *  KTVHCDataContentTypeOctetStream
+ *  KTVHCDataContentTypeApplicationMPEG4
+ *  KTVHCDataContentTypeApplicationOctetStream
  */
 @property (nonatomic, copy) NSArray <KTVHCDataContentType> * acceptContentTypes;
 

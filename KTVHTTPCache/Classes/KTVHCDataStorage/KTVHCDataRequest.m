@@ -13,7 +13,8 @@
 
 NSString * const KTVHCDataContentTypeVideo = @"video/";
 NSString * const KTVHCDataContentTypeAudio = @"audio/";
-NSString * const KTVHCDataContentTypeOctetStream = @"application/octet-stream";
+NSString * const KTVHCDataContentTypeApplicationMPEG4 = @"application/mp4";
+NSString * const KTVHCDataContentTypeApplicationOctetStream = @"application/octet-stream";
 
 
 @interface KTVHCDataRequest ()
@@ -49,7 +50,8 @@ NSString * const KTVHCDataContentTypeOctetStream = @"application/octet-stream";
         self.headerFields = headerFields;
         self.acceptContentTypes = @[KTVHCDataContentTypeVideo,
                                     KTVHCDataContentTypeAudio,
-                                    KTVHCDataContentTypeOctetStream];
+                                    KTVHCDataContentTypeApplicationMPEG4,
+                                    KTVHCDataContentTypeApplicationOctetStream];
         [self setupRange];
         
         KTVHCLogDataRequest(@"did setup\n%@\nrange, %lld, %lld\n%@", self.URLString, self.rangeMin, self.rangeMax, self.headerFields);
