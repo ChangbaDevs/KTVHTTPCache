@@ -39,11 +39,23 @@
         NSLog(@"Proxy Start Success");
     }
     
-    // URL Filter. Open if need.
+    // URL Filter. Open if needed.
 #if 0
     [KTVHTTPCache cacheSetURLFilterForArchive:^NSString *(NSString * originalURLString) {
         NSLog(@"URL Filter reviced URL, %@", originalURLString);
         return originalURLString;
+    }];
+#endif
+    
+    // Content-Type Filter. Open if needed.
+#if 0
+    [KTVHTTPCache cacheSetContentTypeFilterForResponseVerify:^BOOL(NSString * URLString,
+                                                                   NSString * contentType,
+                                                                   NSArray<NSString *> * defaultAcceptContentTypes) {
+        if ([defaultAcceptContentTypes containsObject:contentType]) {
+            return YES;
+        }
+        return NO;
     }];
 #endif
 }
