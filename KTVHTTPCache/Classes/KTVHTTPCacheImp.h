@@ -42,13 +42,6 @@
                    completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
 
 /**
- *  URL Filter
- *
- *  High frequency call. Make it simple.
- */
-+ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString * originalURLString))URLFilterBlock;
-
-/**
  *  Cache Control
  */
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength;
@@ -61,6 +54,27 @@
 
 + (void)cacheDeleteAllCache;
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
+
+
+#pragma mark - Data Stroage Filters
+
+/**
+ *  URL Filter
+ *
+ *  High frequency call. Make it simple.
+ */
++ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString * originalURLString))URLFilterBlock;
+
+/**
+ *  Content-Type Filter
+ *
+ *  Used to verify the HTTP Response Content-Type.
+ *  The return value of block to decide whether to continue to load resources.
+ *  The defaultAcceptContentTypes is copy from acceptContentTypes of the KTVHCDataRequest.
+ */
++ (void)cacheSetContentTypeFilterForResponseVerify:(BOOL(^)(NSString * URLString,
+                                                            NSString * contentType,
+                                                            NSArray <NSString *> * defaultAcceptContentTypes))contentTypeFilterBlock;
 
 
 #pragma mark - Download

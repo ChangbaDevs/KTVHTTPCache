@@ -9,6 +9,7 @@
 #import "KTVHTTPCacheImp.h"
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
+#import "KTVHCDataNetworkSource.h"
 #import "KTVHCDownload.h"
 #import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
@@ -58,11 +59,6 @@
                                       completionHandler:completionHandler];
 }
 
-+ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString *))URLFilterBlock
-{
-    [KTVHCURLTools URLTools].archiveURLFilterBlock = URLFilterBlock;
-}
-
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength
 {
     [KTVHCDataStorage storage].maxCacheLength = maxCacheLength;
@@ -106,6 +102,21 @@
 + (void)cacheMergeCacheWtihURLString:(NSString *)URLString
 {
     [[KTVHCDataStorage storage] mergeCacheWithURLString:URLString];
+}
+
+
+#pragma mark - Data Stroage Filters
+
++ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString *))URLFilterBlock
+{
+    [KTVHCURLTools URLTools].archiveURLFilterBlock = URLFilterBlock;
+}
+
++ (void)cacheSetContentTypeFilterForResponseVerify:(BOOL (^)(NSString *,
+                                                             NSString *,
+                                                             NSArray <NSString *> *))contentTypeFilterBlock
+{
+    [KTVHCDataNetworkSource setContentTypeFilterBlock:contentTypeFilterBlock];
 }
 
 

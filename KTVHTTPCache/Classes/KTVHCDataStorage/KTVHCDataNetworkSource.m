@@ -304,6 +304,15 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
 
 #pragma mark - Handle Response
 
+static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSString *> *) = nil;
+
++ (void)setContentTypeFilterBlock:(BOOL (^)(NSString *,
+                                            NSString *,
+                                            NSArray <NSString *> *))contentTypeFilterBlock
+{
+    globalContentTypeFilterBlock = contentTypeFilterBlock;
+}
+
 - (BOOL)checkResponeContentType:(NSHTTPURLResponse *)response
 {
     NSString * contentType = [response.allHeaderFields objectForKey:@"Content-Type"];
@@ -313,11 +322,15 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     
     if (contentType.length > 0)
     {
-        for (NSString * obj in self.acceptContentTypePrefixs)
-        {
-            if ([[contentType lowercaseString] hasPrefix:[obj lowercaseString]])
+        if (globalContentTypeFilterBlock) {
+            return globalContentTypeFilterBlock(self.URLString, contentType, self.acceptContentTypePrefixs);
+        } else {
+            for (NSString * obj in self.acceptContentTypePrefixs)
             {
-                return YES;
+                if ([[contentType lowercaseString] containsString:[obj lowercaseString]])
+                {
+                    return YES;
+                }
             }
         }
     }
