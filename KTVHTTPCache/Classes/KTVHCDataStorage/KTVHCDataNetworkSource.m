@@ -19,6 +19,7 @@
 typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
 {
     KTVHCDataNetworkSourceErrorReasonNone,
+    KTVHCDataNetworkSourceErrorReasonStatusCode,
     KTVHCDataNetworkSourceErrorReasonContentType,
     KTVHCDataNetworkSourceErrorReasonContentRange,
     KTVHCDataNetworkSourceErrorReasonCacheSpace,
@@ -304,6 +305,14 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
 
 #pragma mark - Handle Response
 
+- (BOOL)checkResponseStatusCode:(NSInteger)statusCode
+{
+    if (statusCode >= 400) {
+        return NO;
+    }
+    return YES;
+}
+
 static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSString *> *) = nil;
 
 + (void)setContentTypeFilterBlock:(BOOL (^)(NSString *,
@@ -435,32 +444,37 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
                 
                 if (self.errorCanceled)
                 {
-                    switch (self.errorReason) {
-                        case KTVHCDataNetworkSourceErrorReasonNone:
+                    NSError * resultError = nil;
+                    switch (self.errorReason)
+                    {
+                        case KTVHCDataNetworkSourceErrorReasonStatusCode:
                         {
-                            
+                            resultError = [KTVHCError errorForResponseUnavailable:self.URLString
+                                                                          request:self.request
+                                                                         response:self.errorResponse];
                         }
                             break;
                         case KTVHCDataNetworkSourceErrorReasonContentType:
                         case KTVHCDataNetworkSourceErrorReasonContentRange:
                         {
-                            NSError * obj = [KTVHCError errorForResponseUnavailable:self.URLString request:self.request response:self.errorResponse];
-                            if (obj) {
-                                self.error = obj;
-                            }
+                            resultError = [KTVHCError errorForUnsupportTheContent:self.URLString
+                                                                          request:self.request
+                                                                         response:self.errorResponse];
                         }
                             break;
                         case KTVHCDataNetworkSourceErrorReasonCacheSpace:
                         {
-                            NSError * obj = [KTVHCError errorForNotEnoughDiskSpace:self.totalContentLength
-                                                                           request:self.currentContentLength
-                                                                  totalCacheLength:[KTVHCDataStorage storage].totalCacheLength
-                                                                    maxCacheLength:[KTVHCDataStorage storage].maxCacheLength];
-                            if (obj) {
-                                self.error = obj;
-                            }
+                            resultError = [KTVHCError errorForNotEnoughDiskSpace:self.totalContentLength
+                                                                         request:self.currentContentLength
+                                                                totalCacheLength:[KTVHCDataStorage storage].totalCacheLength
+                                                                  maxCacheLength:[KTVHCDataStorage storage].maxCacheLength];
                         }
                             break;
+                        default:
+                            break;
+                    }
+                    if (resultError) {
+                        self.error = resultError;
                     }
                 }
                 
@@ -501,7 +515,14 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
 
 - (BOOL)download:(KTVHCDownload *)download didReceiveResponse:(NSHTTPURLResponse *)response
 {
-    BOOL success = [self checkResponeContentType:response];
+    BOOL success = [self checkResponseStatusCode:response.statusCode];
+    if (!success)
+    {
+        [self handleResponseDomain:@"status code error" reason:KTVHCDataNetworkSourceErrorReasonStatusCode response:response];
+        return NO;
+    }
+    
+    success = [self checkResponeContentType:response];
     if (!success)
     {
         [self handleResponseDomain:@"content type error" reason:KTVHCDataNetworkSourceErrorReasonContentType response:response];

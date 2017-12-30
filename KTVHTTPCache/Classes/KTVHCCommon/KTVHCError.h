@@ -11,20 +11,35 @@
 
 
 KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorDomainResponseUnavailable;
+KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorDomainUnsupportTheContent;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorDomainNotEnoughDiskSpace;
 
 
 typedef NS_ENUM(NSInteger, KTVHCErrorCode)
 {
     KTVHCErrorCodeResponseUnavailable   = -192700,
-    KTVHCErrorCodeNotEnoughDiskSpace    = -192701,
+    KTVHCErrorCodeUnsupportTheContent   = -192701,
+    KTVHCErrorCodeNotEnoughDiskSpace    = -192702,
 };
+
+
+@interface NSError (KTVHTTPCache)
+
+- (NSString *)userInfoVauleForURLString;
+- (NSURLRequest *)userInfoVauleForRequest;
+- (NSHTTPURLResponse *)userInfoVauleForResponse;
+
+@end
 
 
 @interface KTVHCError : NSObject
 
 
 + (NSError *)errorForResponseUnavailable:(NSString *)URLString
+                                 request:(NSURLRequest *)request
+                                response:(NSHTTPURLResponse *)response;
+
++ (NSError *)errorForUnsupportTheContent:(NSString *)URLString
                                  request:(NSURLRequest *)request
                                 response:(NSHTTPURLResponse *)response;
 
