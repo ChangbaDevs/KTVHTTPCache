@@ -157,38 +157,38 @@
 - (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
 {
     self.responseHeaderFields = responseHeaderFields;
-    
-    NSString * contentRange = [self.responseHeaderFields objectForKey:@"Content-Range"];
-    if (!contentRange) {
-        contentRange = [self.responseHeaderFields objectForKey:@"content-range"];
-    }
-    
-    NSRange range = [contentRange rangeOfString:@"/"];
-    if (contentRange.length > 0 && range.location != NSNotFound) {
-        self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
-    }
+    [self updateTotalContentLength];
     
     KTVHCLogDataUnit(@"update response\n%@", self.responseHeaderFields);
 }
 
-
-#pragma mark - Setter/Getter
-
-- (void)setTotalContentLength:(long long)totalContentLength
+- (void)updateTotalContentLength
 {
-    if (_totalContentLength != totalContentLength)
+    NSString * contentRange = [self.responseHeaderFields objectForKey:@"Content-Range"];
+    if (!contentRange) {
+        contentRange = [self.responseHeaderFields objectForKey:@"content-range"];
+    }
+    NSRange range = [contentRange rangeOfString:@"/"];
+    if (contentRange.length > 0 && range.location != NSNotFound)
     {
-        _totalContentLength = totalContentLength;
-        
-        KTVHCLogDataUnit(@"set total content length, %lld", totalContentLength);
-        
-        if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
-            [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-                [self.delegate unitDidUpdateTotalContentLength:self];
-            }];
+        long long totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
+        if (self.totalContentLength != totalContentLength)
+        {
+            self.totalContentLength = totalContentLength;
+            
+            KTVHCLogDataUnit(@"set total content length, %lld", totalContentLength);
+            
+            if ([self.delegate respondsToSelector:@selector(unitDidUpdateTotalContentLength:)]) {
+                [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                    [self.delegate unitDidUpdateTotalContentLength:self];
+                }];
+            }
         }
     }
 }
+
+
+#pragma mark - Setter/Getter
 
 - (long long)totalCacheLength
 {
