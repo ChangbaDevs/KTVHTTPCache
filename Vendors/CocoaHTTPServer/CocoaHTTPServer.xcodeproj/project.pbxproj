@@ -44,7 +44,7 @@
 		9CA0A6511F3C04350034965E /* HTTPRedirectResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A6161F3C04350034965E /* HTTPRedirectResponse.m */; };
 		9CA0A6521F3C04350034965E /* WebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A6171F3C04350034965E /* WebSocket.h */; };
 		9CA0A6531F3C04350034965E /* WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A6181F3C04350034965E /* WebSocket.m */; };
-		9CA0A6551F3C04350034965E /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A61C1F3C04350034965E /* GCDAsyncSocket.h */; };
+		9CA0A6551F3C04350034965E /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A61C1F3C04350034965E /* GCDAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA0A6561F3C04350034965E /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A61D1F3C04350034965E /* GCDAsyncSocket.m */; };
 		9CA0A6581F3C04350034965E /* DDAbstractDatabaseLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA0A6201F3C04350034965E /* DDAbstractDatabaseLogger.h */; };
 		9CA0A6591F3C04350034965E /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA0A6211F3C04350034965E /* DDAbstractDatabaseLogger.m */; };
@@ -297,6 +297,7 @@
 				9CA0A63B1F3C04350034965E /* HTTPMessage.h in Headers */,
 				9CA0A63D1F3C04350034965E /* HTTPResponse.h in Headers */,
 				9CA0A6381F3C04350034965E /* HTTPConnection.h in Headers */,
+				9CA0A6551F3C04350034965E /* GCDAsyncSocket.h in Headers */,
 				9CA0A6421F3C04350034965E /* MultipartMessageHeader.h in Headers */,
 				9CA0A64E1F3C04350034965E /* HTTPFileResponse.h in Headers */,
 				9CA0A6601F3C04350034965E /* DDTTYLogger.h in Headers */,
@@ -310,7 +311,6 @@
 				9CA0A6341F3C04350034965E /* DDRange.h in Headers */,
 				9CA0A6501F3C04350034965E /* HTTPRedirectResponse.h in Headers */,
 				9CA0A65C1F3C04350034965E /* DDFileLogger.h in Headers */,
-				9CA0A6551F3C04350034965E /* GCDAsyncSocket.h in Headers */,
 				9CA0A6301F3C04350034965E /* DDData.h in Headers */,
 				9CA0A65E1F3C04350034965E /* DDLog.h in Headers */,
 				9CA0A6321F3C04350034965E /* DDNumber.h in Headers */,

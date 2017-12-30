@@ -14,6 +14,8 @@
 #import "KTVHCDataRequest.h"
 #import "KTVHCLog.h"
 
+static NSInteger const KTVHC_TIMEOUT_WRITE_ERROR = 30;
+static NSInteger const KTVHC_HTTP_RESPONSE = 90;
 
 @implementation KTVHCHTTPConnection
 
@@ -70,6 +72,19 @@
         }
     }
     return nil;
+}
+
+#pragma mark - handle error
+- (void)handleErrorWithFailingResponse:(NSHTTPURLResponse *)response
+{
+    HTTPMessage *customResponse = [[HTTPMessage alloc] initResponseWithStatusCode:response.statusCode description:nil version:HTTPVersion1_1];
+    [response.allHeaderFields enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [customResponse setHeaderField:key value:obj];
+    }];
+    [customResponse setHeaderField:@"Content-Length" value:@"0"];
+    NSData *responseData = [self preprocessErrorResponse:customResponse];
+    [asyncSocket writeData:responseData withTimeout:KTVHC_TIMEOUT_WRITE_ERROR tag:KTVHC_HTTP_RESPONSE];
+    
 }
 
 
