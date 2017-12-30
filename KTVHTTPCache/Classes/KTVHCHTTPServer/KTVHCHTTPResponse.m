@@ -10,7 +10,7 @@
 #import "KTVHCHTTPConnection.h"
 #import "KTVHCDataStorage.h"
 #import "KTVHCLog.h"
-#import "KTVHCError.h"
+
 
 @interface KTVHCHTTPResponse () <KTVHCDataReaderDelegate>
 
@@ -162,13 +162,7 @@
     KTVHCLogHTTPResponse(@"failure, %ld, %@", error.code, self.dataRequest.URLString);
     
     [self.reader close];
-    
-    NSHTTPURLResponse *failingResponse = error.userInfo[KTVHCOperationFailingURLResponseErrorKey];
-    if (failingResponse) {
-        [self.connection handleErrorWithFailingResponse:failingResponse];
-    }else {
-        [self.connection responseDidAbort:self];
-    }
+    [self.connection responseDidAbort:self];
 }
 
 
