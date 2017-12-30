@@ -9,8 +9,35 @@
 #import "KTVHCError.h"
 
 
-NSString * const KTVHCErrorDomainResponseUnavailable    = @"KTVHCErrorDomainResponseUnavailable";       // player error
-NSString * const KTVHCErrorDomainNotEnoughDiskSpace     = @"KTVHCErrorDomainNotEnoughDiskSpace";        // player error
+// Error Domain
+NSString * const KTVHCErrorDomainResponseUnavailable    = @"KTVHCErrorDomainResponseUnavailable";
+NSString * const KTVHCErrorDomainUnsupportTheContent    = @"KTVHCErrorDomainUnsupportTheContent";
+NSString * const KTVHCErrorDomainNotEnoughDiskSpace     = @"KTVHCErrorDomainNotEnoughDiskSpace";
+
+// Error UserInfo Key
+NSString * const KTVHCErrorUserInfoKeyURLString         = @"KTVHCErrorUserInfoKeyURLString";
+NSString * const KTVHCErrorUserInfoKeyRequest           = @"KTVHCErrorUserInfoKeyRequest";
+NSString * const KTVHCErrorUserInfoKeyResponse          = @"KTVHCErrorUserInfoKeyResponse";
+
+
+@implementation NSError (KTVHTTPCache)
+
+- (NSString *)userInfoVauleForURLString
+{
+    return [self.userInfo objectForKey:KTVHCErrorUserInfoKeyURLString];
+}
+
+- (NSURLRequest *)userInfoVauleForRequest
+{
+    return [self.userInfo objectForKey:KTVHCErrorUserInfoKeyRequest];
+}
+
+- (NSHTTPURLResponse *)userInfoVauleForResponse
+{
+    return [self.userInfo objectForKey:KTVHCErrorUserInfoKeyResponse];
+}
+
+@end
 
 
 @implementation KTVHCError
@@ -26,19 +53,37 @@ NSString * const KTVHCErrorDomainNotEnoughDiskSpace     = @"KTVHCErrorDomainNotE
     if (request.allHTTPHeaderFields.count <= 0) {
         return nil;
     }
-    if (response.URL.absoluteString.length <= 0) {
-        return nil;
-    }
-    if (response.allHeaderFields.count <= 0) {
+    if (!response) {
         return nil;
     }
     
     NSError * error = [NSError errorWithDomain:KTVHCErrorDomainResponseUnavailable
                                           code:KTVHCErrorCodeResponseUnavailable
-                                      userInfo:@{@"originalURL" : URLString,
-                                                 @"requestHeader" : request.allHTTPHeaderFields,
-                                                 @"responseURL" : response.URL.absoluteString,
-                                                 @"responseHeader" : response.allHeaderFields}];
+                                      userInfo:@{KTVHCErrorUserInfoKeyURLString : URLString,
+                                                 KTVHCErrorUserInfoKeyRequest : request,
+                                                 KTVHCErrorUserInfoKeyResponse : response}];
+    return error;
+}
+
++ (NSError *)errorForUnsupportTheContent:(NSString *)URLString
+                                 request:(NSURLRequest *)request
+                                response:(NSHTTPURLResponse *)response
+{
+    if (URLString.length <= 0) {
+        return nil;
+    }
+    if (request.allHTTPHeaderFields.count <= 0) {
+        return nil;
+    }
+    if (!response) {
+        return nil;
+    }
+    
+    NSError * error = [NSError errorWithDomain:KTVHCErrorDomainUnsupportTheContent
+                                          code:KTVHCErrorCodeUnsupportTheContent
+                                      userInfo:@{KTVHCErrorUserInfoKeyURLString : URLString,
+                                                 KTVHCErrorUserInfoKeyRequest : request,
+                                                 KTVHCErrorUserInfoKeyResponse : response}];
     return error;
 }
 
