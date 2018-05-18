@@ -29,14 +29,21 @@ KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeApplicationOc
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, copy, readonly) NSDictionary * headerFields;
 
+@property (nonatomic, copy) NSArray <KTVHCDataContentType> * acceptContentTypes;
+
+
+#pragma mark - Class
+
 /**
  *  default vaules:
  *  KTVHCDataContentTypeVideo
  *  KTVHCDataContentTypeAudio
  *  KTVHCDataContentTypeApplicationMPEG4
  *  KTVHCDataContentTypeApplicationOctetStream
+ *  KTVHCDataContentTypeBinaryOctetStream
  */
-@property (nonatomic, copy) NSArray <KTVHCDataContentType> * acceptContentTypes;
++ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes;
++ (NSArray <NSString *> *)defaultAcceptContextTypes;
 
 
 @end

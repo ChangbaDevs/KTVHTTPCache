@@ -15,6 +15,7 @@ NSString * const KTVHCDataContentTypeVideo = @"video/";
 NSString * const KTVHCDataContentTypeAudio = @"audio/";
 NSString * const KTVHCDataContentTypeApplicationMPEG4 = @"application/mp4";
 NSString * const KTVHCDataContentTypeApplicationOctetStream = @"application/octet-stream";
+NSString * const KTVHCDataContentTypeBinaryOctetStream = @"binary/octet-stream";
 
 
 @interface KTVHCDataRequest ()
@@ -48,10 +49,7 @@ NSString * const KTVHCDataContentTypeApplicationOctetStream = @"application/octe
         self.rangeMax = KTVHCDataRequestRangeMaxVaule;
         self.URLString = URLString;
         self.headerFields = headerFields;
-        self.acceptContentTypes = @[KTVHCDataContentTypeVideo,
-                                    KTVHCDataContentTypeAudio,
-                                    KTVHCDataContentTypeApplicationMPEG4,
-                                    KTVHCDataContentTypeApplicationOctetStream];
+        self.acceptContentTypes = [KTVHCDataRequest defaultAcceptContextTypes];
         [self setupRange];
         
         KTVHCLogDataRequest(@"did setup\n%@\nrange, %lld, %lld\n%@", self.URLString, self.rangeMin, self.rangeMax, self.headerFields);
@@ -90,6 +88,29 @@ NSString * const KTVHCDataContentTypeApplicationOctetStream = @"application/octe
     if (self.rangeMax == KTVHCDataRequestRangeMaxVaule && ensureTotalContentLength > 0) {
         self.rangeMax = ensureTotalContentLength - 1;
     }
+}
+
+
+#pragma mark - Class
+
+static NSArray <NSString *> * defaultAcceptContextTypes = nil;
+
++ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes
+{
+    defaultAcceptContextTypes = defaultAcceptContextTypes;
+}
+
++ (NSArray <NSString *> *)defaultAcceptContextTypes
+{
+    if (!defaultAcceptContextTypes)
+    {
+        defaultAcceptContextTypes = @[KTVHCDataContentTypeVideo,
+                                      KTVHCDataContentTypeAudio,
+                                      KTVHCDataContentTypeApplicationMPEG4,
+                                      KTVHCDataContentTypeApplicationOctetStream,
+                                      KTVHCDataContentTypeBinaryOctetStream];
+    }
+    return defaultAcceptContextTypes;
 }
 
 

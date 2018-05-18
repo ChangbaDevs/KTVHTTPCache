@@ -77,6 +77,17 @@
                                                             NSArray <NSString *> * defaultAcceptContentTypes))contentTypeFilterBlock;
 
 
+#pragma mark - Accept Content Types
+
+/**
+ *  Default Accept Context Types
+ *
+ *  If 'cacheSetContentTypeFilterForResponseVerify' is set, this method will be invalid.
+ */
++ (void)cacheSetDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes;
++ (NSArray <NSString *> *)cacheDefaultAcceptContextTypes;
+
+
 #pragma mark - Download
 
 + (NSTimeInterval)downloadTimeoutInterval;

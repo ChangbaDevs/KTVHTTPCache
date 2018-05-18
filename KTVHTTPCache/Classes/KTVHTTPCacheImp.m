@@ -120,6 +120,19 @@
 }
 
 
+#pragma mark - Accept Content Types
+
++ (void)cacheSetDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes
+{
+    [KTVHCDataRequest setDefaultAcceptContextTypes:defaultAcceptContextTypes];
+}
+
++ (NSArray <NSString *> *)cacheDefaultAcceptContextTypes
+{
+    return [KTVHCDataRequest defaultAcceptContextTypes];
+}
+
+
 #pragma mark - Download
 
 + (NSTimeInterval)downloadTimeoutInterval
