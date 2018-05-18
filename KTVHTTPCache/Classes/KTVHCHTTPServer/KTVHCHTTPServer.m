@@ -18,6 +18,13 @@
 
 @property (nonatomic, strong) HTTPServer * coreHTTPServer;
 
+@property (nonatomic, assign) BOOL pinging;
+@property (nonatomic, assign) BOOL pingResult;
+@property (nonatomic, assign) NSTimeInterval pingTimeInterval;
+@property (nonatomic, strong) NSCondition * pingCondition;
+@property (nonatomic, strong) NSURLSession * pingSession;
+@property (nonatomic, strong) NSURLSessionDataTask * pingDataTask;
+
 
 @end
 
@@ -49,6 +56,8 @@
 - (void)dealloc
 {
     KTVHCLogDealloc(self);
+    
+    [self stop];
 }
 
 
@@ -101,6 +110,11 @@
     if (self.running)
     {
         [self.coreHTTPServer stop];
+        [self.pingSession invalidateAndCancel];
+        [self.pingDataTask cancel];
+        self.pingDataTask = nil;
+        self.pingSession = nil;
+        
         KTVHCLogHTTPServer(@"stop server");
     }
 }
@@ -144,73 +158,64 @@
 
 - (BOOL)ping
 {
-    static BOOL result = NO;
-    static NSTimeInterval resultTime = 0;
-    
-    /*
-     if ([NSDate date].timeIntervalSince1970 - resultTime < 1)
+     if ([NSDate date].timeIntervalSince1970 - self.pingTimeInterval < 0.5)
      {
-     return result;
+         return self.pingResult;
      }
-     */
     
     if (self.running)
     {
-        static BOOL pinging = NO;
-        static NSCondition * pingCondition = nil;
-        static NSURLSession * pingSession = nil;
-        static NSURLSessionDataTask * pingDataTask = nil;
-        
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            pingCondition = [[NSCondition alloc] init];
-            NSURLSessionConfiguration * pingSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-            pingSessionConfiguration.timeoutIntervalForRequest = 3;
-            pingSession = [NSURLSession sessionWithConfiguration:pingSessionConfiguration];
-        });
-        
-        [pingCondition lock];
-        if (pinging)
+        if (!self.pingSession)
         {
-            [pingCondition wait];
+            self.pingCondition = [[NSCondition alloc] init];
+            NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            sessionConfiguration.timeoutIntervalForRequest = 3;
+            self.pingSession = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+        }
+        
+        [self.pingCondition lock];
+        if (self.pinging)
+        {
+            [self.pingCondition wait];
         }
         else
         {
-            pingDataTask = [pingSession dataTaskWithURL:[[KTVHCHTTPURL URLForPing] proxyURLWithServerPort:self.coreHTTPServer.listeningPort]
+            NSURL * pingURL = [[KTVHCHTTPURL URLForPing] proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
+            self.pingDataTask = [self.pingSession dataTaskWithURL:pingURL
                                       completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                           if (!error && data.length > 0)
                                           {
                                               NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                               if ([string isEqualToString:[KTVHCHTTPConnection responsePingTokenString]])
                                               {
-                                                  result = YES;
+                                                  self.pingResult = YES;
                                               }
                                               else
                                               {
-                                                  result = NO;
+                                                  self.pingResult = NO;
                                               }
                                           }
                                           else
                                           {
-                                              result = NO;
+                                              self.pingResult = NO;
                                           }
-                                          resultTime = [NSDate date].timeIntervalSince1970;
+                                          self.pingTimeInterval = [NSDate date].timeIntervalSince1970;
                                           
-                                          [pingCondition lock];
-                                          pinging = NO;
-                                          [pingCondition broadcast];
-                                          [pingCondition unlock];
+                                          [self.pingCondition lock];
+                                          self.pinging = NO;
+                                          [self.pingCondition broadcast];
+                                          [self.pingCondition unlock];
                                       }];
-            pinging = YES;
-            [pingDataTask resume];
-            [pingCondition wait];
+            self.pinging = YES;
+            [self.pingDataTask resume];
+            [self.pingCondition wait];
         }
-        [pingCondition unlock];
+        [self.pingCondition unlock];
     }
     
-    KTVHCLogHTTPServer(@"ping result, %d", result);
+    KTVHCLogHTTPServer(@"ping result, %d", self.pingResult);
     
-    return result;
+    return self.pingResult;
 }
 
 
