@@ -146,7 +146,11 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
 
 - (NSString *)proxyURLStringWithServerPort:(NSInteger)serverPort
 {
-    NSString * lastPathComponent = [NSURL URLWithString:self.originalURLString].lastPathComponent;
+    NSString * pathExtension = [NSURL URLWithString:self.originalURLString].pathExtension;
+    if (pathExtension.length)
+    {
+        pathExtension = [NSString stringWithFormat:@".%@", pathExtension];
+    }
     NSString * requestType = KTVHCHTTPURL_Vaule_RequestType_Content;
     switch (self.type)
     {
@@ -157,10 +161,10 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
             break;
     }
     
-    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://%@:%ld/request-%@?%@=%@",
+    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://%@:%ld/request%@?%@=%@",
                                        KTVHCHTTPURL_Domain,
                                        serverPort,
-                                       lastPathComponent,
+                                       pathExtension ? pathExtension : @"",
                                        KTVHCHTTPURL_Key_RequestType,
                                        requestType];
     
