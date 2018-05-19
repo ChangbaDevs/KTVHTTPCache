@@ -22,7 +22,7 @@
 - (void)start:(NSError **)error;
 - (void)stop;
 
-- (NSURL *)URLWithOriginalURLString:(NSString *)URLString;
+- (NSString *)URLStringWithOriginalURLString:(NSString *)URLString;
 
 
 @end

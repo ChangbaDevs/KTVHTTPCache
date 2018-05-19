@@ -37,10 +37,17 @@
 + (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString
 {
     NSString * completeFilePath = [[KTVHCDataStorage storage] completeFilePathWithURLString:URLString];
-    if (completeFilePath.length > 0) {
+    if (completeFilePath.length > 0)
+    {
         return [NSURL fileURLWithPath:completeFilePath];
     }
-    return [[KTVHCHTTPServer server] URLWithOriginalURLString:URLString];
+    NSString * proxyURLString = [[KTVHCHTTPServer server] URLStringWithOriginalURLString:URLString];
+    return [NSURL URLWithString:proxyURLString];
+}
+
++ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString
+{
+    return [[KTVHCHTTPServer server] URLStringWithOriginalURLString:URLString];
 }
 
 

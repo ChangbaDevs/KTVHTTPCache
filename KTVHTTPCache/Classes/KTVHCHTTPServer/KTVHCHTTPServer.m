@@ -119,14 +119,14 @@
     }
 }
 
-- (NSURL *)URLWithOriginalURLString:(NSString *)URLString
+- (NSString *)URLStringWithOriginalURLString:(NSString *)URLString
 {
     if (self.running && [URLString hasPrefix:@"http"])
     {
         if ([self ping])
         {
             KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithOriginalURLString:URLString];
-            URLString = [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
+            return [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
         }
         else
         {
@@ -138,7 +138,7 @@
                 if ([self ping])
                 {
                     KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithOriginalURLString:URLString];
-                    URLString = [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
+                    return [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
                 }
                 else
                 {
@@ -150,7 +150,7 @@
     
     KTVHCLogHTTPServer(@"return original URL string");
     
-    return [NSURL URLWithString:URLString];
+    return URLString;
 }
 
 
@@ -158,10 +158,10 @@
 
 - (BOOL)ping
 {
-    if ([NSDate date].timeIntervalSince1970 - self.pingTimeInterval < 0.5)
-    {
-        return self.pingResult;
-    }
+     if ([NSDate date].timeIntervalSince1970 - self.pingTimeInterval < 0.5)
+     {
+         return self.pingResult;
+     }
     
     if (self.running)
     {

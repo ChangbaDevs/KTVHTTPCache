@@ -27,7 +27,16 @@
 + (void)proxyStart:(NSError **)error;
 + (void)proxyStop;
 
+/**
+ *  If the content of the URLString is finish cache, return the File URL for the content.
+ *  Otherwise return the URL for local server.
+ */
 + (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString;
+
+/**
+ *  Return the URL string for local server.
+ */
++ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString;
 
 
 #pragma mark - Data Storage
