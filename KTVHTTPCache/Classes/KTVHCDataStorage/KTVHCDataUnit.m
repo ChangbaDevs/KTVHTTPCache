@@ -316,6 +316,8 @@
         {
             NSAssert(self.fileDelegate, @"archive callback can't be nil.");
             [self.fileDelegate unitShouldRearchive:self];
+            
+            KTVHCLogDataUnit(@"merge files rearchive callback");
         }
         
         if ([self.workingDelegate respondsToSelector:@selector(unitDidStopWorking:)])
@@ -371,12 +373,16 @@
             NSAssert(offset >= obj.offset, @"invaild unit item.");
             if (offset >= (obj.offset + obj.length))
             {
+                KTVHCLogDataUnit(@"merge files continue");
                 continue;
             }
             NSFileHandle * readingHandle = [NSFileHandle fileHandleForReadingAtPath:obj.absolutePath];
-            @try {
+            @try
+            {
                 [readingHandle seekToFileOffset:offset - obj.offset];
-            } @catch (NSException *exception) {
+            }
+            @catch (NSException *exception)
+            {
                 KTVHCLogDataUnit(@"merge files seek exception");
             }
             while (YES)
@@ -384,19 +390,31 @@
                 @autoreleasepool
                 {
                     NSData * data = [readingHandle readDataOfLength:1024 * 1024];
-                    if (data.length <= 0) {
+                    if (data.length <= 0)
+                    {
+                        KTVHCLogDataUnit(@"merge files break");
+                        
                         break;
                     }
+                    KTVHCLogDataUnit(@"merge files write data, %lld", (long long)data.length);
+                    
                     [writingHandle writeData:data];
                 }
             }
             [readingHandle closeFile];
             offset = obj.offset + obj.length;
+            
+            KTVHCLogDataUnit(@"merge files next, %lld", offset);
         }
         [writingHandle synchronizeFile];
         [writingHandle closeFile];
+        
+        KTVHCLogDataUnit(@"merge files finish, %@, %lld, %lld", path, self.totalCacheLength, offset);
+        
         if ([KTVHCPathTools sizeOfItemAtFilePath:path] == self.totalContentLength)
         {
+            KTVHCLogDataUnit(@"merge files replace unit item");
+            
             NSString * relativePath = [KTVHCPathTools relativePathForCompleteFileWithURLString:self.URLString];
             KTVHCDataUnitItem * finalItem = [KTVHCDataUnitItem unitItemWithOffset:0
                                                                      relativePath:relativePath];
