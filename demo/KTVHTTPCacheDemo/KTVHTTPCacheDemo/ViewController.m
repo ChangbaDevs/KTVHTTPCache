@@ -116,7 +116,7 @@
         return;
     }
     
-    NSString * proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
+    NSString * proxyURLString = [KTVHTTPCache proxyURLWithOriginalURLString:URLString].absoluteString;
     
     MediaPlayerViewController * viewController = [[MediaPlayerViewController alloc] initWithURLString:proxyURLString];
     [self presentViewController:viewController animated:YES completion:nil];
