@@ -34,9 +34,9 @@
     [[KTVHCHTTPServer server] stop];
 }
 
-+ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)urlString
++ (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString
 {
-    return [[KTVHCHTTPServer server] URLStringWithOriginalURLString:urlString];
+    return [[KTVHCHTTPServer server] URLWithOriginalURLString:URLString];
 }
 
 

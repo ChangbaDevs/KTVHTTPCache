@@ -27,7 +27,7 @@
 + (void)proxyStart:(NSError **)error;
 + (void)proxyStop;
 
-+ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)urlString;
++ (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString;
 
 
 #pragma mark - Data Storage
