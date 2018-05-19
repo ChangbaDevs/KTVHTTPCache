@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.public_header_files = "KTVHTTPCache/**/*.h"
   s.frameworks          = "UIKit", "Foundation"
   s.requires_arc        = true
-  s.dependency 'CocoaHTTPServer', '~> 2.3'
+  s.dependency 'KTVCocoaHTTPServer'
 end
