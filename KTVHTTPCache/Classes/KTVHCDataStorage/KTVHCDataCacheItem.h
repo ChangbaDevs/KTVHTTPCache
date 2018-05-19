@@ -20,6 +20,7 @@
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, assign, readonly) long long totalLength;
 @property (nonatomic, assign, readonly) long long cacheLength;
+@property (nonatomic, assign, readonly) long long vaildLength;
 @property (nonatomic, copy, readonly) NSArray <KTVHCDataCacheItemZone *> * zones;
 
 

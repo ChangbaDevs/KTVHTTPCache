@@ -16,6 +16,7 @@
 @property (nonatomic, copy) NSString * URLString;
 @property (nonatomic, assign) long long totalLength;
 @property (nonatomic, assign) long long cacheLength;
+@property (nonatomic, assign) long long vaildLength;
 @property (nonatomic, copy) NSArray <KTVHCDataCacheItemZone *> * zones;
 
 
@@ -28,6 +29,7 @@
 + (instancetype)itemWithURLString:(NSString *)URLString
                       totalLength:(long long)totalLength
                       cacheLength:(long long)cacheLength
+                      vaildLength:(long long)vaildLength
                             zones:(NSArray <KTVHCDataCacheItemZone *> *)zones
 {
     return [[self alloc] initWithURLString:URLString

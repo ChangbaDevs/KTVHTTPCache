@@ -12,16 +12,20 @@
 @interface KTVHCPathTools : NSObject
 
 
-+ (NSString *)absolutePathWithRelativePath:(NSString *)relativePath;
-+ (NSString *)absolutePathForArchiver;
 + (NSString *)absolutePathForLog;
-+ (NSString *)absolutePathForDirectoryWithURLString:(NSString *)URLString;
-+ (NSString *)relativePathForFileWithURLString:(NSString *)URLString offset:(long long)offset;
++ (NSString *)absolutePathForArchiver;
 
-+ (void)createFolderIfNeed:(NSString *)folderPath;
-+ (void)createFileIfNeed:(NSString *)filePath;
-+ (NSError *)deleteFolderAtPath:(NSString *)folderPath;
++ (NSString *)absolutePathWithRelativePath:(NSString *)relativePath;
++ (NSString *)absolutePathForDirectoryWithURLString:(NSString *)URLString;
++ (NSString *)absolutePathForCompleteFileWithURLString:(NSString *)URLString;
++ (NSString *)relativePathForCompleteFileWithURLString:(NSString *)URLString;
++ (NSString *)relativePathForUnitItemFileWithURLString:(NSString *)URLString offset:(long long)offset;
+
++ (void)createFileIfNeeded:(NSString *)filePath;
++ (void)createFolderIfNeeded:(NSString *)folderPath;
+
 + (NSError *)deleteFileAtPath:(NSString *)filePath;
++ (NSError *)deleteFolderAtPath:(NSString *)folderPath;
 
 + (long long)sizeOfItemAtFilePath:(NSString *)filePath;
 

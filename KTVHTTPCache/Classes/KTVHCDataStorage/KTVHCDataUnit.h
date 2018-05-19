@@ -29,6 +29,13 @@
 @end
 
 
+@protocol KTVHCDataUnitFileDelegate <NSObject>
+
+- (void)unitShouldRearchive:(KTVHCDataUnit *)unit;
+
+@end
+
+
 @interface KTVHCDataUnit : NSObject <NSCoding, NSLocking>
 
 
@@ -37,6 +44,7 @@
 
 + (instancetype)unitWithURLString:(NSString *)URLString;
 
+@property (nonatomic, copy, readonly) NSString * filePath;
 @property (nonatomic, copy, readonly) NSString * URLString;
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
@@ -50,6 +58,7 @@
 
 @property (nonatomic, assign, readonly) long long totalContentLength;
 @property (nonatomic, assign, readonly) long long totalCacheLength;
+@property (nonatomic, assign, readonly) long long totalValidCacheLength;
 
 @property (nonatomic, strong, readonly) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
 
@@ -82,10 +91,10 @@
 
 #pragma mark - File
 
+@property (nonatomic, weak) id <KTVHCDataUnitFileDelegate> fileDelegate;
 @property (nonatomic, copy, readonly) NSString * absolutePathForFileDirectory;
 
 - (void)deleteFiles;
-- (BOOL)mergeFiles;
 
 
 @end

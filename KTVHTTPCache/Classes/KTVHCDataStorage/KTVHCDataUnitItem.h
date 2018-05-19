@@ -19,8 +19,6 @@
 
 @property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;
 
-@property (nonatomic, assign) BOOL writing;
-
 @property (nonatomic, assign, readonly) long long offset;
 @property (nonatomic, assign) long long length;
 

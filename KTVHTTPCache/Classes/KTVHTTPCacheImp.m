@@ -94,16 +94,6 @@
     [[KTVHCDataStorage storage] deleteCacheWithURLString:URLString];
 }
 
-+ (void)cacheMergeAllCache
-{
-    [[KTVHCDataStorage storage] mergeAllCache];
-}
-
-+ (void)cacheMergeCacheWtihURLString:(NSString *)URLString
-{
-    [[KTVHCDataStorage storage] mergeCacheWithURLString:URLString];
-}
-
 
 #pragma mark - Data Stroage Filters
 

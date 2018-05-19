@@ -200,7 +200,6 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     [self.writingHandle synchronizeFile];
     [self.writingHandle closeFile];
     self.writingHandle = nil;
-    self.unitItem.writing = NO;
     
     KTVHCLogDataNetworkSource(@"call close end");
     
@@ -406,9 +405,9 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
     
     [[KTVHCDataUnitPool unitPool] unit:self.URLString updateResponseHeaderFields:response.allHeaderFields];
     
-    NSString * relativePath = [KTVHCPathTools relativePathForFileWithURLString:self.URLString offset:self.offset];
+    NSString * relativePath = [KTVHCPathTools relativePathForUnitItemFileWithURLString:self.URLString
+                                                                                offset:self.offset];
     self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset relativePath:relativePath];
-    self.unitItem.writing = YES;
     
     [[KTVHCDataUnitPool unitPool] unit:self.URLString insertUnitItem:self.unitItem];
     
@@ -427,7 +426,6 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
     [self.writingHandle synchronizeFile];
     [self.writingHandle closeFile];
     self.writingHandle = nil;
-    self.unitItem.writing = NO;
     
     if (self.didClose)
     {

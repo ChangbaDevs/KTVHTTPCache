@@ -21,6 +21,11 @@
 + (instancetype)storage;
 
 
+#pragma mark - File
+
+- (NSString *)completeFilePathWithURLString:(NSString *)URLString;
+
+
 #pragma mark - Data Reader
 
 - (KTVHCDataReader *)concurrentReaderWithRequest:(KTVHCDataRequest *)request;
@@ -40,9 +45,6 @@
 
 - (void)deleteAllCache;
 - (void)deleteCacheWithURLString:(NSString *)URLString;
-
-- (void)mergeAllCache;
-- (void)mergeCacheWithURLString:(NSString *)URLString;
 
 
 @end

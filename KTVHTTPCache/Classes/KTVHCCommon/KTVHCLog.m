@@ -90,7 +90,7 @@
 {
     [self.lock lock];
     
-    [KTVHCPathTools createFileIfNeed:[KTVHCPathTools absolutePathForLog]];
+    [KTVHCPathTools createFileIfNeeded:[KTVHCPathTools absolutePathForLog]];
     self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools absolutePathForLog]];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWillTerminate:)

@@ -26,6 +26,7 @@
 
 @property (nonatomic, assign) long long totalContentLength;
 @property (nonatomic, assign) long long totalCacheLength;
+@property (nonatomic, assign) long long totalValidCacheLength;
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnitItem *> * unitItems;
@@ -190,13 +191,44 @@
 
 #pragma mark - Setter/Getter
 
+- (NSString *)filePath
+{
+    [self lock];
+    NSString * filePath = nil;
+    KTVHCDataUnitItem * item = self.unitItems.firstObject;
+    if (item.offset == 0
+        && item.length > 0
+        && item.length == self.totalContentLength)
+    {
+        filePath = item.absolutePath;
+    }
+    [self unlock];
+    return filePath;
+}
+
 - (long long)totalCacheLength
 {
-    long long length = 0;
     [self lock];
+    long long length = 0;
     for (KTVHCDataUnitItem * obj in self.unitItems)
     {
         length += obj.length;
+    }
+    [self unlock];
+    return length;
+}
+
+- (long long)totalValidCacheLength
+{
+    [self lock];
+    long long offset = 0;
+    long long length = 0;
+    for (KTVHCDataUnitItem * obj in self.unitItems)
+    {
+        long long invalidLength = MAX(offset - obj.offset, 0);
+        long long vaildLength = MAX(obj.length - invalidLength, 0);
+        offset = MAX(offset, obj.offset + obj.length);
+        length += vaildLength;
     }
     [self unlock];
     return length;
@@ -280,6 +312,12 @@
     
     if (self.workingCount <= 0)
     {
+        if ([self mergeFilesIfNeeded])
+        {
+            NSAssert(self.fileDelegate, @"archive callback can't be nil.");
+            [self.fileDelegate unitShouldRearchive:self];
+        }
+        
         if ([self.workingDelegate respondsToSelector:@selector(unitDidStopWorking:)])
         {
             KTVHCLogDataUnit(@"working release callback add, %@, %ld", self.URLString, (long)self.workingCount);
@@ -311,13 +349,68 @@
     [KTVHCPathTools deleteFolderAtPath:self.absolutePathForFileDirectory];
 }
 
-- (BOOL)mergeFiles
+- (BOOL)mergeFilesIfNeeded
 {
-    if (self.working || self.unitItems.count <= 1) {
+    [self.coreLock lock];
+    if (self.working || self.unitItems.count <= 1)
+    {
+        [self.coreLock unlock];
         return NO;
     }
     
-    return NO;
+    BOOL success = NO;
+    if (self.totalContentLength == self.totalValidCacheLength)
+    {
+        long long offset = 0;
+        NSString * path = [KTVHCPathTools absolutePathForCompleteFileWithURLString:self.URLString];
+        [KTVHCPathTools deleteFileAtPath:path];
+        [KTVHCPathTools createFileIfNeeded:path];
+        NSFileHandle * writingHandle = [NSFileHandle fileHandleForWritingAtPath:path];
+        for (KTVHCDataUnitItem * obj in self.unitItems)
+        {
+            NSAssert(offset >= obj.offset, @"invaild unit item.");
+            if (offset >= (obj.offset + obj.length))
+            {
+                continue;
+            }
+            NSFileHandle * readingHandle = [NSFileHandle fileHandleForReadingAtPath:obj.absolutePath];
+            @try {
+                [readingHandle seekToFileOffset:offset - obj.offset];
+            } @catch (NSException *exception) {
+                KTVHCLogDataUnit(@"merge files seek exception");
+            }
+            while (YES)
+            {
+                @autoreleasepool
+                {
+                    NSData * data = [readingHandle readDataOfLength:1024 * 1024];
+                    if (data.length <= 0) {
+                        break;
+                    }
+                    [writingHandle writeData:data];
+                }
+            }
+            [readingHandle closeFile];
+            offset = obj.offset + obj.length;
+        }
+        [writingHandle synchronizeFile];
+        [writingHandle closeFile];
+        if ([KTVHCPathTools sizeOfItemAtFilePath:path] == self.totalContentLength)
+        {
+            NSString * relativePath = [KTVHCPathTools relativePathForCompleteFileWithURLString:self.URLString];
+            KTVHCDataUnitItem * finalItem = [KTVHCDataUnitItem unitItemWithOffset:0
+                                                                     relativePath:relativePath];
+            for (KTVHCDataUnitItem * obj in self.unitItems)
+            {
+                [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
+            }
+            [self.unitItems removeAllObjects];
+            [self.unitItems addObject:finalItem];
+            success = YES;
+        }
+    }
+    [self.coreLock unlock];
+    return success;
 }
 
 

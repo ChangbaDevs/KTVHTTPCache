@@ -69,6 +69,7 @@ static long long const KTVHCDataRequestRangeMaxVaule = -1;
 + (instancetype)itemWithURLString:(NSString *)URLString
                       totalLength:(long long)totalLength
                       cacheLength:(long long)cacheLength
+                      vaildLength:(long long)vaildLength
                             zones:(NSArray <KTVHCDataCacheItemZone *> *)zones;
 
 

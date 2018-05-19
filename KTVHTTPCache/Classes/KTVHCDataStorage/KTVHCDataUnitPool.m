@@ -14,7 +14,7 @@
 #import "KTVHCLog.h"
 
 
-@interface KTVHCDataUnitPool () <NSLocking>
+@interface KTVHCDataUnitPool () <NSLocking, KTVHCDataUnitFileDelegate>
 
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
@@ -43,6 +43,9 @@
     {
         self.coreLock = [[NSRecursiveLock alloc] init];
         self.unitQueue = [KTVHCDataUnitQueue unitQueueWithArchiverPath:[KTVHCPathTools absolutePathForArchiver]];
+        [self.unitQueue.allUnits enumerateObjectsUsingBlock:^(KTVHCDataUnit * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            obj.fileDelegate = self;
+        }];
     }
     return self;
 }
@@ -62,6 +65,7 @@
         KTVHCLogDataUnitPool(@"new unit, %@", URLString);
         
         unit = [KTVHCDataUnit unitWithURLString:URLString];
+        unit.fileDelegate = self;
         [self.unitQueue putUnit:unit];
         [self.unitQueue archive];
     }
@@ -110,6 +114,7 @@
         cacheItem = [KTVHCDataCacheItem itemWithURLString:obj.URLString
                                               totalLength:obj.totalContentLength
                                               cacheLength:obj.totalCacheLength
+                                              vaildLength:obj.totalValidCacheLength
                                                     zones:itemZones];
         [obj unlock];
     }
@@ -237,43 +242,6 @@
     [self unlock];
 }
 
-- (void)mergeUnitWithURLString:(NSString *)URLString
-{
-    if (URLString.length <= 0) {
-        return;
-    }
-    
-    [self lock];
-    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
-    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
-    [obj lock];
-    BOOL success = [obj mergeFiles];
-    [obj unlock];
-    if (success) {
-        [self.unitQueue archive];
-    }
-    [self unlock];
-}
-
-- (void)mergeAllUnits
-{
-    [self lock];
-    BOOL success = NO;
-    NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
-    for (KTVHCDataUnit * obj in units)
-    {
-        [obj lock];
-        if ([obj mergeFiles]) {
-            success = YES;
-        }
-        [obj unlock];
-    }
-    if (success) {
-        [self.unitQueue archive];
-    }
-    [self unlock];
-}
-
 
 #pragma mark - Unit Control
 
@@ -327,6 +295,16 @@
     [obj updateResponseHeaderFields:responseHeaderFields];
     [self.unitQueue archive];
     [obj unlock];
+    [self unlock];
+}
+
+
+#pragma mark - KTVHCDataUnitFileDelegate
+
+- (void)unitShouldRearchive:(KTVHCDataUnit *)unit
+{
+    [self lock];
+    [self.unitQueue archive];
     [self unlock];
 }
 

@@ -47,6 +47,16 @@
 }
 
 
+#pragma mark - File
+
+- (NSString *)completeFilePathWithURLString:(NSString *)URLString
+{
+    return [[KTVHCDataUnitPool unitPool] unitWithURLString:URLString].filePath;
+}
+
+
+#pragma mark - Data Reader
+
 - (KTVHCDataReader *)concurrentReaderWithRequest:(KTVHCDataRequest *)request
 {
     KTVHCLogDataStorage(@"concurrent reader, %@", request.URLString);
@@ -139,16 +149,6 @@
 - (void)deleteCacheWithURLString:(NSString *)URLString
 {
     [[KTVHCDataUnitPool unitPool] deleteUnitWithURLString:URLString];
-}
-
-- (void)mergeAllCache
-{
-    [[KTVHCDataUnitPool unitPool] mergeAllUnits];
-}
-
-- (void)mergeCacheWithURLString:(NSString *)URLString
-{
-    [[KTVHCDataUnitPool unitPool] mergeUnitWithURLString:URLString];
 }
 
 
