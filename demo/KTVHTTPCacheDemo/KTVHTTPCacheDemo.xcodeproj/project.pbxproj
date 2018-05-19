@@ -18,8 +18,9 @@
 		9C9E98CA1F40978C00914D89 /* CacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C21F40978C00914D89 /* CacheViewController.m */; };
 		9C9E98CB1F40978C00914D89 /* MediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C51F40978C00914D89 /* MediaCell.m */; };
 		9C9E98CC1F40978C00914D89 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C71F40978C00914D89 /* MediaItem.m */; };
-		9CA821B51FD7A6D2008EBF3B /* CocoaHTTPServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA821B11FD7A6A6008EBF3B /* CocoaHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CA821B81FD7A6D6008EBF3B /* KTVHTTPCache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA8C7BF1F4063F9004854BC /* KTVHTTPCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9CACF80820AFC11100A72CB6 /* KTVCocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CACF80520AFC0D600A72CB6 /* KTVCocoaHTTPServer.framework */; };
+		9CACF80920AFC11100A72CB6 /* KTVCocoaHTTPServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CACF80520AFC0D600A72CB6 /* KTVCocoaHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CD2D4901F4142FC0052E85A /* MediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD2D48F1F4142FC0052E85A /* MediaPlayerViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -54,8 +55,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9CA821B51FD7A6D2008EBF3B /* CocoaHTTPServer.framework in Embed Frameworks */,
 				9CA821B81FD7A6D6008EBF3B /* KTVHTTPCache.framework in Embed Frameworks */,
+				9CACF80920AFC11100A72CB6 /* KTVCocoaHTTPServer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,8 +86,8 @@
 		9C9E98C51F40978C00914D89 /* MediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaCell.m; sourceTree = "<group>"; };
 		9C9E98C61F40978C00914D89 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
 		9C9E98C71F40978C00914D89 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
-		9CA821B11FD7A6A6008EBF3B /* CocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CA8C7BA1F4063F9004854BC /* KTVHTTPCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KTVHTTPCache.xcodeproj; path = ../../KTVHTTPCache.xcodeproj; sourceTree = "<group>"; };
+		9CACF80520AFC0D600A72CB6 /* KTVCocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KTVCocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CD2D48E1F4142FC0052E85A /* MediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerViewController.h; sourceTree = "<group>"; };
 		9CD2D48F1F4142FC0052E85A /* MediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CACF80820AFC11100A72CB6 /* KTVCocoaHTTPServer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,7 +107,7 @@
 		9C7A44AF1F3C09CF00ED01BA = {
 			isa = PBXGroup;
 			children = (
-				9CA821B11FD7A6A6008EBF3B /* CocoaHTTPServer.framework */,
+				9CACF80520AFC0D600A72CB6 /* KTVCocoaHTTPServer.framework */,
 				9CA8C7BA1F4063F9004854BC /* KTVHTTPCache.xcodeproj */,
 				9C7A44BA1F3C09CF00ED01BA /* KTVHTTPCacheDemo */,
 				9C7A44B91F3C09CF00ED01BA /* Products */,
