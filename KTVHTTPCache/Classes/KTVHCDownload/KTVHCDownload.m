@@ -118,7 +118,7 @@
 {
     [self.lock lock];
     
-    KTVHCLogDownload(@"complete, %ld, %@", error.code, task.originalRequest.URL.absoluteString);
+    KTVHCLogDownload(@"complete, %d, %@", (int)error.code, task.originalRequest.URL.absoluteString);
     
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
     [delegate download:self didCompleteWithError:error];
@@ -141,7 +141,7 @@
     
     NSURLSessionResponseDisposition responseDisposition = result ? NSURLSessionResponseAllow : NSURLSessionResponseCancel;
     
-    KTVHCLogDownload(@"response disposition, %ld", responseDisposition);
+    KTVHCLogDownload(@"response disposition, %d", (int)responseDisposition);
     
     completionHandler(responseDisposition);
     [self.lock unlock];
@@ -161,12 +161,12 @@
 {
     [self.lock lock];
     
-    KTVHCLogDownload(@"receive data begin, %lu, %@", data.length, dataTask.originalRequest.URL.absoluteString);
+    KTVHCLogDownload(@"receive data begin, %lld, %@", (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     [delegate download:self didReceiveData:data];
     
-    KTVHCLogDownload(@"receive data end, %lu, %@", data.length, dataTask.originalRequest.URL.absoluteString);
+    KTVHCLogDownload(@"receive data end, %lld, %@", (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     
     [self.lock unlock];
 }

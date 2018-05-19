@@ -35,11 +35,11 @@
     NSString * folderName = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     
     NSString * relativePath;
-    NSInteger number = 0;
+    int number = 0;
     BOOL condition = YES;
     while (condition)
     {
-        NSString * fileName = [NSString stringWithFormat:@"%@_%lld_%ld", folderName, offset, number];
+        NSString * fileName = [NSString stringWithFormat:@"%@_%lld_%d", folderName, offset, number];
         relativePath = [[self relativePathForUnitItemDirectory:folderName] stringByAppendingPathComponent:fileName];
         NSString * absolutePath = [self absolutePathWithRelativePath:relativePath];
         

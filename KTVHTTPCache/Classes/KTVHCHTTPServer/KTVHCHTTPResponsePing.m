@@ -69,11 +69,11 @@ NSString * const KTVHCHTTPResponsePingTokenString = @"pang";
     } 
     else if (readLength > 0)
     {
-        data = [self.responseData subdataWithRange:NSMakeRange(self.readOffset, readLength)];
+        data = [self.responseData subdataWithRange:NSMakeRange((NSUInteger)self.readOffset, readLength)];
     }
     self.readOffset += data.length;
     
-    KTVHCLogHTTPResponsePing(@"read data length, %lu, offset, %lld %@", data.length, self.readOffset, KTVHCHTTPResponsePingTokenString);
+    KTVHCLogHTTPResponsePing(@"read data length, %lld, offset, %lld %@", (long long)data.length, self.readOffset, KTVHCHTTPResponsePingTokenString);
     
     return data;
 }
@@ -85,7 +85,7 @@ NSString * const KTVHCHTTPResponsePingTokenString = @"pang";
 
 - (UInt64)contentLength
 {
-    KTVHCLogHTTPResponsePing(@"conetnt length, %ld", self.responseData.length);
+    KTVHCLogHTTPResponsePing(@"conetnt length, %lld", (long long)self.responseData.length);
     
     return self.responseData.length;
 }
@@ -115,7 +115,7 @@ NSString * const KTVHCHTTPResponsePingTokenString = @"pang";
 
 - (void)connectionDidClose
 {
-    KTVHCLogHTTPResponsePing(@"connection did close, %ld, %lld", self.responseData.length, self.readOffset);
+    KTVHCLogHTTPResponsePing(@"connection did close, %lld, %lld", (long long)self.responseData.length, self.readOffset);
 }
 
 

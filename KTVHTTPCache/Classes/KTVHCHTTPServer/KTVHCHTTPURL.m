@@ -125,7 +125,7 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
             }
         }
         
-        KTVHCLogHTTPURL(@"Server URI, %@, original url, %@, type, %ld", serverURIString, self.originalURLString, self.type);
+        KTVHCLogHTTPURL(@"Server URI, %@, original url, %@, type, %d", serverURIString, self.originalURLString, (int)self.type);
     }
     return self;
 }
@@ -161,9 +161,9 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
             break;
     }
     
-    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://%@:%ld/request%@?%@=%@",
+    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://%@:%d/request%@?%@=%@",
                                        KTVHCHTTPURL_Domain,
-                                       serverPort,
+                                       (int)serverPort,
                                        pathExtension ? pathExtension : @"",
                                        KTVHCHTTPURL_Key_RequestType,
                                        requestType];

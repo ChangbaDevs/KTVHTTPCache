@@ -173,7 +173,7 @@
 {
     self.error = error;
     
-    KTVHCLogDataSourcer(@"failure, %ld", error.code);
+    KTVHCLogDataSourcer(@"failure, %d", (int)error.code);
     
     if (self.error && [self.delegate respondsToSelector:@selector(sourcer:didFailure:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
@@ -221,7 +221,7 @@
 
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error
 {
-    KTVHCLogDataSourcer(@"network source failure, %ld", error.code);
+    KTVHCLogDataSourcer(@"network source failure, %d", (int)error.code);
     
     [self callbackForFailure:error];
 }

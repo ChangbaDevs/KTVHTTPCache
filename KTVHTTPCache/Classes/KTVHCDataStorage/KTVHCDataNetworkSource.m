@@ -241,10 +241,10 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
         return nil;
     }
     
-    NSData * data = [self.readingHandle readDataOfLength:MIN(self.downloadLength - self.downloadReadedLength, length)];
+    NSData * data = [self.readingHandle readDataOfLength:(NSUInteger)MIN(self.downloadLength - self.downloadReadedLength, length)];
     self.downloadReadedLength += data.length;
     
-    KTVHCLogDataNetworkSource(@"read data : %lu, %lld, %lld, %lld", data.length, self.downloadReadedLength, self.downloadLength, self.length);
+    KTVHCLogDataNetworkSource(@"read data : %lld, %lld, %lld, %lld", (long long)data.length, self.downloadReadedLength, self.downloadLength, self.length);
     
     if (self.downloadReadedLength >= self.length)
     {
@@ -431,7 +431,7 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
     
     if (self.didClose)
     {
-        KTVHCLogDataNetworkSource(@"complete but did close, %@, %ld", self.URLString, error.code);
+        KTVHCLogDataNetworkSource(@"complete but did close, %@, %d", self.URLString, (int)error.code);
     }
     else
     {
@@ -440,7 +440,7 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
             self.error = error;
             if (self.error.code != NSURLErrorCancelled || self.errorCanceled)
             {
-                KTVHCLogDataNetworkSource(@"complete by error, %@, %ld",  self.URLString, error.code);
+                KTVHCLogDataNetworkSource(@"complete by error, %@, %d",  self.URLString, (int)error.code);
                 
                 if (self.errorCanceled)
                 {
@@ -486,7 +486,7 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
             }
             else
             {
-                KTVHCLogDataNetworkSource(@"complete by cancel, %@, %ld",  self.URLString, error.code);
+                KTVHCLogDataNetworkSource(@"complete by cancel, %@, %d",  self.URLString, (int)error.code);
             }
         }
         else
@@ -560,7 +560,7 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
     self.downloadLength += data.length;
     self.unitItem.length = self.downloadLength;
     
-    KTVHCLogDataNetworkSource(@"receive data, %lu, %llu, %llu", data.length, self.downloadLength, self.unitItem.length);
+    KTVHCLogDataNetworkSource(@"receive data, %lld, %llu, %llu", (long long)data.length, self.downloadLength, self.unitItem.length);
     
     [self callbackForHasAvailableData];
     [self.lock unlock];

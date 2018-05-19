@@ -116,7 +116,7 @@
         [self sortUnitItems];
     }
     
-    KTVHCLogDataUnit(@"prepare result, %@, %ld", self.URLString, self.unitItems.count);
+    KTVHCLogDataUnit(@"prepare result, %@, %ld", self.URLString, (long)self.unitItems.count);
     
     [self unlock];
 }
@@ -266,7 +266,7 @@
     [self.coreLock lock];
     self.workingCount++;
     
-    KTVHCLogDataUnit(@"working retain, %@, %ld", self.URLString, self.workingCount);
+    KTVHCLogDataUnit(@"working retain, %@, %ld", self.URLString, (long)self.workingCount);
     
     [self.coreLock unlock];
 }
@@ -276,21 +276,21 @@
     [self.coreLock lock];
     self.workingCount--;
     
-    KTVHCLogDataUnit(@"working release, %@, %ld", self.URLString, self.workingCount);
+    KTVHCLogDataUnit(@"working release, %@, %ld", self.URLString, (long)self.workingCount);
     
     if (self.workingCount <= 0)
     {
         if ([self.workingDelegate respondsToSelector:@selector(unitDidStopWorking:)])
         {
-            KTVHCLogDataUnit(@"working release callback add, %@, %ld", self.URLString, self.workingCount);
+            KTVHCLogDataUnit(@"working release callback add, %@, %ld", self.URLString, (long)self.workingCount);
             
             [KTVHCDataCallback workingCallbackWithBlock:^{
                 
-                KTVHCLogDataUnit(@"working release callback begin, %@, %ld", self.URLString, self.workingCount);
+                KTVHCLogDataUnit(@"working release callback begin, %@, %ld", self.URLString, (long)self.workingCount);
                 
                 [self.workingDelegate unitDidStopWorking:self];
                 
-                KTVHCLogDataUnit(@"working release callback end, %@, %ld", self.URLString, self.workingCount);
+                KTVHCLogDataUnit(@"working release callback end, %@, %ld", self.URLString, (long)self.workingCount);
             }];
         }
     }

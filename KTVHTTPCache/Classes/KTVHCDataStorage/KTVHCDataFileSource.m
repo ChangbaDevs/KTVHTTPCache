@@ -152,10 +152,10 @@
     }
     
     [self.lock lock];
-    NSData * data = [self.readingHandle readDataOfLength:MIN(self.needReadLength - self.fileReadedLength, length)];
+    NSData * data = [self.readingHandle readDataOfLength:(NSUInteger)MIN(self.needReadLength - self.fileReadedLength, length)];
     self.fileReadedLength += data.length;
     
-    KTVHCLogDataFileSource(@"read data : %lu, %lld, %lld", data.length, self.fileReadedLength, self.needReadLength);
+    KTVHCLogDataFileSource(@"read data : %lld, %lld, %lld", (long long)data.length, self.fileReadedLength, self.needReadLength);
     
     if (self.fileReadedLength >= self.needReadLength)
     {

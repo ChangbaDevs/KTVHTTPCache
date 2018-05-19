@@ -125,7 +125,7 @@
     NSData * data = [self.sourcer readDataOfLength:length];;
     self.readOffset += data.length;
     
-    KTVHCLogDataReader(@"read length : %lu", data.length);
+    KTVHCLogDataReader(@"read length : %lld", (long long)data.length);
     
     if (self.sourcer.didFinishRead) {
         
@@ -368,11 +368,11 @@
         
         if ([self.delegate respondsToSelector:@selector(reader:didFailure:)])
         {
-            KTVHCLogDataReader(@"callback for failure begin, %@, %ld", self.unit.URLString, error.code);
+            KTVHCLogDataReader(@"callback for failure begin, %@, %d", self.unit.URLString, (int)error.code);
             
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 
-                KTVHCLogDataReader(@"callback for failure end, %@, %ld", self.unit.URLString, error.code);
+                KTVHCLogDataReader(@"callback for failure end, %@, %d", self.unit.URLString, (int)error.code);
                 
                 [self.delegate reader:self didFailure:self.error];
             }];

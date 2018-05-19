@@ -67,7 +67,7 @@
 {
     KTVHCLogHTTPServer(@"restart begin");
     
-    NSLog(@"restart connection count, %ld", [self.coreHTTPServer numberOfHTTPConnections]);
+    NSLog(@"restart connection count, %lld", (long long)[self.coreHTTPServer numberOfHTTPConnections]);
     [self.coreHTTPServer stop];
     
     NSError * error = nil;
