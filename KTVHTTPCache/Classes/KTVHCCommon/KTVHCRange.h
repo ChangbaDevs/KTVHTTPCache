@@ -17,8 +17,10 @@ static const NSInteger KTVHCNotFound = LONG_LONG_MAX;
 
 BOOL KTVHCRangeIsVaild(KTVHCRange range);
 BOOL KTVHCRangeIsInvaild(KTVHCRange range);
+BOOL KTVHCEqualRanges(KTVHCRange range1, KTVHCRange range2);
 long long KTVHCRangeGetLength(KTVHCRange range);
 NSString * KTVHCStringFromRange(KTVHCRange range);
+NSDictionary * KTVHCRangeFillToHeaders(KTVHCRange range, NSDictionary * headers);
 
 KTVHCRange KTVHCMakeRange(long long start, long long end);
 KTVHCRange KTVHCRangeZero(void);

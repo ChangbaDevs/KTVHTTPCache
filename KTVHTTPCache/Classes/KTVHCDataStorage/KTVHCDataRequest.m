@@ -21,10 +21,10 @@
         
         _URL = URL;
         _headers = headers;
-        _contentRange = KTVHCRangeWithHeaderValue(self.headers[@"Range"]);
+        _range = KTVHCRangeWithHeaderValue(self.headers[@"Range"]);
         _acceptContentTypes = [KTVHCContentType defaultAcceptContextTypes];
         
-        KTVHCLogDataRequest(@"did setup\n%@\nrange, %@, \n%@", self.URL, KTVHCStringFromRange(self.contentRange), self.headers);
+        KTVHCLogDataRequest(@"did setup\n%@\nrange, %@, \n%@", self.URL, KTVHCStringFromRange(self.range), self.headers);
     }
     return self;
 }

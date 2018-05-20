@@ -10,6 +10,7 @@
 #import "KTVHCDataUnit.h"
 #import "KTVHCDataPrivate.h"
 #import "KTVHCDataSourcer.h"
+#import "KTVHCDataFunctions.h"
 #import "KTVHCDataCallback.h"
 #import "KTVHCLog.h"
 #import "KTVHCRange.h"
@@ -27,7 +28,6 @@
 
 @property (nonatomic, strong) KTVHCDataRequest * request;
 @property (nonatomic, strong) KTVHCDataResponse * response;
-@property (nonatomic, assign) KTVHCRange contentRange;
 
 @property (nonatomic, strong) NSError * error;
 
@@ -64,8 +64,8 @@
         self.unit = unit;
         [self.unit workingRetain];
         
-        self.request = request;
-        self.contentRange = KTVHCRangeWithEnsureLength(self.request.contentRange, self.unit.totalContentLength);
+        KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, self.unit.totalContentLength);
+        self.request = KTVHCCopyRequestIfNeeded(request, range);
         
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
@@ -149,8 +149,8 @@
     self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self delegateQueue:self.internalDelegateQueue];
     
     // File Source
-    long long min = self.contentRange.start;
-    long long max = self.contentRange.end;
+    long long min = self.request.range.start;
+    long long max = self.request.range.end;
     
     NSMutableArray <KTVHCDataFileSource *> * fileSources = [NSMutableArray array];
     NSMutableArray <KTVHCDataNetworkSource *> * networkSources = [NSMutableArray array];
@@ -193,8 +193,8 @@
     }];
     
     // Network Source
-    long long offset = self.contentRange.start;
-    long long size = self.contentRange.end - offset + 1;
+    long long offset = self.request.range.start;
+    long long size = self.request.range.end - offset + 1;
     
     for (KTVHCDataFileSource * obj in fileSources)
     {
@@ -212,7 +212,7 @@
     
     if (size > 0)
     {
-        if (self.contentRange.end == KTVHCNotFound)
+        if (self.request.range.end == KTVHCNotFound)
         {
             KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URL.absoluteString headerFields:self.request.headers acceptContentTypePrefixs:self.request.acceptContentTypes offset:offset length:KTVHCDataNetworkSourceLengthMaxVaule];
             [networkSources addObject:source];
@@ -242,7 +242,7 @@
 {
     long long totalContentLength = self.unit.totalContentLength;
     
-    KTVHCRange range = KTVHCRangeWithEnsureLength(self.contentRange, totalContentLength);
+    KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalContentLength);
     long long currentContentLength = KTVHCRangeGetLength(range);
     
     NSDictionary * headerFieldsWithoutRangeAndLength = self.unit.responseHeaderFieldsWithoutRangeAndLength;

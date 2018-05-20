@@ -18,14 +18,42 @@ BOOL KTVHCRangeIsInvaild(KTVHCRange range)
     return range.start == KTVHCNotFound;
 }
 
+BOOL KTVHCEqualRanges(KTVHCRange range1, KTVHCRange range2)
+{
+    return range1.start == range2.start && range1.end == range2.end;
+}
+
 long long KTVHCRangeGetLength(KTVHCRange range)
 {
+    if (range.start == KTVHCNotFound || range.end == KTVHCNotFound) {
+        return KTVHCNotFound;
+    }
     return range.end - range.start + 1;
 }
 
 NSString * KTVHCStringFromRange(KTVHCRange range)
 {
     return [NSString stringWithFormat:@"Range : {%lld, %lld}", range.start, range.end];
+}
+
+NSString * KTVHCRangeGetHeaderString(KTVHCRange range)
+{
+    NSMutableString * string = [NSMutableString string];
+    if (range.start != KTVHCNotFound) {
+        [string appendFormat:@"%lld", range.start];
+    }
+    [string appendFormat:@"-"];
+    if (range.end != KTVHCNotFound) {
+        [string appendFormat:@"%lld", range.end];
+    }
+    return [string copy];
+}
+
+NSDictionary * KTVHCRangeFillToHeaders(KTVHCRange range, NSDictionary * headers)
+{
+    NSMutableDictionary * ret = [NSMutableDictionary dictionaryWithDictionary:headers];
+    [ret setObject:KTVHCRangeGetHeaderString(range) forKey:@"Range"];
+    return ret;
 }
 
 KTVHCRange KTVHCMakeRange(long long start, long long end)
