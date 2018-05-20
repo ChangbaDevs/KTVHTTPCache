@@ -184,6 +184,7 @@
     self.unitItem = [[KTVHCDataUnitItem alloc] initWithRequest:self.request];
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:self.request.URL];
     [unit insertUnitItem:self.unitItem];
+    [unit workingRelease];
     self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.unitItem.absolutePath];
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.unitItem.absolutePath];
     [self callbackForPrepared];

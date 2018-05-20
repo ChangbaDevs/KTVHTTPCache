@@ -42,7 +42,6 @@
     {
         KTVHCLogAlloc(self);
         self.unit = [[KTVHCDataUnitPool pool] unitWithURL:request.URL];
-        [self.unit workingRetain];
         KTVHCRange range = KTVHCRangeWithEnsureLength(request.range, self.unit.totalLength);
         _request = KTVHCCopyRequestIfNeeded(request, range);
         [self.unit updateRequestHeaders:self.request.headers];

@@ -33,7 +33,10 @@
 
 - (NSString *)completeFilePathWithURL:(NSURL *)URL
 {
-    return [[KTVHCDataUnitPool pool] unitWithURL:URL].filePath;
+    KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
+    NSString * path = unit.filePath;
+    [unit workingRelease];
+    return path;
 }
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request

@@ -60,6 +60,7 @@
         [self.unitQueue putUnit:unit];
         [self.unitQueue archive];
     }
+    [unit workingRetain];
     [self unlock];
     return unit;
 }
