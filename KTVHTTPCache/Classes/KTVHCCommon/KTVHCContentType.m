@@ -18,24 +18,24 @@ NSString * const KTVHCContentTypeBinaryOctetStream = @"binary/octet-stream";
 
 #pragma mark - Class
 
-static NSArray <NSString *> * defaultAcceptContextTypes = nil;
+static NSArray <NSString *> * defaultAcceptContentTypes = nil;
 
-+ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes
++ (void)setDefaultAcceptContentTypes:(NSArray <NSString *> *)defaultAcceptContentTypes
 {
-    defaultAcceptContextTypes = defaultAcceptContextTypes;
+    defaultAcceptContentTypes = defaultAcceptContentTypes;
 }
 
-+ (NSArray <NSString *> *)defaultAcceptContextTypes
++ (NSArray <NSString *> *)defaultAcceptContentTypes
 {
-    if (!defaultAcceptContextTypes)
+    if (!defaultAcceptContentTypes)
     {
-        defaultAcceptContextTypes = @[KTVHCContentTypeVideo,
+        defaultAcceptContentTypes = @[KTVHCContentTypeVideo,
                                       KTVHCContentTypeAudio,
                                       KTVHCContentTypeApplicationMPEG4,
                                       KTVHCContentTypeApplicationOctetStream,
                                       KTVHCContentTypeBinaryOctetStream];
     }
-    return defaultAcceptContextTypes;
+    return defaultAcceptContentTypes;
 }
 
 @end

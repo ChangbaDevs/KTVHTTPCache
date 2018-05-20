@@ -31,5 +31,4 @@
 - (void)deleteAllCache;
 - (void)deleteCacheWithURL:(NSURL *)URL;
 
-
 @end

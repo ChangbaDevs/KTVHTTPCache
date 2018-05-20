@@ -114,14 +114,14 @@
 
 #pragma mark - Accept Content Types
 
-+ (void)cacheSetDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes
++ (void)cacheSetDefaultAcceptContentTypes:(NSArray <NSString *> *)defaultAcceptContentTypes
 {
-    [KTVHCContentType setDefaultAcceptContextTypes:defaultAcceptContextTypes];
+    [KTVHCContentType setDefaultAcceptContentTypes:defaultAcceptContentTypes];
 }
 
-+ (NSArray <NSString *> *)cacheDefaultAcceptContextTypes
++ (NSArray <NSString *> *)cacheDefaultAcceptContentTypes
 {
-    return [KTVHCContentType defaultAcceptContextTypes];
+    return [KTVHCContentType defaultAcceptContentTypes];
 }
 
 

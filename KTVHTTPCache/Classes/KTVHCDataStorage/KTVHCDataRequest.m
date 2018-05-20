@@ -7,7 +7,6 @@
 //
 
 #import "KTVHCDataRequest.h"
-#import "KTVHCDataPrivate.h"
 #import "KTVHCContentType.h"
 #import "KTVHCLog.h"
 
@@ -22,7 +21,7 @@
         _URL = URL;
         _headers = headers;
         _range = KTVHCRangeWithHeaderValue(self.headers[@"Range"]);
-        _acceptContentTypes = [KTVHCContentType defaultAcceptContextTypes];
+        _acceptContentTypes = [KTVHCContentType defaultAcceptContentTypes];
         
         KTVHCLogDataRequest(@"did setup\n%@\nrange, %@, \n%@", self.URL, KTVHCStringFromRange(self.range), self.headers);
     }

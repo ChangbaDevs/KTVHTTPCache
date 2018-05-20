@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataSourceProtocol.h"
-#import "KTVHCRange.h"
 
 @class KTVHCDataFileSource;
 

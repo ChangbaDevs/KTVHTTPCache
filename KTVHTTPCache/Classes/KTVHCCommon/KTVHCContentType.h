@@ -13,10 +13,9 @@ KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeVideo;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeAudio;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeApplicationMPEG4;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeApplicationOctetStream;
+KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeBinaryOctetStream;
 
 @interface KTVHCContentType : NSObject
-
-#pragma mark - Class
 
 /**
  *  default vaules:
@@ -26,7 +25,7 @@ KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeApplicationOctetStream;
  *  KTVHCContentTypeApplicationOctetStream
  *  KTVHCContentTypeBinaryOctetStream
  */
-+ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes;
-+ (NSArray <NSString *> *)defaultAcceptContextTypes;
++ (void)setDefaultAcceptContentTypes:(NSArray <NSString *> *)defaultAcceptContentTypes;
++ (NSArray <NSString *> *)defaultAcceptContentTypes;
 
 @end

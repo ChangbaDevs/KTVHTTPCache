@@ -89,8 +89,8 @@
  *
  *  If 'cacheSetContentTypeFilterForResponseVerify' is set, this method will be invalid.
  */
-+ (void)cacheSetDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes;
-+ (NSArray <NSString *> *)cacheDefaultAcceptContextTypes;
++ (void)cacheSetDefaultAcceptContentTypes:(NSArray <NSString *> *)defaultAcceptContentTypes;
++ (NSArray <NSString *> *)cacheDefaultAcceptContentTypes;
 
 
 #pragma mark - Download

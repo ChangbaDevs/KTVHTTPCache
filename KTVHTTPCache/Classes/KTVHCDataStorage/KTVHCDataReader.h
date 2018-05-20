@@ -14,8 +14,8 @@
 
 @protocol KTVHCDataReaderDelegate <NSObject>
 
+- (void)readerDidPrepared:(KTVHCDataReader *)reader;
 - (void)readerHasAvailableData:(KTVHCDataReader *)reader;
-- (void)readerDidFinishPrepare:(KTVHCDataReader *)reader;
 - (void)reader:(KTVHCDataReader *)reader didFailed:(NSError *)error;
 
 @end

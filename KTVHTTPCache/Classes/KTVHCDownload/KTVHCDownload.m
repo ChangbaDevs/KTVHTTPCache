@@ -106,9 +106,6 @@
     return task;
 }
 
-
-#pragma mark - NSURLSessionDataDelegate
-
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
     [self lock];

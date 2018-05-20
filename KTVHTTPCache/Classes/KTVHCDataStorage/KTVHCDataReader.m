@@ -7,24 +7,19 @@
 //
 
 #import "KTVHCDataReader.h"
-#import "KTVHCDataUnit.h"
-#import "KTVHCDataPrivate.h"
 #import "KTVHCDataSourcer.h"
-#import "KTVHCDataFunctions.h"
 #import "KTVHCDataCallback.h"
 #import "KTVHCDataUnitPool.h"
+#import "KTVHCDataFunctions.h"
 #import "KTVHCLog.h"
-#import "KTVHCRange.h"
 
 @interface KTVHCDataReader () <NSLocking, KTVHCDataSourcerDelegate>
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
 @property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
-
 @property (nonatomic, strong) KTVHCDataUnit * unit;
 @property (nonatomic, strong) KTVHCDataSourcer * sourcer;
-
 @property (nonatomic, assign) BOOL didCalledPrepare;
 
 @end
@@ -196,11 +191,11 @@
         NSDictionary * headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength);
         _response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headers:headers];
         _didPrepared = YES;
-        if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {
+        if ([self.delegate respondsToSelector:@selector(readerDidPrepared:)]) {
             KTVHCLogDataReader(@"callback for prepare begin, %@", self.unit.URL);
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 KTVHCLogDataReader(@"callback for prepare end, %@", self.unit.URL);
-                [self.delegate readerDidFinishPrepare:self];
+                [self.delegate readerDidPrepared:self];
             }];
         }
     }

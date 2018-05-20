@@ -130,14 +130,7 @@
 
 #pragma mark - KTVHCDataReaderDelegate
 
-- (void)readerHasAvailableData:(KTVHCDataReader *)reader
-{
-    KTVHCLogHTTPResponse(@"has available data, %@", self.dataRequest.URL);
-    
-    [self.connection responseHasAvailableData:self];
-}
-
-- (void)readerDidFinishPrepare:(KTVHCDataReader *)reader
+- (void)readerDidPrepared:(KTVHCDataReader *)reader
 {
     KTVHCLogHTTPResponse(@"prepare finished, %@", self.dataRequest.URL);
     
@@ -147,6 +140,13 @@
         
         [self.connection responseHasAvailableData:self];
     }
+}
+
+- (void)readerHasAvailableData:(KTVHCDataReader *)reader
+{
+    KTVHCLogHTTPResponse(@"has available data, %@", self.dataRequest.URL);
+    
+    [self.connection responseHasAvailableData:self];
 }
 
 - (void)reader:(KTVHCDataReader *)reader didFailed:(NSError *)error
