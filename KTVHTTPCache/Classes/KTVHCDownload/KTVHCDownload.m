@@ -71,7 +71,7 @@
     KTVHCLogDealloc(self);
 }
 
-- (void)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate
+- (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate
 {
     [self lock];
     KTVHCLogDownload(@"add download begin\n%@\n%@", request.URL, request.headers);
@@ -103,17 +103,7 @@
     [task resume];
     KTVHCLogDownload(@"add download end\n%@\n%@", request.URL.absoluteString, request.headers);
     [self unlock];
-}
-
-- (void)cancelWithRequest:(KTVHCDataRequest *)request
-{
-    [self lock];
-    [self.requestDictionary enumerateKeysAndObjectsUsingBlock:^(NSURLSessionTask * _Nonnull key, KTVHCDataRequest * _Nonnull obj, BOOL * _Nonnull stop) {
-        if (obj == request) {
-            [key cancel];
-        }
-    }];
-    [self unlock];
+    return task;
 }
 
 

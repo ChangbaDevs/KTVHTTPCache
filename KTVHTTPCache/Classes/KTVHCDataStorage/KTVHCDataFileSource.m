@@ -40,10 +40,11 @@
 
 - (void)prepare
 {
+    [self lock];
     if (self.didPrepared) {
+        [self unlock];
         return;
     }
-    [self lock];
     _didPrepared = YES;
     KTVHCLogDataFileSource(@"call prepare");
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.path];
@@ -55,21 +56,21 @@
                             exception.reason,
                             exception.userInfo);
     }
-    [self unlock];
-    if ([self.delegate respondsToSelector:@selector(sourceDidPrepared:)])
-    {
+    if ([self.delegate respondsToSelector:@selector(sourceDidPrepared:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             [self.delegate sourceDidPrepared:self];
         }];
     }
+    [self unlock];
 }
 
 - (void)close
 {
+    [self lock];
     if (self.didClosed) {
+        [self unlock];
         return;
     }
-    [self lock];
     _didClosed = YES;
     KTVHCLogDataFileSource(@"call close");
     [self.readingHandle closeFile];
@@ -79,13 +80,15 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
+    [self lock];
     if (self.didClosed) {
+        [self unlock];
         return nil;
     }
     if (self.didFinished) {
+        [self unlock];
         return nil;
     }
-    [self lock];
     long long readLength = KTVHCRangeGetLength(self.readRange);
     length = (NSUInteger)MIN(readLength - self.readedLength, length);
     NSData * data = [self.readingHandle readDataOfLength:length];

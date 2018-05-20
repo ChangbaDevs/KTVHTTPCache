@@ -18,18 +18,10 @@
 
 @property (nonatomic, copy, readonly) NSURL * URL;
 @property (nonatomic, copy, readonly) NSDictionary * headers;
+@property (nonatomic, copy, readonly) NSDictionary * headersWithoutRangeAndLength;
 
 @property (nonatomic, copy, readonly) NSString * contentType;
 @property (nonatomic, assign, readonly) long long totalLength;
 @property (nonatomic, assign, readonly) long long currentLength;
-
-- (NSDictionary *)headersWithoutRangeAndLength;
-
-@property (nonatomic, assign, readonly) long long currentContentLength;
-@property (nonatomic, assign, readonly) long long totalContentLength;
-
-@property (nonatomic, copy, readonly) NSDictionary * headerFields;
-@property (nonatomic, copy, readonly) NSDictionary * headerFieldsWithoutRangeAndLength;
-
 
 @end

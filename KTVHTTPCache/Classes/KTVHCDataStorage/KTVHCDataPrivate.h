@@ -30,20 +30,6 @@
 @end
 
 
-#pragma mark - KTVHCDataResponse
-
-@interface KTVHCDataResponse (Private)
-
-
-+ (instancetype)responseWithCurrentContentLength:(long long)currentContentLength
-                              totalContentLength:(long long)totalContentLength
-                                    headerFields:(NSDictionary *)headerFields
-               headerFieldsWithoutRangeAndLength:(NSDictionary *)headerFieldsWithoutRangeAndLength;
-
-
-@end
-
-
 #pragma mark - KTVHCDataCacheItem
 
 @interface KTVHCDataCacheItem (Private)

@@ -7,61 +7,9 @@
 //
 
 #import "KTVHCDataResponse.h"
-#import "KTVHCDataPrivate.h"
 #import "KTVHCLog.h"
 
-
-@interface KTVHCDataResponse ()
-
-
-@property (nonatomic, copy) NSString * contentType;
-
-@property (nonatomic, assign) long long currentContentLength;
-@property (nonatomic, assign) long long totalContentLength;
-
-@property (nonatomic, copy) NSDictionary * headerFields;
-@property (nonatomic, copy) NSDictionary * headerFieldsWithoutRangeAndLength;
-
-
-@end
-
-
 @implementation KTVHCDataResponse
-
-
-+ (instancetype)responseWithCurrentContentLength:(long long)currentContentLength
-                              totalContentLength:(long long)totalContentLength
-                                    headerFields:(NSDictionary *)headerFields
-               headerFieldsWithoutRangeAndLength:(NSDictionary *)headerFieldsWithoutRangeAndLength
-{
-    return [[self alloc] initWithCurrentContentLength:currentContentLength
-                                   totalContentLength:totalContentLength
-                                         headerFields:headerFields
-                    headerFieldsWithoutRangeAndLength:headerFieldsWithoutRangeAndLength];
-}
-
-- (instancetype)initWithCurrentContentLength:(long long)currentContentLength
-                              totalContentLength:(long long)totalContentLength
-                                    headerFields:(NSDictionary *)headerFields
-                headerFieldsWithoutRangeAndLength:(NSDictionary *)headerFieldsWithoutRangeAndLength
-{
-    if (self = [super init])
-    {
-        KTVHCLogAlloc(self);
-        
-        self.currentContentLength = currentContentLength;
-        self.totalContentLength = totalContentLength;
-        self.headerFields = headerFields;
-        self.headerFieldsWithoutRangeAndLength = headerFieldsWithoutRangeAndLength;
-        self.contentType = [self.headerFields objectForKey:@"Content-Type"];
-        if (!self.contentType) {
-            self.contentType = [self.headerFields objectForKey:@"content-type"];
-        }
-        
-        KTVHCLogDataResponse(@"did setup\n%@\n%@\n%@\n%lld, %lld", self.contentType, self.headerFields, self.headerFieldsWithoutRangeAndLength, self.currentContentLength, self.totalContentLength);
-    }
-    return self;
-}
 
 - (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers
 {
@@ -82,6 +30,11 @@
 
 - (void)prepare
 {
+    NSMutableDictionary * headersWithoutRangeAndLength = [_headers mutableCopy];
+    [[self withoutKeys] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [headersWithoutRangeAndLength removeObjectForKey:obj];
+    }];
+    _headersWithoutRangeAndLength = [headersWithoutRangeAndLength copy];
     _contentType = [self.headers objectForKey:@"Content-Type"];
     if (_contentType) {
         _contentType = [self.headers objectForKey:@"content-type"];
@@ -99,6 +52,16 @@
     if (contentRange.length > 0 && range.location != NSNotFound) {
         _totalLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
     }
+}
+
+- (NSArray *)withoutKeys
+{
+    static NSArray * obj = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        obj = @[@"Content-Length", @"content-length", @"Content-Range", @"content-range"];
+    });
+    return obj;
 }
 
 @end

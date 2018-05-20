@@ -89,16 +89,16 @@
 
 - (UInt64)contentLength
 {
-    KTVHCLogHTTPResponse(@"conetnt length, %lld", self.reader.response.totalContentLength);
+    KTVHCLogHTTPResponse(@"conetnt length, %lld", self.reader.response.totalLength);
     
-    return self.reader.response.totalContentLength;
+    return self.reader.response.totalLength;
 }
 
 - (NSDictionary *)httpHeaders
 {
-    KTVHCLogHTTPResponse(@"header fields\n%@", self.reader.response.headerFieldsWithoutRangeAndLength);
+    KTVHCLogHTTPResponse(@"header fields\n%@", self.reader.response.headersWithoutRangeAndLength);
     
-    return self.reader.response.headerFieldsWithoutRangeAndLength;
+    return self.reader.response.headersWithoutRangeAndLength;
 }
 
 - (UInt64)offset
@@ -122,7 +122,7 @@
 
 - (void)connectionDidClose
 {
-    KTVHCLogHTTPResponse(@"connection did close, %lld, %lld", self.reader.response.currentContentLength, self.reader.readOffset);
+    KTVHCLogHTTPResponse(@"connection did close, %lld, %lld", self.reader.response.currentLength, self.reader.readOffset);
     
     [self.reader close];
 }

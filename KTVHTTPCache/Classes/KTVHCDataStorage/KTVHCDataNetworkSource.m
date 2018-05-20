@@ -22,6 +22,7 @@
 @property (nonatomic, strong) KTVHCDataUnitItem * unitItem;
 @property (nonatomic, strong) NSFileHandle * readingHandle;
 @property (nonatomic, strong) NSFileHandle * writingHandle;
+@property (nonatomic, assign) NSURLSessionTask * downlaodTask;
 @property (nonatomic, assign) long long downloadLength;
 @property (nonatomic, assign) long long downloadReadedLength;
 @property (nonatomic, assign) BOOL downloadDidCallComplete;
@@ -64,16 +65,18 @@
 
 - (void)close
 {
+    [self lock];
     if (self.didClosed) {
+        [self unlock];
         return;
     }
     KTVHCLogDataNetworkSource(@"call close begin");
-    [self lock];
     _didClosed = YES;
     [self.readingHandle closeFile];
     self.readingHandle = nil;
     if (!self.downloadDidCallComplete) {
-        [[KTVHCDownload download] cancelWithRequest:self.request];
+        [self.downlaodTask cancel];
+        self.downlaodTask = nil;
     }
     [self.writingHandle synchronizeFile];
     [self.writingHandle closeFile];
@@ -84,16 +87,19 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
+    [self lock];
     if (self.didClosed) {
+        [self unlock];
         return nil;
     }
     if (self.didFinished) {
+        [self unlock];
         return nil;
     }
     if (self.error) {
+        [self unlock];
         return nil;
     }
-    [self lock];
     if (self.downloadReadedLength >= self.downloadLength)
     {
         if (self.downloadDidCallComplete)
@@ -188,10 +194,11 @@
 
 - (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data
 {
+    [self lock];
     if (self.didClosed) {
+        [self unlock];
         return;
     }
-    [self lock];
     [self.writingHandle writeData:data];
     self.downloadLength += data.length;
     self.unitItem.length = self.downloadLength;

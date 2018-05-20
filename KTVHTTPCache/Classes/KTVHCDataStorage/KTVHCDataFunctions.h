@@ -8,5 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataRequest.h"
+#import "KTVHCDataResponse.h"
 
 KTVHCDataRequest * KTVHCCopyRequestIfNeeded(KTVHCDataRequest * request, KTVHCRange range);
+KTVHCDataResponse * KTVHCCopyResponseIfNeeded(KTVHCDataResponse * response, KTVHCRange range, long long totalLength);

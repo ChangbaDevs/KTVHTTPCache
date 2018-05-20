@@ -245,25 +245,8 @@
 - (void)setupResponse
 {
     long long totalContentLength = self.unit.totalContentLength;
-    
     KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalContentLength);
-    long long currentContentLength = KTVHCRangeGetLength(range);
-    
-    NSDictionary * headerFieldsWithoutRangeAndLength = self.unit.responseHeaderFieldsWithoutRangeAndLength;
-    NSMutableDictionary * headerFields = [NSMutableDictionary dictionaryWithDictionary:headerFieldsWithoutRangeAndLength];
-    
-    [headerFields setObject:[NSString stringWithFormat:@"%lld", currentContentLength]
-                     forKey:@"Content-Length"];
-    [headerFields setObject:[NSString stringWithFormat:@"bytes %lld-%lld/%lld",
-                             range.start,
-                             range.end,
-                             totalContentLength]
-                     forKey:@"Content-Range"];
-    
-    self.response = [KTVHCDataResponse responseWithCurrentContentLength:currentContentLength
-                                                     totalContentLength:totalContentLength
-                                                           headerFields:headerFields
-                                      headerFieldsWithoutRangeAndLength:headerFieldsWithoutRangeAndLength];
+    self.response = KTVHCCopyResponseIfNeeded(nil, range, totalContentLength);
 }
 
 

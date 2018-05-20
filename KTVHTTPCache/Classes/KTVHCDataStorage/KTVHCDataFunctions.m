@@ -19,3 +19,16 @@ KTVHCDataRequest * KTVHCCopyRequestIfNeeded(KTVHCDataRequest * request, KTVHCRan
     }
     return request;
 }
+
+KTVHCDataResponse * KTVHCCopyResponseIfNeeded(KTVHCDataResponse * response, KTVHCRange range, long long totalLength)
+{
+    long long currentLength = KTVHCRangeGetLength(range);
+    if (response.totalLength != totalLength || response.currentLength != currentLength) {
+        NSMutableDictionary * headers = [NSMutableDictionary dictionaryWithDictionary:response.headersWithoutRangeAndLength];
+        [headers setObject:[NSString stringWithFormat:@"%lld", currentLength] forKey:@"Content-Length"];
+        [headers setObject:[NSString stringWithFormat:@"bytes %lld-%lld/%lld", range.start, range.end, totalLength] forKey:@"Content-Range"];
+        KTVHCDataResponse * obj = [[KTVHCDataResponse alloc] initWithURL:response.URL headers:headers];
+        return obj;
+    }
+    return response;
+}
