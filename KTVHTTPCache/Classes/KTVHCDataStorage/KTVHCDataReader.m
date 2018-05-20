@@ -64,7 +64,7 @@
         self.unit = unit;
         [self.unit workingRetain];
         
-        KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, self.unit.totalContentLength);
+        KTVHCRange range = KTVHCRangeWithEnsureLength(request.range, self.unit.totalContentLength);
         self.request = KTVHCCopyRequestIfNeeded(request, range);
         
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
