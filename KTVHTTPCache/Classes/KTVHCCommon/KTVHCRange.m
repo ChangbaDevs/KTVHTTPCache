@@ -38,7 +38,7 @@ NSString * KTVHCStringFromRange(KTVHCRange range)
 
 NSString * KTVHCRangeGetHeaderString(KTVHCRange range)
 {
-    NSMutableString * string = [NSMutableString string];
+    NSMutableString * string = [NSMutableString stringWithFormat:@"bytes="];
     if (range.start != KTVHCNotFound) {
         [string appendFormat:@"%lld", range.start];
     }
