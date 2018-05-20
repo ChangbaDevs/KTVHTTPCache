@@ -9,9 +9,7 @@
 #import "KTVHCURLTools.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-
 @implementation KTVHCURLTools
-
 
 + (instancetype)URLTools
 {
@@ -23,40 +21,32 @@
     return obj;
 }
 
-- (NSString *)archiveURLStringWithURLString:(NSString *)URLString
+- (NSURL *)URLThroughURLFilter:(NSURL *)URL
 {
-    if (self.archiveURLFilterBlock && URLString.length > 0)
-    {
-        NSString * resultURLString = self.archiveURLFilterBlock(URLString);
-        if (resultURLString.length > 0)
-        {
-            return resultURLString;
+    if (self.URLFilter && URL.absoluteString.length > 0) {
+        NSURL * retURL = self.URLFilter(URL);
+        if (retURL.absoluteString.length > 0) {
+            return retURL;
         }
     }
-    return URLString;
+    return URL;
 }
 
-
-#pragma mark - Class Functions
-
-+ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString
++ (NSString *)uniqueIdentifierWithURL:(NSURL *)URL
 {
-    URLString = [[KTVHCURLTools URLTools] archiveURLStringWithURLString:URLString];
-    return [self md5:URLString];
+    URL = [[KTVHCURLTools URLTools] URLThroughURLFilter:URL];
+    return [self md5:URL.absoluteString];
 }
 
 + (NSString *)md5:(NSString *)URLString
 {
-    const char *value = [URLString UTF8String];
-    
+    const char * value = [URLString UTF8String];
     unsigned char outputBuffer[CC_MD5_DIGEST_LENGTH];
     CC_MD5(value, (CC_LONG)strlen(value), outputBuffer);
-    
-    NSMutableString *outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-    for(NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++){
-        [outputString appendFormat:@"%02x",outputBuffer[count]];
+    NSMutableString * outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for (NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++){
+        [outputString appendFormat:@"%02x", outputBuffer[count]];
     }
-    
     return outputString;
 }
 
@@ -75,10 +65,8 @@
 + (NSString *)URLEncode:(NSString *)URLString
 {
     URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
     NSUInteger length = [URLString length];
     const char * c = [URLString UTF8String];
-    
     NSString * resultString = @"";
     for(int i = 0; i < length; i++) {
         switch (*c) {
@@ -141,7 +129,6 @@
         }
         c++;
     }
-    
     return resultString;
 }
 

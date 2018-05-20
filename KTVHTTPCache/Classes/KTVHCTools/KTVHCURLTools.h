@@ -8,25 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NSString *(^KTVHCURLFilterBlock)(NSString *);
+typedef NSURL * (^KTVHCURLFilter)(NSURL * URL);
 
 @interface KTVHCURLTools : NSObject
-
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
 + (instancetype)URLTools;
 
-@property (nonatomic, copy) KTVHCURLFilterBlock archiveURLFilterBlock;
+@property (nonatomic, copy) KTVHCURLFilter URLFilter;
 
-
-#pragma mark - Class Functions
-
-+ (NSString *)uniqueIdentifierWithURLString:(NSString *)URLString;
++ (NSString *)uniqueIdentifierWithURL:(NSURL *)URL;
 
 + (NSString *)URLEncode:(NSString *)URLString;
 + (NSString *)URLDecode:(NSString *)URLString;
-
 
 @end

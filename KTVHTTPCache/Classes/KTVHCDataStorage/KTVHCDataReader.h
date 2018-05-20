@@ -12,24 +12,22 @@
 @class KTVHCDataRequest;
 @class KTVHCDataResponse;
 
-
 @protocol KTVHCDataReaderDelegate <NSObject>
 
 - (void)readerHasAvailableData:(KTVHCDataReader *)reader;
 - (void)readerDidFinishPrepare:(KTVHCDataReader *)reader;
-- (void)reader:(KTVHCDataReader *)reader didFailure:(NSError *)error;
+- (void)reader:(KTVHCDataReader *)reader didFailed:(NSError *)error;
 
 @end
 
-
 @interface KTVHCDataReader : NSObject
-
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
++ (instancetype)readerWithRequest:(KTVHCDataRequest *)request;
+
 @property (nonatomic, weak) id <KTVHCDataReaderDelegate> delegate;
-@property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;     // a serial queue. don't block it.
 
 @property (nonatomic, strong) id object;
 
@@ -38,16 +36,15 @@
 
 @property (nonatomic, strong, readonly) NSError * error;
 
-@property (nonatomic, assign, readonly) BOOL didClose;
-@property (nonatomic, assign, readonly) BOOL didFinishPrepare;
-@property (nonatomic, assign, readonly) BOOL didFinishRead;
+@property (nonatomic, assign, readonly) BOOL didClosed;
+@property (nonatomic, assign, readonly) BOOL didPrepared;
+@property (nonatomic, assign, readonly) BOOL didFinished;
 
 @property (nonatomic, assign, readonly) long long readOffset;
 
 - (void)prepare;
-- (void)close;      // must call.
+- (void)close;
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
-
 
 @end

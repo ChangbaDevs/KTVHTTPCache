@@ -161,11 +161,11 @@
                     error = [KTVHCError errorForUnsupportContentType:dataTask.currentRequest.URL request:dataTask.currentRequest response:dataTask.response];
                 }
                 if (!error) {
-                    long long delta = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
-                    if (delta > 0) {
-                        [[KTVHCDataUnitPool pool] deleteUnitsWithMinSize:delta];
-                        delta = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
-                        if (delta > 0) {
+                    long long length = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
+                    if (length > 0) {
+                        [[KTVHCDataUnitPool pool] deleteUnitsWithLength:length];
+                        length = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
+                        if (length > 0) {
                             error = [KTVHCError errorForNotEnoughDiskSpace:dataResponse.totalLength request:dataResponse.currentLength totalCacheLength:[KTVHCDataStorage storage].totalCacheLength maxCacheLength:[KTVHCDataStorage storage].maxCacheLength];
                         }
                     }

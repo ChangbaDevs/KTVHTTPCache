@@ -9,45 +9,43 @@
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataPrivate.h"
 
-
 @interface KTVHCDataCacheItem ()
 
-
-@property (nonatomic, copy) NSString * URLString;
+@property (nonatomic, copy) NSURL * URL;
 @property (nonatomic, assign) long long totalLength;
 @property (nonatomic, assign) long long cacheLength;
 @property (nonatomic, assign) long long vaildLength;
 @property (nonatomic, copy) NSArray <KTVHCDataCacheItemZone *> * zones;
 
-
 @end
-
 
 @implementation KTVHCDataCacheItem
 
-
-+ (instancetype)itemWithURLString:(NSString *)URLString
-                      totalLength:(long long)totalLength
-                      cacheLength:(long long)cacheLength
-                      vaildLength:(long long)vaildLength
-                            zones:(NSArray <KTVHCDataCacheItemZone *> *)zones
++ (instancetype)itemWithURL:(NSURL *)URL
+                totalLength:(long long)totalLength
+                cacheLength:(long long)cacheLength
+                vaildLength:(long long)vaildLength
+                      zones:(NSArray <KTVHCDataCacheItemZone *> *)zones
 {
-    return [[self alloc] initWithURLString:URLString
-                               totalLength:totalLength
-                               cacheLength:cacheLength
-                                     zones:zones];
+    return [[self alloc] initWithURL:URL
+                         totalLength:totalLength
+                         cacheLength:cacheLength
+                         vaildLength:vaildLength
+                               zones:zones];
 }
 
-- (instancetype)initWithURLString:(NSString *)URLString
-                      totalLength:(long long)totalLength
-                      cacheLength:(long long)cacheLength
-                            zones:(NSArray <KTVHCDataCacheItemZone *> *)zones
+- (instancetype)initWithURL:(NSURL *)URL
+                totalLength:(long long)totalLength
+                cacheLength:(long long)cacheLength
+                vaildLength:(long long)vaildLength
+                      zones:(NSArray <KTVHCDataCacheItemZone *> *)zones
 {
     if (self = [super init])
     {
-        self.URLString = URLString;
+        self.URL = URL;
         self.totalLength = totalLength;
         self.cacheLength = cacheLength;
+        self.vaildLength = vaildLength;
         self.zones = zones;
     }
     return self;

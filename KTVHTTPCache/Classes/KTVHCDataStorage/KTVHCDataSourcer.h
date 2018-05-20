@@ -7,45 +7,41 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVHCDataSourceProtocol.h"
 #import "KTVHCDataFileSource.h"
 #import "KTVHCDataNetworkSource.h"
 
 @class KTVHCDataSourcer;
 
-
 @protocol KTVHCDataSourcerDelegate <NSObject>
 
+- (void)sourcerDidPrepared:(KTVHCDataSourcer *)sourcer;
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer;
-- (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer;
-- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error;
+- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailed:(NSError *)error;
+- (void)sourcer:(KTVHCDataSourcer *)sourcer didReceiveResponse:(KTVHCDataResponse *)response;
 
 @end
 
-
 @interface KTVHCDataSourcer : NSObject
-
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)sourcerWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+- (instancetype)initWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
 @property (nonatomic, weak, readonly) id <KTVHCDataSourcerDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
 
 @property (nonatomic, strong, readonly) NSError * error;
 
-@property (nonatomic, assign, readonly) BOOL didClose;
-@property (nonatomic, assign, readonly) BOOL didFinishPrepare;
-@property (nonatomic, assign, readonly) BOOL didFinishRead;
+@property (nonatomic, assign, readonly) BOOL didClosed;
+@property (nonatomic, assign, readonly) BOOL didPrepared;
+@property (nonatomic, assign, readonly) BOOL didFinished;
 
-- (void)putSource:(id <KTVHCDataSourceProtocol>)source;
+- (void)putSource:(id<KTVHCDataSourceProtocol>)source;
 
 - (void)prepare;
 - (void)close;
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
-
 
 @end

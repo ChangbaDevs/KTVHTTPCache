@@ -12,65 +12,42 @@
 #import "KTVHCDataSourcer.h"
 #import "KTVHCDataFunctions.h"
 #import "KTVHCDataCallback.h"
+#import "KTVHCDataUnitPool.h"
 #import "KTVHCLog.h"
 #import "KTVHCRange.h"
 
+@interface KTVHCDataReader () <NSLocking, KTVHCDataSourcerDelegate>
 
-@interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
-
-
+@property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
 @property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
-@property (nonatomic, strong) NSRecursiveLock * interfaceLock;
 
 @property (nonatomic, strong) KTVHCDataUnit * unit;
 @property (nonatomic, strong) KTVHCDataSourcer * sourcer;
 
-@property (nonatomic, strong) KTVHCDataRequest * request;
-@property (nonatomic, strong) KTVHCDataResponse * response;
-
-@property (nonatomic, strong) NSError * error;
-
-@property (nonatomic, assign) BOOL didClose;
-@property (nonatomic, assign) BOOL didFinishPrepare;
-@property (nonatomic, assign) BOOL didFinishRead;
-
-@property (nonatomic, assign) BOOL didCallPrepare;
-@property (nonatomic, assign) BOOL didCallFailure;
-
-@property (nonatomic, assign) long long readOffset;
-
+@property (nonatomic, assign) BOOL didCalledPrepare;
 
 @end
 
-
 @implementation KTVHCDataReader
 
-
-+ (instancetype)readerWithUnit:(KTVHCDataUnit *)unit
-                       request:(KTVHCDataRequest *)request
++ (instancetype)readerWithRequest:(KTVHCDataRequest *)request
 {
-    return [[self alloc] initWithUnit:unit
-                              request:request];
+    return [[self alloc] initWithRequest:request];
 }
 
-- (instancetype)initWithUnit:(KTVHCDataUnit *)unit
-                     request:(KTVHCDataRequest *)request
+- (instancetype)initWithRequest:(KTVHCDataRequest *)request
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
-        
-        self.unit = unit;
+        self.unit = [[KTVHCDataUnitPool pool] unitWithURL:request.URL];
         [self.unit workingRetain];
-        
-        KTVHCRange range = KTVHCRangeWithEnsureLength(request.range, self.unit.totalContentLength);
-        self.request = KTVHCCopyRequestIfNeeded(request, range);
-        
+        KTVHCRange range = KTVHCRangeWithEnsureLength(request.range, self.unit.totalLength);
+        _request = KTVHCCopyRequestIfNeeded(request, range);
+        [self.unit updateRequestHeaders:self.request.headers];
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
-        [self.unit setDelegate:self delegateQueue:self.internalDelegateQueue];
-        self.interfaceLock = [[NSRecursiveLock alloc] init];
     }
     return self;
 }
@@ -81,72 +58,67 @@
     KTVHCLogDealloc(self);
 }
 
-
 - (void)prepare
 {
-    if (self.didClose) {
+    [self lock];
+    if (self.didClosed) {
+        [self unlock];
         return;
     }
-    if (self.didCallPrepare) {
+    if (self.didCalledPrepare) {
+        [self unlock];
         return;
     }
-    self.didCallPrepare = YES;
-    
-    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.headers);
-    
-    [self.interfaceLock lock];
-    [self setupAndPrepareSourcer];
-    [self.interfaceLock unlock];
+    _didCalledPrepare = YES;
+    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URL, self.request.headers);
+    [self prepareSourcer];
+    [self unlock];
 }
 
 - (void)close
 {
-    if (self.didClose) {
+    [self lock];
+    if (self.didClosed) {
+        [self unlock];
         return;
     }
-    self.didClose = YES;
-    
-    KTVHCLogDataReader(@"call close, %@", self.unit.URLString);
-    
-    [self.interfaceLock lock];
+    _didClosed = YES;
+    KTVHCLogDataReader(@"call close, %@", self.unit.URL);
     [self.sourcer close];
     [self.unit workingRelease];
-    [self.interfaceLock unlock];
+    [self unlock];
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
-    if (self.didClose) {
+    [self lock];
+    if (self.didClosed) {
+        [self unlock];
         return nil;
     }
-    if (self.didFinishRead) {
+    if (self.didFinished) {
+        [self unlock];
         return nil;
     }
-    
-    [self.interfaceLock lock];
+    if (self.error) {
+        [self unlock];
+        return nil;
+    }
     NSData * data = [self.sourcer readDataOfLength:length];;
-    self.readOffset += data.length;
-    
+    _readOffset += data.length;
     KTVHCLogDataReader(@"read length : %lld", (long long)data.length);
-    
-    if (self.sourcer.didFinishRead) {
-        
-        KTVHCLogDataReader(@"read finished, %@", self.unit.URLString);
-        
-        self.didFinishRead = YES;
-        
+    if (self.sourcer.didFinished) {
+        KTVHCLogDataReader(@"read finished, %@", self.unit.URL);
+        _didFinished = YES;
         [self close];
     }
-    [self.interfaceLock unlock];
+    [self unlock];
     return data;
 }
 
-
-#pragma mark - Setup
-
-- (void)setupAndPrepareSourcer
+- (void)prepareSourcer
 {
-    self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self delegateQueue:self.internalDelegateQueue];
+    self.sourcer = [[KTVHCDataSourcer alloc] initWithDelegate:self delegateQueue:self.internalDelegateQueue];
     
     // File Source
     long long min = self.request.range.start;
@@ -242,110 +214,90 @@
     [self.sourcer prepare];
 }
 
-- (void)setupResponse
+- (void)callbackForPrepared
 {
-    long long totalContentLength = self.unit.totalContentLength;
-    KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalContentLength);
-    self.response = KTVHCCopyResponseIfNeeded(nil, range, totalContentLength);
-}
-
-
-#pragma mark - Callback
-
-- (void)callbackForFinishPrepare
-{
-    if (self.didClose) {
+    if (self.didClosed) {
         return;
     }
-    if (self.didFinishPrepare) {
+    if (self.didPrepared) {
         return;
     }
-    if (self.sourcer.didFinishPrepare && self.unit.totalContentLength > 0)
-    {
-        [self setupResponse];
-        
-        self.didFinishPrepare = YES;
-        
+    if (self.sourcer.didPrepared && self.unit.totalLength > 0) {
+        long long totalLength = self.unit.totalLength;
+        KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);
+        NSDictionary * headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength);
+        _response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headers:headers];
+        _didPrepared = YES;
         if ([self.delegate respondsToSelector:@selector(readerDidFinishPrepare:)]) {
-         
-            KTVHCLogDataReader(@"callback for prepare begin, %@", self.unit.URLString);
-            
+            KTVHCLogDataReader(@"callback for prepare begin, %@", self.unit.URL);
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-                
-                KTVHCLogDataReader(@"callback for prepare end, %@", self.unit.URLString);
-                
+                KTVHCLogDataReader(@"callback for prepare end, %@", self.unit.URL);
                 [self.delegate readerDidFinishPrepare:self];
             }];
         }
     }
 }
 
-
-#pragma mark - KTVHCDataUnitDelegate
-
-- (void)unitDidUpdateTotalContentLength:(KTVHCDataUnit *)unit
+- (void)sourcerDidPrepared:(KTVHCDataSourcer *)sourcer
 {
-    [self callbackForFinishPrepare];
+    [self callbackForPrepared];
 }
 
-
-#pragma mark - KTVHCDataSourcerDelegate
+- (void)sourcer:(KTVHCDataSourcer *)sourcer didReceiveResponse:(KTVHCDataResponse *)response
+{
+    [self.unit updateResponseHeaders:response.headers totalLength:response.totalLength];
+    [self callbackForPrepared];
+}
 
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
 {
-    if (self.didClose) {
+    if (self.didClosed) {
         return;
     }
     if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
-        
-        KTVHCLogDataReader(@"callback for has available data begin, %@", self.unit.URLString);
-        
+        KTVHCLogDataReader(@"callback for has available data begin, %@", self.unit.URL);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-            
-            KTVHCLogDataReader(@"callback for has available data end, %@", self.unit.URLString);
-            
+            KTVHCLogDataReader(@"callback for has available data end, %@", self.unit.URL);
             [self.delegate readerHasAvailableData:self];
         }];
     }
 }
 
-- (void)sourcerDidFinishPrepare:(KTVHCDataSourcer *)sourcer
+- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailed:(NSError *)error
 {
-    [self callbackForFinishPrepare];
-}
-
-- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailure:(NSError *)error
-{
-    if (self.didClose) {
+    if (self.didClosed) {
         return;
     }
-    if (self.didCallFailure) {
+    if (self.error) {
         return;
     }
-    self.didCallFailure = YES;
-    
-    self.error = error;
+    _error = error;
     [self close];
-    
     if (self.error)
     {
         KTVHCLogDataReader(@"record error : %@", self.error);
-        
         [[KTVHCLog log] addError:self.error];
-        
-        if ([self.delegate respondsToSelector:@selector(reader:didFailure:)])
-        {
-            KTVHCLogDataReader(@"callback for failure begin, %@, %d", self.unit.URLString, (int)error.code);
-            
+        if ([self.delegate respondsToSelector:@selector(reader:didFailed:)]) {
+            KTVHCLogDataReader(@"callback for failure begin, %@, %d", self.unit.URL, (int)error.code);
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-                
-                KTVHCLogDataReader(@"callback for failure end, %@, %d", self.unit.URLString, (int)error.code);
-                
-                [self.delegate reader:self didFailure:self.error];
+                KTVHCLogDataReader(@"callback for failure end, %@, %d", self.unit.URL, (int)error.code);
+                [self.delegate reader:self didFailed:self.error];
             }];
         }
     }
 }
 
+- (void)lock
+{
+    if (!self.coreLock) {
+        self.coreLock = [[NSRecursiveLock alloc] init];
+    }
+    [self.coreLock lock];
+}
+
+- (void)unlock
+{
+    [self.coreLock unlock];
+}
 
 @end

@@ -67,7 +67,7 @@
     
     KTVHCLogHTTPResponse(@"read data length, %lld, %@", (long long)data.length, self.dataRequest.URL);
     
-    if (self.reader.didFinishRead) {
+    if (self.reader.didFinished) {
         
         KTVHCLogHTTPResponse(@"read data finished, %@", self.dataRequest.URL);
         
@@ -79,7 +79,7 @@
 
 - (BOOL)delayResponseHeaders
 {
-    BOOL waiting = !self.reader.didFinishPrepare;
+    BOOL waiting = !self.reader.didPrepared;
     self.waitingResponseHeader = waiting;
     
     KTVHCLogHTTPResponse(@"delay response, %d", self.waitingResponseHeader);
@@ -115,9 +115,9 @@
 
 - (BOOL)isDone
 {
-    KTVHCLogHTTPResponse(@"check done, %d", self.reader.didFinishRead);
+    KTVHCLogHTTPResponse(@"check done, %d", self.reader.didFinished);
     
-    return self.reader.didFinishRead;
+    return self.reader.didFinished;
 }
 
 - (void)connectionDidClose
@@ -141,7 +141,7 @@
 {
     KTVHCLogHTTPResponse(@"prepare finished, %@", self.dataRequest.URL);
     
-    if (self.reader.didFinishPrepare && self.waitingResponseHeader == YES) {
+    if (self.reader.didPrepared && self.waitingResponseHeader == YES) {
         
         KTVHCLogHTTPResponse(@"prepare finished call, %@", self.dataRequest.URL);
         
@@ -149,7 +149,7 @@
     }
 }
 
-- (void)reader:(KTVHCDataReader *)reader didFailure:(NSError *)error
+- (void)reader:(KTVHCDataReader *)reader didFailed:(NSError *)error
 {
     KTVHCLogHTTPResponse(@"failure, %d, %@", (int)error.code, self.dataRequest.URL);
     

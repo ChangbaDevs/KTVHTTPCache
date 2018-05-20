@@ -49,10 +49,19 @@ NSString * KTVHCRangeGetHeaderString(KTVHCRange range)
     return [string copy];
 }
 
-NSDictionary * KTVHCRangeFillToHeaders(KTVHCRange range, NSDictionary * headers)
+NSDictionary * KTVHCRangeFillToRequestHeaders(KTVHCRange range, NSDictionary * headers)
 {
     NSMutableDictionary * ret = [NSMutableDictionary dictionaryWithDictionary:headers];
     [ret setObject:KTVHCRangeGetHeaderString(range) forKey:@"Range"];
+    return ret;
+}
+
+NSDictionary * KTVHCRangeFillToResponseHeaders(KTVHCRange range, NSDictionary * headers, long long totalLength)
+{
+    NSMutableDictionary * ret = [NSMutableDictionary dictionaryWithDictionary:headers];
+    long long currentLength = KTVHCRangeGetLength(range);
+    [ret setObject:[NSString stringWithFormat:@"%lld", currentLength] forKey:@"Content-Length"];
+    [ret setObject:[NSString stringWithFormat:@"bytes %lld-%lld/%lld", range.start, range.end, totalLength] forKey:@"Content-Range"];
     return ret;
 }
 

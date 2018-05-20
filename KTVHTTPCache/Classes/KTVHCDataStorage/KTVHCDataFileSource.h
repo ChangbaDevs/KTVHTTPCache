@@ -10,6 +10,14 @@
 #import "KTVHCDataSourceProtocol.h"
 #import "KTVHCRange.h"
 
+@class KTVHCDataFileSource;
+
+@protocol KTVHCDataFileSourceDelegate <NSObject>
+
+- (void)fileSourceDidPrepared:(KTVHCDataFileSource *)fileSource;
+
+@end
+
 @interface KTVHCDataFileSource : NSObject <KTVHCDataSourceProtocol>
 
 + (instancetype)new NS_UNAVAILABLE;
@@ -30,9 +38,9 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
 
-@property (nonatomic, weak, readonly) id <KTVHCDataSourceDelegate> delegate;
+@property (nonatomic, weak, readonly) id<KTVHCDataFileSourceDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
 
-- (void)setDelegate:(id <KTVHCDataSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+- (void)setDelegate:(id<KTVHCDataFileSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
 @end

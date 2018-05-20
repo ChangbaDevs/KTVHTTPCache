@@ -56,9 +56,9 @@
                             exception.reason,
                             exception.userInfo);
     }
-    if ([self.delegate respondsToSelector:@selector(sourceDidPrepared:)]) {
+    if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepared:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-            [self.delegate sourceDidPrepared:self];
+            [self.delegate fileSourceDidPrepared:self];
         }];
     }
     [self unlock];
@@ -105,7 +105,7 @@
     return data;
 }
 
-- (void)setDelegate:(id <KTVHCDataSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
+- (void)setDelegate:(id<KTVHCDataFileSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
     _delegate = delegate;
     _delegateQueue = delegateQueue;

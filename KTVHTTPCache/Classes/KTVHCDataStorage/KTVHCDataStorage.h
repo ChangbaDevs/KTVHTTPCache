@@ -14,34 +14,22 @@
 
 @interface KTVHCDataStorage : NSObject
 
-
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
 + (instancetype)storage;
 
-
-#pragma mark - File
-
-- (NSString *)completeFilePathWithURLString:(NSString *)URLString;
-
-
-#pragma mark - Data Reader
-
+- (NSString *)completeFilePathWithURL:(NSURL *)URL;
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
-
-
-#pragma mark - Cache Control
 
 @property (nonatomic, assign) long long maxCacheLength;     // default is 500m.
 
 - (long long)totalCacheLength;
-
 - (NSArray <KTVHCDataCacheItem *> *)fetchAllCacheItem;
-- (KTVHCDataCacheItem *)fetchCacheItemWithURLString:(NSString *)URLString;
+- (KTVHCDataCacheItem *)fetchCacheItemWithURL:(NSURL *)URL;
 
 - (void)deleteAllCache;
-- (void)deleteCacheWithURLString:(NSString *)URLString;
+- (void)deleteCacheWithURL:(NSURL *)URL;
 
 
 @end

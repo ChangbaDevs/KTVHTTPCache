@@ -8,20 +8,7 @@
 
 #import "KTVHCDataCallback.h"
 
-
 @implementation KTVHCDataCallback
-
-
-+ (void)workingCallbackWithBlock:(void (^)(void))block
-{
-    static dispatch_queue_t workingQueue = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        workingQueue = dispatch_queue_create("KTVHCDataCallback_workingQueue", DISPATCH_QUEUE_SERIAL);
-    });
-    
-    [self callbackWithQueue:workingQueue block:block async:YES];
-}
 
 + (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block
 {
@@ -36,7 +23,6 @@
     if (!block) {
         return;
     }
-    
     if (async) {
         dispatch_async(queue, ^{
             if (block) {
@@ -51,6 +37,5 @@
         });
     }
 }
-
 
 @end

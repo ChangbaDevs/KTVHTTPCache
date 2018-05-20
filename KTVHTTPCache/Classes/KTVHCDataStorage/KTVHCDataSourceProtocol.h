@@ -23,9 +23,3 @@
 - (NSData *)readDataOfLength:(NSUInteger)length;
 
 @end
-
-@protocol KTVHCDataSourceDelegate <NSObject>
-
-- (void)sourceDidPrepared:(id <KTVHCDataSourceProtocol>)source;
-
-@end

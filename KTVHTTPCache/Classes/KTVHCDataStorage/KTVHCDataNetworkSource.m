@@ -26,6 +26,7 @@
 @property (nonatomic, assign) long long downloadReadedLength;
 @property (nonatomic, assign) BOOL downloadDidCallComplete;
 @property (nonatomic, assign) BOOL needCallHasAvailableData;
+@property (nonatomic, assign) BOOL didCalledPrepare;
 
 @end
 
@@ -50,13 +51,16 @@
 
 - (void)prepare
 {
-    if (self.didClosed) {
-        return;
-    }
-    if (self.didPrepared) {
-        return;
-    }
     [self lock];
+    if (self.didClosed) {
+        [self unlock];
+        return;
+    }
+    if (self.didCalledPrepare) {
+        [self unlock];
+        return;
+    }
+    _didCalledPrepare = YES;
     KTVHCLogDataNetworkSource(@"call prepare");
     [[KTVHCDownload download] downloadWithRequest:self.request delegate:self];
     [self unlock];
@@ -135,9 +139,6 @@
     _delegateQueue = delegateQueue;
 }
 
-
-#pragma mark - KTVHCDownloadDelegate
-
 - (void)download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error
 {
     [self lock];
@@ -179,9 +180,9 @@
 - (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
+    _response = response;
     self.unitItem = [[KTVHCDataUnitItem alloc] initWithRequest:self.request];
-    KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURLString:self.request.URL.absoluteString];
-    [unit updateResponseHeaderFields:response.headers];
+    KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:self.request.URL];
     [unit insertUnitItem:self.unitItem];
     self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.unitItem.absolutePath];
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.unitItem.absolutePath];
@@ -204,9 +205,6 @@
     [self unlock];
 }
 
-
-#pragma mark - Callback
-
 - (void)callbackForPrepared
 {
     if (self.didClosed) {
@@ -217,9 +215,9 @@
     }
     KTVHCLogDataNetworkSource(@"prepared");
     _didPrepared = YES;
-    if ([self.delegate respondsToSelector:@selector(sourceDidPrepared:)]) {
+    if ([self.delegate respondsToSelector:@selector(networkSourceDidPrepared:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-            [self.delegate sourceDidPrepared:self];
+            [self.delegate networkSourceDidPrepared:self];
         }];
     }
 }

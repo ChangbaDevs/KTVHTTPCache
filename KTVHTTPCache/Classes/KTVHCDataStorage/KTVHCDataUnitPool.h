@@ -17,14 +17,14 @@
 
 + (instancetype)pool;
 
-- (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString;
+- (KTVHCDataUnit *)unitWithURL:(NSURL *)URL;
 
 - (long long)totalCacheLength;
 - (NSArray <KTVHCDataCacheItem *> *)allCacheItem;
-- (KTVHCDataCacheItem *)cacheItemWithURLString:(NSString *)URLString;
+- (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL;
 
-- (void)deleteUnitWithURLString:(NSString *)URLString;
-- (void)deleteUnitsWithMinSize:(long long)minSize;
+- (void)deleteUnitWithURL:(NSURL *)URL;
+- (void)deleteUnitsWithLength:(long long)length;
 - (void)deleteAllUnits;
 
 @end

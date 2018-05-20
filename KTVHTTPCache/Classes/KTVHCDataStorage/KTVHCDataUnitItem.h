@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCDataRequest.h"
 
-@interface KTVHCDataUnitItem : NSObject <NSCoding, NSLocking>
+@interface KTVHCDataUnitItem : NSObject <NSCopying, NSCoding, NSLocking>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
+- (instancetype)initForCopy;
 - (instancetype)initWithPath:(NSString *)path;
 - (instancetype)initWithRequest:(KTVHCDataRequest *)request;
 

@@ -9,9 +9,7 @@
 #import "KTVHCPathTools.h"
 #import "KTVHCURLTools.h"
 
-
 @implementation KTVHCPathTools
-
 
 + (NSString *)basePath
 {
@@ -35,16 +33,16 @@
     return [[self basePath] stringByAppendingPathComponent:relativePath];
 }
 
-+ (NSString *)absolutePathForDirectoryWithURLString:(NSString *)URLString
++ (NSString *)absolutePathForDirectoryWithURL:(NSURL *)URL
 {
-    NSString * directoryName = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
+    NSString * directoryName = [KTVHCURLTools uniqueIdentifierWithURL:URL];
     NSString * directoryPath = [self relativePathForUnitItemDirectory:directoryName];
     return [self absolutePathWithRelativePath:directoryPath];
 }
 
-+ (NSString *)absolutePathForCompleteFileWithURLString:(NSString *)URLString
++ (NSString *)absolutePathForCompleteFileWithURL:(NSURL *)URL
 {
-    NSString * directoryPath = [self relativePathForCompleteFileWithURLString:URLString];
+    NSString * directoryPath = [self relativePathForCompleteFileWithURL:URL];
     return [self absolutePathWithRelativePath:directoryPath];
 }
 
@@ -55,19 +53,17 @@
     return path;
 }
 
-+ (NSString *)relativePathForCompleteFileWithURLString:(NSString *)URLString
++ (NSString *)relativePathForCompleteFileWithURL:(NSURL *)URL
 {
-    NSURL * URL = [NSURL URLWithString:URLString];
-    NSString * directoryName = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
+    NSString * directoryName = [KTVHCURLTools uniqueIdentifierWithURL:URL];
     NSString * directoryPath = [self relativePathForUnitItemDirectory:directoryName];
     NSString * fileName = [directoryName stringByAppendingPathExtension:URL.pathExtension];
     return [directoryPath stringByAppendingPathComponent:fileName];
 }
 
-+ (NSString *)relativePathForUnitItemFileWithURLString:(NSString *)URLString
-                                                offset:(long long)offset
++ (NSString *)relativePathForUnitItemFileWithURL:(NSURL *)URL offset:(long long)offset
 {
-    NSString * folderName = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
+    NSString * folderName = [KTVHCURLTools uniqueIdentifierWithURL:URL];
     
     NSString * relativePath;
     int number = 0;

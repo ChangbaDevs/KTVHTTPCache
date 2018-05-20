@@ -68,7 +68,7 @@
  *
  *  High frequency call. Make it simple.
  */
-+ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString * originalURLString))URLFilterBlock;
++ (void)cacheSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter;
 
 /**
  *  Content-Type Filter

@@ -39,9 +39,9 @@
     return self;
 }
 
-- (NSString *)completeFilePathWithURLString:(NSString *)URLString
+- (NSString *)completeFilePathWithURL:(NSURL *)URL
 {
-    return [[KTVHCDataUnitPool pool] unitWithURLString:URLString].filePath;
+    return [[KTVHCDataUnitPool pool] unitWithURL:URL].filePath;
 }
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request
@@ -52,10 +52,7 @@
     }
     KTVHCLogDataStorage(@"concurrent reader, %@", request.URL);
     [self.lock lock];
-    KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURLString:request.URL.absoluteString];
-    [unit updateRequestHeaderFields:request.headers];
-    KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
-                                                       request:request];
+    KTVHCDataReader * reader = [KTVHCDataReader readerWithRequest:request];
     KTVHCLogDataStorage(@"create reader finished, %@", request.URL);
     [self.lock unlock];
     return reader;
@@ -71,9 +68,9 @@
     return [[KTVHCDataUnitPool pool] allCacheItem];
 }
 
-- (KTVHCDataCacheItem *)fetchCacheItemWithURLString:(NSString *)URLString
+- (KTVHCDataCacheItem *)fetchCacheItemWithURL:(NSURL *)URL
 {
-    return [[KTVHCDataUnitPool pool] cacheItemWithURLString:URLString];
+    return [[KTVHCDataUnitPool pool] cacheItemWithURL:URL];
 }
 
 - (void)deleteAllCache
@@ -81,9 +78,9 @@
     [[KTVHCDataUnitPool pool] deleteAllUnits];
 }
 
-- (void)deleteCacheWithURLString:(NSString *)URLString
+- (void)deleteCacheWithURL:(NSURL *)URL
 {
-    [[KTVHCDataUnitPool pool] deleteUnitWithURLString:URLString];
+    [[KTVHCDataUnitPool pool] deleteUnitWithURL:URL];
 }
 
 @end

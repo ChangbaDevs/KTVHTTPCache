@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCDataSourceProtocol.h"
 #import "KTVHCDataRequest.h"
+#import "KTVHCDataResponse.h"
 
 @class KTVHCDataNetworkSource;
 
-@protocol KTVHCDataNetworkSourceDelegate <KTVHCDataSourceDelegate>
+@protocol KTVHCDataNetworkSourceDelegate <NSObject>
 
+- (void)networkSourceDidPrepared:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceDidFinishedDownload:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailed:(NSError *)error;
@@ -28,6 +30,7 @@
 - (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust range:(KTVHCRange)range;
 
 @property (nonatomic, strong, readonly) KTVHCDataRequest * request;
+@property (nonatomic, strong, readonly) KTVHCDataResponse * response;
 @property (nonatomic, assign, readonly) KTVHCRange range;
 
 @property (nonatomic, assign, readonly) BOOL didPrepared;
@@ -39,9 +42,9 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length;
 
-@property (nonatomic, weak, readonly) id <KTVHCDataNetworkSourceDelegate> delegate;
+@property (nonatomic, weak, readonly) id<KTVHCDataNetworkSourceDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
 
-- (void)setDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+- (void)setDelegate:(id<KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
 @end

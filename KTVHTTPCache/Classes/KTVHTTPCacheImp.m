@@ -37,7 +37,8 @@
 
 + (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString
 {
-    NSString * completeFilePath = [[KTVHCDataStorage storage] completeFilePathWithURLString:URLString];
+    NSURL * URL = [NSURL URLWithString:URLString];
+    NSString * completeFilePath = [[KTVHCDataStorage storage] completeFilePathWithURL:URL];
     if (completeFilePath.length > 0)
     {
         return [NSURL fileURLWithPath:completeFilePath];
@@ -81,7 +82,8 @@
 
 + (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString
 {
-    return [[KTVHCDataStorage storage] fetchCacheItemWithURLString:URLString];
+    NSURL * URL = [NSURL URLWithString:URLString];
+    return [[KTVHCDataStorage storage] fetchCacheItemWithURL:URL];
 }
 
 + (void)cacheDeleteAllCache
@@ -91,15 +93,16 @@
 
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString
 {
-    [[KTVHCDataStorage storage] deleteCacheWithURLString:URLString];
+    NSURL * URL = [NSURL URLWithString:URLString];
+    [[KTVHCDataStorage storage] deleteCacheWithURL:URL];
 }
 
 
 #pragma mark - Data Stroage Filters
 
-+ (void)cacheSetURLFilterForArchive:(NSString *(^)(NSString *))URLFilterBlock
++ (void)cacheSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter
 {
-    [KTVHCURLTools URLTools].archiveURLFilterBlock = URLFilterBlock;
+    [KTVHCURLTools URLTools].URLFilter = URLFilter;
 }
 
 + (void)cacheSetContentTypeFilterForResponseVerify:(BOOL (^)(NSString *,

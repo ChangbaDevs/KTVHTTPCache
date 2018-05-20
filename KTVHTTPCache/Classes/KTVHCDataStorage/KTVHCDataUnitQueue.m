@@ -9,19 +9,14 @@
 #import "KTVHCDataUnitQueue.h"
 #import "KTVHCLog.h"
 
-
 @interface KTVHCDataUnitQueue ()
-
 
 @property (nonatomic, copy) NSString * archiverPath;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * unitArray;
 
-
 @end
 
-
 @implementation KTVHCDataUnitQueue
-
 
 + (instancetype)unitQueueWithArchiverPath:(NSString *)archiverPath
 {
@@ -42,13 +37,11 @@
     return self;
 }
 
-
 - (NSArray <KTVHCDataUnit *> *)allUnits
 {
     if (self.unitArray.count <= 0) {
         return nil;
     }
-    
     NSArray <KTVHCDataUnit *> * units = [self.unitArray copy];
     return units;
 }
@@ -58,10 +51,8 @@
     if (uniqueIdentifier.length <= 0) {
         return nil;
     }
-    
     KTVHCDataUnit * unit = nil;
-    for (KTVHCDataUnit * obj in self.unitArray)
-    {
+    for (KTVHCDataUnit * obj in self.unitArray) {
         if ([obj.uniqueIdentifier isEqualToString:uniqueIdentifier]) {
             unit = obj;
             break;
@@ -75,7 +66,6 @@
     if (!unit) {
         return;
     }
-    
     if (![self.unitArray containsObject:unit]) {
         [self.unitArray addObject:unit];
     }
@@ -86,7 +76,6 @@
     if (!unit) {
         return;
     }
-    
     if ([self.unitArray containsObject:unit]) {
         [self.unitArray removeObject:unit];
     }
@@ -95,11 +84,8 @@
 - (void)archive
 {
     KTVHCLogDataUnitQueue(@"archive begin, %ld", (long)self.unitArray.count);
-    
     [NSKeyedArchiver archiveRootObject:self.unitArray toFile:self.archiverPath];
-    
     KTVHCLogDataUnitQueue(@"archive end, %ld", (long)self.unitArray.count);
 }
-
 
 @end

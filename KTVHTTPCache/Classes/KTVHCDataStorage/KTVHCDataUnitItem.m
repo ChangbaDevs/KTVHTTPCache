@@ -18,6 +18,27 @@
 
 @implementation KTVHCDataUnitItem
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    [self lock];
+    KTVHCDataUnitItem * obj = [[KTVHCDataUnitItem alloc] initForCopy];
+    obj->_relativePath = self.relativePath;
+    obj->_absolutePath = self.absolutePath;
+    obj->_createTimeInterval = self.createTimeInterval;
+    obj->_offset = self.offset;
+    obj->_length = self.length;
+    [self unlock];
+    return obj;
+}
+
+- (instancetype)initForCopy
+{
+    if (self = [super init]) {
+        
+    }
+    return self;
+}
+
 - (instancetype)initWithPath:(NSString *)path
 {
     if (self = [super init])
@@ -41,7 +62,7 @@
     {
         KTVHCLogAlloc(self);
         _createTimeInterval = [NSDate date].timeIntervalSince1970;
-        _relativePath = [KTVHCPathTools relativePathForUnitItemFileWithURLString:request.URL.absoluteString offset:request.range.start];
+        _relativePath = [KTVHCPathTools relativePathForUnitItemFileWithURL:request.URL offset:request.range.start];
         _offset = request.range.start;
         [self prepare];
     }
@@ -98,6 +119,5 @@
 {
     [self.coreLock unlock];
 }
-
 
 @end
