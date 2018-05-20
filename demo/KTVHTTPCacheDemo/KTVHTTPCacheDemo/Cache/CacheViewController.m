@@ -59,7 +59,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     KTVHCDataCacheItem * item = [self.cacheItems objectAtIndex:section];
-    CacheItemView * view = [[CacheItemView alloc] initWithURLString:item.URLString
+    CacheItemView * view = [[CacheItemView alloc] initWithURLString:item.URL.absoluteString
                                                         totalLength:item.totalLength
                                                         cacheLength:item.cacheLength];
     view.delegate = self;
