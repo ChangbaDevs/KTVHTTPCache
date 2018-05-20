@@ -175,11 +175,11 @@
         
         min = itemMax + 1;
         
-        KTVHCDataFileSource * source = [KTVHCDataFileSource sourceWithFilePath:item.absolutePath
-                                                                        offset:item.offset
-                                                                        length:item.length
-                                                                   startOffset:itemMin - item.offset
-                                                                needReadLength:itemMax - itemMin + 1];
+        KTVHCDataFileSource * source = [[KTVHCDataFileSource alloc] initWithPath:item.absolutePath
+                                                                          offset:item.offset
+                                                                          length:item.length
+                                                                      readOffset:itemMin - item.offset
+                                                                      readLength:itemMax - itemMin + 1];
         [fileSources addObject:source];
     }
     [self.unit unlock];
@@ -198,29 +198,35 @@
     
     for (KTVHCDataFileSource * obj in fileSources)
     {
-        long long delta = obj.offset + obj.startOffset - offset;
+        long long delta = obj.offset + obj.readOffset - offset;
         if (delta > 0)
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URL.absoluteString headerFields:self.request.headers acceptContentTypePrefixs:self.request.acceptContentTypes offset:offset length:delta];
+            KTVHCRange range = KTVHCMakeRange(offset, offset + delta - 1);
+            KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
+            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
             [networkSources addObject:source];
             offset += delta;
             size -= delta;
         }
-        offset += obj.needReadLength;
-        size -= obj.needReadLength;
+        offset += obj.readLength;
+        size -= obj.readLength;
     }
     
     if (size > 0)
     {
         if (self.request.range.end == KTVHCNotFound)
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URL.absoluteString headerFields:self.request.headers acceptContentTypePrefixs:self.request.acceptContentTypes offset:offset length:KTVHCDataNetworkSourceLengthMaxVaule];
+            KTVHCRange range = KTVHCMakeRange(offset, KTVHCNotFound);
+            KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
+            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
             [networkSources addObject:source];
             size = 0;
         }
         else
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URL.absoluteString headerFields:self.request.headers acceptContentTypePrefixs:self.request.acceptContentTypes offset:offset length:size];
+            KTVHCRange range = KTVHCMakeRange(offset, offset + size - 1);
+            KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
+            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
             [networkSources addObject:source];
             offset += size;
             size -= size;

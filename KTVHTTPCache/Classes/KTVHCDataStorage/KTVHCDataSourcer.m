@@ -12,7 +12,7 @@
 #import "KTVHCLog.h"
 
 
-@interface KTVHCDataSourcer () <KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>
+@interface KTVHCDataSourcer () <KTVHCDataNetworkSourceDelegate>
 
 
 #pragma mark - Setter
@@ -125,7 +125,7 @@
     }
     
     NSData * data = [self.currentSource readDataOfLength:length];
-    if (self.currentSource.didFinishRead)
+    if (self.currentSource.didFinished)
     {
         self.currentSource = [self.sourceQueue fetchNextSource:self.currentSource];
         if (self.currentSource)
@@ -183,15 +183,14 @@
 }
 
 
-#pragma mark - KTVHCDataFileSourceDelegate
+#pragma mark - Source Delegate
 
-- (void)fileSourceDidFinishPrepare:(KTVHCDataFileSource *)fileSource
+- (void)sourceDidPrepared:(id<KTVHCDataSourceProtocol>)source
 {
+    KTVHCLogDataSourcer(@"source did prepared, %@", source);
+    
     [self callbackForFinishPrepare];
 }
-
-
-#pragma mark - KTVHCDataNetworkSourceDelegate
 
 - (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource
 {
@@ -204,14 +203,7 @@
     }
 }
 
-- (void)networkSourceDidFinishPrepare:(KTVHCDataNetworkSource *)networkSource
-{
-    KTVHCLogDataSourcer(@"network source prepare finshed, %@", networkSource);
-    
-    [self callbackForFinishPrepare];
-}
-
-- (void)networkSourceDidFinishDownload:(KTVHCDataNetworkSource *)networkSource
+- (void)networkSourceDidFinishedDownload:(KTVHCDataNetworkSource *)networkSource
 {
     KTVHCLogDataSourcer(@"network source download finsiehd, %@", networkSource);
     
@@ -219,7 +211,7 @@
     [self.currentNetworkSource prepare];
 }
 
-- (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailure:(NSError *)error
+- (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailed:(NSError *)error
 {
     KTVHCLogDataSourcer(@"network source failure, %d", (int)error.code);
     

@@ -68,7 +68,7 @@
     }
 }
 
-- (void)setAllSourceDelegate:(id <KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
+- (void)setAllSourceDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
     KTVHCLogDataSourceQueue(@"set all sources delegate, %@", delegate);
     
