@@ -20,17 +20,15 @@
 
 @implementation KTVHCDataFileSource
 
-- (instancetype)initWithPath:(NSString *)path offset:(long long)offset length:(long long)length readOffset:(long long)readOffset readLength:(long long)readLength
+- (instancetype)initWithPath:(NSString *)path range:(KTVHCRange)range readRange:(KTVHCRange)readRange
 {
     if (self = [super init])
     {
         _path = path;
-        _offset = offset;
-        _length = length;
-        _readOffset = readOffset;
-        _readLength = readLength;
+        _range = range;
+        _readRange = readRange;
         KTVHCLogAlloc(self);
-        KTVHCLogDataFileSource(@"did setup, %lld, %lld, %lld, %lld", self.offset, self.length, self.readOffset, self.readLength);
+        KTVHCLogDataFileSource(@"did setup, %@, %@", KTVHCStringFromRange(range), KTVHCStringFromRange(readRange));
     }
     return self;
 }
@@ -50,16 +48,12 @@
     KTVHCLogDataFileSource(@"call prepare");
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.path];
     @try {
-        [self.readingHandle seekToFileOffset:self.readOffset];
+        [self.readingHandle seekToFileOffset:self.readRange.start];
     } @catch (NSException *exception) {
-        KTVHCLogDataSourcer(@"seek file exception, %@, %@, %@, %lld, %lld, %lld, %lld",
+        KTVHCLogDataSourcer(@"seek file exception, %@, %@, %@",
                             exception.name,
                             exception.reason,
-                            exception.userInfo,
-                            self.length,
-                            self.offset,
-                            self.readOffset,
-                            self.readLength);
+                            exception.userInfo);
     }
     [self unlock];
     if ([self.delegate respondsToSelector:@selector(sourceDidPrepared:)])
@@ -92,11 +86,12 @@
         return nil;
     }
     [self lock];
-    length = (NSUInteger)MIN(self.readLength - self.readedLength, length);
+    long long readLength = KTVHCRangeGetLength(self.readRange);
+    length = (NSUInteger)MIN(readLength - self.readedLength, length);
     NSData * data = [self.readingHandle readDataOfLength:length];
     self.readedLength += data.length;
-    KTVHCLogDataFileSource(@"read data : %lld, %lld, %lld", (long long)data.length, self.readedLength, self.readLength);
-    if (self.readedLength >= self.readLength)
+    KTVHCLogDataFileSource(@"read data : %lld, %lld, %lld", (long long)data.length, self.readedLength, readLength);
+    if (self.readedLength >= readLength)
     {
         KTVHCLogDataFileSource(@"read data finished");
         [self.readingHandle closeFile];

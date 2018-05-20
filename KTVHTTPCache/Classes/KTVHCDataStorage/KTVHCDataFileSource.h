@@ -8,23 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataSourceProtocol.h"
+#import "KTVHCRange.h"
 
 @interface KTVHCDataFileSource : NSObject <KTVHCDataSourceProtocol>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithPath:(NSString *)path
-                      offset:(long long)offset
-                      length:(long long)length
-                  readOffset:(long long)readOffset
-                  readLength:(long long)readLength;
+- (instancetype)initWithPath:(NSString *)path range:(KTVHCRange)range readRange:(KTVHCRange)readRange;
 
 @property (nonatomic, copy, readonly) NSString * path;
-@property (nonatomic, assign, readonly) long long offset;
-@property (nonatomic, assign, readonly) long long length;
-@property (nonatomic, assign, readonly) long long readOffset;
-@property (nonatomic, assign, readonly) long long readLength;
+@property (nonatomic, assign, readonly) KTVHCRange range;
+@property (nonatomic, assign, readonly) KTVHCRange readRange;
 
 @property (nonatomic, assign, readonly) BOOL didPrepared;
 @property (nonatomic, assign, readonly) BOOL didFinished;

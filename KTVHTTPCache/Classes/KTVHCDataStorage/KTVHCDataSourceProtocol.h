@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KTVHCRange.h"
 
 @protocol KTVHCDataSourceProtocol <NSObject>
 
-- (long long)offset;
-- (long long)length;
+- (KTVHCRange)range;
 
 - (BOOL)didPrepared;
 - (BOOL)didFinished;

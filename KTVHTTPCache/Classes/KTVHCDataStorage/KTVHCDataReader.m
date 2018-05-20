@@ -175,18 +175,16 @@
         
         min = itemMax + 1;
         
-        KTVHCDataFileSource * source = [[KTVHCDataFileSource alloc] initWithPath:item.absolutePath
-                                                                          offset:item.offset
-                                                                          length:item.length
-                                                                      readOffset:itemMin - item.offset
-                                                                      readLength:itemMax - itemMin + 1];
+        KTVHCRange range = KTVHCMakeRange(item.offset, item.offset + item.length - 1);
+        KTVHCRange readRange = KTVHCMakeRange(itemMin - item.offset, itemMax - item.offset);
+        KTVHCDataFileSource * source = [[KTVHCDataFileSource alloc] initWithPath:item.absolutePath range:range readRange:readRange];
         [fileSources addObject:source];
     }
     [self.unit unlock];
     
     // File Source Sort
     [fileSources sortUsingComparator:^NSComparisonResult(KTVHCDataFileSource * obj1, KTVHCDataFileSource * obj2) {
-        if (obj1.offset < obj2.offset) {
+        if (obj1.range.start < obj2.range.start) {
             return NSOrderedAscending;
         }
         return NSOrderedDescending;
@@ -198,18 +196,18 @@
     
     for (KTVHCDataFileSource * obj in fileSources)
     {
-        long long delta = obj.offset + obj.readOffset - offset;
+        long long delta = obj.range.start + obj.readRange.start - offset;
         if (delta > 0)
         {
             KTVHCRange range = KTVHCMakeRange(offset, offset + delta - 1);
             KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
-            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
+            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
             [networkSources addObject:source];
             offset += delta;
             size -= delta;
         }
-        offset += obj.readLength;
-        size -= obj.readLength;
+        offset += KTVHCRangeGetLength(obj.readRange);
+        size -= KTVHCRangeGetLength(obj.readRange);
     }
     
     if (size > 0)
@@ -218,7 +216,7 @@
         {
             KTVHCRange range = KTVHCMakeRange(offset, KTVHCNotFound);
             KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
-            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
+            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
             [networkSources addObject:source];
             size = 0;
         }
@@ -226,7 +224,7 @@
         {
             KTVHCRange range = KTVHCMakeRange(offset, offset + size - 1);
             KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
-            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
+            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
             [networkSources addObject:source];
             offset += size;
             size -= size;

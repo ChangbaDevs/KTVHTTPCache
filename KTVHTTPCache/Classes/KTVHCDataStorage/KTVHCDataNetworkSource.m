@@ -66,20 +66,18 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
 
 @implementation KTVHCDataNetworkSource
 
-- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust
+- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust range:(KTVHCRange)range
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
         
         _request = reqeust;
-        
-        _offset = _request.range.start;
-        _length = KTVHCRangeGetLength(_request.range);
+        _range = range;
         
         self.lock = [[NSLock alloc] init];
         
-        KTVHCLogDataNetworkSource(@"did setup\n%@\n%@\n%@\noffset, %lld, length, %lld", self.request.URL, self.request.headers, self.request.acceptContentTypes, self.offset, self.length);
+        KTVHCLogDataNetworkSource(@"did setup\n%@\n%@\n%@\n%@", self.request.URL, self.request.headers, self.request.acceptContentTypes, KTVHCStringFromRange(self.range));
     }
     return self;
 }
@@ -164,7 +162,7 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     {
         if (self.downloadCompleteCalled)
         {
-            KTVHCLogDataNetworkSource(@"read data error : %lld, %lld, %lld", self.downloadReadedLength, self.downloadLength, self.length);
+            KTVHCLogDataNetworkSource(@"read data error : %lld, %lld, %lld", self.downloadReadedLength, self.downloadLength, KTVHCRangeGetLength(self.range));
             [self.readingHandle closeFile];
             self.readingHandle = nil;
         }
@@ -178,8 +176,8 @@ typedef NS_ENUM(NSUInteger, KTVHCDataNetworkSourceErrorReason)
     }
     NSData * data = [self.readingHandle readDataOfLength:(NSUInteger)MIN(self.downloadLength - self.downloadReadedLength, length)];
     self.downloadReadedLength += data.length;
-    KTVHCLogDataNetworkSource(@"read data : %lld, %lld, %lld, %lld", (long long)data.length, self.downloadReadedLength, self.downloadLength, self.length);
-    if (self.downloadReadedLength >= self.length)
+    KTVHCLogDataNetworkSource(@"read data : %lld, %lld, %lld, %lld", (long long)data.length, self.downloadReadedLength, self.downloadLength, KTVHCRangeGetLength(self.range));
+    if (self.downloadReadedLength >= KTVHCRangeGetLength(self.range))
     {
         KTVHCLogDataNetworkSource(@"read data finished");
         [self.readingHandle closeFile];
@@ -288,12 +286,8 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
     {
         self.totalContentLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
         self.currentContentLength = [contentLength longLongValue];
-        
-        if (self.length == KTVHCNotFound) {
-            _length = self.totalContentLength - self.offset;
-        }
-        
-        if (self.currentContentLength > 0 && self.currentContentLength == self.length) {
+        _range = KTVHCRangeWithEnsureLength(self.range, self.totalContentLength);
+        if (self.currentContentLength > 0 && self.currentContentLength == KTVHCRangeGetLength(self.range)) {
             return YES;
         }
     }
@@ -330,8 +324,8 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
     [[KTVHCDataUnitPool unitPool] unit:self.request.URL.absoluteString updateResponseHeaderFields:response.allHeaderFields];
     
     NSString * relativePath = [KTVHCPathTools relativePathForUnitItemFileWithURLString:self.request.URL.absoluteString
-                                                                                offset:self.offset];
-    self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.offset relativePath:relativePath];
+                                                                                offset:self.range.start];
+    self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.range.start relativePath:relativePath];
     
     [[KTVHCDataUnitPool unitPool] unit:self.request.URL.absoluteString insertUnitItem:self.unitItem];
     
@@ -413,11 +407,10 @@ static BOOL (^globalContentTypeFilterBlock)(NSString *, NSString *, NSArray <NSS
         }
         else
         {
-            if (self.downloadLength >= self.length)
+            if (self.downloadLength >= KTVHCRangeGetLength(self.range))
             {
                 KTVHCLogDataNetworkSource(@"complete by donwload finished, %@", self.request.URL.absoluteString);
                 
-                _didDonwload = YES;
                 if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishedDownload:)]) {
                     [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                         [self.delegate networkSourceDidFinishedDownload:self];

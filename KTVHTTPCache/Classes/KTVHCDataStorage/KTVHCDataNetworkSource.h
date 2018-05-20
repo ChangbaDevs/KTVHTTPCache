@@ -25,15 +25,13 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust;
+- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust range:(KTVHCRange)range;
 
 @property (nonatomic, strong, readonly) KTVHCDataRequest * request;
-@property (nonatomic, assign, readonly) long long offset;
-@property (nonatomic, assign, readonly) long long length;
+@property (nonatomic, assign, readonly) KTVHCRange range;
 
 @property (nonatomic, assign, readonly) BOOL didPrepared;
 @property (nonatomic, assign, readonly) BOOL didFinished;
-@property (nonatomic, assign, readonly) BOOL didDonwload;
 @property (nonatomic, assign, readonly) BOOL didClosed;
 
 - (void)prepare;

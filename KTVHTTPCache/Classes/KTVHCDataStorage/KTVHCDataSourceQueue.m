@@ -92,7 +92,7 @@
     KTVHCLogDataSourceQueue(@"sort sources");
     
     [self.totalSources sortUsingComparator:^NSComparisonResult(id <KTVHCDataSourceProtocol> obj1, id <KTVHCDataSourceProtocol> obj2) {
-        if (obj1.offset < obj2.offset) {
+        if (obj1.range.start < obj2.range.start) {
             return NSOrderedAscending;
         }
         return NSOrderedDescending;
