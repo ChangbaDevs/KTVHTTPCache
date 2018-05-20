@@ -8,14 +8,7 @@
 
 #import "KTVHCDataStorage.h"
 #import "KTVHCDataUnitPool.h"
-#import "KTVHCDataPrivate.h"
 #import "KTVHCLog.h"
-
-@interface KTVHCDataStorage ()
-
-@property (nonatomic, strong) NSLock * lock;
-
-@end
 
 @implementation KTVHCDataStorage
 
@@ -34,7 +27,6 @@
     if (self = [super init])
     {
         self.maxCacheLength = 500 * 1024 * 1024;
-        self.lock = [[NSLock alloc] init];
     }
     return self;
 }
@@ -46,15 +38,12 @@
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request
 {
-    if (!request || request.URL.absoluteString.length <= 0)
-    {
+    if (!request || request.URL.absoluteString.length <= 0) {
         return nil;
     }
     KTVHCLogDataStorage(@"concurrent reader, %@", request.URL);
-    [self.lock lock];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithRequest:request];
     KTVHCLogDataStorage(@"create reader finished, %@", request.URL);
-    [self.lock unlock];
     return reader;
 }
 

@@ -86,6 +86,7 @@
     KTVHCLogDataReader(@"call close, %@", self.unit.URL);
     [self.sourcer close];
     [self.unit workingRelease];
+    self.unit = nil;
     [self unlock];
 }
 
@@ -119,53 +120,38 @@
 - (void)prepareSourcer
 {
     self.sourcer = [[KTVHCDataSourcer alloc] initWithDelegate:self delegateQueue:self.internalDelegateQueue];
-    
-    // File Source
-    long long min = self.request.range.start;
-    long long max = self.request.range.end;
-    
     NSMutableArray <KTVHCDataFileSource *> * fileSources = [NSMutableArray array];
     NSMutableArray <KTVHCDataNetworkSource *> * networkSources = [NSMutableArray array];
-    
-    [self.unit lock];
-    [self.unit sortUnitItems];
-    for (KTVHCDataUnitItem * item in self.unit.unitItems)
+    long long min = self.request.range.start;
+    long long max = self.request.range.end;
+    NSArray * unitItems = self.unit.unitItems;
+    for (KTVHCDataUnitItem * item in unitItems)
     {
         long long itemMin = item.offset;
         long long itemMax = item.offset + item.length - 1;
-        
         if (itemMax < min || itemMin > max) {
             continue;
         }
-        
         if (min > itemMin) {
             itemMin = min;
         }
         if (max < itemMax) {
             itemMax = max;
         }
-        
         min = itemMax + 1;
-        
         KTVHCRange range = KTVHCMakeRange(item.offset, item.offset + item.length - 1);
         KTVHCRange readRange = KTVHCMakeRange(itemMin - item.offset, itemMax - item.offset);
         KTVHCDataFileSource * source = [[KTVHCDataFileSource alloc] initWithPath:item.absolutePath range:range readRange:readRange];
         [fileSources addObject:source];
     }
-    [self.unit unlock];
-    
-    // File Source Sort
     [fileSources sortUsingComparator:^NSComparisonResult(KTVHCDataFileSource * obj1, KTVHCDataFileSource * obj2) {
         if (obj1.range.start < obj2.range.start) {
             return NSOrderedAscending;
         }
         return NSOrderedDescending;
     }];
-    
-    // Network Source
     long long offset = self.request.range.start;
-    long long size = self.request.range.end - offset + 1;
-    
+    long long length = self.request.range.end - offset + 1;
     for (KTVHCDataFileSource * obj in fileSources)
     {
         long long delta = obj.range.start + obj.readRange.start - offset;
@@ -176,41 +162,24 @@
             KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
             [networkSources addObject:source];
             offset += delta;
-            size -= delta;
+            length -= delta;
         }
         offset += KTVHCRangeGetLength(obj.readRange);
-        size -= KTVHCRangeGetLength(obj.readRange);
+        length -= KTVHCRangeGetLength(obj.readRange);
     }
-    
-    if (size > 0)
+    if (length > 0)
     {
-        if (self.request.range.end == KTVHCNotFound)
-        {
-            KTVHCRange range = KTVHCMakeRange(offset, KTVHCNotFound);
-            KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
-            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
-            [networkSources addObject:source];
-            size = 0;
-        }
-        else
-        {
-            KTVHCRange range = KTVHCMakeRange(offset, offset + size - 1);
-            KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
-            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
-            [networkSources addObject:source];
-            offset += size;
-            size -= size;
-        }
+        KTVHCRange range = KTVHCMakeRange(offset, self.request.range.end);
+        KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
+        KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
+        [networkSources addObject:source];
     }
-    
-    // add Source
     for (KTVHCDataFileSource * obj in fileSources) {
         [self.sourcer putSource:obj];
     }
     for (KTVHCDataNetworkSource * obj in networkSources) {
         [self.sourcer putSource:obj];
     }
-    
     [self.sourcer prepare];
 }
 

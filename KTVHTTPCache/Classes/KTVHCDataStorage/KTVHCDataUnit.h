@@ -38,7 +38,6 @@
 @property (nonatomic, assign, readonly) long long cacheLength;
 @property (nonatomic, assign, readonly) long long validLength;
 
-- (void)sortUnitItems;
 - (NSArray <KTVHCDataUnitItem *> *)unitItems;
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem;
 
