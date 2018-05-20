@@ -12,6 +12,7 @@
 #import "KTVHCDataSourcer.h"
 #import "KTVHCDataCallback.h"
 #import "KTVHCLog.h"
+#import "KTVHCRange.h"
 
 
 @interface KTVHCDataReader () <KTVHCDataUnitDelegate, KTVHCDataSourcerDelegate>
@@ -26,6 +27,7 @@
 
 @property (nonatomic, strong) KTVHCDataRequest * request;
 @property (nonatomic, strong) KTVHCDataResponse * response;
+@property (nonatomic, assign) KTVHCRange contentRange;
 
 @property (nonatomic, strong) NSError * error;
 
@@ -63,7 +65,7 @@
         [self.unit workingRetain];
         
         self.request = request;
-        [self.request updateRangeMaxIfNeeded:self.unit.totalContentLength];
+        self.contentRange = KTVHCRangeWithEnsureLength(self.request.contentRange, self.unit.totalContentLength);
         
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
@@ -90,7 +92,7 @@
     }
     self.didCallPrepare = YES;
     
-    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.headerFields);
+    KTVHCLogDataReader(@"call prepare\n%@\n%@", self.unit.URLString, self.request.headers);
     
     [self.interfaceLock lock];
     [self setupAndPrepareSourcer];
@@ -147,11 +149,8 @@
     self.sourcer = [KTVHCDataSourcer sourcerWithDelegate:self delegateQueue:self.internalDelegateQueue];
     
     // File Source
-    long long min = self.request.rangeMin;
-    long long max = self.request.rangeMax;
-    if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
-        max = LONG_MAX;
-    }
+    long long min = self.contentRange.start;
+    long long max = self.contentRange.end;
     
     NSMutableArray <KTVHCDataFileSource *> * fileSources = [NSMutableArray array];
     NSMutableArray <KTVHCDataNetworkSource *> * networkSources = [NSMutableArray array];
@@ -194,22 +193,15 @@
     }];
     
     // Network Source
-    long long offset = self.request.rangeMin;
-    long long size = self.request.rangeMax - offset + 1;
-    if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
-        size = LONG_MAX;
-    }
+    long long offset = self.contentRange.start;
+    long long size = self.contentRange.end - offset + 1;
     
     for (KTVHCDataFileSource * obj in fileSources)
     {
         long long delta = obj.offset + obj.startOffset - offset;
         if (delta > 0)
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.headerFields
-                                                                 acceptContentTypePrefixs:self.request.acceptContentTypes
-                                                                                   offset:offset
-                                                                                   length:delta];
+            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URL.absoluteString headerFields:self.request.headers acceptContentTypePrefixs:self.request.acceptContentTypes offset:offset length:delta];
             [networkSources addObject:source];
             offset += delta;
             size -= delta;
@@ -220,23 +212,15 @@
     
     if (size > 0)
     {
-        if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule)
+        if (self.contentRange.end == KTVHCNotFound)
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.headerFields
-                                                                 acceptContentTypePrefixs:self.request.acceptContentTypes
-                                                                                   offset:offset
-                                                                                   length:KTVHCDataNetworkSourceLengthMaxVaule];
+            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URL.absoluteString headerFields:self.request.headers acceptContentTypePrefixs:self.request.acceptContentTypes offset:offset length:KTVHCDataNetworkSourceLengthMaxVaule];
             [networkSources addObject:source];
             size = 0;
         }
         else
         {
-            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URLString
-                                                                             headerFields:self.request.headerFields
-                                                                 acceptContentTypePrefixs:self.request.acceptContentTypes
-                                                                                   offset:offset
-                                                                                   length:size];
+            KTVHCDataNetworkSource * source = [KTVHCDataNetworkSource sourceWithURLString:self.request.URL.absoluteString headerFields:self.request.headers acceptContentTypePrefixs:self.request.acceptContentTypes offset:offset length:size];
             [networkSources addObject:source];
             offset += size;
             size -= size;
@@ -258,12 +242,8 @@
 {
     long long totalContentLength = self.unit.totalContentLength;
     
-    long long currentContentLength = 0;
-    if (self.request.rangeMax == KTVHCDataRequestRangeMaxVaule) {
-        currentContentLength = totalContentLength - self.request.rangeMin;
-    } else {
-        currentContentLength = self.request.rangeMax - self.request.rangeMin + 1;
-    }
+    KTVHCRange range = KTVHCRangeWithEnsureLength(self.contentRange, totalContentLength);
+    long long currentContentLength = KTVHCRangeGetLength(range);
     
     NSDictionary * headerFieldsWithoutRangeAndLength = self.unit.responseHeaderFieldsWithoutRangeAndLength;
     NSMutableDictionary * headerFields = [NSMutableDictionary dictionaryWithDictionary:headerFieldsWithoutRangeAndLength];
@@ -271,8 +251,8 @@
     [headerFields setObject:[NSString stringWithFormat:@"%lld", currentContentLength]
                      forKey:@"Content-Length"];
     [headerFields setObject:[NSString stringWithFormat:@"bytes %lld-%lld/%lld",
-                             self.request.rangeMin,
-                             self.request.rangeMin + currentContentLength - 1,
+                             range.start,
+                             range.end,
                              totalContentLength]
                      forKey:@"Content-Range"];
     

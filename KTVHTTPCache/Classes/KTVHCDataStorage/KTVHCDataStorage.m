@@ -46,17 +46,17 @@
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request
 {
-    if (!request || request.URLString.length <= 0)
+    if (!request || request.URL.absoluteString.length <= 0)
     {
         return nil;
     }
-    KTVHCLogDataStorage(@"concurrent reader, %@", request.URLString);
+    KTVHCLogDataStorage(@"concurrent reader, %@", request.URL);
     [self.lock lock];
-    KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URLString];
-    [[KTVHCDataUnitPool unitPool] unit:request.URLString updateRequestHeaderFields:request.headerFields];
+    KTVHCDataUnit * unit = [[KTVHCDataUnitPool unitPool] unitWithURLString:request.URL.absoluteString];
+    [[KTVHCDataUnitPool unitPool] unit:request.URL.absoluteString updateRequestHeaderFields:request.headers];
     KTVHCDataReader * reader = [KTVHCDataReader readerWithUnit:unit
                                                        request:request];
-    KTVHCLogDataStorage(@"create reader finished, %@", request.URLString);
+    KTVHCLogDataStorage(@"create reader finished, %@", request.URL);
     [self.lock unlock];
     return reader;
 }

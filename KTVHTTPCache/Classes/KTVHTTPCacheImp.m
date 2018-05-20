@@ -10,6 +10,7 @@
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
 #import "KTVHCDataNetworkSource.h"
+#import "KTVHCContentType.h"
 #import "KTVHCDownload.h"
 #import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
@@ -113,12 +114,12 @@
 
 + (void)cacheSetDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes
 {
-    [KTVHCDataRequest setDefaultAcceptContextTypes:defaultAcceptContextTypes];
+    [KTVHCContentType setDefaultAcceptContextTypes:defaultAcceptContextTypes];
 }
 
 + (NSArray <NSString *> *)cacheDefaultAcceptContextTypes
 {
-    return [KTVHCDataRequest defaultAcceptContextTypes];
+    return [KTVHCContentType defaultAcceptContextTypes];
 }
 
 

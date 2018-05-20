@@ -49,8 +49,7 @@
 
 - (KTVHCDataRequest *)dataRequest
 {
-    KTVHCDataRequest * dataRequest = [KTVHCDataRequest requestWithURLString:self.originalURLString
-                                                               headerFields:self.allHTTPHeaderFields];
+    KTVHCDataRequest * dataRequest = [[KTVHCDataRequest alloc] initWithURL:[NSURL URLWithString:self.originalURLString] headers:self.allHTTPHeaderFields];
     return dataRequest;
 }
 
