@@ -32,5 +32,4 @@
 
 + (long long)sizeOfItemAtFilePath:(NSString *)filePath;
 
-
 @end
