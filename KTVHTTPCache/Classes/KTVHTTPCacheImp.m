@@ -106,7 +106,7 @@
                                                              NSString *,
                                                              NSArray <NSString *> *))contentTypeFilterBlock
 {
-    [KTVHCDataNetworkSource setContentTypeFilterBlock:contentTypeFilterBlock];
+    [KTVHCDownload download].contentTypeFilter = contentTypeFilterBlock;
 }
 
 

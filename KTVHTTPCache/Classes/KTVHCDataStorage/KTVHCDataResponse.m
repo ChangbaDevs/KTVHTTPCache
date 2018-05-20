@@ -63,10 +63,42 @@
     return self;
 }
 
+- (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers
+{
+    if (self = [super init])
+    {
+        _URL = URL;
+        _headers = headers;
+        [self prepare];
+        KTVHCLogAlloc(self);
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     KTVHCLogDealloc(self);
 }
 
+- (void)prepare
+{
+    _contentType = [self.headers objectForKey:@"Content-Type"];
+    if (_contentType) {
+        _contentType = [self.headers objectForKey:@"content-type"];
+    }
+    NSString * contentLength = [self.headers objectForKey:@"Content-Length"];
+    if (!contentLength) {
+        contentLength = [self.headers objectForKey:@"content-length"];
+    }
+    _currentLength = contentLength.longLongValue;
+    NSString * contentRange = [self.headers objectForKey:@"Content-Range"];
+    if (!contentRange) {
+        contentRange = [self.headers objectForKey:@"content-range"];
+    }
+    NSRange range = [contentRange rangeOfString:@"/"];
+    if (contentRange.length > 0 && range.location != NSNotFound) {
+        _totalLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
+    }
+}
 
 @end

@@ -44,12 +44,4 @@
 
 - (void)setDelegate:(id <KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
-
-#pragma mark - Class
-
-+ (void)setContentTypeFilterBlock:(BOOL(^)(NSString * URLString,
-                                           NSString * contentType,
-                                           NSArray <NSString *> * defaultAcceptContentTypes))contentTypeFilterBlock;
-
-
 @end

@@ -7,13 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KTVHCDataRequest.h"
+#import "KTVHCDataResponse.h"
 
 @class KTVHCDownload;
 
 @protocol KTVHCDownloadDelegate <NSObject>
 
 - (void)download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error;
-- (BOOL)download:(KTVHCDownload *)download didReceiveResponse:(NSHTTPURLResponse *)response;
+- (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response;
 - (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data;
 
 @end
@@ -28,6 +30,9 @@
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;       // default is 30.0s.
 @property (nonatomic, copy) NSDictionary * commonHeaderFields;      // default is nil.
 
-- (NSURLSessionDataTask *)downloadWithRequest:(NSMutableURLRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate;
+- (void)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate;
+- (void)cancelWithRequest:(KTVHCDataRequest *)request;
+
+@property (nonatomic, copy) BOOL (^contentTypeFilter)(NSString * URLString, NSString * contentType, NSArray <NSString *> * defaultAcceptContentTypes);
 
 @end
