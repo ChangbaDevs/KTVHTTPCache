@@ -44,11 +44,7 @@
 /**
  *  Data Reader
  */
-+ (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request;
-
-+ (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request;
-+ (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
-                   completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
++ (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
  *  Cache Control

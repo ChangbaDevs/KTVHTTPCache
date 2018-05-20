@@ -28,10 +28,7 @@
 
 #pragma mark - Data Reader
 
-- (KTVHCDataReader *)concurrentReaderWithRequest:(KTVHCDataRequest *)request;
-
-- (KTVHCDataReader *)serialReaderWithRequest:(KTVHCDataRequest *)request;
-- (void)serialReaderWithRequest:(KTVHCDataRequest *)request completionHandler:(void(^)(KTVHCDataReader *))completionHandler;
+- (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
 
 
 #pragma mark - Cache Control

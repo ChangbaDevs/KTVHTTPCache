@@ -53,21 +53,9 @@
 
 #pragma mark - Data Storage
 
-+ (KTVHCDataReader *)cacheConcurrentReaderWithRequest:(KTVHCDataRequest *)request
++ (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request
 {
-    return [[KTVHCDataStorage storage] concurrentReaderWithRequest:request];
-}
-
-+ (KTVHCDataReader *)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
-{
-    return [[KTVHCDataStorage storage] serialReaderWithRequest:request];
-}
-
-+ (void)cacheSerialReaderWithRequest:(KTVHCDataRequest *)request
-                   completionHandler:(void(^)(KTVHCDataReader *))completionHandler
-{
-    [[KTVHCDataStorage storage] serialReaderWithRequest:request
-                                      completionHandler:completionHandler];
+    return [[KTVHCDataStorage storage] readerWithRequest:request];
 }
 
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength

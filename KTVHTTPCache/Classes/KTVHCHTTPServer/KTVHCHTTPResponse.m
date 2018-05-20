@@ -43,18 +43,10 @@
         self.dataRequest = dataRequest;
         
         KTVHCLogHTTPResponse(@"data request\n%@\n%@", self.dataRequest.URLString, self.dataRequest.headerFields);
-        
-#if 1
-        self.reader = [[KTVHCDataStorage storage] concurrentReaderWithRequest:self.dataRequest];
+    
+        self.reader = [[KTVHCDataStorage storage] readerWithRequest:self.dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
-#else
-        [[KTVHCDataStorage storage] serialReaderWithRequest:self.dataRequest completionHandler:^(KTVHCDataReader * reader) {
-            self.reader = reader;
-            self.reader.delegate = self;
-            [self.reader prepare];
-        }];
-#endif
     }
     return self;
 }
