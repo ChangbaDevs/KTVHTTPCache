@@ -29,4 +29,5 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
 #pragma mark - Common
 
+#import <KTVHTTPCache/KTVHCRange.h>
 #import <KTVHTTPCache/KTVHCCommon.h>

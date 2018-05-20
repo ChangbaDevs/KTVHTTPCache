@@ -25,4 +25,5 @@
 
 #pragma mark - Common
 
+#import "KTVHCRange.h"
 #import "KTVHCCommon.h"
