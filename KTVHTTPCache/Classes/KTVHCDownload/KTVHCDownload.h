@@ -10,7 +10,6 @@
 
 @class KTVHCDownload;
 
-
 @protocol KTVHCDownloadDelegate <NSObject>
 
 - (void)download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error;
@@ -19,9 +18,7 @@
 
 @end
 
-
 @interface KTVHCDownload : NSObject
-
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -29,9 +26,8 @@
 + (instancetype)download;
 
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;       // default is 30.0s.
-@property (nonatomic, copy) NSDictionary <NSString *, NSString *> * commonHeaderFields;      // default is nil.
+@property (nonatomic, copy) NSDictionary * commonHeaderFields;      // default is nil.
 
 - (NSURLSessionDataTask *)downloadWithRequest:(NSMutableURLRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate;
-
 
 @end

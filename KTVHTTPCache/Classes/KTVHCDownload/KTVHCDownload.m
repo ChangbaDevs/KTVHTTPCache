@@ -10,17 +10,14 @@
 #import "KTVHCLog.h"
 #import <UIKit/UIKit.h>
 
-
-@interface KTVHCDownload () <NSURLSessionDataDelegate>
-
+@interface KTVHCDownload () <NSURLSessionDataDelegate, NSLocking>
 
 @property (nonatomic, strong) NSURLSession * session;
 @property (nonatomic, strong) NSURLSessionConfiguration * sessionConfiguration;
 @property (nonatomic, strong) NSOperationQueue * sessionDelegateQueue;
 
 @property (nonatomic, strong) NSMutableDictionary <NSURLSessionTask *, id<KTVHCDownloadDelegate>> * delegateDictionary;
-@property (nonatomic, strong) NSLock * lock;
-
+@property (nonatomic, strong) NSLock * coreLock;
 
 @end
 
@@ -44,7 +41,6 @@
     {
         KTVHCLogAlloc(self);
         
-        self.lock = [[NSLock alloc] init];
         self.delegateDictionary = [NSMutableDictionary dictionary];
         self.timeoutInterval = 30.0f;
         
@@ -83,7 +79,7 @@
 
 - (NSURLSessionDataTask *)downloadWithRequest:(NSMutableURLRequest *)request delegate:(id <KTVHCDownloadDelegate>)delegate
 {
-    [self.lock lock];
+    [self lock];
     
     KTVHCLogDownload(@"add download begin\n%@\n%@", request.URL.absoluteString, request.allHTTPHeaderFields);
     
@@ -107,7 +103,7 @@
     
     KTVHCLogDownload(@"add download end\n%@\n%@", request.URL.absoluteString, request.allHTTPHeaderFields);
     
-    [self.lock unlock];
+    [self unlock];
     return task;
 }
 
@@ -116,7 +112,7 @@
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
-    [self.lock lock];
+    [self lock];
     
     KTVHCLogDownload(@"complete, %d, %@", (int)error.code, task.originalRequest.URL.absoluteString);
     
@@ -127,12 +123,12 @@
     {
         [self cleanBackgroundTaskAsync];
     }
-    [self.lock unlock];
+    [self unlock];
 }
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
 {
-    [self.lock lock];
+    [self lock];
     
     KTVHCLogDownload(@"receive response\n%@\n%@", response.URL.absoluteString, [(NSHTTPURLResponse *)response allHeaderFields]);
     
@@ -144,22 +140,22 @@
     KTVHCLogDownload(@"response disposition, %d", (int)responseDisposition);
     
     completionHandler(responseDisposition);
-    [self.lock unlock];
+    [self unlock];
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler
 {
-    [self.lock lock];
+    [self lock];
     
     KTVHCLogDownload(@"will perform HTTP redirection\n%@\n%@\n%@\n%@", response.URL.absoluteString, [(NSHTTPURLResponse *)response allHeaderFields], request.URL.absoluteString, request.allHTTPHeaderFields);
 
     completionHandler(request);
-    [self.lock unlock];
+    [self unlock];
 }
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
 {
-    [self.lock lock];
+    [self lock];
     
     KTVHCLogDownload(@"receive data begin, %lld, %@", (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     
@@ -168,7 +164,7 @@
     
     KTVHCLogDownload(@"receive data end, %lld, %@", (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     
-    [self.lock unlock];
+    [self unlock];
 }
 
 
@@ -180,7 +176,7 @@ static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
 {
     [self cleanBackgroundTask];
     
-    [self.lock lock];
+    [self lock];
     if (self.delegateDictionary.count > 0)
     {
         backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -195,7 +191,7 @@ static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
             }
         });
     }
-    [self.lock unlock];
+    [self unlock];
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification
@@ -220,13 +216,26 @@ static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
 - (void)cleanBackgroundTaskAsync
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.lock lock];
+        [self lock];
         if (self.delegateDictionary.count <= 0)
         {
             [self cleanBackgroundTask];
         }
-        [self.lock unlock];
+        [self unlock];
     });
+}
+
+- (void)lock
+{
+    if (!self.coreLock) {
+        self.coreLock = [[NSLock alloc] init];
+    }
+    [self lock];
+}
+
+- (void)unlock
+{
+    [self unlock];
 }
 
 
