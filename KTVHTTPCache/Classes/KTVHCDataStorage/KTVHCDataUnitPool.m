@@ -13,21 +13,16 @@
 #import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
 
-
 @interface KTVHCDataUnitPool () <NSLocking, KTVHCDataUnitFileDelegate>
-
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) KTVHCDataUnitQueue * unitQueue;
 
-
 @end
-
 
 @implementation KTVHCDataUnitPool
 
-
-+ (instancetype)unitPool
++ (instancetype)pool
 {
     static KTVHCDataUnitPool * obj = nil;
     static dispatch_once_t onceToken;
@@ -41,7 +36,6 @@
 {
     if (self = [super init])
     {
-        self.coreLock = [[NSRecursiveLock alloc] init];
         self.unitQueue = [KTVHCDataUnitQueue unitQueueWithArchiverPath:[KTVHCPathTools absolutePathForArchiver]];
         [self.unitQueue.allUnits enumerateObjectsUsingBlock:^(KTVHCDataUnit * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             obj.fileDelegate = self;
@@ -50,20 +44,17 @@
     return self;
 }
 
-
 - (KTVHCDataUnit *)unitWithURLString:(NSString *)URLString
 {
     if (URLString.length <= 0) {
         return nil;
     }
-    
     [self lock];
     NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (!unit)
     {
         KTVHCLogDataUnitPool(@"new unit, %@", URLString);
-        
         unit = [KTVHCDataUnit unitWithURLString:URLString];
         unit.fileDelegate = self;
         [self.unitQueue putUnit:unit];
@@ -93,7 +84,6 @@
     if (URLString.length <= 0) {
         return nil;
     }
-    
     [self lock];
     KTVHCDataCacheItem * cacheItem = nil;
     NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
@@ -146,7 +136,6 @@
     if (URLString.length <= 0) {
         return;
     }
-    
     [self lock];
     NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:URLString];
     KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
@@ -243,62 +232,6 @@
 }
 
 
-#pragma mark - Unit Control
-
-- (void)unit:(NSString *)unitURLString insertUnitItem:(KTVHCDataUnitItem *)unitItem
-{
-    if (unitURLString.length <= 0) {
-        return;
-    }
-    
-    KTVHCLogDataUnitPool(@"insert unit item :%@", unitItem);
-    
-    [self lock];
-    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:unitURLString];
-    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
-    [obj lock];
-    [obj insertUnitItem:unitItem];
-    [self.unitQueue archive];
-    [obj unlock];
-    [self unlock];
-}
-
-- (void)unit:(NSString *)unitURLString updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
-{
-    if (unitURLString.length <= 0) {
-        return;
-    }
-    
-    KTVHCLogDataUnitPool(@"update request header fields\n%@", requestHeaderFields);
-    
-    [self lock];
-    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:unitURLString];
-    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
-    [obj lock];
-    [obj updateRequestHeaderFields:requestHeaderFields];
-    [obj unlock];
-    [self unlock];
-}
-
-- (void)unit:(NSString *)unitURLString updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
-{
-    if (unitURLString.length <= 0) {
-        return;
-    }
-    
-    KTVHCLogDataUnitPool(@"update response header fields\n%@", responseHeaderFields);
-    
-    [self lock];
-    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURLString:unitURLString];
-    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
-    [obj lock];
-    [obj updateResponseHeaderFields:responseHeaderFields];
-    [self.unitQueue archive];
-    [obj unlock];
-    [self unlock];
-}
-
-
 #pragma mark - KTVHCDataUnitFileDelegate
 
 - (void)unitShouldRearchive:(KTVHCDataUnit *)unit
@@ -313,6 +246,9 @@
 
 - (void)lock
 {
+    if (!self.coreLock) {
+        self.coreLock = [[NSRecursiveLock alloc] init];
+    }
     [self.coreLock lock];
 }
 

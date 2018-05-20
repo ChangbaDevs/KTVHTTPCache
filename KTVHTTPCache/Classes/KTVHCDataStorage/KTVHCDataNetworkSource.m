@@ -16,9 +16,8 @@
 
 @interface KTVHCDataNetworkSource () <NSLocking, KTVHCDownloadDelegate>
 
-@property (nonatomic, strong) NSLock * coreLock;
-@property (nonatomic, copy) NSString * path;
 @property (nonatomic, strong) NSError * error;
+@property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, strong) KTVHCDataUnitItem * unitItem;
 @property (nonatomic, strong) NSFileHandle * readingHandle;
 @property (nonatomic, strong) NSFileHandle * writingHandle;
@@ -180,14 +179,12 @@
 - (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
-    [[KTVHCDataUnitPool unitPool] unit:self.request.URL.absoluteString updateResponseHeaderFields:response.headers];
-    NSString * relativePath = [KTVHCPathTools relativePathForUnitItemFileWithURLString:self.request.URL.absoluteString
-                                                                                offset:self.range.start];
-    self.unitItem = [KTVHCDataUnitItem unitItemWithOffset:self.range.start relativePath:relativePath];
-    [[KTVHCDataUnitPool unitPool] unit:self.request.URL.absoluteString insertUnitItem:self.unitItem];
-    self.path = self.unitItem.absolutePath;
-    self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.path];
-    self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.path];
+    self.unitItem = [[KTVHCDataUnitItem alloc] initWithRequest:self.request];
+    KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURLString:self.request.URL.absoluteString];
+    [unit updateResponseHeaderFields:response.headers];
+    [unit insertUnitItem:self.unitItem];
+    self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:self.unitItem.absolutePath];
+    self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.unitItem.absolutePath];
     [self callbackForPrepared];
     [self unlock];
 }
@@ -201,7 +198,7 @@
     }
     [self.writingHandle writeData:data];
     self.downloadLength += data.length;
-    self.unitItem.length = self.downloadLength;
+    [self.unitItem setLength:self.downloadLength];
     KTVHCLogDataNetworkSource(@"receive data, %lld, %llu, %llu", (long long)data.length, self.downloadLength, self.unitItem.length);
     [self callbackForHasAvailableData];
     [self unlock];

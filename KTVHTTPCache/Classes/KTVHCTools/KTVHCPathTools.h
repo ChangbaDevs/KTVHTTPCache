@@ -21,6 +21,11 @@
 + (NSString *)relativePathForCompleteFileWithURLString:(NSString *)URLString;
 + (NSString *)relativePathForUnitItemFileWithURLString:(NSString *)URLString offset:(long long)offset;
 
++ (BOOL)isRelativePath:(NSString *)path;
++ (BOOL)isAbsolutePath:(NSString *)path;
+
++ (NSString *)convertAbsoultePathToRelativePath:(NSString *)path;
+
 + (void)createFileIfNeeded:(NSString *)filePath;
 + (void)createFolderIfNeeded:(NSString *)folderPath;
 

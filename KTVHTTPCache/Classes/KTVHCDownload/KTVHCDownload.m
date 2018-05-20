@@ -163,7 +163,7 @@
                 if (!error) {
                     long long delta = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
                     if (delta > 0) {
-                        [[KTVHCDataUnitPool unitPool] deleteUnitsWithMinSize:delta];
+                        [[KTVHCDataUnitPool pool] deleteUnitsWithMinSize:delta];
                         delta = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
                         if (delta > 0) {
                             error = [KTVHCError errorForNotEnoughDiskSpace:dataResponse.totalLength request:dataResponse.currentLength totalCacheLength:[KTVHCDataStorage storage].totalCacheLength maxCacheLength:[KTVHCDataStorage storage].maxCacheLength];

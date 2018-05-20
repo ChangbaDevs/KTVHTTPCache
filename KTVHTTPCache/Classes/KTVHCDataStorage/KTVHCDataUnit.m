@@ -142,25 +142,24 @@
     [self lock];
     [self.unitItems addObject:unitItem];
     [self sortUnitItems];
-    
     KTVHCLogDataUnit(@"insert unit item, %lld", unitItem.offset);
-    
     [self unlock];
+    [self.fileDelegate unitShouldRearchive:self];
 }
 
 - (void)updateRequestHeaderFields:(NSDictionary *)requestHeaderFields
 {
     self.requestHeaderFields = requestHeaderFields;
-    
     KTVHCLogDataUnit(@"update request\n%@", self.requestHeaderFields);
+    [self.fileDelegate unitShouldRearchive:self];
 }
 
 - (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields
 {
     self.responseHeaderFields = responseHeaderFields;
     [self updateTotalContentLength];
-    
     KTVHCLogDataUnit(@"update response\n%@", self.responseHeaderFields);
+    [self.fileDelegate unitShouldRearchive:self];
 }
 
 - (void)updateTotalContentLength
@@ -416,14 +415,13 @@
             KTVHCLogDataUnit(@"merge files replace unit item");
             
             NSString * relativePath = [KTVHCPathTools relativePathForCompleteFileWithURLString:self.URLString];
-            KTVHCDataUnitItem * finalItem = [KTVHCDataUnitItem unitItemWithOffset:0
-                                                                     relativePath:relativePath];
+            KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:relativePath];
             for (KTVHCDataUnitItem * obj in self.unitItems)
             {
                 [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
             }
             [self.unitItems removeAllObjects];
-            [self.unitItems addObject:finalItem];
+            [self.unitItems addObject:item];
             success = YES;
         }
     }

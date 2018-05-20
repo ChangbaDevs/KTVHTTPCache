@@ -95,6 +95,21 @@
     return rootDirectory;
 }
 
++ (BOOL)isRelativePath:(NSString *)path
+{
+    return ![path hasPrefix:[self basePath]];
+}
+
++ (BOOL)isAbsolutePath:(NSString *)path
+{
+    return [path hasPrefix:[self basePath]];
+}
+
++ (NSString *)convertAbsoultePathToRelativePath:(NSString *)path
+{
+    return [path stringByReplacingOccurrencesOfString:[self basePath] withString:@""];
+}
+
 + (void)createFileIfNeeded:(NSString *)filePath
 {
     if (![filePath hasPrefix:[self basePath]])
