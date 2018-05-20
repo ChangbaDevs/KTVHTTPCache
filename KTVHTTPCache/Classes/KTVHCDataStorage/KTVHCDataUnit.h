@@ -44,7 +44,7 @@
 - (void)updateRequestHeaders:(NSDictionary *)requestHeaders;
 - (void)updateResponseHeaders:(NSDictionary *)responseHeaders totalLength:(long long)totalLength;
 
-@property (nonatomic, assign, readonly) BOOL workingCount;
+@property (nonatomic, assign, readonly) NSInteger workingCount;
 
 - (void)workingRetain;
 - (void)workingRelease;
