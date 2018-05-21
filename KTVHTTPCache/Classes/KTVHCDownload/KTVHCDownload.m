@@ -83,19 +83,19 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     KTVHCLogDealloc(self);
 }
 
-- (NSArray <NSString *> *)availableHeaders
+- (NSArray <NSString *> *)availableHeaderKeys
 {
-    static NSArray <NSString *> * availableHeaders = nil;
+    static NSArray <NSString *> * availableHeaderKeys = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        availableHeaders = @[@"User-Agent",
-                             @"Connection",
-                             @"Accept",
-                             @"Accept-Encoding",
-                             @"Accept-Language",
-                             @"Range"];
+        availableHeaderKeys = @[@"User-Agent",
+                                @"Connection",
+                                @"Accept",
+                                @"Accept-Encoding",
+                                @"Accept-Language",
+                                @"Range"];
     });
-    return availableHeaders;
+    return availableHeaderKeys;
 }
 
 - (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate
@@ -103,7 +103,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [self lock];
     NSMutableURLRequest * HTTPRequest = [NSMutableURLRequest requestWithURL:request.URL];
     [request.headers enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL * stop) {
-        if ([[self availableHeaders] containsObject:key] || [self.whitelistHeaders containsObject:key]) {
+        if ([[self availableHeaderKeys] containsObject:key] || [self.whitelistHeaderKeys containsObject:key]) {
             [HTTPRequest setValue:obj forHTTPHeaderField:key];
         }
     }];

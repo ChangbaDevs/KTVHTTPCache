@@ -78,8 +78,8 @@
 /**
  *  Whitelist Header Fields.
  */
-+ (void)downloadSetWhitelistHeaders:(NSArray <NSString *> *)whitelistHeaders;
-+ (NSArray <NSString *> *)downloadWhitelistHeaders;
++ (void)downloadSetWhitelistHeaderKeys:(NSArray <NSString *> *)whitelistHeaderKeys;
++ (NSArray <NSString *> *)downloadWhitelistHeaderKeys;
 
 /**
  *  Additional Header Fields.
