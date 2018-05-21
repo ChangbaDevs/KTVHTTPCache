@@ -28,8 +28,8 @@
 {
     if (self = [super init])
     {
-        KTVHCLogAlloc(self);
         self.sources = [NSMutableArray array];
+        KTVHCLogAlloc(self);
     }
     return self;
 }
@@ -60,7 +60,6 @@
 
 - (void)setAllSourceDelegate:(id<KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
-    KTVHCLogDataSourceQueue(@"set all sources delegate, %@", delegate);
     for (id <KTVHCDataSourceProtocol> obj in self.sources) {
         if ([obj isKindOfClass:[KTVHCDataFileSource class]]) {
             KTVHCDataFileSource * source = (KTVHCDataFileSource *)obj;
@@ -74,18 +73,18 @@
 
 - (void)sortSources
 {
-    KTVHCLogDataSourceQueue(@"sort sources");
+    KTVHCLogDataSourceQueue(@"%p, Sort sources - Begin\nSources : %@", self, self.sources);
     [self.sources sortUsingComparator:^NSComparisonResult(id <KTVHCDataSourceProtocol> obj1, id <KTVHCDataSourceProtocol> obj2) {
         if (obj1.range.start < obj2.range.start) {
             return NSOrderedAscending;
         }
         return NSOrderedDescending;
     }];
+    KTVHCLogDataSourceQueue(@"%p, Sort sources - End  \nSources : %@", self, self.sources);
 }
 
 - (void)closeAllSource
 {
-    KTVHCLogDataSourceQueue(@"close all sources");
     for (id <KTVHCDataSourceProtocol> obj in self.sources) {
         [obj close];
     }
@@ -101,11 +100,11 @@
     if ([self.sources containsObject:currentSource]) {
         NSUInteger index = [self.sources indexOfObject:currentSource] + 1;
         if (index < self.sources.count) {
-            KTVHCLogDataSourceQueue(@"fetch next source");
+            KTVHCLogDataSourceQueue(@"%p, Fetch next source : %@", self, [self.sources objectAtIndex:index]);
             return [self.sources objectAtIndex:index];
         }
     }
-    KTVHCLogDataSourceQueue(@"fetch netxt source none");
+    KTVHCLogDataSourceQueue(@"%p, Fetch netxt source failed", self);
     return nil;
 }
 
@@ -126,11 +125,12 @@
         for (; index < self.sources.count; index++) {
             id <KTVHCDataSourceProtocol> obj = [self.sources objectAtIndex:index];
             if ([obj isKindOfClass:[KTVHCDataNetworkSource class]]) {
-                KTVHCLogDataSourceQueue(@"fetch next network source : %@", obj);
+                KTVHCLogDataSourceQueue(@"%p, Fetch next network source : %@", self, obj);
                 return obj;
             }
         }
     }
+    KTVHCLogDataSourceQueue(@"%p, Fetch netxt network source failed", self);
     return nil;
 }
 

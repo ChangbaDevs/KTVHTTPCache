@@ -40,6 +40,7 @@
         [self.unitQueue.allUnits enumerateObjectsUsingBlock:^(KTVHCDataUnit * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             obj.fileDelegate = self;
         }];
+        KTVHCLogDataUnitPool(@"%p, Create Pool\nUnits : %@", self, self.unitQueue.allUnits);
     }
     return self;
 }
@@ -54,9 +55,9 @@
     KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (!unit)
     {
-        KTVHCLogDataUnitPool(@"new unit, %@", URL);
         unit = [KTVHCDataUnit unitWithURL:URL];
         unit.fileDelegate = self;
+        KTVHCLogDataUnitPool(@"%p, Insert Unit, %@", self, unit);
         [self.unitQueue putUnit:unit];
         [self.unitQueue archive];
     }
@@ -130,7 +131,7 @@
     NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURL:URL];
     KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
     if (obj && obj.workingCount <= 0) {
-        KTVHCLogDataUnit(@"delete unit 1, %@", URL);
+        KTVHCLogDataUnit(@"%p, Delete Unit\nUnit : %@\nFunc : %s", self, obj, __func__);
         [obj deleteFiles];
         [self.unitQueue popUnit:obj];
         [self.unitQueue archive];
@@ -164,9 +165,9 @@
     }];
     for (KTVHCDataUnit * obj in units) {
         if (obj.workingCount <= 0) {
-            KTVHCLogDataUnitPool(@"delete unit 2, %@", obj.URL);
             [obj lock];
             currentLength += obj.cacheLength;
+            KTVHCLogDataUnit(@"%p, Delete Unit\nUnit : %@\nFunc : %s", self, obj, __func__);
             [obj deleteFiles];
             [obj unlock];
             [self.unitQueue popUnit:obj];
@@ -189,7 +190,7 @@
     NSArray <KTVHCDataUnit *> * units = [self.unitQueue allUnits];
     for (KTVHCDataUnit * obj in units) {
         if (obj.workingCount <= 0) {
-            KTVHCLogDataUnitPool(@"delete unit 2, %@", obj.URL);
+            KTVHCLogDataUnit(@"%p, Delete Unit\nUnit : %@\nFunc : %s", self, obj, __func__);
             [obj deleteFiles];
             [self.unitQueue popUnit:obj];
             needArchive = YES;

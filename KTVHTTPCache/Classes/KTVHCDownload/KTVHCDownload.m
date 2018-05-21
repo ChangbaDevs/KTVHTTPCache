@@ -74,7 +74,6 @@
 - (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate
 {
     [self lock];
-    KTVHCLogDownload(@"add download begin\n%@\n%@", request.URL, request.headers);
     NSMutableURLRequest * HTTPRequest = [NSMutableURLRequest requestWithURL:request.URL];
     static NSArray <NSString *> * availableHeaderKeys = nil;
     static dispatch_once_t onceToken;
@@ -100,8 +99,8 @@
     task.priority = 1.0;
     [self.requestDictionary setObject:request forKey:task];
     [self.delegateDictionary setObject:delegate forKey:task];
+    KTVHCLogDownload(@"%p, Add Request\nrequest : %@\nURL : %@\nheaders : %@\nHTTPRequest headers : %@", self, request, request.URL, request.headers, HTTPRequest.allHTTPHeaderFields);
     [task resume];
-    KTVHCLogDownload(@"add download end\n%@\n%@", request.URL.absoluteString, request.headers);
     [self unlock];
     return task;
 }
@@ -109,7 +108,7 @@
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
     [self lock];
-    KTVHCLogDownload(@"complete, %d, %@", (int)error.code, task.originalRequest.URL.absoluteString);
+    KTVHCLogDownload(@"%p, Complete\nError : %@", self, error);
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
     NSError * cancelError = [self.errorDictionary objectForKey:task];
     if (cancelError) {
@@ -128,10 +127,10 @@
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
 {
     [self lock];
-    KTVHCLogDownload(@"receive response\n%@\n%@", response.URL.absoluteString, [(NSHTTPURLResponse *)response allHeaderFields]);
     NSHTTPURLResponse * HTTPResponse = (NSHTTPURLResponse *)response;
     KTVHCDataRequest * dataRequest = [self.requestDictionary objectForKey:dataTask];
     KTVHCDataResponse * dataResponse = [[KTVHCDataResponse alloc] initWithURL:dataRequest.URL headers:HTTPResponse.allHeaderFields];
+    KTVHCLogDownload(@"%p, Receive response\nrequest : %@\nresponse : %@\nHTTPResponse : %@", self, dataRequest, dataResponse, [(NSHTTPURLResponse *)response allHeaderFields]);
     NSError * error = nil;
     if (!error) {
         if (HTTPResponse.statusCode > 400) {
@@ -171,6 +170,7 @@
         }
     }
     if (error) {
+        KTVHCLogDownload(@"%p, Invaild response\nError : %@", self, error);
         [self.errorDictionary setObject:error forKey:dataTask];
         completionHandler(NSURLSessionResponseCancel);
     } else {
@@ -184,7 +184,7 @@
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler
 {
     [self lock];
-    KTVHCLogDownload(@"will perform HTTP redirection\n%@\n%@\n%@\n%@", response.URL.absoluteString, [(NSHTTPURLResponse *)response allHeaderFields], request.URL.absoluteString, request.allHTTPHeaderFields);
+    KTVHCLogDownload(@"%p, Perform HTTP redirection\nresponse : %@\nrequest : %@", self, response, request);
     completionHandler(request);
     [self unlock];
 }
@@ -192,10 +192,10 @@
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
 {
     [self lock];
-    KTVHCLogDownload(@"receive data begin, %lld, %@", (long long)data.length, dataTask.originalRequest.URL.absoluteString);
+    KTVHCLogDownload(@"%p, Receive data - Begin\nLength : %lld\nURL : %@", self, (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
     [delegate download:self didReceiveData:data];
-    KTVHCLogDownload(@"receive data end, %lld, %@", (long long)data.length, dataTask.originalRequest.URL.absoluteString);
+    KTVHCLogDownload(@"%p, Receive data - End\nLength : %lld\nURL : %@", self, (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     [self unlock];
 }
 

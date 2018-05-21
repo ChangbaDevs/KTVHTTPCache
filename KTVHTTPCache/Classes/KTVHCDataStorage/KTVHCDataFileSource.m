@@ -28,7 +28,7 @@
         _range = range;
         _readRange = readRange;
         KTVHCLogAlloc(self);
-        KTVHCLogDataFileSource(@"did setup, %@, %@", KTVHCStringFromRange(range), KTVHCStringFromRange(readRange));
+        KTVHCLogDataFileSource(@"%p, Create file source\npath : %@\nrange : %@\nreadRange : %@", self, path, KTVHCStringFromRange(range), KTVHCStringFromRange(readRange));
     }
     return self;
 }
@@ -46,18 +46,17 @@
         return;
     }
     _didPrepared = YES;
-    KTVHCLogDataFileSource(@"call prepare");
+    KTVHCLogDataFileSource(@"%p, Call prepare", self);
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.path];
     @try {
         [self.readingHandle seekToFileOffset:self.readRange.start];
     } @catch (NSException *exception) {
-        KTVHCLogDataSourcer(@"seek file exception, %@, %@, %@",
-                            exception.name,
-                            exception.reason,
-                            exception.userInfo);
+        KTVHCLogDataFileSource(@"%p, Seek file exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
     }
     if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepared:)]) {
+        KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            KTVHCLogDataFileSource(@"%p, Callback for prepared - End", self);
             [self.delegate fileSourceDidPrepared:self];
         }];
     }
@@ -72,7 +71,7 @@
         return;
     }
     _didClosed = YES;
-    KTVHCLogDataFileSource(@"call close");
+    KTVHCLogDataFileSource(@"%p, Call close", self);
     [self.readingHandle closeFile];
     self.readingHandle = nil;
     [self unlock];
@@ -93,10 +92,9 @@
     length = (NSUInteger)MIN(readLength - self.readedLength, length);
     NSData * data = [self.readingHandle readDataOfLength:length];
     self.readedLength += data.length;
-    KTVHCLogDataFileSource(@"read data : %lld, %lld, %lld", (long long)data.length, self.readedLength, readLength);
-    if (self.readedLength >= readLength)
-    {
-        KTVHCLogDataFileSource(@"read data finished");
+    KTVHCLogDataFileSource(@"%p, Read data : %lld, %lld, %lld", self, (long long)data.length, self.readedLength, readLength);
+    if (self.readedLength >= readLength) {
+        KTVHCLogDataFileSource(@"%p, Read data did finished", self);
         [self.readingHandle closeFile];
         self.readingHandle = nil;
         _didFinished = YES;

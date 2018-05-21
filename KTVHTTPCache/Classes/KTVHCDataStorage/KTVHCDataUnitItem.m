@@ -73,6 +73,7 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         _createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
         _relativePath = [aDecoder decodeObjectForKey:@"relativePath"];
         _offset = [[aDecoder decodeObjectForKey:@"offset"] longLongValue];
@@ -97,13 +98,14 @@
 {
     _absolutePath = [KTVHCPathTools absolutePathWithRelativePath:self.relativePath];
     self.length = [KTVHCPathTools sizeOfItemAtFilePath:self.absolutePath];
+    KTVHCLogDataUnitItem(@"%p, Create Unit Item\nabsolutePath : %@\nrelativePath : %@\nOffset : %lld\nLength : %lld", self, self.absolutePath, self.relativePath, self.offset, self.length);
 }
 
 - (void)setLength:(long long)length
 {
     [self lock];
     _length = length;
-    KTVHCLogDataUnitItem(@"set length, %lld", length);
+    KTVHCLogDataUnitItem(@"%p, Set length : %lld", self, length);
     [self unlock];
 }
 

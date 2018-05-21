@@ -19,6 +19,7 @@
         _headers = headers;
         [self prepare];
         KTVHCLogAlloc(self);
+        KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld", self, self.URL, self.headers, self.contentType, self.totalLength, self.currentLength);
     }
     return self;
 }

@@ -16,14 +16,12 @@
 {
     if (self = [super init])
     {
-        KTVHCLogAlloc(self);
-        
         _URL = URL;
         _headers = headers;
         _range = KTVHCRangeWithHeaderValue(self.headers[@"Range"]);
         _acceptContentTypes = [KTVHCContentType defaultAcceptContentTypes];
-        
-        KTVHCLogDataRequest(@"did setup\n%@\nrange, %@, \n%@", self.URL, KTVHCStringFromRange(self.range), self.headers);
+        KTVHCLogAlloc(self);
+        KTVHCLogDataRequest(@"%p Create data request\nURL : %@\nHeaders : %@\nRange : %@\nAcceptContentTypes : %@", self, self.URL, self.headers, KTVHCStringFromRange(self.range), self.acceptContentTypes);
     }
     return self;
 }
