@@ -8,16 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-
 typedef NS_ENUM(NSUInteger, KTVHCHTTPURLType)
 {
     KTVHCHTTPURLTypePing,
     KTVHCHTTPURLTypeContent,
 };
 
-
 @interface KTVHCHTTPURL : NSObject
-
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -31,6 +28,5 @@ typedef NS_ENUM(NSUInteger, KTVHCHTTPURLType)
 
 - (NSURL *)proxyURLWithServerPort:(NSInteger)serverPort;
 - (NSString *)proxyURLStringWithServerPort:(NSInteger)serverPort;
-
 
 @end

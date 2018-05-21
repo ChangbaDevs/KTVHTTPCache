@@ -12,17 +12,13 @@
 
 @class KTVHCHTTPConnection;
 
-
 KTVHTTPCACHE_EXTERN NSString * const KTVHCHTTPResponsePingTokenString;
 
-
 @interface KTVHCHTTPResponsePing : NSObject <HTTPResponse>
-
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
 + (instancetype)responseWithConnection:(KTVHCHTTPConnection *)connection;
-
 
 @end

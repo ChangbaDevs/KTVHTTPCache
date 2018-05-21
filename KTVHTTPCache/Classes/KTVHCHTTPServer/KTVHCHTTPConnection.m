@@ -14,9 +14,7 @@
 #import "KTVHCDataRequest.h"
 #import "KTVHCLog.h"
 
-
 @implementation KTVHCHTTPConnection
-
 
 + (NSString *)responsePingTokenString
 {
@@ -37,35 +35,27 @@
     KTVHCLogDealloc(self);
 }
 
-
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
-    KTVHCLogHTTPConnection(@"receive request, %@, %@", method, path);
-    
+    KTVHCLogHTTPConnection(@"%p, Receive request\nmethod : %@\npath : %@", self, method, path);
     KTVHCHTTPURL * URL = [KTVHCHTTPURL URLWithServerURIString:path];
-    
-    switch (URL.type)
-    {
+    switch (URL.type) {
         case KTVHCHTTPURLTypePing:
         {
             KTVHCHTTPResponsePing * currentResponse = [KTVHCHTTPResponsePing responseWithConnection:self];
-            
             return currentResponse;
         }
         case KTVHCHTTPURLTypeContent:
         {
             KTVHCHTTPRequest * currentRequest = [KTVHCHTTPRequest requestWithOriginalURLString:URL.originalURLString];
-            
             currentRequest.isHeaderComplete = request.isHeaderComplete;
             currentRequest.allHTTPHeaderFields = request.allHeaderFields;
             currentRequest.URL = request.url;
             currentRequest.method = request.method;
             currentRequest.statusCode = request.statusCode;
             currentRequest.version = request.version;
-            
             KTVHCDataRequest * dataRequest = [currentRequest dataRequest];
             KTVHCHTTPResponse * currentResponse = [KTVHCHTTPResponse responseWithConnection:self dataRequest:dataRequest];
-            
             return currentResponse;
         }
     }

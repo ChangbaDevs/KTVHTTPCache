@@ -9,11 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCHTTPHeader.h"
 
-
 @interface KTVHCHTTPConnection : HTTPConnection
 
-
 + (NSString *)responsePingTokenString;
-
 
 @end
