@@ -24,7 +24,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self setupHTTPCache];
@@ -35,12 +34,6 @@
 - (void)setupHTTPCache
 {
     [KTVHTTPCache logSetConsoleLogEnable:YES];
-    [self startHTTPServer];
-    [self configurationFilters];
-}
-
-- (void)startHTTPServer
-{
     NSError * error;
     [KTVHTTPCache proxyStart:&error];
     if (error) {
@@ -48,30 +41,14 @@
     } else {
         NSLog(@"Proxy Start Success");
     }
-}
-
-- (void)configurationFilters
-{
-#if 0
-    // URL Filter
-    [KTVHTTPCache cacheSetURLFilterForArchive:^NSString *(NSString * originalURLString) {
-        NSLog(@"URL Filter reviced URL, %@", originalURLString);
-        return originalURLString;
+    [KTVHTTPCache tokenSetURLFilter:^NSURL * (NSURL * URL) {
+        NSLog(@"URL Filter reviced URL : %@", URL);
+        return URL;
     }];
-#endif
-    
-#if 0
-    // Content-Type Filter
-    [KTVHTTPCache cacheSetContentTypeFilterForResponseVerify:^BOOL(NSString * URLString,
-                                                                   NSString * contentType,
-                                                                   NSArray<NSString *> * defaultAcceptContentTypes) {
-        NSLog(@"Content-Type Filter reviced Content-Type, %@", contentType);
-        if ([defaultAcceptContentTypes containsObject:contentType]) {
-            return YES;
-        }
+    [KTVHTTPCache downloadSetUnsupportContentTypeFilter:^BOOL(NSURL * URL, NSString * contentType) {
+        NSLog(@"Unsupport Content-Type Filter reviced URL : %@, %@", URL, contentType);
         return NO;
     }];
-#endif
 }
 
 - (void)reloadData
@@ -87,9 +64,6 @@
     self.medaiItems = @[item1, item2, item3, item4];
     [self.tableView reloadData];
 }
-
-
-#pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -111,12 +85,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * URLString = [self.medaiItems objectAtIndex:indexPath.row].URLString;
-    
-    if (URLString.length <= 0) {
-        return;
-    }
-    
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    /****** Core *******/
     NSString * proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     
     MediaPlayerViewController * viewController = [[MediaPlayerViewController alloc] initWithURLString:proxyURLString];
