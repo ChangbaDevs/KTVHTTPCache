@@ -14,11 +14,11 @@
 
 #import <UIKit/UIKit.h>
 
-NSString * const KTVHCContentTypeVideo = @"video/";
-NSString * const KTVHCContentTypeAudio = @"audio/";
-NSString * const KTVHCContentTypeApplicationMPEG4 = @"application/mp4";
+NSString * const KTVHCContentTypeVideo                  = @"video/";
+NSString * const KTVHCContentTypeAudio                  = @"audio/";
+NSString * const KTVHCContentTypeApplicationMPEG4       = @"application/mp4";
 NSString * const KTVHCContentTypeApplicationOctetStream = @"application/octet-stream";
-NSString * const KTVHCContentTypeBinaryOctetStream = @"binary/octet-stream";
+NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream";
 
 @interface KTVHCDownload () <NSURLSessionDataDelegate, NSLocking>
 
