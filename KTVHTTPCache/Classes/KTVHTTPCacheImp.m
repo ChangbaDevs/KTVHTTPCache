@@ -15,13 +15,7 @@
 
 @implementation KTVHTTPCache
 
-
 #pragma mark - HTTP Server
-
-+ (BOOL)proxyIsRunning
-{
-    return [KTVHCHTTPServer server].running;
-}
 
 + (void)proxyStart:(NSError * __autoreleasing *)error
 {
@@ -31,6 +25,11 @@
 + (void)proxyStop
 {
     [[KTVHCHTTPServer server] stop];
+}
+
++ (BOOL)proxyIsRunning
+{
+    return [KTVHCHTTPServer server].running;
 }
 
 + (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString
@@ -48,7 +47,6 @@
 {
     return [[KTVHCHTTPServer server] URLStringWithOriginalURLString:URLString];
 }
-
 
 #pragma mark - Data Storage
 
@@ -72,26 +70,26 @@
     return [[KTVHCDataStorage storage] totalCacheLength];
 }
 
-+ (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItem
-{
-    return [[KTVHCDataStorage storage] allCacheItem];
-}
-
 + (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString
 {
     NSURL * URL = [NSURL URLWithString:URLString];
     return [[KTVHCDataStorage storage] cacheItemWithURL:URL];
 }
 
-+ (void)cacheDeleteAllCache
++ (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItem
 {
-    [[KTVHCDataStorage storage] deleteAllCache];
+    return [[KTVHCDataStorage storage] allCacheItem];
 }
 
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString
 {
     NSURL * URL = [NSURL URLWithString:URLString];
     [[KTVHCDataStorage storage] deleteCacheWithURL:URL];
+}
+
++ (void)cacheDeleteAllCache
+{
+    [[KTVHCDataStorage storage] deleteAllCache];
 }
 
 
@@ -102,17 +100,16 @@
     [KTVHCURLTools URLTools].URLFilter = URLFilter;
 }
 
-
 #pragma mark - Download
-
-+ (NSTimeInterval)downloadTimeoutInterval
-{
-    return [KTVHCDownload download].timeoutInterval;
-}
 
 + (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval
 {
     [KTVHCDownload download].timeoutInterval = timeoutInterval;
+}
+
++ (NSTimeInterval)downloadTimeoutInterval
+{
+    return [KTVHCDownload download].timeoutInterval;
 }
 
 + (void)downloadSetWhitelistHeaders:(NSArray <NSString *> *)whitelistHeaders
@@ -125,14 +122,14 @@
     return [KTVHCDownload download].whitelistHeaders;
 }
 
-+ (NSDictionary <NSString *, NSString *> *)downloadAdditionalHeaders
-{
-    return [KTVHCDownload download].additionalHeaders;
-}
-
 + (void)downloadSetAdditionalHeaders:(NSDictionary <NSString *, NSString *> *)additionalHeaders
 {
     [KTVHCDownload download].additionalHeaders = additionalHeaders;
+}
+
++ (NSDictionary <NSString *, NSString *> *)downloadAdditionalHeaders
+{
+    return [KTVHCDownload download].additionalHeaders;
 }
 
 + (void)downloadSetAcceptContentTypes:(NSArray <NSString *> *)acceptContentTypes
@@ -150,20 +147,13 @@
     [KTVHCDownload download].unsupportContentTypeFilter = contentTypeFilter;
 }
 
-
 #pragma mark - Log
 
 + (void)logAddLog:(NSString *)log
 {
-    if (log.length > 0)
-    {
+    if (log.length > 0) {
         KTVHCLogCommon(@"%@", log);
     }
-}
-
-+ (BOOL)logConsoleLogEnable
-{
-    return [KTVHCLog log].consoleLogEnable;
 }
 
 + (void)logSetConsoleLogEnable:(BOOL)consoleLogEnable
@@ -171,14 +161,14 @@
     [KTVHCLog log].consoleLogEnable = consoleLogEnable;
 }
 
++ (BOOL)logConsoleLogEnable
+{
+    return [KTVHCLog log].consoleLogEnable;
+}
+
 + (BOOL)logRecordLogEnable
 {
     return [KTVHCLog log].recordLogEnable;
-}
-
-+ (void)logSetRecordLogEnable:(BOOL)recordLogEnable
-{
-    [KTVHCLog log].recordLogEnable = recordLogEnable;
 }
 
 + (NSString *)logRecordLogFilePath
@@ -186,14 +176,14 @@
     return [KTVHCLog log].recordLogFilePath;
 }
 
++ (void)logSetRecordLogEnable:(BOOL)recordLogEnable
+{
+    [KTVHCLog log].recordLogEnable = recordLogEnable;
+}
+
 + (void)logDeleteRecordLog
 {
     [[KTVHCLog log] deleteRecordLog];
-}
-
-+ (NSError *)logLastError
-{
-    return [[KTVHCLog log] lastError];
 }
 
 + (NSArray<NSError *> *)logAllErrors
@@ -201,5 +191,9 @@
     return [[KTVHCLog log] allErrors];
 }
 
++ (NSError *)logLastError
+{
+    return [[KTVHCLog log] lastError];
+}
 
 @end

@@ -12,16 +12,17 @@
 @class KTVHCDataRequest;
 @class KTVHCDataCacheItem;
 
-
 @interface KTVHTTPCache : NSObject
-
 
 #pragma mark - HTTP Server
 
-+ (BOOL)proxyIsRunning;
-
+/**
+ *  Start & Stop HTTP Server.
+ */
 + (void)proxyStart:(NSError **)error;
 + (void)proxyStop;
+
++ (BOOL)proxyIsRunning;
 
 /**
  *  If the content of the URLString is finish cache, return the File URL for the content.
@@ -34,37 +35,40 @@
  */
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString;
 
-
 #pragma mark - Data Storage
 
 /**
- *  Data Reader
+ *  Data Reader.
  */
 + (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
- *  Cache Control
+ *  Cache State.
  */
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength;
 + (long long)cacheMaxCacheLength;
 + (long long)cacheTotalCacheLength;
 
+/**
+ *  Cache Item.
+ */
 + (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString;
 + (NSArray <KTVHCDataCacheItem *> *)cacheAllCacheItem;
 
+/**
+ *  Delete Cache.
+ */
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
 + (void)cacheDeleteAllCache;
-
 
 #pragma mark - Token
 
 /**
- *  URL Filter
+ *  URL Filter.
  *
  *  High frequency call. Make it simple.
  */
 + (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter;
-
 
 #pragma mark - Download
 
@@ -95,25 +99,24 @@
  */
 + (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL * URL, NSString * contentType))contentTypeFilter;
 
-
 #pragma mark - Log
 
 /**
- *  Console & Record
+ *  Console & Record.
  */
 + (void)logAddLog:(NSString *)log;
 
 /**
- *  DEBUG & RELEASE : default is NO.
+ *  DEBUG & RELEASE : Default is NO.
  */
-+ (BOOL)logConsoleLogEnable;
 + (void)logSetConsoleLogEnable:(BOOL)consoleLogEnable;
++ (BOOL)logConsoleLogEnable;
 
 /**
- *  DEBUG & RELEASE : default is NO.
+ *  DEBUG & RELEASE : Default is NO.
  */
-+ (BOOL)logRecordLogEnable;
 + (void)logSetRecordLogEnable:(BOOL)recordLogEnable;
++ (BOOL)logRecordLogEnable;
 
 + (NSString *)logRecordLogFilePath;      // nullable
 + (void)logDeleteRecordLog;
@@ -121,8 +124,7 @@
 /**
  *  Error
  */
-+ (NSError *)logLastError;
 + (NSArray <NSError *> *)logAllErrors;
-
++ (NSError *)logLastError;
 
 @end
