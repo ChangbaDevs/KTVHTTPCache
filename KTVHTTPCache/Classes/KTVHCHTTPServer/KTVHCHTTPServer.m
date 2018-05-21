@@ -97,7 +97,7 @@
 {
     if (self.running && [URLString hasPrefix:@"http"]) {
         if ([self ping]) {
-            KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithOriginalURLString:URLString];
+            KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URLString];
             NSString * ret = [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
             KTVHCLogHTTPServer(@"%p, Return proxy URL\n%@", self, ret);
             return ret;
@@ -106,7 +106,7 @@
             BOOL success = [self restart];
             if (success) {
                 if ([self ping]) {
-                    KTVHCHTTPURL * url = [KTVHCHTTPURL URLWithOriginalURLString:URLString];
+                    KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URLString];
                     return [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
                 } else {
                     KTVHCLogHTTPServer(@"%p, Ping failed 2", self);
@@ -134,7 +134,7 @@
         if (self.pinging) {
             [self.pingCondition wait];
         } else {
-            NSURL * pingURL = [[KTVHCHTTPURL URLForPing] proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
+            NSURL * pingURL = [[[KTVHCHTTPURL alloc] initForPing] proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
             self.pingDataTask = [self.pingSession dataTaskWithURL:pingURL
                                       completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                           if (!error && data.length > 0) {

@@ -38,15 +38,13 @@
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
     KTVHCLogHTTPConnection(@"%p, Receive request\nmethod : %@\npath : %@", self, method, path);
-    KTVHCHTTPURL * URL = [KTVHCHTTPURL URLWithServerURIString:path];
+    KTVHCHTTPURL * URL = [[KTVHCHTTPURL alloc] initWithServerURIString:path];
     switch (URL.type) {
-        case KTVHCHTTPURLTypePing:
-        {
+        case KTVHCHTTPURLTypePing: {
             KTVHCHTTPResponsePing * currentResponse = [KTVHCHTTPResponsePing responseWithConnection:self];
             return currentResponse;
         }
-        case KTVHCHTTPURLTypeContent:
-        {
+        case KTVHCHTTPURLTypeContent: {
             KTVHCHTTPRequest * currentRequest = [KTVHCHTTPRequest requestWithOriginalURLString:URL.originalURLString];
             currentRequest.isHeaderComplete = request.isHeaderComplete;
             currentRequest.allHTTPHeaderFields = request.allHeaderFields;

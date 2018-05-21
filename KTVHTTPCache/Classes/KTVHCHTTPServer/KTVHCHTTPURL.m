@@ -25,12 +25,7 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
 
 @implementation KTVHCHTTPURL
 
-+ (KTVHCHTTPURL *)URLForPing
-{
-    return [[self alloc] initForPing];
-}
-
-- (KTVHCHTTPURL *)initForPing
+- (instancetype)initForPing
 {
     if (self = [super init])
     {
@@ -40,31 +35,6 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
         KTVHCLogHTTPURL(@"%p, Ping URL\n%@", self, self.originalURLString);
     }
     return self;
-}
-
-+ (KTVHCHTTPURL *)URLWithOriginalURLString:(NSString *)originalURLString
-{
-    return [[self alloc] initWithOriginalURLString:originalURLString];
-}
-
-- (instancetype)initWithOriginalURLString:(NSString *)originalURLString
-{
-    if (self = [super init])
-    {
-        KTVHCLogAlloc(self);
-        self.type = KTVHCHTTPURLTypeContent;
-        self.originalURLString = [originalURLString copy];
-        KTVHCLogHTTPURL(@"%p, Content URL\n%@", self, self.originalURLString);
-    }
-    return self;
-}
-
-
-#pragma mark - Server URI
-
-+ (KTVHCHTTPURL *)URLWithServerURIString:(NSString *)serverURIString
-{
-    return [[self alloc] initWithServerURIString:serverURIString];
 }
 
 - (instancetype)initWithServerURIString:(NSString *)serverURIString
@@ -98,6 +68,18 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
             }
         }
         KTVHCLogHTTPURL(@"%p, Server URI\n%@\n%@", self, serverURIString, self.originalURLString);
+    }
+    return self;
+}
+
+- (instancetype)initWithOriginalURLString:(NSString *)originalURLString
+{
+    if (self = [super init])
+    {
+        KTVHCLogAlloc(self);
+        self.type = KTVHCHTTPURLTypeContent;
+        self.originalURLString = [originalURLString copy];
+        KTVHCLogHTTPURL(@"%p, Content URL\n%@", self, self.originalURLString);
     }
     return self;
 }

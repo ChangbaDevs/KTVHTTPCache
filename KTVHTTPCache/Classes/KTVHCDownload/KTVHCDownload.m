@@ -15,7 +15,7 @@
 
 @interface KTVHCDownload () <NSURLSessionDataDelegate, NSLocking>
 
-@property (nonatomic, strong) NSRecursiveLock * coreLock;
+@property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, strong) NSURLSession * session;
 @property (nonatomic, strong) NSOperationQueue * sessionDelegateQueue;
 @property (nonatomic, strong) NSURLSessionConfiguration * sessionConfiguration;
@@ -202,7 +202,7 @@
 - (void)lock
 {
     if (!self.coreLock) {
-        self.coreLock = [[NSRecursiveLock alloc] init];
+        self.coreLock = [[NSLock alloc] init];
     }
     [self.coreLock lock];
 }

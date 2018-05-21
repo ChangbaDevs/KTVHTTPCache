@@ -19,9 +19,9 @@ typedef NS_ENUM(NSUInteger, KTVHCHTTPURLType)
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (KTVHCHTTPURL *)URLForPing;
-+ (KTVHCHTTPURL *)URLWithServerURIString:(NSString *)serverURIString;
-+ (KTVHCHTTPURL *)URLWithOriginalURLString:(NSString *)originalURLString;
+- (instancetype)initForPing;
+- (instancetype)initWithServerURIString:(NSString *)serverURIString;
+- (instancetype)initWithOriginalURLString:(NSString *)originalURLString;
 
 @property (nonatomic, assign, readonly) KTVHCHTTPURLType type;
 @property (nonatomic, copy, readonly) NSString * originalURLString;

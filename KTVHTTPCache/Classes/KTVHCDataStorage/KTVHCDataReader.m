@@ -202,18 +202,24 @@
 
 - (void)sourcerDidPrepared:(KTVHCDataSourcer *)sourcer
 {
+    [self lock];
     [self callbackForPrepared];
+    [self unlock];
 }
 
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didReceiveResponse:(KTVHCDataResponse *)response
 {
+    [self lock];
     [self.unit updateResponseHeaders:response.headers totalLength:response.totalLength];
     [self callbackForPrepared];
+    [self unlock];
 }
 
 - (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
 {
+    [self lock];
     if (self.didClosed) {
+        [self unlock];
         return;
     }
     if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
@@ -223,14 +229,18 @@
             [self.delegate readerHasAvailableData:self];
         }];
     }
+    [self unlock];
 }
 
 - (void)sourcer:(KTVHCDataSourcer *)sourcer didFailed:(NSError *)error
 {
+    [self lock];
     if (self.didClosed) {
+        [self unlock];
         return;
     }
     if (self.error) {
+        [self unlock];
         return;
     }
     _error = error;
@@ -245,6 +255,7 @@
             }];
         }
     }
+    [self unlock];
 }
 
 - (void)lock
