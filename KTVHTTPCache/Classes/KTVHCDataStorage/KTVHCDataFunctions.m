@@ -11,10 +11,8 @@
 KTVHCDataRequest * KTVHCCopyRequestIfNeeded(KTVHCDataRequest * request, KTVHCRange range)
 {
     if (!KTVHCEqualRanges(request.range, range)) {
-        NSURL * URL = request.URL;
         NSDictionary * headers = KTVHCRangeFillToRequestHeaders(range, request.headers);
-        KTVHCDataRequest * obj = [[KTVHCDataRequest alloc] initWithURL:URL headers:headers];
-        obj.acceptContentTypes = request.acceptContentTypes;
+        KTVHCDataRequest * obj = [[KTVHCDataRequest alloc] initWithURL:request.URL headers:headers];
         return obj;
     }
     return request;

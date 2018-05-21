@@ -7,11 +7,18 @@
 //
 
 #import "KTVHCDownload.h"
-#import <UIKit/UIKit.h>
-#import "KTVHCLog.h"
-#import "KTVHCError.h"
-#import "KTVHCDataStorage.h"
 #import "KTVHCDataUnitPool.h"
+#import "KTVHCDataStorage.h"
+#import "KTVHCError.h"
+#import "KTVHCLog.h"
+
+#import <UIKit/UIKit.h>
+
+NSString * const KTVHCContentTypeVideo = @"video/";
+NSString * const KTVHCContentTypeAudio = @"audio/";
+NSString * const KTVHCContentTypeApplicationMPEG4 = @"application/mp4";
+NSString * const KTVHCContentTypeApplicationOctetStream = @"application/octet-stream";
+NSString * const KTVHCContentTypeBinaryOctetStream = @"binary/octet-stream";
 
 @interface KTVHCDownload () <NSURLSessionDataDelegate, NSLocking>
 
@@ -54,6 +61,11 @@
         self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
                                                      delegate:self
                                                 delegateQueue:self.sessionDelegateQueue];
+        self.acceptContentTypes = @[KTVHCContentTypeVideo,
+                                    KTVHCContentTypeAudio,
+                                    KTVHCContentTypeApplicationMPEG4,
+                                    KTVHCContentTypeApplicationOctetStream,
+                                    KTVHCContentTypeBinaryOctetStream];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationDidEnterBackground:)
                                                      name:UIApplicationDidEnterBackgroundNotification
@@ -139,14 +151,13 @@
         if (!error) {
             BOOL contentTypeVaild = NO;
             if (dataResponse.contentType.length > 0) {
-                if (self.contentTypeFilter) {
-                    contentTypeVaild = self.contentTypeFilter(dataRequest.URL.absoluteString, dataResponse.contentType, dataRequest.acceptContentTypes);
-                } else {
-                    for (NSString * obj in dataRequest.acceptContentTypes) {
-                        if ([[dataResponse.contentType lowercaseString] containsString:[obj lowercaseString]]) {
-                            contentTypeVaild = YES;
-                        }
+                for (NSString * obj in self.acceptContentTypes) {
+                    if ([[dataResponse.contentType lowercaseString] containsString:[obj lowercaseString]]) {
+                        contentTypeVaild = YES;
                     }
+                }
+                if (!contentTypeVaild && self.unsupportContentTypeFilter) {
+                    contentTypeVaild = self.unsupportContentTypeFilter(dataRequest.URL, dataResponse.contentType);
                 }
             }
             if (!contentTypeVaild) {

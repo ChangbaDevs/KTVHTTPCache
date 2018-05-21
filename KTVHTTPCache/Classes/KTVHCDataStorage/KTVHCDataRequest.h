@@ -20,6 +20,4 @@
 @property (nonatomic, copy, readonly) NSDictionary * headers;
 @property (nonatomic, assign, readonly) KTVHCRange range;
 
-@property (nonatomic, copy) NSArray * acceptContentTypes;
-
 @end

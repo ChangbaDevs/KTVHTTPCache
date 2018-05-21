@@ -16,10 +16,6 @@
 @interface KTVHTTPCache : NSObject
 
 
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
-
-
 #pragma mark - HTTP Server
 
 + (BOOL)proxyIsRunning;
@@ -51,58 +47,47 @@
  */
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength;
 + (long long)cacheMaxCacheLength;
-
 + (long long)cacheTotalCacheLength;
 
-+ (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem;
-+ (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString;
++ (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString;
++ (NSArray <KTVHCDataCacheItem *> *)cacheAllCacheItem;
 
-+ (void)cacheDeleteAllCache;
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
++ (void)cacheDeleteAllCache;
 
 
-#pragma mark - Data Stroage Filters
+#pragma mark - Token
 
 /**
  *  URL Filter
  *
  *  High frequency call. Make it simple.
  */
-+ (void)cacheSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter;
-
-/**
- *  Content-Type Filter
- *
- *  Used to verify the HTTP Response Content-Type.
- *  The return value of block to decide whether to continue to load resources.
- *  The defaultAcceptContentTypes is copy from acceptContentTypes of the KTVHCDataRequest.
- */
-+ (void)cacheSetContentTypeFilterForResponseVerify:(BOOL(^)(NSString * URLString,
-                                                            NSString * contentType,
-                                                            NSArray <NSString *> * defaultAcceptContentTypes))contentTypeFilterBlock;
-
-
-#pragma mark - Accept Content Types
-
-/**
- *  Default Accept Context Types
- *
- *  If 'cacheSetContentTypeFilterForResponseVerify' is set, this method will be invalid.
- */
-+ (void)cacheSetDefaultAcceptContentTypes:(NSArray <NSString *> *)defaultAcceptContentTypes;
-+ (NSArray <NSString *> *)cacheDefaultAcceptContentTypes;
++ (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter;
 
 
 #pragma mark - Download
 
-+ (NSTimeInterval)downloadTimeoutInterval;
 + (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval;
++ (NSTimeInterval)downloadTimeoutInterval;
 
 /**
  *  Common Header Fields.
  */
 + (NSDictionary <NSString *, NSString *> *)downloadCommonHeaderFields;
 + (void)downloadSetCommonHeaderFields:(NSDictionary <NSString *, NSString *> *)commonHeaderFields;
+
+/**
+ *  Default values: 'video/x', 'audio/x', 'application/mp4', 'application/octet-stream', 'binary/octet-stream'
+ */
++ (void)downloadSetAcceptContentTypes:(NSArray <NSString *> *)acceptContentTypes;
++ (NSArray <NSString *> *)downloadAcceptContentTypes;
+
+/**
+ *  If the receive response's Content-Type not included in acceptContentTypes, this method will be called.
+ *  The return value of block to decide whether to continue to load resources. Otherwise the HTTP task will be rejected.
+ */
++ (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL * URL, NSString * contentType))contentTypeFilter;
 
 
 #pragma mark - Log

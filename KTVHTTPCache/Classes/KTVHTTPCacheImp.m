@@ -9,7 +9,6 @@
 #import "KTVHTTPCacheImp.h"
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
-#import "KTVHCContentType.h"
 #import "KTVHCDownload.h"
 #import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
@@ -73,12 +72,12 @@
     return [[KTVHCDataStorage storage] totalCacheLength];
 }
 
-+ (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem
++ (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItem
 {
     return [[KTVHCDataStorage storage] allCacheItem];
 }
 
-+ (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString
++ (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString
 {
     NSURL * URL = [NSURL URLWithString:URLString];
     return [[KTVHCDataStorage storage] cacheItemWithURL:URL];
@@ -96,31 +95,11 @@
 }
 
 
-#pragma mark - Data Stroage Filters
+#pragma mark - URL
 
 + (void)cacheSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter
 {
     [KTVHCURLTools URLTools].URLFilter = URLFilter;
-}
-
-+ (void)cacheSetContentTypeFilterForResponseVerify:(BOOL (^)(NSString *,
-                                                             NSString *,
-                                                             NSArray <NSString *> *))contentTypeFilterBlock
-{
-    [KTVHCDownload download].contentTypeFilter = contentTypeFilterBlock;
-}
-
-
-#pragma mark - Accept Content Types
-
-+ (void)cacheSetDefaultAcceptContentTypes:(NSArray <NSString *> *)defaultAcceptContentTypes
-{
-    [KTVHCContentType setDefaultAcceptContentTypes:defaultAcceptContentTypes];
-}
-
-+ (NSArray <NSString *> *)cacheDefaultAcceptContentTypes
-{
-    return [KTVHCContentType defaultAcceptContentTypes];
 }
 
 
@@ -144,6 +123,21 @@
 + (void)downloadSetCommonHeaderFields:(NSDictionary <NSString *, NSString *> *)commonHeaderFields
 {
     [KTVHCDownload download].commonHeaderFields = commonHeaderFields;
+}
+
++ (void)downloadSetAcceptContentTypes:(NSArray <NSString *> *)acceptContentTypes
+{
+    [KTVHCDownload download].acceptContentTypes = acceptContentTypes;
+}
+
++ (NSArray <NSString *> *)downloadAcceptContentTypes
+{
+    return [KTVHCDownload download].acceptContentTypes;
+}
+
++ (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL * URL, NSString * contentType))contentTypeFilter
+{
+    [KTVHCDownload download].unsupportContentTypeFilter = contentTypeFilter;
 }
 
 
