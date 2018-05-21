@@ -35,6 +35,8 @@
 
 - (void)dealloc
 {
+    [self.player.currentItem.asset cancelLoading];
+    [self.player.currentItem cancelPendingSeeks];
     [self.player cancelPendingPrerolls];
 }
 
