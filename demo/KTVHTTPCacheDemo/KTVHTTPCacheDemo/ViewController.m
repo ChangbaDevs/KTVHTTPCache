@@ -54,7 +54,7 @@
 - (void)reloadData
 {
     MediaItem * item1 = [[MediaItem alloc] initWithTitle:@"萧亚轩 - 冲动"
-                                               URLString:@"https://s3-ap-southeast-1.amazonaws.com/moyin/dev/songs/10/全部都是你.mp3"];
+                                               URLString:@"http://aliuwmp3.changba.com/userdata/video/45F6BD5E445E4C029C33DC5901307461.mp4"];
     MediaItem * item2 = [[MediaItem alloc] initWithTitle:@"张惠妹 - 你是爱我的"
                                                URLString:@"http://aliuwmp3.changba.com/userdata/video/3B1DDE764577E0529C33DC5901307461.mp4"];
     MediaItem * item3 = [[MediaItem alloc] initWithTitle:@"hush! - 都是你害的"
