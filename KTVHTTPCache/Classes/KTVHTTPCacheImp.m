@@ -32,23 +32,18 @@
     return [KTVHCHTTPServer server].running;
 }
 
-+ (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString
-{
-    NSURL * URL = [NSURL URLWithString:URLString];
-    NSString * completeFilePath = [[KTVHCDataStorage storage] completeFilePathWithURL:URL];
-    if (completeFilePath.length > 0) {
-        return [NSURL fileURLWithPath:completeFilePath];
-    }
-    NSString * proxyURLString = [[KTVHCHTTPServer server] URLStringWithOriginalURLString:URLString];
-    return [NSURL URLWithString:proxyURLString];
-}
-
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString
 {
     return [[KTVHCHTTPServer server] URLStringWithOriginalURLString:URLString];
 }
 
 #pragma mark - Data Storage
+
+- (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString
+{
+    NSURL * URL = [NSURL URLWithString:URLString];
+    return [[KTVHCDataStorage storage] completeFilePathIfExistedWithURL:URL];
+}
 
 + (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request
 {
@@ -112,7 +107,7 @@
     return [KTVHCDownload download].timeoutInterval;
 }
 
-+ (void)downloadSetWhitelistHeaders:(NSArray <NSString *> *)whitelistHeaderKeys
++ (void)downloadSetWhitelistHeaderKeys:(NSArray <NSString *> *)whitelistHeaderKeys
 {
     [KTVHCDownload download].whitelistHeaderKeys = whitelistHeaderKeys;
 }

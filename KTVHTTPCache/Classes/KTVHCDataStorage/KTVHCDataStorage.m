@@ -30,7 +30,7 @@
     return self;
 }
 
-- (NSString *)completeFilePathWithURL:(NSURL *)URL
+- (NSString *)completeFilePathIfExistedWithURL:(NSURL *)URL
 {
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
     NSString * path = unit.filePath;

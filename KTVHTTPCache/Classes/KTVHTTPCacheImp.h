@@ -25,17 +25,16 @@
 + (BOOL)proxyIsRunning;
 
 /**
- *  If the content of the URLString is finish cache, return the File URL for the content.
- *  Otherwise return the URL for local server.
- */
-+ (NSURL *)proxyURLWithOriginalURLString:(NSString *)URLString;
-
-/**
  *  Return the URL string for local server.
  */
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString;
 
 #pragma mark - Data Storage
+
+/**
+ *  If the content of the URLString is finish cached, return the file path for the content. Otherwise return nil.
+ */
+- (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString;
 
 /**
  *  Data Reader.
