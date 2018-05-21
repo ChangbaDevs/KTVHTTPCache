@@ -61,7 +61,7 @@
     }
     _didCalledPrepare = YES;
     KTVHCLogDataNetworkSource(@"call prepare");
-    [[KTVHCDownload download] downloadWithRequest:self.request delegate:self];
+    self.downlaodTask = [[KTVHCDownload download] downloadWithRequest:self.request delegate:self];
     [self unlock];
 }
 

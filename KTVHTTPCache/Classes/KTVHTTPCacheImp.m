@@ -76,13 +76,13 @@
 
 + (NSArray <KTVHCDataCacheItem *> *)cacheFetchAllCacheItem
 {
-    return [[KTVHCDataStorage storage] fetchAllCacheItem];
+    return [[KTVHCDataStorage storage] allCacheItem];
 }
 
 + (KTVHCDataCacheItem *)cacheFetchCacheItemWithURLString:(NSString *)URLString
 {
     NSURL * URL = [NSURL URLWithString:URLString];
-    return [[KTVHCDataStorage storage] fetchCacheItemWithURL:URL];
+    return [[KTVHCDataStorage storage] cacheItemWithURL:URL];
 }
 
 + (void)cacheDeleteAllCache

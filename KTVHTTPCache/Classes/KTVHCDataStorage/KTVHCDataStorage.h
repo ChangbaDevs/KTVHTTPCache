@@ -19,16 +19,32 @@
 
 + (instancetype)storage;
 
+/**
+ *  Return file path if the content did finished cache.
+ */
 - (NSString *)completeFilePathWithURL:(NSURL *)URL;
+
+/**
+ *  Reader for certain request.
+ */
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
 
+/**
+ *  Get cache item.
+ */
+- (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL;
+- (NSArray <KTVHCDataCacheItem *> *)allCacheItem;
+
+/**
+ *  Get cache length.
+ */
 @property (nonatomic, assign) long long maxCacheLength;     // default is 500m.
-
 - (long long)totalCacheLength;
-- (NSArray <KTVHCDataCacheItem *> *)fetchAllCacheItem;
-- (KTVHCDataCacheItem *)fetchCacheItemWithURL:(NSURL *)URL;
 
-- (void)deleteAllCache;
+/**
+ *  Delete cache.
+ */
 - (void)deleteCacheWithURL:(NSURL *)URL;
+- (void)deleteAllCache;
 
 @end

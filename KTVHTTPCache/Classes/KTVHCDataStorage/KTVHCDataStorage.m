@@ -24,8 +24,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         self.maxCacheLength = 500 * 1024 * 1024;
     }
     return self;
@@ -42,12 +41,21 @@
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request
 {
     if (!request || request.URL.absoluteString.length <= 0) {
+        KTVHCLogDataStorage(@"Invaild request, %@", request.URL);
         return nil;
     }
-    KTVHCLogDataStorage(@"concurrent reader, %@", request.URL);
     KTVHCDataReader * reader = [KTVHCDataReader readerWithRequest:request];
-    KTVHCLogDataStorage(@"create reader finished, %@", request.URL);
     return reader;
+}
+
+- (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL
+{
+    return [[KTVHCDataUnitPool pool] cacheItemWithURL:URL];
+}
+
+- (NSArray<KTVHCDataCacheItem *> *)allCacheItem
+{
+    return [[KTVHCDataUnitPool pool] allCacheItem];
 }
 
 - (long long)totalCacheLength
@@ -55,24 +63,14 @@
     return [[KTVHCDataUnitPool pool] totalCacheLength];
 }
 
-- (NSArray <KTVHCDataCacheItem *> *)fetchAllCacheItem
+- (void)deleteCacheWithURL:(NSURL *)URL
 {
-    return [[KTVHCDataUnitPool pool] allCacheItem];
-}
-
-- (KTVHCDataCacheItem *)fetchCacheItemWithURL:(NSURL *)URL
-{
-    return [[KTVHCDataUnitPool pool] cacheItemWithURL:URL];
+    [[KTVHCDataUnitPool pool] deleteUnitWithURL:URL];
 }
 
 - (void)deleteAllCache
 {
     [[KTVHCDataUnitPool pool] deleteAllUnits];
-}
-
-- (void)deleteCacheWithURL:(NSURL *)URL
-{
-    [[KTVHCDataUnitPool pool] deleteUnitWithURL:URL];
 }
 
 @end
