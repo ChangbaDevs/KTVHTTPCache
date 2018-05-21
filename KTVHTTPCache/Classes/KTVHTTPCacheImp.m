@@ -95,9 +95,9 @@
 }
 
 
-#pragma mark - URL
+#pragma mark - Token
 
-+ (void)cacheSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter
++ (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter
 {
     [KTVHCURLTools URLTools].URLFilter = URLFilter;
 }
@@ -115,14 +115,24 @@
     [KTVHCDownload download].timeoutInterval = timeoutInterval;
 }
 
-+ (NSDictionary <NSString *, NSString *> *)downloadCommonHeaderFields
++ (void)downloadSetWhitelistHeaders:(NSArray <NSString *> *)whitelistHeaders
 {
-    return [KTVHCDownload download].commonHeaderFields;
+    [KTVHCDownload download].whitelistHeaders = whitelistHeaders;
 }
 
-+ (void)downloadSetCommonHeaderFields:(NSDictionary <NSString *, NSString *> *)commonHeaderFields
++ (NSArray <NSString *> *)downloadWhitelistHeaders
 {
-    [KTVHCDownload download].commonHeaderFields = commonHeaderFields;
+    return [KTVHCDownload download].whitelistHeaders;
+}
+
++ (NSDictionary <NSString *, NSString *> *)downloadAdditionalHeaders
+{
+    return [KTVHCDownload download].additionalHeaders;
+}
+
++ (void)downloadSetAdditionalHeaders:(NSDictionary <NSString *, NSString *> *)additionalHeaders
+{
+    [KTVHCDownload download].additionalHeaders = additionalHeaders;
 }
 
 + (void)downloadSetAcceptContentTypes:(NSArray <NSString *> *)acceptContentTypes

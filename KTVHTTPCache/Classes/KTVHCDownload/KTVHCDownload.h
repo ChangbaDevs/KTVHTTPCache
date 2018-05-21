@@ -34,8 +34,17 @@ KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeBinaryOctetStream;
 
 + (instancetype)download;
 
-@property (nonatomic, assign) NSTimeInterval timeoutInterval;       // default is 30.0s.
-@property (nonatomic, copy) NSDictionary * commonHeaderFields;      // default is nil.
+@property (nonatomic, assign) NSTimeInterval timeoutInterval;
+
+/**
+ *  Header Fields
+ */
+@property (nonatomic, copy) NSArray <NSString *> * whitelistHeaders;
+@property (nonatomic, copy) NSDictionary <NSString *, NSString *> * additionalHeaders;
+
+/**
+ *  Content-Type
+ */
 @property (nonatomic, copy) NSArray <NSString *> * acceptContentTypes;
 @property (nonatomic, copy) BOOL (^unsupportContentTypeFilter)(NSURL * URL, NSString * contentType);
 

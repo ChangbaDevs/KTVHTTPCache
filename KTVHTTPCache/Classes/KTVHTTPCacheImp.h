@@ -72,10 +72,16 @@
 + (NSTimeInterval)downloadTimeoutInterval;
 
 /**
- *  Common Header Fields.
+ *  Whitelist Header Fields.
  */
-+ (NSDictionary <NSString *, NSString *> *)downloadCommonHeaderFields;
-+ (void)downloadSetCommonHeaderFields:(NSDictionary <NSString *, NSString *> *)commonHeaderFields;
++ (void)downloadSetWhitelistHeaders:(NSArray <NSString *> *)whitelistHeaders;
++ (NSArray <NSString *> *)downloadWhitelistHeaders;
+
+/**
+ *  Additional Header Fields.
+ */
++ (void)downloadSetAdditionalHeaders:(NSDictionary <NSString *, NSString *> *)additionalHeaders;
++ (NSDictionary <NSString *, NSString *> *)downloadAdditionalHeaders;
 
 /**
  *  Default values: 'video/x', 'audio/x', 'application/mp4', 'application/octet-stream', 'binary/octet-stream'

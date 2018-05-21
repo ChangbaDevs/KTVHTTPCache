@@ -83,28 +83,33 @@ NSString * const KTVHCContentTypeBinaryOctetStream = @"binary/octet-stream";
     KTVHCLogDealloc(self);
 }
 
+- (NSArray <NSString *> *)availableHeaders
+{
+    static NSArray <NSString *> * availableHeaders = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        availableHeaders = @[@"User-Agent",
+                             @"Connection",
+                             @"Accept",
+                             @"Accept-Encoding",
+                             @"Accept-Language",
+                             @"Range"];
+    });
+    return availableHeaders;
+}
+
 - (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate
 {
     [self lock];
     NSMutableURLRequest * HTTPRequest = [NSMutableURLRequest requestWithURL:request.URL];
-    static NSArray <NSString *> * availableHeaderKeys = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        availableHeaderKeys = @[@"User-Agent",
-                                @"Connection",
-                                @"Accept",
-                                @"Accept-Encoding",
-                                @"Accept-Language",
-                                @"Range"];
-    });
     [request.headers enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL * stop) {
-        if ([availableHeaderKeys containsObject:key] && ![obj containsString:@"AppleCoreMedia/"]) {
+        if ([[self availableHeaders] containsObject:key] || [self.whitelistHeaders containsObject:key]) {
             [HTTPRequest setValue:obj forHTTPHeaderField:key];
         }
     }];
     HTTPRequest.timeoutInterval = self.timeoutInterval;
     HTTPRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-    [self.commonHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+    [self.additionalHeaders enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
         [HTTPRequest setValue:obj forHTTPHeaderField:key];
     }];
     NSURLSessionDataTask * task = [self.session dataTaskWithRequest:HTTPRequest];
