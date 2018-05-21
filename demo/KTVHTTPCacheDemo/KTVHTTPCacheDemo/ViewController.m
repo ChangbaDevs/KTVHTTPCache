@@ -116,6 +116,7 @@
         return;
     }
     
+    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString * proxyURLString = [KTVHTTPCache proxyURLWithOriginalURLString:URLString].absoluteString;
     
     MediaPlayerViewController * viewController = [[MediaPlayerViewController alloc] initWithURLString:proxyURLString];

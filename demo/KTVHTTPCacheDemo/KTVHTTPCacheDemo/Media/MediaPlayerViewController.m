@@ -30,6 +30,7 @@
     [super viewDidLoad];
     
     self.player = [AVPlayer playerWithURL:[NSURL URLWithString:self.URLString]];
+//    self.player.automaticallyWaitsToMinimizeStalling = NO;
     [self.player play];
 }
 
