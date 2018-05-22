@@ -158,10 +158,12 @@
 
 - (BOOL)ping
 {
+    /*
      if ([NSDate date].timeIntervalSince1970 - self.pingTimeInterval < 0.5)
      {
          return self.pingResult;
      }
+     */
     
     if (self.running)
     {
