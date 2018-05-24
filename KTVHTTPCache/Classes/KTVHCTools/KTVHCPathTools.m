@@ -64,7 +64,6 @@
 + (NSString *)relativePathForUnitItemFileWithURL:(NSURL *)URL offset:(long long)offset
 {
     NSString * folderName = [KTVHCURLTools uniqueIdentifierWithURL:URL];
-    
     NSString * relativePath;
     int number = 0;
     BOOL condition = YES;
@@ -73,10 +72,12 @@
         NSString * fileName = [NSString stringWithFormat:@"%@_%lld_%d", folderName, offset, number];
         relativePath = [[self relativePathForUnitItemDirectory:folderName] stringByAppendingPathComponent:fileName];
         NSString * absolutePath = [self absolutePathWithRelativePath:relativePath];
-        
-        if ([[NSFileManager defaultManager] fileExistsAtPath:absolutePath]) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:absolutePath])
+        {
             number++;
-        } else {
+        }
+        else
+        {
             [[NSFileManager defaultManager] createFileAtPath:absolutePath contents:nil attributes:nil];
             condition = NO;
         }
@@ -114,7 +115,8 @@
     }
     BOOL isDirectory;
     BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
-    if (!isExists || isDirectory) {
+    if (!isExists || isDirectory)
+    {
         [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
     }
 }
@@ -134,14 +136,15 @@
 
 + (NSError *)deleteFileAtPath:(NSString *)filePath
 {
-    if (filePath.length <= 0) {
+    if (filePath.length <= 0)
+    {
         return nil;
     }
-    
     NSError * error = nil;
     BOOL isDirectory = NO;
     BOOL result = [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
-    if (result && !isDirectory) {
+    if (result && !isDirectory)
+    {
         result = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
     }
     return error;
@@ -149,14 +152,15 @@
 
 + (NSError *)deleteFolderAtPath:(NSString *)folderPath
 {
-    if (folderPath.length <= 0) {
+    if (folderPath.length <= 0)
+    {
         return nil;
     }
-    
     NSError * error = nil;
     BOOL isDirectory = NO;
     BOOL result = [[NSFileManager defaultManager] fileExistsAtPath:folderPath isDirectory:&isDirectory];
-    if (result && isDirectory) {
+    if (result && isDirectory)
+    {
         result = [[NSFileManager defaultManager] removeItemAtPath:folderPath error:&error];
     }
     return error;
@@ -164,12 +168,14 @@
 
 + (long long)sizeOfItemAtFilePath:(NSString *)filePath
 {
-    if (filePath.length <= 0) {
+    if (filePath.length <= 0)
+    {
         return 0;
     }
     NSError * error;
     NSDictionary <NSFileAttributeKey, id> * attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
-    if (!error || attributes.count > 0) {
+    if (!error || attributes.count > 0)
+    {
         NSNumber * fileSize = [attributes objectForKey:NSFileSize];
         return fileSize.longLongValue;
     }

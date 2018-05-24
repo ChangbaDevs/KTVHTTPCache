@@ -58,9 +58,12 @@
     [self.coreHTTPServer stop];
     NSError * error = nil;
     [self.coreHTTPServer start:&error];
-    if (error) {
+    if (error)
+    {
         KTVHCLogHTTPServer(@"%p, Restart server failed : %@", self, error);
-    } else {
+    }
+    else
+    {
         KTVHCLogHTTPServer(@"%p, Restart server success", self);
     }
     return error == nil;
@@ -73,17 +76,21 @@
     [self.coreHTTPServer setType:@"_http._tcp."];
     NSError * tempError = nil;
     [self.coreHTTPServer start:&tempError];
-    if (tempError) {
+    if (tempError)
+    {
         * error = tempError;
         KTVHCLogHTTPServer(@"%p, Start server failed : %@", self, tempError);
-    } else {
+    }
+    else
+    {
         KTVHCLogHTTPServer(@"%p, Start server success", self);
     }
 }
 
 - (void)stop
 {
-    if (self.running) {
+    if (self.running)
+    {
         [self.coreHTTPServer stop];
         [self.pingSession invalidateAndCancel];
         [self.pingDataTask cancel];
@@ -95,20 +102,28 @@
 
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL
 {
-    if (self.running && [URL.scheme hasPrefix:@"http"]) {
-        if ([self ping]) {
+    if (self.running && [URL.scheme hasPrefix:@"http"])
+    {
+        if ([self ping])
+        {
             KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URL.absoluteString];
             NSURL * ret = [url proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
             KTVHCLogHTTPServer(@"%p, Return proxy URL\n%@", self, ret);
             return ret;
-        } else {
+        }
+        else
+        {
             KTVHCLogHTTPServer(@"%p, Ping failed 1", self);
             BOOL success = [self restart];
-            if (success) {
-                if ([self ping]) {
+            if (success)
+            {
+                if ([self ping])
+                {
                     KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URL.absoluteString];
                     return [url proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
-                } else {
+                }
+                else
+                {
                     KTVHCLogHTTPServer(@"%p, Ping failed 2", self);
                 }
             }
@@ -125,28 +140,38 @@
          return self.pingResult;
      }
      */
-    if (self.running) {
-        if (!self.pingSession) {
+    if (self.running)
+    {
+        if (!self.pingSession)
+        {
             self.pingCondition = [[NSCondition alloc] init];
             NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
             sessionConfiguration.timeoutIntervalForRequest = 3;
             self.pingSession = [NSURLSession sessionWithConfiguration:sessionConfiguration];
         }
         [self.pingCondition lock];
-        if (self.pinging) {
+        if (self.pinging)
+        {
             [self.pingCondition wait];
-        } else {
+        }
+        else
+        {
             NSURL * pingURL = [[[KTVHCHTTPURL alloc] initForPing] proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
-            self.pingDataTask = [self.pingSession dataTaskWithURL:pingURL
-                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                          if (!error && data.length > 0) {
+            self.pingDataTask = [self.pingSession dataTaskWithURL:pingURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                          if (!error && data.length > 0)
+                                          {
                                               NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                              if ([string isEqualToString:[KTVHCHTTPConnection responsePingTokenString]]) {
+                                              if ([string isEqualToString:[KTVHCHTTPConnection responsePingTokenString]])
+                                              {
                                                   self.pingResult = YES;
-                                              } else {
+                                              }
+                                              else
+                                              {
                                                   self.pingResult = NO;
                                               }
-                                          } else {
+                                          }
+                                          else
+                                          {
                                               self.pingResult = NO;
                                           }
                                           self.pingTimeInterval = [NSDate date].timeIntervalSince1970;

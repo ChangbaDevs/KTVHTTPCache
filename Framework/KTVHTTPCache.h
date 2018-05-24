@@ -12,11 +12,9 @@
 FOUNDATION_EXPORT double KTVHTTPCacheVersionNumber;
 FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
-
 #pragma mark - Interface
 
 #import <KTVHTTPCache/KTVHTTPCacheImp.h>
-
 
 #pragma mark - Data Storage
 
@@ -25,7 +23,6 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import <KTVHTTPCache/KTVHCDataResponse.h>
 #import <KTVHTTPCache/KTVHCDataCacheItem.h>
 #import <KTVHTTPCache/KTVHCDataCacheItemZone.h>
-
 
 #pragma mark - Common
 

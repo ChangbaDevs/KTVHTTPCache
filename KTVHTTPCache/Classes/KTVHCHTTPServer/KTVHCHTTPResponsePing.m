@@ -51,9 +51,12 @@ NSString * const KTVHCHTTPResponsePingTokenString = @"pang";
 {
     NSData * data = nil;
     NSUInteger readLength = (NSUInteger)MIN(length, self.responseData.length - self.readOffset);
-    if (readLength == self.responseData.length) {
+    if (readLength == self.responseData.length)
+    {
         data = self.responseData;
-    }  else if (readLength > 0) {
+    }
+    else if (readLength > 0)
+    {
         data = [self.responseData subdataWithRange:NSMakeRange((NSUInteger)self.readOffset, readLength)];
     }
     self.readOffset += data.length;

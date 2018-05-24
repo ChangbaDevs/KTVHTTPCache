@@ -33,7 +33,6 @@
     [self.tableView reloadData];
 }
 
-
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -71,7 +70,6 @@
     return 120;
 }
 
-
 #pragma mark - CacheItemViewDelegate
 
 - (void)cacheItemView:(CacheItemView *)view deleteButtonDidClick:(NSString *)URLString
@@ -85,6 +83,5 @@
     [KTVHTTPCache cacheDeleteAllCache];
     [self reloadData];
 }
-
 
 @end

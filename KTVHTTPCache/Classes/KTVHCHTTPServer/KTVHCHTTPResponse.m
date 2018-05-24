@@ -48,14 +48,14 @@
     KTVHCLogDealloc(self);
 }
 
-
 #pragma mark - HTTPResponse
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     NSData * data = [self.reader readDataOfLength:length];
     KTVHCLogHTTPResponse(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.reader.didFinished) {
+    if (self.reader.didFinished)
+    {
         KTVHCLogHTTPResponse(@"%p, Read data did finished", self);
         [self.reader close];
         [self.connection responseDidAbort:self];
@@ -106,13 +106,13 @@
     [self.reader close];
 }
 
-
 #pragma mark - KTVHCDataReaderDelegate
 
 - (void)readerDidPrepared:(KTVHCDataReader *)reader
 {
     KTVHCLogHTTPResponse(@"%p, Prepared", self);
-    if (self.reader.didPrepared && self.waitingResponseHeader == YES) {
+    if (self.reader.didPrepared && self.waitingResponseHeader == YES)
+    {
         KTVHCLogHTTPResponse(@"%p, Call connection did prepared", self);
         [self.connection responseHasAvailableData:self];
     }

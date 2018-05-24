@@ -25,7 +25,8 @@ BOOL KTVHCEqualRanges(KTVHCRange range1, KTVHCRange range2)
 
 long long KTVHCRangeGetLength(KTVHCRange range)
 {
-    if (range.start == KTVHCNotFound || range.end == KTVHCNotFound) {
+    if (range.start == KTVHCNotFound || range.end == KTVHCNotFound)
+    {
         return KTVHCNotFound;
     }
     return range.end - range.start + 1;
@@ -39,11 +40,13 @@ NSString * KTVHCStringFromRange(KTVHCRange range)
 NSString * KTVHCRangeGetHeaderString(KTVHCRange range)
 {
     NSMutableString * string = [NSMutableString stringWithFormat:@"bytes="];
-    if (range.start != KTVHCNotFound) {
+    if (range.start != KTVHCNotFound)
+    {
         [string appendFormat:@"%lld", range.start];
     }
     [string appendFormat:@"-"];
-    if (range.end != KTVHCNotFound) {
+    if (range.end != KTVHCNotFound)
+    {
         [string appendFormat:@"%lld", range.end];
     }
     return [string copy];
@@ -149,7 +152,8 @@ KTVHCRange KTVHCRangeWithResponseHeaderValue(NSString * value, long long * total
 
 KTVHCRange KTVHCRangeWithEnsureLength(KTVHCRange range, long long ensureLength)
 {
-    if (range.end == KTVHCNotFound && ensureLength > 0) {
+    if (range.end == KTVHCNotFound && ensureLength > 0)
+    {
         return KTVHCMakeRange(range.start, ensureLength - 1);
     }
     return range;

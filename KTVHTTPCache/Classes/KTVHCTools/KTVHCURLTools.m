@@ -23,9 +23,11 @@
 
 - (NSURL *)URLThroughURLFilter:(NSURL *)URL
 {
-    if (self.URLFilter && URL.absoluteString.length > 0) {
+    if (self.URLFilter && URL.absoluteString.length > 0)
+    {
         NSURL * retURL = self.URLFilter(URL);
-        if (retURL.absoluteString.length > 0) {
+        if (retURL.absoluteString.length > 0)
+        {
             return retURL;
         }
     }
@@ -44,7 +46,8 @@
     unsigned char outputBuffer[CC_MD5_DIGEST_LENGTH];
     CC_MD5(value, (CC_LONG)strlen(value), outputBuffer);
     NSMutableString * outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-    for (NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++){
+    for (NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++)
+    {
         [outputString appendFormat:@"%02x", outputBuffer[count]];
     }
     return outputString;
@@ -68,8 +71,10 @@
     NSUInteger length = [URLString length];
     const char * c = [URLString UTF8String];
     NSString * resultString = @"";
-    for(int i = 0; i < length; i++) {
-        switch (*c) {
+    for(int i = 0; i < length; i++)
+    {
+        switch (*c)
+        {
             case '/':
                 resultString = [resultString stringByAppendingString:@"%2F"];
                 break;

@@ -128,14 +128,16 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     KTVHCLogDownload(@"%p, Complete\nError : %@", self, error);
     id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
     NSError * cancelError = [self.errorDictionary objectForKey:task];
-    if (cancelError) {
+    if (cancelError)
+    {
         error = cancelError;
     }
     [delegate download:self didCompleteWithError:error];
     [self.delegateDictionary removeObjectForKey:task];
     [self.requestDictionary removeObjectForKey:task];
     [self.errorDictionary removeObjectForKey:task];
-    if (self.delegateDictionary.count <= 0) {
+    if (self.delegateDictionary.count <= 0)
+    {
         [self cleanBackgroundTaskAsync];
     }
     [self unlock];
@@ -149,35 +151,48 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     KTVHCDataResponse * dataResponse = [[KTVHCDataResponse alloc] initWithURL:dataRequest.URL headers:HTTPResponse.allHeaderFields];
     KTVHCLogDownload(@"%p, Receive response\nrequest : %@\nresponse : %@\nHTTPResponse : %@", self, dataRequest, dataResponse, [(NSHTTPURLResponse *)response allHeaderFields]);
     NSError * error = nil;
-    if (!error) {
-        if (HTTPResponse.statusCode > 400) {
+    if (!error)
+    {
+        if (HTTPResponse.statusCode > 400)
+        {
             error = [KTVHCError errorForResponseUnavailable:dataTask.currentRequest.URL request:dataTask.currentRequest response:dataTask.response];
         }
-        if (!error) {
+        if (!error)
+        {
             BOOL contentTypeVaild = NO;
-            if (dataResponse.contentType.length > 0) {
-                for (NSString * obj in self.acceptContentTypes) {
-                    if ([[dataResponse.contentType lowercaseString] containsString:[obj lowercaseString]]) {
+            if (dataResponse.contentType.length > 0)
+            {
+                for (NSString * obj in self.acceptContentTypes)
+                {
+                    if ([[dataResponse.contentType lowercaseString] containsString:[obj lowercaseString]])
+                    {
                         contentTypeVaild = YES;
                     }
                 }
-                if (!contentTypeVaild && self.unsupportContentTypeFilter) {
+                if (!contentTypeVaild && self.unsupportContentTypeFilter)
+                {
                     contentTypeVaild = self.unsupportContentTypeFilter(dataRequest.URL, dataResponse.contentType);
                 }
             }
-            if (!contentTypeVaild) {
+            if (!contentTypeVaild)
+            {
                 error = [KTVHCError errorForUnsupportContentType:dataTask.currentRequest.URL request:dataTask.currentRequest response:dataTask.response];
             }
-            if (!error) {
-                if (dataResponse.currentLength != KTVHCRangeGetLength(dataRequest.range)) {
+            if (!error)
+            {
+                if (dataResponse.currentLength != KTVHCRangeGetLength(dataRequest.range))
+                {
                     error = [KTVHCError errorForUnsupportContentType:dataTask.currentRequest.URL request:dataTask.currentRequest response:dataTask.response];
                 }
-                if (!error) {
+                if (!error)
+                {
                     long long length = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
-                    if (length > 0) {
+                    if (length > 0)
+                    {
                         [[KTVHCDataUnitPool pool] deleteUnitsWithLength:length];
                         length = dataResponse.currentLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
-                        if (length > 0) {
+                        if (length > 0)
+                        {
                             error = [KTVHCError errorForNotEnoughDiskSpace:dataResponse.totalLength request:dataResponse.currentLength totalCacheLength:[KTVHCDataStorage storage].totalCacheLength maxCacheLength:[KTVHCDataStorage storage].maxCacheLength];
                         }
                     }
@@ -185,11 +200,14 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
             }
         }
     }
-    if (error) {
+    if (error)
+    {
         KTVHCLogDownload(@"%p, Invaild response\nError : %@", self, error);
         [self.errorDictionary setObject:error forKey:dataTask];
         completionHandler(NSURLSessionResponseCancel);
-    } else {
+    }
+    else
+    {
         id <KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
         [delegate download:self didReceiveResponse:dataResponse];
         completionHandler(NSURLSessionResponseAllow);
@@ -217,7 +235,8 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 
 - (void)lock
 {
-    if (!self.coreLock) {
+    if (!self.coreLock)
+    {
         self.coreLock = [[NSLock alloc] init];
     }
     [self.coreLock lock];
@@ -227,7 +246,6 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 {
     [self.coreLock unlock];
 }
-
 
 #pragma mark - Background Task
 
@@ -263,7 +281,8 @@ static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
     dispatch_once(&onceToken, ^{
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;
     });
-    if (backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+    if (backgroundTaskIdentifier != UIBackgroundTaskInvalid)
+    {
         [[UIApplication sharedApplication] endBackgroundTask:backgroundTaskIdentifier];
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;
     }
@@ -273,12 +292,12 @@ static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self lock];
-        if (self.delegateDictionary.count <= 0) {
+        if (self.delegateDictionary.count <= 0)
+        {
             [self cleanBackgroundTask];
         }
         [self unlock];
     });
 }
-
 
 @end

@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-/**
- *  extern
- */
-
 #if defined(__cplusplus)
 #define KTVHTTPCACHE_EXTERN extern "C"
 #else

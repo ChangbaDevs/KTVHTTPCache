@@ -43,24 +43,33 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
     {
         KTVHCLogAlloc(self);
         NSRange requestTypeRange = [serverURIString rangeOfString:[NSString stringWithFormat:@"%@=", KTVHCHTTPURL_Key_RequestType]];
-        if (requestTypeRange.location != NSNotFound) {
+        if (requestTypeRange.location != NSNotFound)
+        {
             NSString * valueString = [serverURIString substringFromIndex:requestTypeRange.location];
             NSCharacterSet * delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&"];
             NSScanner * scanner = [[NSScanner alloc] initWithString:valueString];
-            while (![scanner isAtEnd]) {
+            while (![scanner isAtEnd])
+            {
                 NSString * pairString = nil;
                 [scanner scanUpToCharactersFromSet:delimiterSet intoString:&pairString];
                 [scanner scanCharactersFromSet:delimiterSet intoString:NULL];
                 NSArray <NSString *> * pair = [pairString componentsSeparatedByString:@"="];
-                if (pair.count == 2) {
+                if (pair.count == 2)
+                {
                     NSString * key = pair.firstObject;
                     NSString * value = pair.lastObject;
-                    if ([key isEqualToString:KTVHCHTTPURL_Key_OriginalURL]) {
+                    if ([key isEqualToString:KTVHCHTTPURL_Key_OriginalURL])
+                    {
                         self.originalURLString = [[KTVHCURLTools URLDecode:value] copy];
-                    } else if ([key isEqualToString:KTVHCHTTPURL_Key_RequestType]) {
-                        if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Ping]) {
+                    }
+                    else if ([key isEqualToString:KTVHCHTTPURL_Key_RequestType])
+                    {
+                        if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Ping])
+                        {
                             self.type = KTVHCHTTPURLTypePing;
-                        } else if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Content]) {
+                        }
+                        else if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Content])
+                        {
                             self.type = KTVHCHTTPURLTypeContent;
                         }
                     }
@@ -98,7 +107,8 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
 - (NSString *)proxyURLStringWithServerPort:(NSInteger)serverPort
 {
     NSString * pathExtension = [NSURL URLWithString:self.originalURLString].pathExtension;
-    if (pathExtension.length) {
+    if (pathExtension.length)
+    {
         pathExtension = [NSString stringWithFormat:@".%@", pathExtension];
     }
     NSString * requestType = KTVHCHTTPURL_Vaule_RequestType_Content;
