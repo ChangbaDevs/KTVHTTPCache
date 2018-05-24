@@ -13,7 +13,7 @@ typedef struct KTVHCRange {
     long long end;
 } KTVHCRange;
 
-static const NSInteger KTVHCNotFound = LONG_LONG_MAX;
+static const long long KTVHCNotFound = LONG_LONG_MAX;
 
 BOOL KTVHCRangeIsVaild(KTVHCRange range);
 BOOL KTVHCRangeIsInvaild(KTVHCRange range);
@@ -27,4 +27,4 @@ KTVHCRange KTVHCMakeRange(long long start, long long end);
 KTVHCRange KTVHCRangeZero(void);
 KTVHCRange KTVHCRangeInvaild(void);
 KTVHCRange KTVHCRangeWithHeaderValue(NSString * value);
-KTVHCRange KTVHCRangeWithEnsureLength(KTVHCRange range, NSUInteger ensureLength);
+KTVHCRange KTVHCRangeWithEnsureLength(KTVHCRange range, long long ensureLength);
