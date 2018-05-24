@@ -170,7 +170,8 @@
 
 + (void)logAddLog:(NSString *)log
 {
-    if (log.length > 0) {
+    if (log.length > 0)
+    {
         KTVHCLogCommon(@"%@", log);
     }
 }

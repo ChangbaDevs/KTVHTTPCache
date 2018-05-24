@@ -38,7 +38,7 @@
 /**
  *  Get cache length.
  */
-@property (nonatomic, assign) long long maxCacheLength;     // default is 500m.
+@property (nonatomic, assign) long long maxCacheLength;     // Default is 500M.
 - (long long)totalCacheLength;
 
 /**

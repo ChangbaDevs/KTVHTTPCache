@@ -24,7 +24,8 @@
 
 - (instancetype)init
 {
-    if (self = [super init]) {
+    if (self = [super init])
+    {
         self.maxCacheLength = 500 * 1024 * 1024;
     }
     return self;
@@ -40,7 +41,8 @@
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request
 {
-    if (!request || request.URL.absoluteString.length <= 0) {
+    if (!request || request.URL.absoluteString.length <= 0)
+    {
         KTVHCLogDataStorage(@"Invaild request, %@", request.URL);
         return nil;
     }
