@@ -91,9 +91,9 @@
     return [[KTVHCDataStorage storage] cacheItemWithURL:URL];
 }
 
-+ (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItem
++ (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItems
 {
-    return [[KTVHCDataStorage storage] allCacheItem];
+    return [[KTVHCDataStorage storage] allCacheItems];
 }
 
 + (void)cacheDeleteCacheWithURL:(NSURL *)URL

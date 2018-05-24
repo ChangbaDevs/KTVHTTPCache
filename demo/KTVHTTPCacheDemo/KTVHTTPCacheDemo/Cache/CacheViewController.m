@@ -29,7 +29,7 @@
 
 - (void)reloadData
 {
-    self.cacheItems = [KTVHTTPCache cacheAllCacheItem];
+    self.cacheItems = [KTVHTTPCache cacheAllCacheItems];
     [self.tableView reloadData];
 }
 

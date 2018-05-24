@@ -55,7 +55,7 @@
     return [[KTVHCDataUnitPool pool] cacheItemWithURL:URL];
 }
 
-- (NSArray<KTVHCDataCacheItem *> *)allCacheItem
+- (NSArray<KTVHCDataCacheItem *> *)allCacheItems
 {
     return [[KTVHCDataUnitPool pool] allCacheItem];
 }

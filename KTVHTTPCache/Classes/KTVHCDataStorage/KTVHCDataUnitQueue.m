@@ -20,7 +20,7 @@
 
 + (instancetype)queueWithPath:(NSString *)path
 {
-    return [[self alloc] initWithArchiverPath:archiverPath];
+    return [[self alloc] initWithPath:path];
 }
 
 - (instancetype)initWithPath:(NSString *)path
