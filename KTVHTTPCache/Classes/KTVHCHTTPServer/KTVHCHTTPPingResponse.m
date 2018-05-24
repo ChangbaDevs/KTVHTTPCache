@@ -1,18 +1,18 @@
 //
-//  KTVHCHTTPResponsePing.m
+//  KTVHCHTTPPingResponse.m
 //  KTVHTTPCache
 //
 //  Created by Single on 2017/10/23.
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "KTVHCHTTPResponsePing.h"
+#import "KTVHCHTTPPingResponse.h"
 #import "KTVHCHTTPConnection.h"
 #import "KTVHCLog.h"
 
-NSString * const KTVHCHTTPResponsePingResponseValue = @"pang";
+NSString * const KTVHCHTTPPingResponseResponseValue = @"pang";
 
-@interface KTVHCHTTPResponsePing ()
+@interface KTVHCHTTPPingResponse ()
 
 @property (nonatomic, weak) KTVHCHTTPConnection * connection;
 @property (nonatomic, strong) NSData * responseData;
@@ -20,7 +20,7 @@ NSString * const KTVHCHTTPResponsePingResponseValue = @"pang";
 
 @end
 
-@implementation KTVHCHTTPResponsePing
+@implementation KTVHCHTTPPingResponse
 
 + (instancetype)responseWithConnection:(KTVHCHTTPConnection *)connection
 {
@@ -35,7 +35,7 @@ NSString * const KTVHCHTTPResponsePingResponseValue = @"pang";
         static NSData * data = nil;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            data = [KTVHCHTTPResponsePingResponseValue dataUsingEncoding:NSUTF8StringEncoding];
+            data = [KTVHCHTTPPingResponseResponseValue dataUsingEncoding:NSUTF8StringEncoding];
         });
         self.responseData = data;
     }

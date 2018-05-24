@@ -88,7 +88,7 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 #define KTVHCLogHTTPConnection(...)         KTVHCLogging(@"KTVHCHTTPConnection   ", KTVHCLogEnableValueConsoleLog(HTTPConnection),    KTVHCLogEnableValueRecordLog(HTTPConnection),    ##__VA_ARGS__)
 #define KTVHCLogHTTPRequest(...)            KTVHCLogging(@"KTVHCHTTPRequest      ", KTVHCLogEnableValueConsoleLog(HTTPRequest),       KTVHCLogEnableValueRecordLog(HTTPRequest),       ##__VA_ARGS__)
 #define KTVHCLogHTTPResponse(...)           KTVHCLogging(@"KTVHCHTTPResponse     ", KTVHCLogEnableValueConsoleLog(HTTPResponse),      KTVHCLogEnableValueRecordLog(HTTPResponse),      ##__VA_ARGS__)
-#define KTVHCLogHTTPResponsePing(...)       KTVHCLogging(@"KTVHCHTTPResponsePing ", KTVHCLogEnableValueConsoleLog(HTTPResponsePing),  KTVHCLogEnableValueRecordLog(HTTPResponsePing),  ##__VA_ARGS__)
+#define KTVHCLogHTTPResponsePing(...)       KTVHCLogging(@"KTVHCHTTPPingResponse ", KTVHCLogEnableValueConsoleLog(HTTPResponsePing),  KTVHCLogEnableValueRecordLog(HTTPResponsePing),  ##__VA_ARGS__)
 #define KTVHCLogHTTPURL(...)                KTVHCLogging(@"KTVHCHTTPURL          ", KTVHCLogEnableValueConsoleLog(HTTPURL),           KTVHCLogEnableValueRecordLog(HTTPURL),           ##__VA_ARGS__)
 
 // Data Storage

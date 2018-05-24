@@ -9,7 +9,7 @@
 #import "KTVHCHTTPConnection.h"
 #import "KTVHCHTTPRequest.h"
 #import "KTVHCHTTPResponse.h"
-#import "KTVHCHTTPResponsePing.h"
+#import "KTVHCHTTPPingResponse.h"
 #import "KTVHCHTTPURL.h"
 #import "KTVHCDataRequest.h"
 #import "KTVHCLog.h"
@@ -18,7 +18,7 @@
 
 + (NSString *)pingResponseValue
 {
-    return KTVHCHTTPResponsePingResponseValue;
+    return KTVHCHTTPPingResponseResponseValue;
 }
 
 - (id)initWithAsyncSocket:(GCDAsyncSocket *)newSocket configuration:(HTTPConfig *)aConfig
@@ -45,7 +45,7 @@
             return nil;
         case KTVHCHTTPURLTypePing:
         {
-            KTVHCHTTPResponsePing * currentResponse = [KTVHCHTTPResponsePing responseWithConnection:self];
+            KTVHCHTTPPingResponse * currentResponse = [KTVHCHTTPPingResponse responseWithConnection:self];
             return currentResponse;
         }
         case KTVHCHTTPURLTypeContent:
