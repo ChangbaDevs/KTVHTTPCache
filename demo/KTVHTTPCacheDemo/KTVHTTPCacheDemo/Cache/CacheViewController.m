@@ -80,7 +80,7 @@
 
 - (IBAction)deleteAllCache:(UIButton *)sender
 {
-    [KTVHTTPCache cacheDeleteAllCache];
+    [KTVHTTPCache cacheDeleteAllCaches];
     [self reloadData];
 }
 
