@@ -7,7 +7,6 @@
 //
 
 #import "KTVHCHTTPRequest.h"
-#import "KTVHCDataRequest.h"
 #import "KTVHCLog.h"
 
 @implementation KTVHCHTTPRequest

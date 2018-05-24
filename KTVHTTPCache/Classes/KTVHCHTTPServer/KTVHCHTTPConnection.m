@@ -11,7 +11,6 @@
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCHTTPPingResponse.h"
 #import "KTVHCHTTPURL.h"
-#import "KTVHCDataRequest.h"
 #import "KTVHCLog.h"
 
 @implementation KTVHCHTTPConnection
