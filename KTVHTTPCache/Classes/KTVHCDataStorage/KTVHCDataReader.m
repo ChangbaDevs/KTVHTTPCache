@@ -7,19 +7,19 @@
 //
 
 #import "KTVHCDataReader.h"
-#import "KTVHCDataSourcer.h"
+#import "KTVHCDataSourceManager.h"
 #import "KTVHCDataCallback.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataFunctions.h"
 #import "KTVHCLog.h"
 
-@interface KTVHCDataReader () <NSLocking, KTVHCDataSourcerDelegate>
+@interface KTVHCDataReader () <NSLocking, KTVHCDataSourceManagerDelegate>
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
 @property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
 @property (nonatomic, strong) KTVHCDataUnit * unit;
-@property (nonatomic, strong) KTVHCDataSourcer * sourcer;
+@property (nonatomic, strong) KTVHCDataSourceManager * sourceManager;
 @property (nonatomic, assign) BOOL didCalledPrepare;
 
 @end
@@ -67,7 +67,7 @@
     }
     _didCalledPrepare = YES;
     KTVHCLogDataReader(@"%p, Call prepare", self);
-    [self prepareSourcer];
+    [self prepareSourceManager];
     [self unlock];
 }
 
@@ -80,7 +80,7 @@
     }
     _didClosed = YES;
     KTVHCLogDataReader(@"%p, Call close", self);
-    [self.sourcer close];
+    [self.sourceManager close];
     [self.unit workingRelease];
     self.unit = nil;
     [self unlock];
@@ -101,10 +101,10 @@
         [self unlock];
         return nil;
     }
-    NSData * data = [self.sourcer readDataOfLength:length];;
+    NSData * data = [self.sourceManager readDataOfLength:length];;
     _readOffset += data.length;
     KTVHCLogDataReader(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.sourcer.didFinished) {
+    if (self.sourceManager.didFinished) {
         KTVHCLogDataReader(@"%p, Read data did finished", self);
         _didFinished = YES;
         [self close];
@@ -113,9 +113,9 @@
     return data;
 }
 
-- (void)prepareSourcer
+- (void)prepareSourceManager
 {
-    self.sourcer = [[KTVHCDataSourcer alloc] initWithDelegate:self delegateQueue:self.internalDelegateQueue];
+    self.sourceManager = [[KTVHCDataSourceManager alloc] initWithDelegate:self delegateQueue:self.internalDelegateQueue];
     NSMutableArray <KTVHCDataFileSource *> * fileSources = [NSMutableArray array];
     NSMutableArray <KTVHCDataNetworkSource *> * networkSources = [NSMutableArray array];
     long long min = self.request.range.start;
@@ -167,12 +167,12 @@
         [networkSources addObject:source];
     }
     for (KTVHCDataFileSource * obj in fileSources) {
-        [self.sourcer putSource:obj];
+        [self.sourceManager putSource:obj];
     }
     for (KTVHCDataNetworkSource * obj in networkSources) {
-        [self.sourcer putSource:obj];
+        [self.sourceManager putSource:obj];
     }
-    [self.sourcer prepare];
+    [self.sourceManager prepare];
 }
 
 - (void)callbackForPrepared
@@ -183,7 +183,7 @@
     if (self.didPrepared) {
         return;
     }
-    if (self.sourcer.didPrepared && self.unit.totalLength > 0) {
+    if (self.sourceManager.didPrepared && self.unit.totalLength > 0) {
         long long totalLength = self.unit.totalLength;
         KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);
         NSDictionary * headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength);
@@ -200,14 +200,14 @@
     }
 }
 
-- (void)sourcerDidPrepared:(KTVHCDataSourcer *)sourcer
+- (void)sourceManagerDidPrepared:(KTVHCDataSourceManager *)sourceManager
 {
     [self lock];
     [self callbackForPrepared];
     [self unlock];
 }
 
-- (void)sourcer:(KTVHCDataSourcer *)sourcer didReceiveResponse:(KTVHCDataResponse *)response
+- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
     [self.unit updateResponseHeaders:response.headers totalLength:response.totalLength];
@@ -215,7 +215,7 @@
     [self unlock];
 }
 
-- (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer
+- (void)sourceManagerHasAvailableData:(KTVHCDataSourceManager *)sourceManager
 {
     [self lock];
     if (self.didClosed) {
@@ -232,7 +232,7 @@
     [self unlock];
 }
 
-- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailed:(NSError *)error
+- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didFailed:(NSError *)error
 {
     [self lock];
     if (self.didClosed) {

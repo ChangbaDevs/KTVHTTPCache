@@ -1,5 +1,5 @@
 //
-//  KTVHCDataSourcer.h
+//  KTVHCDataSourceManager.h
 //  KTVHTTPCache
 //
 //  Created by Single on 2017/8/11.
@@ -10,25 +10,25 @@
 #import "KTVHCDataFileSource.h"
 #import "KTVHCDataNetworkSource.h"
 
-@class KTVHCDataSourcer;
+@class KTVHCDataSourceManager;
 
-@protocol KTVHCDataSourcerDelegate <NSObject>
+@protocol KTVHCDataSourceManagerDelegate <NSObject>
 
-- (void)sourcerDidPrepared:(KTVHCDataSourcer *)sourcer;
-- (void)sourcerHasAvailableData:(KTVHCDataSourcer *)sourcer;
-- (void)sourcer:(KTVHCDataSourcer *)sourcer didFailed:(NSError *)error;
-- (void)sourcer:(KTVHCDataSourcer *)sourcer didReceiveResponse:(KTVHCDataResponse *)response;
+- (void)sourceManagerDidPrepared:(KTVHCDataSourceManager *)sourceManager;
+- (void)sourceManagerHasAvailableData:(KTVHCDataSourceManager *)sourceManager;
+- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didFailed:(NSError *)error;
+- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response;
 
 @end
 
-@interface KTVHCDataSourcer : NSObject
+@interface KTVHCDataSourceManager : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithDelegate:(id <KTVHCDataSourcerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+- (instancetype)initWithDelegate:(id <KTVHCDataSourceManagerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
-@property (nonatomic, weak, readonly) id <KTVHCDataSourcerDelegate> delegate;
+@property (nonatomic, weak, readonly) id <KTVHCDataSourceManagerDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
 
 @property (nonatomic, strong, readonly) NSError * error;
