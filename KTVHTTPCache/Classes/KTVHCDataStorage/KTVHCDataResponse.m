@@ -43,16 +43,9 @@
         [headersWithoutRangeAndLength removeObjectForKey:key];
     }
     _headersWithoutRangeAndLength = [headersWithoutRangeAndLength copy];
-    
     _contentType = [self headerValueWithKey:@"Content-Type"];
     _currentLength = [self headerValueWithKey:@"Content-Length"].longLongValue;
-    
-    NSString * contentRange = [self headerValueWithKey:@"Content-Range"];
-    NSRange range = [contentRange rangeOfString:@"/"];
-    if (contentRange.length > 0 && range.location != NSNotFound)
-    {
-        _totalLength = [contentRange substringFromIndex:range.location + range.length].longLongValue;
-    }
+    _range = KTVHCRangeWithResponseHeaderValue([self headerValueWithKey:@"Content-Range"], &_totalLength);
 }
 
 - (NSString *)headerValueWithKey:(NSString *)key
@@ -70,9 +63,23 @@
     static NSArray * obj = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        obj = @[@"Content-Length", @"content-length", @"Content-Range", @"content-range"];
+        obj = @[@"Content-Length",
+                @"content-length",
+                @"Content-Range",
+                @"content-range"];
     });
     return obj;
+}
+
+- (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range
+{
+    if (!KTVHCEqualRanges(self.range, range))
+    {
+        NSDictionary * headers = KTVHCRangeFillToResponseHeaders(range, self.headers, self.totalLength);
+        KTVHCDataResponse * obj = [[KTVHCDataResponse alloc] initWithURL:self.URL headers:headers];
+        return obj;
+    }
+    return self;
 }
 
 @end

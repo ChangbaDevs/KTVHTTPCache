@@ -17,7 +17,7 @@
     {
         _URL = URL;
         _headers = headers;
-        _range = KTVHCRangeWithHeaderValue(self.headers[@"Range"]);
+        _range = KTVHCRangeWithRequestHeaderValue(self.headers[@"Range"]);
         KTVHCLogAlloc(self);
         KTVHCLogDataRequest(@"%p Create data request\nURL : %@\nHeaders : %@\nRange : %@",
                             self,
@@ -31,6 +31,17 @@
 - (void)dealloc
 {
     KTVHCLogDealloc(self);
+}
+
+- (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range
+{
+    if (!KTVHCEqualRanges(self.range, range))
+    {
+        NSDictionary * headers = KTVHCRangeFillToRequestHeaders(range, self.headers);
+        KTVHCDataRequest * obj = [[KTVHCDataRequest alloc] initWithURL:self.URL headers:headers];
+        return obj;
+    }
+    return self;
 }
 
 @end

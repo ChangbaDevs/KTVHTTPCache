@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KTVHCRange.h"
 
 @interface KTVHCDataResponse : NSObject
 
@@ -20,7 +21,10 @@
 @property (nonatomic, copy, readonly) NSDictionary * headersWithoutRangeAndLength;
 
 @property (nonatomic, copy, readonly) NSString * contentType;
+@property (nonatomic, assign, readonly) KTVHCRange range;
 @property (nonatomic, assign, readonly) long long totalLength;
 @property (nonatomic, assign, readonly) long long currentLength;
+
+- (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range;
 
 @end

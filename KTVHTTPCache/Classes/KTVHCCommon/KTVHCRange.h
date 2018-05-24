@@ -26,5 +26,7 @@ NSDictionary * KTVHCRangeFillToResponseHeaders(KTVHCRange range, NSDictionary * 
 KTVHCRange KTVHCMakeRange(long long start, long long end);
 KTVHCRange KTVHCRangeZero(void);
 KTVHCRange KTVHCRangeInvaild(void);
-KTVHCRange KTVHCRangeWithHeaderValue(NSString * value);
+KTVHCRange KTVHCRangeWithSeparateValue(NSString * value);
+KTVHCRange KTVHCRangeWithRequestHeaderValue(NSString * value);
+KTVHCRange KTVHCRangeWithResponseHeaderValue(NSString * value, long long * totalLength);
 KTVHCRange KTVHCRangeWithEnsureLength(KTVHCRange range, long long ensureLength);

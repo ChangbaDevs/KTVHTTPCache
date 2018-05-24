@@ -10,7 +10,6 @@
 #import "KTVHCDataSourceManager.h"
 #import "KTVHCDataCallback.h"
 #import "KTVHCDataUnitPool.h"
-#import "KTVHCDataFunctions.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCDataReader () <NSLocking, KTVHCDataSourceManagerDelegate>
@@ -37,7 +36,7 @@
     {
         self.unit = [[KTVHCDataUnitPool pool] unitWithURL:request.URL];
         KTVHCRange range = KTVHCRangeWithEnsureLength(request.range, self.unit.totalLength);
-        _request = KTVHCCopyRequestIfNeeded(request, range);
+        _request = [request requestWithRange:range];
         [self.unit updateRequestHeaders:self.request.headers];
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
@@ -151,7 +150,7 @@
         long long delta = obj.range.start + obj.readRange.start - offset;
         if (delta > 0) {
             KTVHCRange range = KTVHCMakeRange(offset, offset + delta - 1);
-            KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
+            KTVHCDataRequest * request = [self.request requestWithRange:range];
             KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
             [networkSources addObject:source];
             offset += delta;
@@ -162,7 +161,7 @@
     }
     if (length > 0) {
         KTVHCRange range = KTVHCMakeRange(offset, self.request.range.end);
-        KTVHCDataRequest * request = KTVHCCopyRequestIfNeeded(self.request, range);
+        KTVHCDataRequest * request = [self.request requestWithRange:range];
         KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
         [networkSources addObject:source];
     }
