@@ -95,9 +95,9 @@ NSString * const KTVHCDataContentTypeBinaryOctetStream = @"binary/octet-stream";
 
 static NSArray <NSString *> * defaultAcceptContextTypes = nil;
 
-+ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes
++ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypeArray
 {
-    defaultAcceptContextTypes = defaultAcceptContextTypes;
+    defaultAcceptContextTypes = defaultAcceptContextTypeArray;
 }
 
 + (NSArray <NSString *> *)defaultAcceptContextTypes

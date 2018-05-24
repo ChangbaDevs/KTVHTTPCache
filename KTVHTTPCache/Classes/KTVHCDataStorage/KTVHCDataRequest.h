@@ -42,7 +42,7 @@ KTVHTTPCACHE_EXTERN KTVHCDataContentType const KTVHCDataContentTypeApplicationOc
  *  KTVHCDataContentTypeApplicationOctetStream
  *  KTVHCDataContentTypeBinaryOctetStream
  */
-+ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypes;
++ (void)setDefaultAcceptContextTypes:(NSArray <NSString *> *)defaultAcceptContextTypeArray;
 + (NSArray <NSString *> *)defaultAcceptContextTypes;
 
 
