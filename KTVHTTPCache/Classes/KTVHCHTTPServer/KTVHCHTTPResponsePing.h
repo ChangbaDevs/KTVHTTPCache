@@ -12,7 +12,7 @@
 
 @class KTVHCHTTPConnection;
 
-KTVHTTPCACHE_EXTERN NSString * const KTVHCHTTPResponsePingTokenString;
+KTVHTTPCACHE_EXTERN NSString * const KTVHCHTTPResponsePingResponseValue;
 
 @interface KTVHCHTTPResponsePing : NSObject <HTTPResponse>
 

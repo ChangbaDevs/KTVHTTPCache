@@ -10,85 +10,77 @@
 #import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
 
-static NSString * const KTVHCHTTPURL_Domain = @"localhost";
-static NSString * const KTVHCHTTPURL_Key_OriginalURL = @"originalURL";
-static NSString * const KTVHCHTTPURL_Key_RequestType = @"requestType";
-static NSString * const KTVHCHTTPURL_Vaule_RequestType_Content = @"content";
-static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
-
-@interface KTVHCHTTPURL ()
-
-@property (nonatomic, assign) KTVHCHTTPURLType type;
-@property (nonatomic, copy) NSString * originalURLString;
-
-@end
+static NSString * const kKTVHCHTTPURLRequestURLKey      = @"originalURL";
+static NSString * const kKTVHCHTTPURLRequestTypeKey     = @"requestType";
+static NSString * const kKTVHCHTTPURLRequestTypeContent = @"content";
+static NSString * const kKTVHCHTTPURLRequestTypePing    = @"ping";
 
 @implementation KTVHCHTTPURL
 
-- (instancetype)initForPing
++ (instancetype)pingURL
 {
-    if (self = [super init])
-    {
-        KTVHCLogAlloc(self);
-        self.type = KTVHCHTTPURLTypePing;
-        self.originalURLString = @"KTVHCHTTPURLPingResponseFile";
-        KTVHCLogHTTPURL(@"%p, Ping URL\n%@", self, self.originalURLString);
-    }
-    return self;
+    static KTVHCHTTPURL * obj = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSURL * URL = [NSURL URLWithString:@"KTVHTTPCache"];
+        obj = [[KTVHCHTTPURL alloc] initWithOriginalURL:URL];
+        obj->_type = KTVHCHTTPURLTypePing;
+    });
+    return obj;
 }
 
-- (instancetype)initWithServerURIString:(NSString *)serverURIString
+- (instancetype)initWithProxyURL:(NSURL *)URL
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
-        NSRange requestTypeRange = [serverURIString rangeOfString:[NSString stringWithFormat:@"%@=", KTVHCHTTPURL_Key_RequestType]];
+        NSRange requestTypeRange = [URL.absoluteString rangeOfString:[NSString stringWithFormat:@"%@=", kKTVHCHTTPURLRequestTypeKey]];
         if (requestTypeRange.location != NSNotFound)
         {
-            NSString * valueString = [serverURIString substringFromIndex:requestTypeRange.location];
+            NSString * paramString = [URL.absoluteString substringFromIndex:requestTypeRange.location];
             NSCharacterSet * delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&"];
-            NSScanner * scanner = [[NSScanner alloc] initWithString:valueString];
+            NSScanner * scanner = [[NSScanner alloc] initWithString:paramString];
             while (![scanner isAtEnd])
             {
-                NSString * pairString = nil;
-                [scanner scanUpToCharactersFromSet:delimiterSet intoString:&pairString];
+                NSString * tupleString = nil;
+                [scanner scanUpToCharactersFromSet:delimiterSet intoString:&tupleString];
                 [scanner scanCharactersFromSet:delimiterSet intoString:NULL];
-                NSArray <NSString *> * pair = [pairString componentsSeparatedByString:@"="];
-                if (pair.count == 2)
+                NSArray <NSString *> * tuple = [tupleString componentsSeparatedByString:@"="];
+                if (tuple.count == 2)
                 {
-                    NSString * key = pair.firstObject;
-                    NSString * value = pair.lastObject;
-                    if ([key isEqualToString:KTVHCHTTPURL_Key_OriginalURL])
+                    NSString * key = tuple.firstObject;
+                    NSString * value = tuple.lastObject;
+                    if ([key isEqualToString:kKTVHCHTTPURLRequestURLKey])
                     {
-                        self.originalURLString = [[KTVHCURLTools URLDecode:value] copy];
+                        _URL = [NSURL URLWithString:[KTVHCURLTools URLDecode:value]];
                     }
-                    else if ([key isEqualToString:KTVHCHTTPURL_Key_RequestType])
+                    else if ([key isEqualToString:kKTVHCHTTPURLRequestTypeKey])
                     {
-                        if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Ping])
+                        if ([value isEqualToString:kKTVHCHTTPURLRequestTypePing])
                         {
-                            self.type = KTVHCHTTPURLTypePing;
+                            _type = KTVHCHTTPURLTypePing;
                         }
-                        else if ([value isEqualToString:KTVHCHTTPURL_Vaule_RequestType_Content])
+                        else if ([value isEqualToString:kKTVHCHTTPURLRequestTypeContent])
                         {
-                            self.type = KTVHCHTTPURLTypeContent;
+                            _type = KTVHCHTTPURLTypeContent;
                         }
                     }
                 }
             }
         }
-        KTVHCLogHTTPURL(@"%p, Server URI\n%@\n%@", self, serverURIString, self.originalURLString);
+        KTVHCLogHTTPURL(@"%p, Proxy URL\n%@\n%@", self, URL, self.URL);
     }
     return self;
 }
 
-- (instancetype)initWithOriginalURLString:(NSString *)originalURLString
+- (instancetype)initWithOriginalURL:(NSURL *)URL
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
-        self.type = KTVHCHTTPURLTypeContent;
-        self.originalURLString = [originalURLString copy];
-        KTVHCLogHTTPURL(@"%p, Content URL\n%@", self, self.originalURLString);
+        _URL = URL;
+        _type = KTVHCHTTPURLTypeContent;
+        KTVHCLogHTTPURL(@"%p, Original URL\n%@", self, self.URL);
     }
     return self;
 }
@@ -98,40 +90,27 @@ static NSString * const KTVHCHTTPURL_Vaule_RequestType_Ping= @"ping";
     KTVHCLogDealloc(self);
 }
 
-- (NSURL *)proxyURLWithServerPort:(NSInteger)serverPort
+- (NSURL *)proxyURLWithPort:(NSInteger)port
 {
-    NSString * proxyURLString = [self proxyURLStringWithServerPort:serverPort];
-    return [NSURL URLWithString:proxyURLString];
-}
-
-- (NSString *)proxyURLStringWithServerPort:(NSInteger)serverPort
-{
-    NSString * pathExtension = [NSURL URLWithString:self.originalURLString].pathExtension;
-    if (pathExtension.length)
+    NSString * pathExtension = @"";
+    if (self.URL.pathExtension.length > 0)
     {
-        pathExtension = [NSString stringWithFormat:@".%@", pathExtension];
+        pathExtension = [NSString stringWithFormat:@".%@", self.URL.pathExtension];
     }
-    NSString * requestType = KTVHCHTTPURL_Vaule_RequestType_Content;
-    switch (self.type) {
-        case KTVHCHTTPURLTypePing:
-            requestType = KTVHCHTTPURL_Vaule_RequestType_Ping;
-            break;
-        default:
-            break;
+    NSString * requestType = kKTVHCHTTPURLRequestTypeContent;
+    if (self.type == KTVHCHTTPURLTypePing)
+    {
+        requestType = kKTVHCHTTPURLRequestTypePing;
     }
-    NSMutableString * mutableString = [NSMutableString stringWithFormat:@"http://%@:%d/request%@?%@=%@",
-                                       KTVHCHTTPURL_Domain,
-                                       (int)serverPort,
-                                       pathExtension ? pathExtension : @"",
-                                       KTVHCHTTPURL_Key_RequestType,
-                                       requestType];
-    NSDictionary <NSString *, id> * params = @{KTVHCHTTPURL_Key_OriginalURL : [KTVHCURLTools URLEncode:self.originalURLString]};
-    [params enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [mutableString appendString:[NSString stringWithFormat:@"&%@=%@", key, obj]];
-    }];
-    NSString * result = [mutableString copy];
-    KTVHCLogHTTPURL(@"%p, Proxy URL\n%@", self, result);
-    return result;
+    NSString * originalURLString = [KTVHCURLTools URLEncode:self.URL.absoluteString];
+    NSString * URLString = [NSString stringWithFormat:@"http://localhost:%d/request%@?%@=%@&%@=%@",
+                            (int)port,
+                            pathExtension,
+                            kKTVHCHTTPURLRequestTypeKey, requestType,
+                            kKTVHCHTTPURLRequestURLKey, originalURLString];
+    NSURL * URL = [NSURL URLWithString:URLString];
+    KTVHCLogHTTPURL(@"%p, Proxy URL\n%@", self, URL);
+    return URL;
 }
 
 @end

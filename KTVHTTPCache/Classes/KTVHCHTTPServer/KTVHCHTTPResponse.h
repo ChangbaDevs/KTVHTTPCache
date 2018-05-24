@@ -10,13 +10,13 @@
 #import "KTVHCHTTPHeader.h"
 
 @class KTVHCHTTPConnection;
-@class KTVHCDataRequest;
+@class KTVHCHTTPRequest;
 
 @interface KTVHCHTTPResponse : NSObject <HTTPResponse>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)responseWithConnection:(KTVHCHTTPConnection *)connection dataRequest:(KTVHCDataRequest *)dataRequest;
+- (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection request:(KTVHCHTTPRequest *)request;
 
 @end

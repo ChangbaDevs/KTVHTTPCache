@@ -10,8 +10,9 @@
 
 typedef NS_ENUM(NSUInteger, KTVHCHTTPURLType)
 {
-    KTVHCHTTPURLTypePing,
+    KTVHCHTTPURLTypeUnknown,
     KTVHCHTTPURLTypeContent,
+    KTVHCHTTPURLTypePing,
 };
 
 @interface KTVHCHTTPURL : NSObject
@@ -19,14 +20,13 @@ typedef NS_ENUM(NSUInteger, KTVHCHTTPURLType)
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initForPing;
-- (instancetype)initWithServerURIString:(NSString *)serverURIString;
-- (instancetype)initWithOriginalURLString:(NSString *)originalURLString;
++ (instancetype)pingURL;
+- (instancetype)initWithProxyURL:(NSURL *)URL;
+- (instancetype)initWithOriginalURL:(NSURL *)URL;
 
 @property (nonatomic, assign, readonly) KTVHCHTTPURLType type;
-@property (nonatomic, copy, readonly) NSString * originalURLString;
+@property (nonatomic, copy, readonly) NSURL * URL;
 
-- (NSURL *)proxyURLWithServerPort:(NSInteger)serverPort;
-- (NSString *)proxyURLStringWithServerPort:(NSInteger)serverPort;
+- (NSURL *)proxyURLWithPort:(NSInteger)port;
 
 @end

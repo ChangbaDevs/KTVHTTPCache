@@ -8,23 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@class KTVHCDataRequest;
-
 @interface KTVHCHTTPRequest : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)requestWithOriginalURLString:(NSString *)originalURLString;
+- (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers;
 
-@property (nonatomic, copy, readonly) NSString * originalURLString;
-@property (nonatomic, copy) NSDictionary * allHTTPHeaderFields;
-@property (nonatomic, copy) NSURL * URL;
+@property (nonatomic, copy, readonly) NSURL * URL;
+@property (nonatomic, copy, readonly) NSDictionary * headers;
 @property (nonatomic, copy) NSString * method;
 @property (nonatomic, copy) NSString * version;
-@property (nonatomic, assign) BOOL isHeaderComplete;
-@property (nonatomic, assign) NSInteger statusCode;
-
-- (KTVHCDataRequest *)dataRequest;
 
 @end

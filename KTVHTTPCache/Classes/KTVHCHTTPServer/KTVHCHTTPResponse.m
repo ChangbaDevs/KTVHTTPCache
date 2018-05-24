@@ -8,12 +8,14 @@
 
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCHTTPConnection.h"
+#import "KTVHCHTTPRequest.h"
 #import "KTVHCDataStorage.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCHTTPResponse () <KTVHCDataReaderDelegate>
 
 @property (nonatomic, weak) KTVHCHTTPConnection * connection;
+@property (nonatomic, strong) KTVHCHTTPRequest * request;
 @property (nonatomic, strong) KTVHCDataRequest * dataRequest;
 @property (nonatomic, strong) KTVHCDataReader * reader;
 @property (nonatomic, assign) BOOL waitingResponseHeader;
@@ -22,22 +24,18 @@
 
 @implementation KTVHCHTTPResponse
 
-+ (instancetype)responseWithConnection:(KTVHCHTTPConnection *)connection dataRequest:(KTVHCDataRequest *)dataRequest
-{
-    return [[self alloc] initWithConnection:connection dataRequest:dataRequest];
-}
-
-- (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection dataRequest:(KTVHCDataRequest *)dataRequest
+- (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection request:(KTVHCHTTPRequest *)request
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
         self.connection = connection;
-        self.dataRequest = dataRequest;
-        KTVHCLogHTTPResponse(@"%p, Create response\nrequest : %@", self, self.dataRequest);
-        self.reader = [[KTVHCDataStorage storage] readerWithRequest:self.dataRequest];
+        self.request = request;
+        KTVHCDataRequest * dataRequest = [[KTVHCDataRequest alloc] initWithURL:self.request.URL headers:self.request.headers];
+        self.reader = [[KTVHCDataStorage storage] readerWithRequest:dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
+        KTVHCLogHTTPResponse(@"%p, Create response\nrequest : %@", self, self.request);
     }
     return self;
 }

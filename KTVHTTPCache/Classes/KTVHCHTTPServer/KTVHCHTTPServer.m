@@ -106,8 +106,8 @@
     {
         if ([self ping])
         {
-            KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URL.absoluteString];
-            NSURL * ret = [url proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
+            KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURL:URL];
+            NSURL * ret = [url proxyURLWithPort:self.coreHTTPServer.listeningPort];
             KTVHCLogHTTPServer(@"%p, Return proxy URL\n%@", self, ret);
             return ret;
         }
@@ -119,8 +119,8 @@
             {
                 if ([self ping])
                 {
-                    KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URL.absoluteString];
-                    return [url proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
+                    KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURL:URL];
+                    return [url proxyURLWithPort:self.coreHTTPServer.listeningPort];
                 }
                 else
                 {
@@ -156,30 +156,25 @@
         }
         else
         {
-            NSURL * pingURL = [[[KTVHCHTTPURL alloc] initForPing] proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
+            NSURL * pingURL = [[KTVHCHTTPURL pingURL] proxyURLWithPort:self.coreHTTPServer.listeningPort];
             self.pingDataTask = [self.pingSession dataTaskWithURL:pingURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                          if (!error && data.length > 0)
-                                          {
-                                              NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                              if ([string isEqualToString:[KTVHCHTTPConnection responsePingTokenString]])
-                                              {
-                                                  self.pingResult = YES;
-                                              }
-                                              else
-                                              {
-                                                  self.pingResult = NO;
-                                              }
-                                          }
-                                          else
-                                          {
-                                              self.pingResult = NO;
-                                          }
-                                          self.pingTimeInterval = [NSDate date].timeIntervalSince1970;
-                                          [self.pingCondition lock];
-                                          self.pinging = NO;
-                                          [self.pingCondition broadcast];
-                                          [self.pingCondition unlock];
-                                      }];
+                if (!error && data.length > 0) {
+                    NSString * pang = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    BOOL success = [pang isEqualToString:[KTVHCHTTPConnection pingResponseValue]];
+                    if (success) {
+                        self.pingResult = YES;
+                    } else {
+                        self.pingResult = NO;
+                    }
+                } else {
+                    self.pingResult = NO;
+                }
+                self.pingTimeInterval = [NSDate date].timeIntervalSince1970;
+                [self.pingCondition lock];
+                self.pinging = NO;
+                [self.pingCondition broadcast];
+                [self.pingCondition unlock];
+            }];
             self.pinging = YES;
             [self.pingDataTask resume];
             [self.pingCondition wait];

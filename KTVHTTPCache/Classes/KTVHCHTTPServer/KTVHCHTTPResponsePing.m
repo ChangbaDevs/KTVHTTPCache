@@ -10,7 +10,7 @@
 #import "KTVHCHTTPConnection.h"
 #import "KTVHCLog.h"
 
-NSString * const KTVHCHTTPResponsePingTokenString = @"pang";
+NSString * const KTVHCHTTPResponsePingResponseValue = @"pang";
 
 @interface KTVHCHTTPResponsePing ()
 
@@ -35,7 +35,7 @@ NSString * const KTVHCHTTPResponsePingTokenString = @"pang";
         static NSData * data = nil;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            data = [KTVHCHTTPResponsePingTokenString dataUsingEncoding:NSUTF8StringEncoding];
+            data = [KTVHCHTTPResponsePingResponseValue dataUsingEncoding:NSUTF8StringEncoding];
         });
         self.responseData = data;
     }
