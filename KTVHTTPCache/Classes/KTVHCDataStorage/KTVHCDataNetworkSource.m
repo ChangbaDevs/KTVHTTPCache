@@ -17,15 +17,16 @@
 
 @property (nonatomic, strong) NSError * error;
 @property (nonatomic, strong) NSLock * coreLock;
-@property (nonatomic, strong) KTVHCDataUnitItem * unitItem;
-@property (nonatomic, strong) NSFileHandle * readingHandle;
-@property (nonatomic, strong) NSFileHandle * writingHandle;
-@property (nonatomic, assign) NSURLSessionTask * downlaodTask;
 @property (nonatomic, assign) long long downloadLength;
 @property (nonatomic, assign) long long downloadReadedLength;
 @property (nonatomic, assign) BOOL downloadDidCallComplete;
 @property (nonatomic, assign) BOOL needCallHasAvailableData;
 @property (nonatomic, assign) BOOL didCalledPrepare;
+
+@property (nonatomic, strong) KTVHCDataUnitItem * unitItem;
+@property (nonatomic, strong) NSFileHandle * readingHandle;
+@property (nonatomic, strong) NSFileHandle * writingHandle;
+@property (nonatomic, assign) NSURLSessionTask * downlaodTask;
 
 @end
 
@@ -35,9 +36,9 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         _request = reqeust;
         _range = range;
-        KTVHCLogAlloc(self);
         KTVHCLogDataNetworkSource(@"%p, Create network source\nrequest : %@\nrange : %@", self, self.request, KTVHCStringFromRange(self.range));
     }
     return self;
@@ -52,11 +53,13 @@
 - (void)prepare
 {
     [self lock];
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         [self unlock];
         return;
     }
-    if (self.didCalledPrepare) {
+    if (self.didCalledPrepare)
+    {
         [self unlock];
         return;
     }
@@ -69,7 +72,8 @@
 - (void)close
 {
     [self lock];
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         [self unlock];
         return;
     }
@@ -77,7 +81,8 @@
     KTVHCLogDataNetworkSource(@"%p, Call close", self);
     [self.readingHandle closeFile];
     self.readingHandle = nil;
-    if (!self.downloadDidCallComplete) {
+    if (!self.downloadDidCallComplete)
+    {
         KTVHCLogDataNetworkSource(@"%p, Cancel download task", self);
         [self.downlaodTask cancel];
         self.downlaodTask = nil;
@@ -91,15 +96,18 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         [self unlock];
         return nil;
     }
-    if (self.didFinished) {
+    if (self.didFinished)
+    {
         [self unlock];
         return nil;
     }
-    if (self.error) {
+    if (self.error)
+    {
         [self unlock];
         return nil;
     }
@@ -124,10 +132,10 @@
     KTVHCLogDataNetworkSource(@"%p, Read data\nLength : %lld\ndownloadLength : %lld\nreadedLength : %lld", self, (long long)data.length, self.downloadReadedLength, self.downloadLength);
     if (self.downloadReadedLength >= KTVHCRangeGetLength(self.range))
     {
+        _didFinished = YES;
         KTVHCLogDataNetworkSource(@"%p, Read data did finished", self);
         [self.readingHandle closeFile];
         self.readingHandle = nil;
-        _didFinished = YES;
     }
     [self unlock];
     return data;
@@ -146,30 +154,44 @@
     [self.writingHandle synchronizeFile];
     [self.writingHandle closeFile];
     self.writingHandle = nil;
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         KTVHCLogDataNetworkSource(@"%p, Complete but did closed\nError : %@", self, error);
-    } else {
-        if (error) {
+    }
+    else
+    {
+        if (error)
+        {
             self.error = error;
-            if (self.error.code != NSURLErrorCancelled) {
+            if (self.error.code != NSURLErrorCancelled)
+            {
                 KTVHCLogDataNetworkSource(@"%p, Complete with error\nError : %@", self, error);
-                if ([self.delegate respondsToSelector:@selector(networkSource:didFailed:)]) {
+                if ([self.delegate respondsToSelector:@selector(networkSource:didFailed:)])
+                {
                     [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                         [self.delegate networkSource:self didFailed:self.error];
                     }];
                 }
-            } else {
+            }
+            else
+            {
                 KTVHCLogDataNetworkSource(@"%p, Complete with cancel\nError : %@", self, error);
             }
-        } else {
-            if (self.downloadLength >= KTVHCRangeGetLength(self.range)) {
+        }
+        else
+        {
+            if (self.downloadLength >= KTVHCRangeGetLength(self.range))
+            {
                 KTVHCLogDataNetworkSource(@"%p, Complete and finisehed", self);
-                if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishedDownload:)]) {
+                if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishedDownload:)])
+                {
                     [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                         [self.delegate networkSourceDidFinishedDownload:self];
                     }];
                 }
-            } else {
+            }
+            else
+            {
                 KTVHCLogDataNetworkSource(@"%p, Complete but not finisehed\nError : %@\ndownloadLength : %lld", self, error, self.downloadLength);
             }
         }
@@ -195,7 +217,8 @@
 - (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data
 {
     [self lock];
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         [self unlock];
         return;
     }
@@ -209,14 +232,17 @@
 
 - (void)callbackForPrepared
 {
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         return;
     }
-    if (self.didPrepared) {
+    if (self.didPrepared)
+    {
         return;
     }
     _didPrepared = YES;
-    if ([self.delegate respondsToSelector:@selector(networkSourceDidPrepared:)]) {
+    if ([self.delegate respondsToSelector:@selector(networkSourceDidPrepared:)])
+    {
         KTVHCLogDataNetworkSource(@"%p, Callback for prepared - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataNetworkSource(@"%p, Callback for prepared - End", self);
@@ -227,14 +253,17 @@
 
 - (void)callbackForHasAvailableData
 {
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         return;
     }
-    if (!self.needCallHasAvailableData) {
+    if (!self.needCallHasAvailableData)
+    {
         return;
     }
     self.needCallHasAvailableData = NO;
-    if ([self.delegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
+    if ([self.delegate respondsToSelector:@selector(networkSourceHasAvailableData:)])
+    {
         KTVHCLogDataNetworkSource(@"%p, Callback for has available data - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataNetworkSource(@"%p, Callback for has available data - End", self);
@@ -245,7 +274,8 @@
 
 - (void)lock
 {
-    if (!self.coreLock) {
+    if (!self.coreLock)
+    {
         self.coreLock = [[NSLock alloc] init];
     }
     [self.coreLock lock];

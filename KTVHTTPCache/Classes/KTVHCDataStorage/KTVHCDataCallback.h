@@ -10,7 +10,7 @@
 
 @interface KTVHCDataCallback : NSObject
 
-+ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block;      // default is async.
++ (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block;      // Default is async.
 + (void)callbackWithQueue:(dispatch_queue_t)queue block:(void (^)(void))block async:(BOOL)async;
 
 @end

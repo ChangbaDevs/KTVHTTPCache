@@ -24,10 +24,10 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         _path = path;
         _range = range;
         _readRange = readRange;
-        KTVHCLogAlloc(self);
         KTVHCLogDataFileSource(@"%p, Create file source\npath : %@\nrange : %@\nreadRange : %@", self, path, KTVHCStringFromRange(range), KTVHCStringFromRange(readRange));
     }
     return self;
@@ -41,19 +41,24 @@
 - (void)prepare
 {
     [self lock];
-    if (self.didPrepared) {
+    if (self.didPrepared)
+    {
         [self unlock];
         return;
     }
     _didPrepared = YES;
     KTVHCLogDataFileSource(@"%p, Call prepare", self);
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.path];
-    @try {
+    @try
+    {
         [self.readingHandle seekToFileOffset:self.readRange.start];
-    } @catch (NSException *exception) {
+    }
+    @catch (NSException * exception)
+    {
         KTVHCLogDataFileSource(@"%p, Seek file exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
     }
-    if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepared:)]) {
+    if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepared:)])
+    {
         KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataFileSource(@"%p, Callback for prepared - End", self);
@@ -66,7 +71,8 @@
 - (void)close
 {
     [self lock];
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         [self unlock];
         return;
     }
@@ -80,11 +86,13 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.didClosed) {
+    if (self.didClosed)
+    {
         [self unlock];
         return nil;
     }
-    if (self.didFinished) {
+    if (self.didFinished)
+    {
         [self unlock];
         return nil;
     }
@@ -93,7 +101,8 @@
     NSData * data = [self.readingHandle readDataOfLength:length];
     self.readedLength += data.length;
     KTVHCLogDataFileSource(@"%p, Read data : %lld, %lld, %lld", self, (long long)data.length, self.readedLength, readLength);
-    if (self.readedLength >= readLength) {
+    if (self.readedLength >= readLength)
+    {
         KTVHCLogDataFileSource(@"%p, Read data did finished", self);
         [self.readingHandle closeFile];
         self.readingHandle = nil;
@@ -111,7 +120,8 @@
 
 - (void)lock
 {
-    if (!self.coreLock) {
+    if (!self.coreLock)
+    {
         self.coreLock = [[NSLock alloc] init];
     }
     [self.coreLock lock];
