@@ -46,7 +46,6 @@
         [self unlock];
         return;
     }
-    _didPrepared = YES;
     KTVHCLogDataFileSource(@"%p, Call prepare", self);
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.path];
     @try
@@ -57,6 +56,7 @@
     {
         KTVHCLogDataFileSource(@"%p, Seek file exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
     }
+    _didPrepared = YES;
     if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepared:)])
     {
         KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
