@@ -66,8 +66,8 @@
     KTVHCLogDataSourceManager(@"%p, Call prepare", self);
     [self.sourceQueue sortSources];
     [self.sourceQueue setAllSourceDelegate:self delegateQueue:self.delegateQueue];
-    self.currentSource = [self.sourceQueue fetchFirstSource];
-    self.currentNetworkSource = [self.sourceQueue fetchFirstNetworkSource];
+    self.currentSource = [self.sourceQueue firstSource];
+    self.currentNetworkSource = [self.sourceQueue firstNetworkSource];
     KTVHCLogDataSourceManager(@"%p, Sort source\ncurrentSource : %@\ncurrentNetworkSource : %@", self, self.currentSource, self.currentNetworkSource);
     [self.currentSource prepare];
     if (self.currentSource != self.currentNetworkSource)
@@ -113,7 +113,7 @@
     KTVHCLogDataSourceManager(@"%p, Read data : %lld", self, (long long)data.length);
     if (self.currentSource.didFinished)
     {
-        self.currentSource = [self.sourceQueue fetchNextSource:self.currentSource];
+        self.currentSource = [self.sourceQueue nextSource:self.currentSource];
         if (self.currentSource)
         {
             KTVHCLogDataSourceManager(@"%p, Switch to next source, %@", self, self.currentSource);
@@ -164,7 +164,7 @@
 - (void)networkSourceDidFinishedDownload:(KTVHCDataNetworkSource *)networkSource
 {
     [self lock];
-    self.currentNetworkSource = [self.sourceQueue fetchNextNetworkSource:self.currentNetworkSource];
+    self.currentNetworkSource = [self.sourceQueue nextNetworkSource:self.currentNetworkSource];
     [self.currentNetworkSource prepare];
     [self unlock];
 }

@@ -28,8 +28,8 @@
 {
     if (self = [super init])
     {
-        self.sources = [NSMutableArray array];
         KTVHCLogAlloc(self);
+        self.sources = [NSMutableArray array];
     }
     return self;
 }
@@ -50,21 +50,27 @@
 
 - (void)popSource:(id<KTVHCDataSourceProtocol>)source
 {
-    if (!source) {
+    if (!source)
+    {
         return;
     }
-    if ([self.sources containsObject:source]) {
+    if ([self.sources containsObject:source])
+    {
         [self.sources removeObject:source];
     }
 }
 
 - (void)setAllSourceDelegate:(id<KTVHCDataFileSourceDelegate, KTVHCDataNetworkSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
-    for (id <KTVHCDataSourceProtocol> obj in self.sources) {
-        if ([obj isKindOfClass:[KTVHCDataFileSource class]]) {
+    for (id <KTVHCDataSourceProtocol> obj in self.sources)
+    {
+        if ([obj isKindOfClass:[KTVHCDataFileSource class]])
+        {
             KTVHCDataFileSource * source = (KTVHCDataFileSource *)obj;
             [source setDelegate:delegate delegateQueue:delegateQueue];
-        } else if ([obj isKindOfClass:[KTVHCDataNetworkSource class]]) {
+        }
+        else if ([obj isKindOfClass:[KTVHCDataNetworkSource class]])
+        {
             KTVHCDataNetworkSource * source = (KTVHCDataNetworkSource *)obj;
             [source setDelegate:delegate delegateQueue:delegateQueue];
         }
@@ -75,7 +81,8 @@
 {
     KTVHCLogDataSourceQueue(@"%p, Sort sources - Begin\nSources : %@", self, self.sources);
     [self.sources sortUsingComparator:^NSComparisonResult(id <KTVHCDataSourceProtocol> obj1, id <KTVHCDataSourceProtocol> obj2) {
-        if (obj1.range.start < obj2.range.start) {
+        if (obj1.range.start < obj2.range.start)
+        {
             return NSOrderedAscending;
         }
         return NSOrderedDescending;
@@ -85,21 +92,24 @@
 
 - (void)closeAllSource
 {
-    for (id <KTVHCDataSourceProtocol> obj in self.sources) {
+    for (id <KTVHCDataSourceProtocol> obj in self.sources)
+    {
         [obj close];
     }
 }
 
-- (id<KTVHCDataSourceProtocol>)fetchFirstSource
+- (id<KTVHCDataSourceProtocol>)firstSource
 {
     return self.sources.firstObject;
 }
 
-- (id<KTVHCDataSourceProtocol>)fetchNextSource:(id<KTVHCDataSourceProtocol>)currentSource
+- (id<KTVHCDataSourceProtocol>)nextSource:(id<KTVHCDataSourceProtocol>)currentSource
 {
-    if ([self.sources containsObject:currentSource]) {
+    if ([self.sources containsObject:currentSource])
+    {
         NSUInteger index = [self.sources indexOfObject:currentSource] + 1;
-        if (index < self.sources.count) {
+        if (index < self.sources.count)
+        {
             KTVHCLogDataSourceQueue(@"%p, Fetch next source : %@", self, [self.sources objectAtIndex:index]);
             return [self.sources objectAtIndex:index];
         }
@@ -108,23 +118,28 @@
     return nil;
 }
 
-- (KTVHCDataNetworkSource *)fetchFirstNetworkSource
+- (KTVHCDataNetworkSource *)firstNetworkSource
 {
-    for (id<KTVHCDataSourceProtocol> obj in self.sources) {
-        if ([obj isKindOfClass:[KTVHCDataNetworkSource class]]) {
+    for (id<KTVHCDataSourceProtocol> obj in self.sources)
+    {
+        if ([obj isKindOfClass:[KTVHCDataNetworkSource class]])
+        {
             return obj;
         }
     }
     return nil;
 }
 
-- (KTVHCDataNetworkSource *)fetchNextNetworkSource:(KTVHCDataNetworkSource *)currentSource
+- (KTVHCDataNetworkSource *)nextNetworkSource:(KTVHCDataNetworkSource *)currentSource
 {
-    if ([self.sources containsObject:currentSource]) {
+    if ([self.sources containsObject:currentSource])
+    {
         NSUInteger index = [self.sources indexOfObject:currentSource] + 1;
-        for (; index < self.sources.count; index++) {
+        for (; index < self.sources.count; index++)
+        {
             id <KTVHCDataSourceProtocol> obj = [self.sources objectAtIndex:index];
-            if ([obj isKindOfClass:[KTVHCDataNetworkSource class]]) {
+            if ([obj isKindOfClass:[KTVHCDataNetworkSource class]])
+            {
                 KTVHCLogDataSourceQueue(@"%p, Fetch next network source : %@", self, obj);
                 return obj;
             }

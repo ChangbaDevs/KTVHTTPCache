@@ -20,6 +20,7 @@
 - (KTVHCDataUnit *)unitWithURL:(NSURL *)URL;
 
 - (long long)totalCacheLength;
+
 - (NSArray <KTVHCDataCacheItem *> *)allCacheItem;
 - (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL;
 
