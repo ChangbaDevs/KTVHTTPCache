@@ -26,7 +26,7 @@
 
 @property (nonatomic, copy, readonly) NSURL * URL;
 @property (nonatomic, copy, readonly) NSURL * fileURL;
-@property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
+@property (nonatomic, copy, readonly) NSString * key;       // Unique Identifier.
 
 @property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;
 @property (nonatomic, assign, readonly) NSTimeInterval lastItemCreateInterval;

@@ -36,7 +36,7 @@
 {
     if (self = [super init])
     {
-        self.unitQueue = [KTVHCDataUnitQueue unitQueueWithArchiverPath:[KTVHCPathTools absolutePathForArchiver]];
+        self.unitQueue = [KTVHCDataUnitQueue queueWithPath:[KTVHCPathTools absolutePathForArchiver]];
         for (KTVHCDataUnit * obj in self.unitQueue.allUnits)
         {
             obj.fileDelegate = self;
@@ -53,8 +53,8 @@
         return nil;
     }
     [self lock];
-    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURL:URL];
-    KTVHCDataUnit * unit = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    NSString * key = [KTVHCURLTools keyWithURL:URL];
+    KTVHCDataUnit * unit = [self.unitQueue unitWithKey:key];
     if (!unit)
     {
         unit = [KTVHCDataUnit unitWithURL:URL];
@@ -89,8 +89,8 @@
     }
     [self lock];
     KTVHCDataCacheItem * cacheItem = nil;
-    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURL:URL];
-    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    NSString * key = [KTVHCURLTools keyWithURL:URL];
+    KTVHCDataUnit * obj = [self.unitQueue unitWithKey:key];
     if (obj)
     {
         NSArray * items = obj.unitItems;
@@ -138,8 +138,8 @@
         return;
     }
     [self lock];
-    NSString * uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURL:URL];
-    KTVHCDataUnit * obj = [self.unitQueue unitWithUniqueIdentifier:uniqueIdentifier];
+    NSString * key = [KTVHCURLTools keyWithURL:URL];
+    KTVHCDataUnit * obj = [self.unitQueue unitWithKey:key];
     if (obj && obj.workingCount <= 0)
     {
         KTVHCLogDataUnit(@"%p, Delete Unit\nUnit : %@\nFunc : %s", self, obj, __func__);

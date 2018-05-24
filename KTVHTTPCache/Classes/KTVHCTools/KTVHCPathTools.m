@@ -35,7 +35,7 @@
 
 + (NSString *)absolutePathForDirectoryWithURL:(NSURL *)URL
 {
-    NSString * directoryName = [KTVHCURLTools uniqueIdentifierWithURL:URL];
+    NSString * directoryName = [KTVHCURLTools keyWithURL:URL];
     NSString * directoryPath = [self relativePathForUnitItemDirectory:directoryName];
     return [self absolutePathWithRelativePath:directoryPath];
 }
@@ -55,7 +55,7 @@
 
 + (NSString *)relativePathForCompleteFileWithURL:(NSURL *)URL
 {
-    NSString * directoryName = [KTVHCURLTools uniqueIdentifierWithURL:URL];
+    NSString * directoryName = [KTVHCURLTools keyWithURL:URL];
     NSString * directoryPath = [self relativePathForUnitItemDirectory:directoryName];
     NSString * fileName = [directoryName stringByAppendingPathExtension:URL.pathExtension];
     return [directoryPath stringByAppendingPathComponent:fileName];
@@ -63,7 +63,7 @@
 
 + (NSString *)relativePathForUnitItemFileWithURL:(NSURL *)URL offset:(long long)offset
 {
-    NSString * folderName = [KTVHCURLTools uniqueIdentifierWithURL:URL];
+    NSString * folderName = [KTVHCURLTools keyWithURL:URL];
     NSString * relativePath;
     int number = 0;
     BOOL condition = YES;

@@ -31,7 +31,7 @@
     {
         KTVHCLogAlloc(self);
         _URL = URL;
-        _uniqueIdentifier = [KTVHCURLTools uniqueIdentifierWithURL:self.URL];
+        _key = [KTVHCURLTools keyWithURL:self.URL];
         _createTimeInterval = [NSDate date].timeIntervalSince1970;
         [self prepare];
     }
@@ -44,7 +44,7 @@
     {
         KTVHCLogAlloc(self);
         _URL = [NSURL URLWithString:[aDecoder decodeObjectForKey:@"URLString"]];
-        _uniqueIdentifier = [aDecoder decodeObjectForKey:@"uniqueIdentifier"];
+        _key = [aDecoder decodeObjectForKey:@"uniqueIdentifier"];
         _createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
         _requestHeaders = [aDecoder decodeObjectForKey:@"requestHeaderFields"];
         _responseHeaders = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
@@ -58,7 +58,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:self.URL.absoluteString forKey:@"URLString"];
-    [aCoder encodeObject:self.uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [aCoder encodeObject:self.key forKey:@"uniqueIdentifier"];
     [aCoder encodeObject:@(self.createTimeInterval) forKey:@"createTimeInterval"];
     [aCoder encodeObject:self.requestHeaders forKey:@"requestHeaderFields"];
     [aCoder encodeObject:self.responseHeaders forKey:@"responseHeaderFields"];
@@ -92,7 +92,7 @@
         [removeArray removeAllObjects];
         [self sortUnitItems];
     }
-    KTVHCLogDataUnit(@"%p, Create Unit\nURL : %@\nuniqueIdentifier : %@\ntimeInterval : %@\ntotalLength : %lld\ncacheLength : %lld\nvaildLength : %lld\nrequestHeaders : %@\nresponseHeaders : %@\nunitItems : %@", self, self.URL, self.uniqueIdentifier, [NSDate dateWithTimeIntervalSince1970:self.createTimeInterval], self.totalLength, self.cacheLength, self.validLength, self.requestHeaders, self.responseHeaders, self.unitItemsInternal);
+    KTVHCLogDataUnit(@"%p, Create Unit\nURL : %@\nkey : %@\ntimeInterval : %@\ntotalLength : %lld\ncacheLength : %lld\nvaildLength : %lld\nrequestHeaders : %@\nresponseHeaders : %@\nunitItems : %@", self, self.URL, self.key, [NSDate dateWithTimeIntervalSince1970:self.createTimeInterval], self.totalLength, self.cacheLength, self.validLength, self.requestHeaders, self.responseHeaders, self.unitItemsInternal);
     [self unlock];
 }
 

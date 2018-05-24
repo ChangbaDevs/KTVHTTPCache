@@ -19,7 +19,7 @@ typedef NSURL * (^KTVHCURLFilter)(NSURL * URL);
 
 @property (nonatomic, copy) KTVHCURLFilter URLFilter;
 
-+ (NSString *)uniqueIdentifierWithURL:(NSURL *)URL;
++ (NSString *)keyWithURL:(NSURL *)URL;
 
 + (NSString *)URLEncode:(NSString *)URLString;
 + (NSString *)URLDecode:(NSString *)URLString;

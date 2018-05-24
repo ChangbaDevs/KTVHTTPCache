@@ -11,24 +11,24 @@
 
 @interface KTVHCDataUnitQueue ()
 
-@property (nonatomic, copy) NSString * archiverPath;
+@property (nonatomic, copy) NSString * path;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnit *> * unitArray;
 
 @end
 
 @implementation KTVHCDataUnitQueue
 
-+ (instancetype)unitQueueWithArchiverPath:(NSString *)archiverPath
++ (instancetype)queueWithPath:(NSString *)path
 {
     return [[self alloc] initWithArchiverPath:archiverPath];
 }
 
-- (instancetype)initWithArchiverPath:(NSString *)archiverPath
+- (instancetype)initWithPath:(NSString *)path
 {
     if (self = [super init])
     {
-        self.archiverPath = archiverPath;
-        self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.archiverPath];
+        self.path = path;
+        self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.path];
         if (!self.unitArray)
         {
             self.unitArray = [NSMutableArray array];
@@ -47,16 +47,16 @@
     return units;
 }
 
-- (KTVHCDataUnit *)unitWithUniqueIdentifier:(NSString *)uniqueIdentifier;
+- (KTVHCDataUnit *)unitWithKey:(NSString *)key
 {
-    if (uniqueIdentifier.length <= 0)
+    if (key.length <= 0)
     {
         return nil;
     }
     KTVHCDataUnit * unit = nil;
     for (KTVHCDataUnit * obj in self.unitArray)
     {
-        if ([obj.uniqueIdentifier isEqualToString:uniqueIdentifier])
+        if ([obj.key isEqualToString:key])
         {
             unit = obj;
             break;
@@ -92,7 +92,7 @@
 - (void)archive
 {
     KTVHCLogDataUnitQueue(@"%p, Archive - Begin, %ld", self, (long)self.unitArray.count);
-    [NSKeyedArchiver archiveRootObject:self.unitArray toFile:self.archiverPath];
+    [NSKeyedArchiver archiveRootObject:self.unitArray toFile:self.path];
     KTVHCLogDataUnitQueue(@"%p, Archive - End  , %ld", self, (long)self.unitArray.count);
 }
 

@@ -34,7 +34,7 @@
     return URL;
 }
 
-+ (NSString *)uniqueIdentifierWithURL:(NSURL *)URL
++ (NSString *)keyWithURL:(NSURL *)URL
 {
     URL = [[KTVHCURLTools URLTools] URLThroughURLFilter:URL];
     return [self md5:URL.absoluteString];
