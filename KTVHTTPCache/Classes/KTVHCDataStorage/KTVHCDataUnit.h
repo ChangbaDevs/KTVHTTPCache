@@ -25,7 +25,7 @@
 + (instancetype)unitWithURL:(NSURL *)URL;
 
 @property (nonatomic, copy, readonly) NSURL * URL;
-@property (nonatomic, copy, readonly) NSString * filePath;
+@property (nonatomic, copy, readonly) NSURL * fileURL;
 @property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
 
 @property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;

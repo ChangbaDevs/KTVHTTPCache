@@ -32,17 +32,32 @@
     return [KTVHCHTTPServer server].running;
 }
 
++ (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL
+{
+    URL = [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
+    return URL;
+}
+
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString
 {
-    return [[KTVHCHTTPServer server] URLStringWithOriginalURLString:URLString];
+    NSURL * URL = [NSURL URLWithString:URLString];
+    URL = [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
+    return URL.absoluteString;
 }
 
 #pragma mark - Data Storage
 
+- (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL
+{
+    URL = [[KTVHCDataStorage storage] completeFileURLIfExistedWithURL:URL];
+    return URL;
+}
+
 - (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString
 {
     NSURL * URL = [NSURL URLWithString:URLString];
-    return [[KTVHCDataStorage storage] completeFilePathIfExistedWithURL:URL];
+    URL = [[KTVHCDataStorage storage] completeFileURLIfExistedWithURL:URL];
+    return URL.path;
 }
 
 + (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request
@@ -86,7 +101,6 @@
 {
     [[KTVHCDataStorage storage] deleteAllCache];
 }
-
 
 #pragma mark - Token
 

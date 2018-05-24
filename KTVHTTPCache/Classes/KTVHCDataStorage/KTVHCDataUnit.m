@@ -150,19 +150,19 @@
     [self.fileDelegate unitShouldRearchive:self];
 }
 
-- (NSString *)filePath
+- (NSURL *)fileURL
 {
     [self lock];
-    NSString * filePath = nil;
+    NSURL * fileURL = nil;
     KTVHCDataUnitItem * item = self.unitItemsInternal.firstObject;
     if (item.offset == 0
         && item.length > 0
         && item.length == self.totalLength) {
-        filePath = item.absolutePath;
-        KTVHCLogDataUnit(@"%p, Get file path\n%@", self, filePath);
+        fileURL = [NSURL fileURLWithPath:item.absolutePath];
+        KTVHCLogDataUnit(@"%p, Get file path\n%@", self, fileURL);
     }
     [self unlock];
-    return filePath;
+    return fileURL;
 }
 
 - (long long)cacheLength

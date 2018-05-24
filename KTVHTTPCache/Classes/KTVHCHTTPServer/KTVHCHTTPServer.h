@@ -20,6 +20,6 @@
 - (void)start:(NSError **)error;
 - (void)stop;
 
-- (NSString *)URLStringWithOriginalURLString:(NSString *)URLString;
+- (NSURL *)URLWithOriginalURL:(NSURL *)URL;
 
 @end

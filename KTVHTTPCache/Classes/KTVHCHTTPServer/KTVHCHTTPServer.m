@@ -93,12 +93,12 @@
     }
 }
 
-- (NSString *)URLStringWithOriginalURLString:(NSString *)URLString
+- (NSURL *)URLWithOriginalURL:(NSURL *)URL
 {
-    if (self.running && [URLString hasPrefix:@"http"]) {
+    if (self.running && [URL.scheme hasPrefix:@"http"]) {
         if ([self ping]) {
-            KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URLString];
-            NSString * ret = [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
+            KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URL.absoluteString];
+            NSURL * ret = [url proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
             KTVHCLogHTTPServer(@"%p, Return proxy URL\n%@", self, ret);
             return ret;
         } else {
@@ -106,16 +106,16 @@
             BOOL success = [self restart];
             if (success) {
                 if ([self ping]) {
-                    KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URLString];
-                    return [url proxyURLStringWithServerPort:self.coreHTTPServer.listeningPort];
+                    KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURLString:URL.absoluteString];
+                    return [url proxyURLWithServerPort:self.coreHTTPServer.listeningPort];
                 } else {
                     KTVHCLogHTTPServer(@"%p, Ping failed 2", self);
                 }
             }
         }
     }
-    KTVHCLogHTTPServer(@"%p, Return original URL\n%@", self, URLString);
-    return URLString;
+    KTVHCLogHTTPServer(@"%p, Return original URL\n%@", self, URL);
+    return URL;
 }
 
 - (BOOL)ping

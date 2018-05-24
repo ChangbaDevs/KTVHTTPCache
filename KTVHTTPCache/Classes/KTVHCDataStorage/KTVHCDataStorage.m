@@ -30,12 +30,12 @@
     return self;
 }
 
-- (NSString *)completeFilePathIfExistedWithURL:(NSURL *)URL
+- (NSURL *)completeFileURLIfExistedWithURL:(NSURL *)URL
 {
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
-    NSString * path = unit.filePath;
+    NSURL * fileURL = unit.fileURL;
     [unit workingRelease];
-    return path;
+    return fileURL;
 }
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request

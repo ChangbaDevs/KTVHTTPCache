@@ -27,13 +27,15 @@
 /**
  *  Return the URL string for local server.
  */
++ (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL;
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString;
 
 #pragma mark - Data Storage
 
 /**
- *  If the content of the URLString is finish cached, return the file path for the content. Otherwise return nil.
+ *  If the content of the URL is finish cached, return the file path for the content. Otherwise return nil.
  */
+- (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL;
 - (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString;
 
 /**
