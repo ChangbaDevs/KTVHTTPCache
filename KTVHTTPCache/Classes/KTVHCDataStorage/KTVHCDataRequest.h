@@ -21,5 +21,6 @@
 @property (nonatomic, assign, readonly) KTVHCRange range;
 
 - (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range;
+- (KTVHCDataRequest *)requestWithTotalLength:(long long)totalLength;
 
 @end

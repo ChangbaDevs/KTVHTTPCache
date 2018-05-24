@@ -29,7 +29,8 @@
     {
         self.archiverPath = archiverPath;
         self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.archiverPath];
-        if (!self.unitArray) {
+        if (!self.unitArray)
+        {
             self.unitArray = [NSMutableArray array];
         }
     }
@@ -38,7 +39,8 @@
 
 - (NSArray <KTVHCDataUnit *> *)allUnits
 {
-    if (self.unitArray.count <= 0) {
+    if (self.unitArray.count <= 0)
+    {
         return nil;
     }
     NSArray <KTVHCDataUnit *> * units = [self.unitArray copy];
@@ -47,12 +49,15 @@
 
 - (KTVHCDataUnit *)unitWithUniqueIdentifier:(NSString *)uniqueIdentifier;
 {
-    if (uniqueIdentifier.length <= 0) {
+    if (uniqueIdentifier.length <= 0)
+    {
         return nil;
     }
     KTVHCDataUnit * unit = nil;
-    for (KTVHCDataUnit * obj in self.unitArray) {
-        if ([obj.uniqueIdentifier isEqualToString:uniqueIdentifier]) {
+    for (KTVHCDataUnit * obj in self.unitArray)
+    {
+        if ([obj.uniqueIdentifier isEqualToString:uniqueIdentifier])
+        {
             unit = obj;
             break;
         }
@@ -62,20 +67,24 @@
 
 - (void)putUnit:(KTVHCDataUnit *)unit
 {
-    if (!unit) {
+    if (!unit)
+    {
         return;
     }
-    if (![self.unitArray containsObject:unit]) {
+    if (![self.unitArray containsObject:unit])
+    {
         [self.unitArray addObject:unit];
     }
 }
 
 - (void)popUnit:(KTVHCDataUnit *)unit
 {
-    if (!unit) {
+    if (!unit)
+    {
         return;
     }
-    if ([self.unitArray containsObject:unit]) {
+    if ([self.unitArray containsObject:unit])
+    {
         [self.unitArray removeObject:unit];
     }
 }

@@ -38,17 +38,29 @@
 @property (nonatomic, assign, readonly) long long cacheLength;
 @property (nonatomic, assign, readonly) long long validLength;
 
+/**
+ *  Unit Item
+ */
 - (NSArray <KTVHCDataUnitItem *> *)unitItems;
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem;
 
+/**
+ *  Info Sync
+ */
 - (void)updateRequestHeaders:(NSDictionary *)requestHeaders;
 - (void)updateResponseHeaders:(NSDictionary *)responseHeaders totalLength:(long long)totalLength;
 
+/**
+ *  Working
+ */
 @property (nonatomic, assign, readonly) NSInteger workingCount;
 
 - (void)workingRetain;
 - (void)workingRelease;
 
+/**
+ *  File Control
+ */
 @property (nonatomic, weak) id <KTVHCDataUnitFileDelegate> fileDelegate;
 
 - (void)deleteFiles;

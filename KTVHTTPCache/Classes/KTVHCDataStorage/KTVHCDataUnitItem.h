@@ -14,7 +14,6 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initForCopy;
 - (instancetype)initWithPath:(NSString *)path;
 - (instancetype)initWithRequest:(KTVHCDataRequest *)request;
 

@@ -20,7 +20,7 @@
 
 @end
 
-@interface KTVHCDataReader : NSObject
+@interface KTVHCDataReader : NSObject <NSLocking>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

@@ -74,13 +74,17 @@
 - (void)prepare
 {
     [self lock];
-    if (!self.unitItemsInternal) {
+    if (!self.unitItemsInternal)
+    {
         self.unitItemsInternal = [NSMutableArray array];
     }
-    if (self.unitItemsInternal.count > 0) {
+    if (self.unitItemsInternal.count > 0)
+    {
         NSMutableArray * removeArray = [NSMutableArray array];
-        for (KTVHCDataUnitItem * obj in self.unitItemsInternal) {
-            if (obj.length <= 0) {
+        for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+        {
+            if (obj.length <= 0)
+            {
                 [removeArray addObject:obj];
             }
         }
@@ -98,9 +102,12 @@
     KTVHCLogDataSourceQueue(@"%p, Sort unitItems - Begin\n%@", self, self.unitItemsInternal);
     [self.unitItemsInternal sortUsingComparator:^NSComparisonResult(KTVHCDataUnitItem * obj1, KTVHCDataUnitItem * obj2) {
         NSComparisonResult result = NSOrderedDescending;
-        if (obj1.offset < obj2.offset) {
+        if (obj1.offset < obj2.offset)
+        {
             result = NSOrderedAscending;
-        } else if ((obj1.offset == obj2.offset) && (obj1.length > obj2.length)) {
+        }
+        else if ((obj1.offset == obj2.offset) && (obj1.length > obj2.length))
+        {
             result = NSOrderedAscending;
         }
         return result;
@@ -113,9 +120,10 @@
 {
     [self lock];
     NSMutableArray * objs = [NSMutableArray array];
-    [self.unitItemsInternal enumerateObjectsUsingBlock:^(KTVHCDataUnitItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+    {
         [objs addObject:[obj copy]];
-    }];
+    }
     KTVHCLogDataSourceQueue(@"%p, Get unitItems\n%@", self, self.unitItemsInternal);
     [self unlock];
     return [objs copy];
@@ -155,9 +163,8 @@
     [self lock];
     NSURL * fileURL = nil;
     KTVHCDataUnitItem * item = self.unitItemsInternal.firstObject;
-    if (item.offset == 0
-        && item.length > 0
-        && item.length == self.totalLength) {
+    if (item.offset == 0 && item.length > 0 && item.length == self.totalLength)
+    {
         fileURL = [NSURL fileURLWithPath:item.absolutePath];
         KTVHCLogDataUnit(@"%p, Get file path\n%@", self, fileURL);
     }
@@ -199,7 +206,8 @@
     NSTimeInterval timeInterval = self.createTimeInterval;
     for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
     {
-        if (obj.createTimeInterval > timeInterval) {
+        if (obj.createTimeInterval > timeInterval)
+        {
             timeInterval = obj.createTimeInterval;
         }
     }
@@ -220,8 +228,10 @@
     [self lock];
     _workingCount--;
     KTVHCLogDataUnit(@"%p, Working release : %ld", self, (long)self.workingCount);
-    if (self.workingCount <= 0) {
-        if ([self mergeFilesIfNeeded]) {
+    if (self.workingCount <= 0)
+    {
+        if ([self mergeFilesIfNeeded])
+        {
             [self.fileDelegate unitShouldRearchive:self];
         }
     }
@@ -256,20 +266,27 @@
         for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
         {
             NSAssert(offset >= obj.offset, @"invaild unit item.");
-            if (offset >= (obj.offset + obj.length)) {
+            if (offset >= (obj.offset + obj.length))
+            {
                 KTVHCLogDataUnit(@"%p, Merge files continue", self);
                 continue;
             }
             NSFileHandle * readingHandle = [NSFileHandle fileHandleForReadingAtPath:obj.absolutePath];
-            @try {
+            @try
+            {
                 [readingHandle seekToFileOffset:offset - obj.offset];
-            } @catch (NSException * exception) {
+            }
+            @catch (NSException * exception)
+            {
                 KTVHCLogDataUnit(@"%p, Merge files seek exception\n%@", self, exception);
             }
-            while (YES) {
-                @autoreleasepool {
+            while (YES)
+            {
+                @autoreleasepool
+                {
                     NSData * data = [readingHandle readDataOfLength:1024 * 1024];
-                    if (data.length <= 0) {
+                    if (data.length <= 0)
+                    {
                         KTVHCLogDataUnit(@"%p, Merge files break", self);
                         break;
                     }
@@ -289,7 +306,8 @@
             KTVHCLogDataUnit(@"%p, Merge replace items", self);
             NSString * relativePath = [KTVHCPathTools relativePathForCompleteFileWithURL:self.URL];
             KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:relativePath];
-            for (KTVHCDataUnitItem * obj in self.unitItemsInternal) {
+            for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+            {
                 [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
             }
             [self.unitItemsInternal removeAllObjects];
@@ -303,18 +321,21 @@
 
 - (void)lock
 {
-    if (!self.coreLock) {
+    if (!self.coreLock)
+    {
         self.coreLock = [[NSRecursiveLock alloc] init];
     }
     [self.coreLock lock];
-    for (KTVHCDataUnitItem * obj in self.unitItemsInternal) {
+    for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+    {
         [obj lock];
     }
 }
 
 - (void)unlock
 {
-    for (KTVHCDataUnitItem * obj in self.unitItemsInternal) {
+    for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+    {
         [obj unlock];
     }
     [self.coreLock unlock];

@@ -15,15 +15,11 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         _URL = URL;
         _headers = headers;
         _range = KTVHCRangeWithRequestHeaderValue(self.headers[@"Range"]);
-        KTVHCLogAlloc(self);
-        KTVHCLogDataRequest(@"%p Create data request\nURL : %@\nHeaders : %@\nRange : %@",
-                            self,
-                            self.URL,
-                            self.headers,
-                            KTVHCStringFromRange(self.range));
+        KTVHCLogDataRequest(@"%p Create data request\nURL : %@\nHeaders : %@\nRange : %@", self, self.URL, self.headers, KTVHCStringFromRange(self.range));
     }
     return self;
 }
@@ -42,6 +38,12 @@
         return obj;
     }
     return self;
+}
+
+- (KTVHCDataRequest *)requestWithTotalLength:(long long)totalLength
+{
+    KTVHCRange range = KTVHCRangeWithEnsureLength(self.range, totalLength);
+    return [self requestWithRange:range];
 }
 
 @end

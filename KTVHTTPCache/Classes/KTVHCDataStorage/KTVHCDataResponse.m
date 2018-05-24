@@ -15,17 +15,19 @@
 {
     if (self = [super init])
     {
+        KTVHCLogAlloc(self);
         _URL = URL;
         _headers = headers;
-        [self prepare];
-        KTVHCLogAlloc(self);
-        KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld",
-                             self,
-                             self.URL,
-                             self.headers,
-                             self.contentType,
-                             self.totalLength,
-                             self.currentLength);
+        NSMutableDictionary * headersWithoutRangeAndLength = [headers mutableCopy];
+        for (NSString * key in [self withoutHeaderKeys])
+        {
+            [headersWithoutRangeAndLength removeObjectForKey:key];
+        }
+        _headersWithoutRangeAndLength = [headersWithoutRangeAndLength copy];
+        _contentType = [self headerValueWithKey:@"Content-Type"];
+        _currentLength = [self headerValueWithKey:@"Content-Length"].longLongValue;
+        _range = KTVHCRangeWithResponseHeaderValue([self headerValueWithKey:@"Content-Range"], &_totalLength);
+        KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld", self, self.URL, self.headers, self.contentType, self.totalLength, self.currentLength);
     }
     return self;
 }
@@ -33,19 +35,6 @@
 - (void)dealloc
 {
     KTVHCLogDealloc(self);
-}
-
-- (void)prepare
-{
-    NSMutableDictionary * headersWithoutRangeAndLength = [_headers mutableCopy];
-    for (NSString * key in [self withoutHeaderKeys])
-    {
-        [headersWithoutRangeAndLength removeObjectForKey:key];
-    }
-    _headersWithoutRangeAndLength = [headersWithoutRangeAndLength copy];
-    _contentType = [self headerValueWithKey:@"Content-Type"];
-    _currentLength = [self headerValueWithKey:@"Content-Length"].longLongValue;
-    _range = KTVHCRangeWithResponseHeaderValue([self headerValueWithKey:@"Content-Range"], &_totalLength);
 }
 
 - (NSString *)headerValueWithKey:(NSString *)key

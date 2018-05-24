@@ -33,7 +33,8 @@
 
 - (instancetype)initForCopy
 {
-    if (self = [super init]) {
+    if (self = [super init])
+    {
         
     }
     return self;
@@ -45,9 +46,12 @@
     {
         KTVHCLogAlloc(self);
         _createTimeInterval = [NSDate date].timeIntervalSince1970;
-        if ([KTVHCPathTools isRelativePath:_relativePath]) {
+        if ([KTVHCPathTools isRelativePath:_relativePath])
+        {
             _relativePath = path;
-        } else {
+        }
+        else
+        {
             _relativePath = [KTVHCPathTools convertAbsoultePathToRelativePath:path];
         }
         _offset = 0;
@@ -111,7 +115,8 @@
 
 - (void)lock
 {
-    if (!self.coreLock) {
+    if (!self.coreLock)
+    {
         self.coreLock = [[NSRecursiveLock alloc] init];
     }
     [self.coreLock lock];
