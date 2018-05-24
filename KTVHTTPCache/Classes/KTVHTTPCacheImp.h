@@ -62,7 +62,7 @@
  */
 + (void)cacheDeleteCacheWithURL:(NSURL *)URL;
 + (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
-+ (void)cacheDeleteAllCache;
++ (void)cacheDeleteAllCaches;
 
 #pragma mark - Token
 

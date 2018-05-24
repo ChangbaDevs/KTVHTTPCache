@@ -45,6 +45,6 @@
  *  Delete cache.
  */
 - (void)deleteCacheWithURL:(NSURL *)URL;
-- (void)deleteAllCache;
+- (void)deleteAllCaches;
 
 @end

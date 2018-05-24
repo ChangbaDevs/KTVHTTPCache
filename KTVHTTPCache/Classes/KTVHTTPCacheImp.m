@@ -107,9 +107,9 @@
     [[KTVHCDataStorage storage] deleteCacheWithURL:URL];
 }
 
-+ (void)cacheDeleteAllCache
++ (void)cacheDeleteAllCaches
 {
-    [[KTVHCDataStorage storage] deleteAllCache];
+    [[KTVHCDataStorage storage] deleteAllCaches];
 }
 
 #pragma mark - Token

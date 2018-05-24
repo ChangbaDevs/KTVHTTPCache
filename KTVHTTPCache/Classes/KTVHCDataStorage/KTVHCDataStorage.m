@@ -70,7 +70,7 @@
     [[KTVHCDataUnitPool pool] deleteUnitWithURL:URL];
 }
 
-- (void)deleteAllCache
+- (void)deleteAllCaches
 {
     [[KTVHCDataUnitPool pool] deleteAllUnits];
 }
