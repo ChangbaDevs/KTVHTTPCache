@@ -36,7 +36,7 @@
 {
     if (self = [super init])
     {
-        self.unitQueue = [KTVHCDataUnitQueue queueWithPath:[KTVHCPathTools absolutePathForArchiver]];
+        self.unitQueue = [KTVHCDataUnitQueue queueWithPath:[KTVHCPathTools archivePath]];
         for (KTVHCDataUnit * obj in self.unitQueue.allUnits)
         {
             obj.fileDelegate = self;

@@ -40,34 +40,14 @@
     return self;
 }
 
-- (instancetype)initWithPath:(NSString *)path
+- (instancetype)initWithPath:(NSString *)path offset:(long long)offset
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
         _createTimeInterval = [NSDate date].timeIntervalSince1970;
-        if ([KTVHCPathTools isRelativePath:_relativePath])
-        {
-            _relativePath = path;
-        }
-        else
-        {
-            _relativePath = [KTVHCPathTools convertAbsoultePathToRelativePath:path];
-        }
-        _offset = 0;
-        [self prepare];
-    }
-    return self;
-}
-
-- (instancetype)initWithRequest:(KTVHCDataRequest *)request
-{
-    if (self = [super init])
-    {
-        KTVHCLogAlloc(self);
-        _createTimeInterval = [NSDate date].timeIntervalSince1970;
-        _relativePath = [KTVHCPathTools relativePathForUnitItemFileWithURL:request.URL offset:request.range.start];
-        _offset = request.range.start;
+        _relativePath = [KTVHCPathTools relativePathWithAbsoultePath:path];
+        _offset = offset;
         [self prepare];
     }
     return self;
@@ -100,8 +80,8 @@
 
 - (void)prepare
 {
-    _absolutePath = [KTVHCPathTools absolutePathWithRelativePath:self.relativePath];
-    self.length = [KTVHCPathTools sizeOfItemAtFilePath:self.absolutePath];
+    _absolutePath = [KTVHCPathTools absoultePathWithRelativePath:self.relativePath];
+    self.length = [KTVHCPathTools sizeOfItemAtPath:self.absolutePath];
     KTVHCLogDataUnitItem(@"%p, Create Unit Item\nabsolutePath : %@\nrelativePath : %@\nOffset : %lld\nLength : %lld", self, self.absolutePath, self.relativePath, self.offset, self.length);
 }
 

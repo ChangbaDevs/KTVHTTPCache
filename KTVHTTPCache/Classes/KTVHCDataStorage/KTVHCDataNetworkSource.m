@@ -203,7 +203,8 @@
 {
     [self lock];
     _response = response;
-    self.unitItem = [[KTVHCDataUnitItem alloc] initWithRequest:self.request];
+    NSString * path = [KTVHCPathTools unitItemPathWithURL:self.request.URL offset:self.request.range.start];
+    self.unitItem = [[KTVHCDataUnitItem alloc] initWithPath:path offset:self.request.range.start];
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:self.request.URL];
     [unit insertUnitItem:self.unitItem];
     KTVHCLogDataNetworkSource(@"%p, Receive response\nResponse : %@\nUnit : %@\nUnitItem : %@", self, response, unit, self.unitItem);

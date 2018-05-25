@@ -77,15 +77,15 @@
 - (void)deleteRecordLog
 {
     [self.lock lock];
-    [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools absolutePathForLog]];
+    [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools logPath]];
     [self.lock unlock];
 }
 
 - (void)createLogAndFileHandle
 {
     [self.lock lock];
-    [KTVHCPathTools createFileIfNeeded:[KTVHCPathTools absolutePathForLog]];
-    self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools absolutePathForLog]];
+    [KTVHCPathTools createFileAtPath:[KTVHCPathTools logPath]];
+    self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools logPath]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
     [self.lock unlock];
 }
@@ -94,10 +94,10 @@
 {
     NSString * path = nil;
     [self.lock lock];
-    long long logFileSize = [KTVHCPathTools sizeOfItemAtFilePath:[KTVHCPathTools absolutePathForLog]];
+    long long logFileSize = [KTVHCPathTools sizeOfItemAtPath:[KTVHCPathTools logPath]];
     if (logFileSize > 0)
     {
-        path = [KTVHCPathTools absolutePathForLog];
+        path = [KTVHCPathTools logPath];
     }
     [self.lock unlock];
     return path;

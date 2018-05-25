@@ -241,8 +241,8 @@
 - (void)deleteFiles
 {
     [self lock];
-    NSString * path = [KTVHCPathTools absolutePathForDirectoryWithURL:self.URL];
-    [KTVHCPathTools deleteFolderAtPath:path];
+    NSString * path = [KTVHCPathTools directoryPathWithURL:self.URL];
+    [KTVHCPathTools deleteDirectoryAtPath:path];
     KTVHCLogDataUnit(@"%p, Delete files", self);
     [self unlock];
 }
@@ -259,9 +259,9 @@
     if (self.totalLength == self.validLength)
     {
         long long offset = 0;
-        NSString * path = [KTVHCPathTools absolutePathForCompleteFileWithURL:self.URL];
+        NSString * path = [KTVHCPathTools completeFilePathWithURL:self.URL];
         [KTVHCPathTools deleteFileAtPath:path];
-        [KTVHCPathTools createFileIfNeeded:path];
+        [KTVHCPathTools createFileAtPath:path];
         NSFileHandle * writingHandle = [NSFileHandle fileHandleForWritingAtPath:path];
         for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
         {
@@ -301,11 +301,11 @@
         [writingHandle synchronizeFile];
         [writingHandle closeFile];
         KTVHCLogDataUnit(@"%p, Merge finished\ntotalLength : %lld\noffset : %lld", self, self.totalLength, offset);
-        if ([KTVHCPathTools sizeOfItemAtFilePath:path] == self.totalLength)
+        if ([KTVHCPathTools sizeOfItemAtPath:path] == self.totalLength)
         {
             KTVHCLogDataUnit(@"%p, Merge replace items", self);
-            NSString * relativePath = [KTVHCPathTools relativePathForCompleteFileWithURL:self.URL];
-            KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:relativePath];
+            NSString * path = [KTVHCPathTools completeFilePathWithURL:self.URL];
+            KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:path offset:0];
             for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
             {
                 [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
