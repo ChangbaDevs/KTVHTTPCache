@@ -116,7 +116,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     task.priority = 1.0;
     [self.requestDictionary setObject:request forKey:task];
     [self.delegateDictionary setObject:delegate forKey:task];
-    KTVHCLogDownload(@"%p, Add Request\nrequest : %@\nURL : %@\nheaders : %@\nHTTPRequest headers : %@", self, request, request.URL, request.headers, HTTPRequest.allHTTPHeaderFields);
+    KTVHCLogDownload(@"%p, Add Request\nrequest : %@\nURL : %@\nheaders : %@\nHTTPRequest headers : %@\nCount : %d", self, request, request.URL, request.headers, HTTPRequest.allHTTPHeaderFields, (int)self.delegateDictionary.count);
     [task resume];
     [self unlock];
     return task;
