@@ -1,5 +1,5 @@
 //
-//  MediaPlayerViewController.h
+//  MediaViewController.h
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/14.
@@ -8,7 +8,7 @@
 
 #import <AVKit/AVKit.h>
 
-@interface MediaPlayerViewController : AVPlayerViewController
+@interface MediaViewController : AVPlayerViewController
 
 - (instancetype)initWithURLString:(NSString *)URLString;
 

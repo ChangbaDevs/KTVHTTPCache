@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "MediaPlayerViewController.h"
+#import "MediaViewController.h"
 #import "MediaItem.h"
 #import "MediaCell.h"
 #import <KTVHTTPCache/KTVHTTPCache.h>
@@ -84,13 +84,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * URLString = [self.medaiItems objectAtIndex:indexPath.row].URLString;
-    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
-    /****** Core *******/
+    MediaItem * mediaItem = [self.medaiItems objectAtIndex:indexPath.row];
+    NSString * URLString = [mediaItem.URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
     NSString * proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     
-    MediaPlayerViewController * viewController = [[MediaPlayerViewController alloc] initWithURLString:proxyURLString];
+    MediaViewController * viewController = [[MediaViewController alloc] initWithURLString:proxyURLString];
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
