@@ -18,10 +18,9 @@
 
 @property (nonatomic, assign) BOOL pinging;
 @property (nonatomic, assign) BOOL pingResult;
-@property (nonatomic, assign) NSTimeInterval pingTimeInterval;
 @property (nonatomic, strong) NSCondition * pingCondition;
 @property (nonatomic, strong) NSURLSession * pingSession;
-@property (nonatomic, strong) NSURLSessionDataTask * pingDataTask;
+@property (nonatomic, strong) NSURLSessionDataTask * pingTask;
 
 @end
 
@@ -58,12 +57,9 @@
     [self.coreHTTPServer stop];
     NSError * error = nil;
     [self.coreHTTPServer start:&error];
-    if (error)
-    {
+    if (error) {
         KTVHCLogHTTPServer(@"%p, Restart server failed : %@", self, error);
-    }
-    else
-    {
+    } else {
         KTVHCLogHTTPServer(@"%p, Restart server success", self);
     }
     return error == nil;
@@ -76,13 +72,10 @@
     [self.coreHTTPServer setType:@"_http._tcp."];
     NSError * tempError = nil;
     [self.coreHTTPServer start:&tempError];
-    if (tempError)
-    {
+    if (tempError) {
         * error = tempError;
         KTVHCLogHTTPServer(@"%p, Start server failed : %@", self, tempError);
-    }
-    else
-    {
+    } else {
         KTVHCLogHTTPServer(@"%p, Start server success", self);
     }
 }
@@ -93,8 +86,8 @@
     {
         [self.coreHTTPServer stop];
         [self.pingSession invalidateAndCancel];
-        [self.pingDataTask cancel];
-        self.pingDataTask = nil;
+        [self.pingTask cancel];
+        self.pingTask = nil;
         self.pingSession = nil;
         KTVHCLogHTTPServer(@"%p, Stop server", self);
     }
@@ -102,52 +95,32 @@
 
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL
 {
-    if (self.running && [URL.scheme hasPrefix:@"http"])
+    BOOL success = NO;
+    for (int i = 0; i < 2 && !success && self.running && [URL.scheme hasPrefix:@"http"]; i++)
     {
-        if ([self ping])
+        if (i > 0)
         {
-            KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURL:URL];
-            NSURL * ret = [url proxyURLWithPort:self.coreHTTPServer.listeningPort];
-            KTVHCLogHTTPServer(@"%p, Return proxy URL\n%@", self, ret);
-            return ret;
+            [self restart];
         }
-        else
-        {
-            KTVHCLogHTTPServer(@"%p, Ping failed 1", self);
-            BOOL success = [self restart];
-            if (success)
-            {
-                if ([self ping])
-                {
-                    KTVHCHTTPURL * url = [[KTVHCHTTPURL alloc] initWithOriginalURL:URL];
-                    return [url proxyURLWithPort:self.coreHTTPServer.listeningPort];
-                }
-                else
-                {
-                    KTVHCLogHTTPServer(@"%p, Ping failed 2", self);
-                }
-            }
-        }
+        success = [self ping];
+        KTVHCLogHTTPServer(@"%p, Ping\nsuccess : %d\nindex : %d", self, success, i);
     }
-    KTVHCLogHTTPServer(@"%p, Return original URL\n%@", self, URL);
+    if (success)
+    {
+        KTVHCHTTPURL * HCURL = [[KTVHCHTTPURL alloc] initWithOriginalURL:URL];
+        URL = [HCURL proxyURLWithPort:self.coreHTTPServer.listeningPort];
+    }
+    KTVHCLogHTTPServer(@"%p, Return URL\nURL : %@", self, URL);
     return URL;
 }
 
 - (BOOL)ping
 {
-    /*
-     if ([NSDate date].timeIntervalSince1970 - self.pingTimeInterval < 0.5) {
-         return self.pingResult;
-     }
-     */
     if (self.running)
     {
-        if (!self.pingSession)
+        if (!self.pingCondition)
         {
             self.pingCondition = [[NSCondition alloc] init];
-            NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-            sessionConfiguration.timeoutIntervalForRequest = 3;
-            self.pingSession = [NSURLSession sessionWithConfiguration:sessionConfiguration];
         }
         [self.pingCondition lock];
         if (self.pinging)
@@ -157,26 +130,26 @@
         else
         {
             NSURL * pingURL = [[KTVHCHTTPURL pingURL] proxyURLWithPort:self.coreHTTPServer.listeningPort];
-            self.pingDataTask = [self.pingSession dataTaskWithURL:pingURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (!self.pingSession)
+            {
+                NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+                sessionConfiguration.timeoutIntervalForRequest = 3;
+                self.pingSession = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+            }
+            self.pingTask = [self.pingSession dataTaskWithURL:pingURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                [self.pingCondition lock];
                 if (!error && data.length > 0) {
                     NSString * pang = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    BOOL success = [pang isEqualToString:[KTVHCHTTPConnection pingResponseValue]];
-                    if (success) {
-                        self.pingResult = YES;
-                    } else {
-                        self.pingResult = NO;
-                    }
+                    self.pingResult = [pang isEqualToString:[KTVHCHTTPConnection pingResponseValue]];
                 } else {
                     self.pingResult = NO;
                 }
-                self.pingTimeInterval = [NSDate date].timeIntervalSince1970;
-                [self.pingCondition lock];
                 self.pinging = NO;
                 [self.pingCondition broadcast];
                 [self.pingCondition unlock];
             }];
             self.pinging = YES;
-            [self.pingDataTask resume];
+            [self.pingTask resume];
             [self.pingCondition wait];
         }
         [self.pingCondition unlock];
