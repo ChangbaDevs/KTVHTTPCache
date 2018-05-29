@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-
 #pragma mark - Interface
 
 #import "KTVHTTPCacheImp.h"
-
 
 #pragma mark - Data Storage
 
@@ -21,7 +19,6 @@
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataCacheItemZone.h"
-
 
 #pragma mark - Common
 

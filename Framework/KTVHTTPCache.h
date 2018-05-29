@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 FOUNDATION_EXPORT double KTVHTTPCacheVersionNumber;
 FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
