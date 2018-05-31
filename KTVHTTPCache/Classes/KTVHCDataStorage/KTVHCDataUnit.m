@@ -153,7 +153,7 @@
     [self lock];
     _responseHeaders = responseHeaders;
     _totalLength = totalLength;
-    KTVHCLogDataUnit(@"%p, Update responseHeaders\ntotalLength : %lld\n%@", self, self.totalLength, self.requestHeaders);
+    KTVHCLogDataUnit(@"%p, Update responseHeaders\ntotalLength : %lld\n%@", self, self.totalLength, self.responseHeaders);
     [self unlock];
     [self.fileDelegate unitShouldRearchive:self];
 }

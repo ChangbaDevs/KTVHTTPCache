@@ -8,6 +8,11 @@
 
 #import "KTVHCRange.h"
 
+BOOL KTVHCRangeIsFull(KTVHCRange range)
+{
+    return KTVHCEqualRanges(range, KTVHCRangeFull());
+}
+
 BOOL KTVHCRangeIsVaild(KTVHCRange range)
 {
     return !KTVHCRangeIsInvaild(range);
@@ -15,7 +20,7 @@ BOOL KTVHCRangeIsVaild(KTVHCRange range)
 
 BOOL KTVHCRangeIsInvaild(KTVHCRange range)
 {
-    return range.start == KTVHCNotFound;
+    return KTVHCEqualRanges(range, KTVHCRangeInvaild());
 }
 
 BOOL KTVHCEqualRanges(KTVHCRange range1, KTVHCRange range2)
@@ -77,6 +82,11 @@ KTVHCRange KTVHCMakeRange(long long start, long long end)
 KTVHCRange KTVHCRangeZero(void)
 {
     return KTVHCMakeRange(0, 0);
+}
+
+KTVHCRange KTVHCRangeFull(void)
+{
+    return KTVHCMakeRange(0, KTVHCNotFound);
 }
 
 KTVHCRange KTVHCRangeInvaild()

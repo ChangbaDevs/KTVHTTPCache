@@ -15,6 +15,7 @@ typedef struct KTVHCRange {
 
 static const long long KTVHCNotFound = LONG_LONG_MAX;
 
+BOOL KTVHCRangeIsFull(KTVHCRange range);
 BOOL KTVHCRangeIsVaild(KTVHCRange range);
 BOOL KTVHCRangeIsInvaild(KTVHCRange range);
 BOOL KTVHCEqualRanges(KTVHCRange range1, KTVHCRange range2);
@@ -25,6 +26,7 @@ NSDictionary * KTVHCRangeFillToResponseHeaders(KTVHCRange range, NSDictionary * 
 
 KTVHCRange KTVHCMakeRange(long long start, long long end);
 KTVHCRange KTVHCRangeZero(void);
+KTVHCRange KTVHCRangeFull(void);
 KTVHCRange KTVHCRangeInvaild(void);
 KTVHCRange KTVHCRangeWithSeparateValue(NSString * value);
 KTVHCRange KTVHCRangeWithRequestHeaderValue(NSString * value);

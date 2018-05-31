@@ -17,8 +17,12 @@
     {
         KTVHCLogAlloc(self);
         _URL = URL;
-        _headers = headers;
-        _range = KTVHCRangeWithRequestHeaderValue(self.headers[@"Range"]);
+        if (![headers objectForKey:@"Range"]) {
+            _headers = KTVHCRangeFillToRequestHeaders(KTVHCRangeFull(), headers);
+        } else {
+            _headers = headers;
+        }
+        _range = KTVHCRangeWithRequestHeaderValue([_headers objectForKey:@"Range"]);
         KTVHCLogDataRequest(@"%p Create data request\nURL : %@\nHeaders : %@\nRange : %@", self, self.URL, self.headers, KTVHCStringFromRange(self.range));
     }
     return self;

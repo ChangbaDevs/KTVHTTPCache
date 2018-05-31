@@ -180,7 +180,9 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
             }
             if (!error)
             {
-                if (dataResponse.currentLength != KTVHCRangeGetLength(dataRequest.range))
+                if (dataResponse.currentLength <= 0 ||
+                    (!KTVHCRangeIsFull(dataRequest.range) &&
+                     (dataResponse.currentLength != KTVHCRangeGetLength(dataRequest.range))))
                 {
                     error = [KTVHCError errorForUnsupportContentType:dataTask.currentRequest.URL request:dataTask.currentRequest response:dataTask.response];
                 }
