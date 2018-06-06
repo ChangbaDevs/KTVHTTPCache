@@ -66,7 +66,7 @@ NSURL * completeCacheFileURL= [KTVHTTPCache cacheCompleteFileURLIfExistedWithURL
 
 ```objc
 [KTVHTTPCache tokenSetURLFilter:^NSURL *(NSURL *URL) {
-return URL;
+    return URL;
 }];
 ```
 
@@ -81,7 +81,7 @@ return URL;
 
 // Set unsupport Content-Type filter.
 [KTVHTTPCache downloadSetUnsupportContentTypeFilter:^BOOL(NSURL * URL, NSString * contentType) {
-return NO;
+    return NO;
 }];
 
 // Additional headers.
