@@ -11,7 +11,7 @@ KTVHTTPCache is a smart media cache framework. It can cache HTTP request, very s
 ## Features
 
 - Thread safety.
-- Logging system，Support for console and file output.
+- Logging system, Support for console and file output.
 - Accurate view caching information.
 - Provide different levels of interface.
 - Adjust the download configuration.
@@ -45,7 +45,6 @@ Run `carthage update` to build the framework and drag the built `KTVHTTPCache.fr
 - Start proxy.
 
 ```objc
-NSError * error;
 [KTVHTTPCache proxyStart:&error];
 ```
 
@@ -105,7 +104,7 @@ NSString * logFilePath = [KTVHTTPCache logRecordLogFilePath];
 
 ## License
 
-KTVVideoProcess is released under the MIT license.
+KTVHTTPCache is released under the MIT license.
 
 
 ## Feedback
