@@ -35,8 +35,8 @@
 /**
  *  If the content of the URL is finish cached, return the file path for the content. Otherwise return nil.
  */
-- (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL;
-- (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString;
++ (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL;
++ (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString;
 
 /**
  *  Data Reader.

@@ -47,13 +47,13 @@
 
 #pragma mark - Data Storage
 
-- (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL
++ (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL
 {
     URL = [[KTVHCDataStorage storage] completeFileURLIfExistedWithURL:URL];
     return URL;
 }
 
-- (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString
++ (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString
 {
     NSURL * URL = [NSURL URLWithString:URLString];
     URL = [[KTVHCDataStorage storage] completeFileURLIfExistedWithURL:URL];
