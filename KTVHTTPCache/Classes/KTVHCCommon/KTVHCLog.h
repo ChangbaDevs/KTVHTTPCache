@@ -40,6 +40,7 @@ KTVHCLogEnable(DataStorage,       YES, YES)
 KTVHCLogEnable(DataRequest,       YES, YES)
 KTVHCLogEnable(DataResponse,      YES, YES)
 KTVHCLogEnable(DataReader,        YES, YES)
+KTVHCLogEnable(DataLoader,        YES, YES)
 
 KTVHCLogEnable(DataUnit,          YES, YES)
 KTVHCLogEnable(DataUnitItem,      YES, YES)
@@ -101,6 +102,7 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 #define KTVHCLogDataRequest(...)            KTVHCLogging(@"KTVHCDataRequest      ", KTVHCLogEnableValueConsoleLog(DataRequest),       KTVHCLogEnableValueRecordLog(DataRequest),       ##__VA_ARGS__)
 #define KTVHCLogDataResponse(...)           KTVHCLogging(@"KTVHCDataResponse     ", KTVHCLogEnableValueConsoleLog(DataResponse),      KTVHCLogEnableValueRecordLog(DataResponse),      ##__VA_ARGS__)
 #define KTVHCLogDataReader(...)             KTVHCLogging(@"KTVHCDataReader       ", KTVHCLogEnableValueConsoleLog(DataReader),        KTVHCLogEnableValueRecordLog(DataReader),        ##__VA_ARGS__)
+#define KTVHCLogDataLoader(...)             KTVHCLogging(@"KTVHCDataLoader       ", KTVHCLogEnableValueConsoleLog(DataLoader),        KTVHCLogEnableValueRecordLog(DataLoader),        ##__VA_ARGS__)
 
 #define KTVHCLogDataUnit(...)               KTVHCLogging(@"KTVHCDataUnit         ", KTVHCLogEnableValueConsoleLog(DataUnit),          KTVHCLogEnableValueRecordLog(DataUnit),          ##__VA_ARGS__)
 #define KTVHCLogDataUnitItem(...)           KTVHCLogging(@"KTVHCDataUnitItem     ", KTVHCLogEnableValueConsoleLog(DataUnitItem),      KTVHCLogEnableValueRecordLog(DataUnitItem),      ##__VA_ARGS__)

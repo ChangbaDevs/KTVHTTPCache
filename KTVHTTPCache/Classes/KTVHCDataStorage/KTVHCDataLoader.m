@@ -31,6 +31,7 @@
         KTVHCLogAlloc(self);
         self.reader = [KTVHCDataReader readerWithRequest:request];
         self.reader.delegate = self;
+        KTVHCLogDataLoader(@"%p, Create loader\norignalRequest : %@\nreader : %@", self, request, self.reader);
     }
     return self;
 }
@@ -39,15 +40,18 @@
 {
     KTVHCLogDealloc(self);
     [self close];
+    KTVHCLogDataLoader(@"%p, Destory reader\nError : %@\nprogress : %f", self, self.error, self.progress);
 }
 
 - (void)prepare
 {
+    KTVHCLogDataLoader(@"%p, Call prepare", self);
     [self.reader prepare];
 }
 
 - (void)close
 {
+    KTVHCLogDataLoader(@"%p, Call close", self);
     [self.reader close];
 }
 
@@ -90,6 +94,7 @@
 
 - (void)reader:(KTVHCDataReader *)reader didFailed:(NSError *)error
 {
+    KTVHCLogDataLoader(@"%p, Callback for failed", self);
     if ([self.delegate respondsToSelector:@selector(loader:didFailed:)])
     {
         [self.delegate loader:self didFailed:error];
@@ -106,6 +111,7 @@
             if (self.reader.didFinished)
             {
                 _progress = 1.0f;
+                KTVHCLogDataLoader(@"%p, Callback finished", self);
                 if ([self.delegate respondsToSelector:@selector(loaderDidFinished:)])
                 {
                     [self.delegate loaderDidFinished:self];
@@ -114,8 +120,10 @@
             else if (data)
             {
                 _progress = (double)self.reader.readOffset / (double)self.response.currentLength;
+                KTVHCLogDataLoader(@"%p, read data progress %f", self, _progress);
                 continue;
             }
+            KTVHCLogDataLoader(@"%p, read data break", self);
             break;
         }
     }
