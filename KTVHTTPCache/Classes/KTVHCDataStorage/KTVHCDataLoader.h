@@ -16,6 +16,7 @@
 
 - (void)loaderDidFinished:(KTVHCDataLoader *)loader;
 - (void)loader:(KTVHCDataLoader *)loader didFailed:(NSError *)error;
+- (void)loader:(KTVHCDataLoader *)loader didChangeProgress:(double)progress;
 
 @end
 
