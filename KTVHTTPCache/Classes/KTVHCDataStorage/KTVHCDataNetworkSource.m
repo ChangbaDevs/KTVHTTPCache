@@ -32,13 +32,13 @@
 
 @implementation KTVHCDataNetworkSource
 
-- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust range:(KTVHCRange)range
+- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
         _request = reqeust;
-        _range = range;
+        _range = reqeust.range;
         KTVHCLogDataNetworkSource(@"%p, Create network source\nrequest : %@\nrange : %@", self, self.request, KTVHCStringFromRange(self.range));
     }
     return self;
@@ -130,7 +130,7 @@
     NSData * data = [self.readingHandle readDataOfLength:(NSUInteger)MIN(self.downloadLength - self.downloadReadedLength, length)];
     self.downloadReadedLength += data.length;
     KTVHCLogDataNetworkSource(@"%p, Read data\nLength : %lld\ndownloadLength : %lld\nreadedLength : %lld", self, (long long)data.length, self.downloadReadedLength, self.downloadLength);
-    if (self.downloadReadedLength >= KTVHCRangeGetLength(self.range))
+    if (self.downloadReadedLength >= KTVHCRangeGetLength(self.response.range))
     {
         _didFinished = YES;
         KTVHCLogDataNetworkSource(@"%p, Read data did finished", self);
@@ -180,7 +180,7 @@
         }
         else
         {
-            if (self.downloadLength >= KTVHCRangeGetLength(self.range))
+            if (self.downloadLength >= KTVHCRangeGetLength(self.response.range))
             {
                 KTVHCLogDataNetworkSource(@"%p, Complete and finisehed", self);
                 if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishedDownload:)])

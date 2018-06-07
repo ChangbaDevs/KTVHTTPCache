@@ -164,7 +164,7 @@
         {
             KTVHCRange range = KTVHCMakeRange(offset, offset + delta - 1);
             KTVHCDataRequest * request = [self.request requestWithRange:range];
-            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
+            KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
             [networkSources addObject:source];
             offset += delta;
             length -= delta;
@@ -176,7 +176,7 @@
     {
         KTVHCRange range = KTVHCMakeRange(offset, self.request.range.end);
         KTVHCDataRequest * request = [self.request requestWithRange:range];
-        KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request range:range];
+        KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
         [networkSources addObject:source];
     }
     for (KTVHCDataFileSource * obj in fileSources)

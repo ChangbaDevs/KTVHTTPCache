@@ -27,7 +27,7 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust range:(KTVHCRange)range;
+- (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust;
 
 @property (nonatomic, strong, readonly) KTVHCDataRequest * request;
 @property (nonatomic, strong, readonly) KTVHCDataResponse * response;
