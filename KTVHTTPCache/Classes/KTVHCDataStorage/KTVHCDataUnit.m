@@ -250,7 +250,7 @@
 - (BOOL)mergeFilesIfNeeded
 {
     [self lock];
-    if (self.workingCount > 0)
+    if (self.workingCount > 0 || self.totalLength <= 0 || self.unitItemsInternal.count <= 0)
     {
         [self unlock];
         return NO;
