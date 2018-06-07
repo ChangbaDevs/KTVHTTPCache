@@ -250,7 +250,13 @@
 - (BOOL)mergeFilesIfNeeded
 {
     [self lock];
-    if (self.workingCount > 0 || self.unitItemsInternal.count <= 1)
+    if (self.workingCount > 0)
+    {
+        [self unlock];
+        return NO;
+    }
+    NSString * path = [KTVHCPathTools completeFilePathWithURL:self.URL];
+    if ([self.unitItemsInternal.firstObject.absolutePath isEqualToString:path])
     {
         [self unlock];
         return NO;
@@ -259,7 +265,6 @@
     if (self.totalLength == self.validLength)
     {
         long long offset = 0;
-        NSString * path = [KTVHCPathTools completeFilePathWithURL:self.URL];
         [KTVHCPathTools deleteFileAtPath:path];
         [KTVHCPathTools createFileAtPath:path];
         NSFileHandle * writingHandle = [NSFileHandle fileHandleForWritingAtPath:path];
@@ -284,7 +289,7 @@
             {
                 @autoreleasepool
                 {
-                    NSData * data = [readingHandle readDataOfLength:1024 * 1024];
+                    NSData * data = [readingHandle readDataOfLength:1024 * 1024 * 1];
                     if (data.length <= 0)
                     {
                         KTVHCLogDataUnit(@"%p, Merge files break", self);
@@ -304,7 +309,6 @@
         if ([KTVHCPathTools sizeOfItemAtPath:path] == self.totalLength)
         {
             KTVHCLogDataUnit(@"%p, Merge replace items", self);
-            NSString * path = [KTVHCPathTools completeFilePathWithURL:self.URL];
             KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:path offset:0];
             for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
             {
