@@ -18,6 +18,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #pragma mark - Data Storage
 
 #import <KTVHTTPCache/KTVHCDataReader.h>
+#import <KTVHTTPCache/KTVHCDataLoader.h>
 #import <KTVHTTPCache/KTVHCDataRequest.h>
 #import <KTVHTTPCache/KTVHCDataResponse.h>
 #import <KTVHTTPCache/KTVHCDataCacheItem.h>
