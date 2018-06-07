@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCDataReader.h"
+#import "KTVHCDataLoader.h"
 #import "KTVHCDataRequest.h"
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
@@ -28,6 +29,11 @@
  *  Reader for certain request.
  */
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request;
+
+/**
+ *  Loader for certain request.
+ */
+- (KTVHCDataLoader *)loaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
  *  Get cache item.

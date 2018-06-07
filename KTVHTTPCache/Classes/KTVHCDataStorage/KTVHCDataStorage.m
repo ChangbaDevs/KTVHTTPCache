@@ -43,11 +43,22 @@
 {
     if (!request || request.URL.absoluteString.length <= 0)
     {
-        KTVHCLogDataStorage(@"Invaild request, %@", request.URL);
+        KTVHCLogDataStorage(@"Invaild reader request, %@", request.URL);
         return nil;
     }
     KTVHCDataReader * reader = [KTVHCDataReader readerWithRequest:request];
     return reader;
+}
+
+- (KTVHCDataLoader *)loaderWithRequest:(KTVHCDataRequest *)request
+{
+    if (!request || request.URL.absoluteString.length <= 0)
+    {
+        KTVHCLogDataStorage(@"Invaild loader request, %@", request.URL);
+        return nil;
+    }
+    KTVHCDataLoader * loader = [KTVHCDataLoader loaderWithRequest:request];
+    return loader;
 }
 
 - (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL

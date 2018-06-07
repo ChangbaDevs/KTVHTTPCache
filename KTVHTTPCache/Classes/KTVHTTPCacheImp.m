@@ -65,6 +65,11 @@
     return [[KTVHCDataStorage storage] readerWithRequest:request];
 }
 
++ (KTVHCDataLoader *)cacheLoaderWithRequest:(KTVHCDataRequest *)request
+{
+    return [[KTVHCDataStorage storage] loaderWithRequest:request];
+}
+
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength
 {
     [KTVHCDataStorage storage].maxCacheLength = maxCacheLength;

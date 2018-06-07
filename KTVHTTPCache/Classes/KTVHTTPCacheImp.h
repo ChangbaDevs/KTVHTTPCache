@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class KTVHCDataReader;
+@class KTVHCDataLoader;
 @class KTVHCDataRequest;
 @class KTVHCDataCacheItem;
 
@@ -42,6 +43,11 @@
  *  Data Reader.
  */
 + (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request;
+
+/**
+ *  Data Loader.
+ */
++ (KTVHCDataLoader *)cacheLoaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
  *  Cache State.
