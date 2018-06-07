@@ -225,17 +225,19 @@
 
 - (void)workingRelease
 {
+    BOOL mergeSuccess = NO;
     [self lock];
     _workingCount--;
     KTVHCLogDataUnit(@"%p, Working release : %ld", self, (long)self.workingCount);
     if (self.workingCount <= 0)
     {
-        if ([self mergeFilesIfNeeded])
-        {
-            [self.fileDelegate unitShouldRearchive:self];
-        }
+        mergeSuccess = [self mergeFilesIfNeeded];
     }
     [self unlock];
+    if (mergeSuccess)
+    {
+        [self.fileDelegate unitShouldRearchive:self];
+    }
 }
 
 - (void)deleteFiles
