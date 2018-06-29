@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) NSMutableArray <KTVHCDataUnitItem *> * unitItemsInternal;
+@property (nonatomic, strong) NSMutableArray <NSArray <KTVHCDataUnitItem *> *> * lockingUnitItems;
 
 @end
 
@@ -332,7 +333,13 @@
         self.coreLock = [[NSRecursiveLock alloc] init];
     }
     [self.coreLock lock];
-    for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+    if (!self.lockingUnitItems)
+    {
+        self.lockingUnitItems = [NSMutableArray array];
+    }
+    NSArray <KTVHCDataUnitItem *> * objs = [NSArray arrayWithArray:self.unitItemsInternal];
+    [self.lockingUnitItems addObject:objs];
+    for (KTVHCDataUnitItem * obj in objs)
     {
         [obj lock];
     }
@@ -340,7 +347,13 @@
 
 - (void)unlock
 {
-    for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+    NSArray <KTVHCDataUnitItem *> * objs = self.lockingUnitItems.lastObject;
+    [self.lockingUnitItems removeLastObject];
+    if (self.lockingUnitItems.count <= 0)
+    {
+        self.lockingUnitItems = nil;
+    }
+    for (KTVHCDataUnitItem * obj in objs)
     {
         [obj unlock];
     }
