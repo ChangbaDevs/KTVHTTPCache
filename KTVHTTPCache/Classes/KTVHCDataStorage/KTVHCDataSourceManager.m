@@ -139,6 +139,11 @@
     [self unlock];
 }
 
+- (void)fileSource:(KTVHCDataFileSource *)fileSource didFailed:(NSError *)error
+{
+    [self callbackForFailed:error];
+}
+
 - (void)networkSourceDidPrepared:(KTVHCDataNetworkSource *)networkSource
 {
     [self lock];
@@ -171,32 +176,7 @@
 
 - (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailed:(NSError *)error
 {
-    if (!error)
-    {
-        return;
-    }
-    [self lock];
-    if (self.didClosed)
-    {
-        [self unlock];
-        return;
-    }
-    if (self.error)
-    {
-        [self unlock];
-        return;
-    }
-    _error = error;
-    KTVHCLogDataSourceManager(@"failure, %d", (int)self.error.code);
-    if (self.error && [self.delegate respondsToSelector:@selector(sourceManager:didFailed:)])
-    {
-        KTVHCLogDataSourceManager(@"%p, Callback for network source failed - Begin\nError : %@", self, self.error);
-        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-            KTVHCLogDataSourceManager(@"%p, Callback for network source failed - End", self);
-            [self.delegate sourceManager:self didFailed:self.error];
-        }];
-    }
-    [self unlock];
+    [self callbackForFailed:error];
 }
 
 - (void)callbackForPrepared
@@ -239,6 +219,36 @@
             [self.delegate sourceManager:self didReceiveResponse:response];
         }];
     }
+}
+
+- (void)callbackForFailed:(NSError *)error
+{
+    if (!error)
+    {
+        return;
+    }
+    [self lock];
+    if (self.didClosed)
+    {
+        [self unlock];
+        return;
+    }
+    if (self.error)
+    {
+        [self unlock];
+        return;
+    }
+    _error = error;
+    KTVHCLogDataSourceManager(@"failure, %d", (int)self.error.code);
+    if (self.error && [self.delegate respondsToSelector:@selector(sourceManager:didFailed:)])
+    {
+        KTVHCLogDataSourceManager(@"%p, Callback for network source failed - Begin\nError : %@", self, self.error);
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            KTVHCLogDataSourceManager(@"%p, Callback for network source failed - End", self);
+            [self.delegate sourceManager:self didFailed:self.error];
+        }];
+    }
+    [self unlock];
 }
 
 - (void)lock

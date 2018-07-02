@@ -86,6 +86,7 @@
         {
             if (obj.length <= 0)
             {
+                [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
                 [removeArray addObject:obj];
             }
         }
@@ -264,66 +265,95 @@
         [self unlock];
         return NO;
     }
-    BOOL success = NO;
-    if (self.totalLength == self.validLength)
+    if (self.totalLength != self.validLength)
     {
-        long long offset = 0;
-        [KTVHCPathTools deleteFileAtPath:path];
-        [KTVHCPathTools createFileAtPath:path];
-        NSFileHandle * writingHandle = [NSFileHandle fileHandleForWritingAtPath:path];
-        for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+        [self unlock];
+        return NO;
+    }
+    BOOL failed = NO;
+    long long offset = 0;
+    [KTVHCPathTools deleteFileAtPath:path];
+    [KTVHCPathTools createFileAtPath:path];
+    NSFileHandle * writingHandle = [NSFileHandle fileHandleForWritingAtPath:path];
+    for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+    {
+        if (failed)
         {
-            NSAssert(offset >= obj.offset, @"invaild unit item.");
-            if (offset >= (obj.offset + obj.length))
+            break;
+        }
+        NSAssert(offset >= obj.offset, @"invaild unit item.");
+        if (offset >= (obj.offset + obj.length))
+        {
+            KTVHCLogDataUnit(@"%p, Merge files continue", self);
+            continue;
+        }
+        NSFileHandle * readingHandle = [NSFileHandle fileHandleForReadingAtPath:obj.absolutePath];
+        @try
+        {
+            [readingHandle seekToFileOffset:offset - obj.offset];
+        }
+        @catch (NSException * exception)
+        {
+            KTVHCLogDataUnit(@"%p, Merge files seek exception\n%@", self, exception);
+            failed = YES;
+        }
+        if (failed)
+        {
+            break;
+        }
+        while (!failed)
+        {
+            @autoreleasepool
             {
-                KTVHCLogDataUnit(@"%p, Merge files continue", self);
-                continue;
-            }
-            NSFileHandle * readingHandle = [NSFileHandle fileHandleForReadingAtPath:obj.absolutePath];
-            @try
-            {
-                [readingHandle seekToFileOffset:offset - obj.offset];
-            }
-            @catch (NSException * exception)
-            {
-                KTVHCLogDataUnit(@"%p, Merge files seek exception\n%@", self, exception);
-            }
-            while (YES)
-            {
-                @autoreleasepool
+                NSData * data = [readingHandle readDataOfLength:1024 * 1024 * 1];
+                if (data.length <= 0)
                 {
-                    NSData * data = [readingHandle readDataOfLength:1024 * 1024 * 1];
-                    if (data.length <= 0)
-                    {
-                        KTVHCLogDataUnit(@"%p, Merge files break", self);
-                        break;
-                    }
-                    KTVHCLogDataUnit(@"%p, Merge write data : %lld", self, (long long)data.length);
+                    KTVHCLogDataUnit(@"%p, Merge files break", self);
+                    break;
+                }
+                KTVHCLogDataUnit(@"%p, Merge write data : %lld", self, (long long)data.length);
+                @try
+                {
                     [writingHandle writeData:data];
                 }
+                @catch (NSException * exception)
+                {
+                    KTVHCLogDataUnit(@"%p, Merge files write exception\n%@", self, exception);
+                    failed = YES;
+                }
             }
-            [readingHandle closeFile];
-            offset = obj.offset + obj.length;
-            KTVHCLogDataUnit(@"%p, Merge next : %lld", self, offset);
         }
+        [readingHandle closeFile];
+        offset = obj.offset + obj.length;
+        KTVHCLogDataUnit(@"%p, Merge next : %lld", self, offset);
+    }
+    @try
+    {
         [writingHandle synchronizeFile];
         [writingHandle closeFile];
-        KTVHCLogDataUnit(@"%p, Merge finished\ntotalLength : %lld\noffset : %lld", self, self.totalLength, offset);
-        if ([KTVHCPathTools sizeOfItemAtPath:path] == self.totalLength)
-        {
-            KTVHCLogDataUnit(@"%p, Merge replace items", self);
-            KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:path offset:0];
-            for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
-            {
-                [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
-            }
-            [self.unitItemsInternal removeAllObjects];
-            [self.unitItemsInternal addObject:item];
-            success = YES;
-        }
     }
+    @catch (NSException * exception)
+    {
+        KTVHCLogDataUnit(@"%p, Merge files close exception, %d\n%@", self, failed, exception);
+        failed = YES;
+    }
+    KTVHCLogDataUnit(@"%p, Merge finished\ntotalLength : %lld\noffset : %lld", self, self.totalLength, offset);
+    if (failed || [KTVHCPathTools sizeOfItemAtPath:path] != self.totalLength)
+    {
+        [KTVHCPathTools deleteFileAtPath:path];
+        [self unlock];
+        return NO;
+    }
+    KTVHCLogDataUnit(@"%p, Merge replace items", self);
+    KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:path offset:0];
+    for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
+    {
+        [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
+    }
+    [self.unitItemsInternal removeAllObjects];
+    [self.unitItemsInternal addObject:item];
     [self unlock];
-    return success;
+    return YES;
 }
 
 - (void)lock

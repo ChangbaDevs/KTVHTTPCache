@@ -10,9 +10,10 @@
 
 typedef NS_ENUM(NSInteger, KTVHCErrorCode)
 {
-    KTVHCErrorCodeResponseUnavailable    = -192700,
-    KTVHCErrorCodeUnsupportContentType   = -192701,
-    KTVHCErrorCodeNotEnoughDiskSpace     = -192702,
+    KTVHCErrorCodeResponseUnavailable  = -192700,
+    KTVHCErrorCodeUnsupportContentType = -192701,
+    KTVHCErrorCodeNotEnoughDiskSpace   = -192702,
+    KTVHCErrorCodeException            = -192703,
 };
 
 @interface KTVHCError : NSObject
@@ -29,5 +30,7 @@ typedef NS_ENUM(NSInteger, KTVHCErrorCode)
                                 request:(long long)currentContentLength
                        totalCacheLength:(long long)totalCacheLength
                          maxCacheLength:(long long)maxCacheLength;
+
++ (NSError *)errorForException:(NSException *)exception;
 
 @end

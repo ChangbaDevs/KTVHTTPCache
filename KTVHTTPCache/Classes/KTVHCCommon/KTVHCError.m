@@ -68,5 +68,13 @@ NSString * const KTVHCErrorUserInfoKeyResponse = @"KTVHCErrorUserInfoKeyResponse
     return error;
 }
 
++ (NSError *)errorForException:(NSException *)exception
+{
+    NSError * error = [NSError errorWithDomain:@"KTVHTTPCache error"
+                                          code:KTVHCErrorCodeException
+                                      userInfo:exception.userInfo];
+    return error;
+}
+
 
 @end

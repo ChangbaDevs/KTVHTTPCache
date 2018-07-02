@@ -11,6 +11,7 @@
 #import "KTVHCDataCallback.h"
 #import "KTVHCPathTools.h"
 #import "KTVHCDownload.h"
+#import "KTVHCError.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCDataNetworkSource () <NSLocking, KTVHCDownloadDelegate>
@@ -79,34 +80,21 @@
     }
     _didClosed = YES;
     KTVHCLogDataNetworkSource(@"%p, Call close", self);
-    [self.readingHandle closeFile];
-    self.readingHandle = nil;
     if (!self.downloadDidCallComplete)
     {
         KTVHCLogDataNetworkSource(@"%p, Cancel download task", self);
         [self.downlaodTask cancel];
         self.downlaodTask = nil;
     }
-    [self.writingHandle synchronizeFile];
-    [self.writingHandle closeFile];
-    self.writingHandle = nil;
+    [self destoryReadingHandle];
+    [self destoryWritingHandle];
     [self unlock];
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.didClosed)
-    {
-        [self unlock];
-        return nil;
-    }
-    if (self.didFinished)
-    {
-        [self unlock];
-        return nil;
-    }
-    if (self.error)
+    if (self.didClosed || self.didFinished || self.error)
     {
         [self unlock];
         return nil;
@@ -116,8 +104,7 @@
         if (self.downloadDidCallComplete)
         {
             KTVHCLogDataNetworkSource(@"%p, Read data failed\ndownloadLength : %lld\nreadedLength : %lld", self, self.downloadReadedLength, self.downloadLength);
-            [self.readingHandle closeFile];
-            self.readingHandle = nil;
+            [self destoryReadingHandle];
         }
         else
         {
@@ -127,15 +114,24 @@
         [self unlock];
         return nil;
     }
-    NSData * data = [self.readingHandle readDataOfLength:(NSUInteger)MIN(self.downloadLength - self.downloadReadedLength, length)];
-    self.downloadReadedLength += data.length;
-    KTVHCLogDataNetworkSource(@"%p, Read data\nLength : %lld\ndownloadLength : %lld\nreadedLength : %lld", self, (long long)data.length, self.downloadReadedLength, self.downloadLength);
-    if (self.downloadReadedLength >= KTVHCRangeGetLength(self.response.range))
+    NSData * data = nil;
+    @try
     {
-        _didFinished = YES;
-        KTVHCLogDataNetworkSource(@"%p, Read data did finished", self);
-        [self.readingHandle closeFile];
-        self.readingHandle = nil;
+        data = [self.readingHandle readDataOfLength:(NSUInteger)MIN(self.downloadLength - self.downloadReadedLength, length)];
+        self.downloadReadedLength += data.length;
+        KTVHCLogDataNetworkSource(@"%p, Read data\nLength : %lld\ndownloadLength : %lld\nreadedLength : %lld", self, (long long)data.length, self.downloadReadedLength, self.downloadLength);
+        if (self.downloadReadedLength >= KTVHCRangeGetLength(self.response.range))
+        {
+            _didFinished = YES;
+            KTVHCLogDataNetworkSource(@"%p, Read data did finished", self);
+            [self destoryReadingHandle];
+        }
+    }
+    @catch (NSException * exception)
+    {
+        KTVHCLogDataFileSource(@"%p, Read exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
+        NSError * error = [KTVHCError errorForException:exception];
+        [self callbackForFailed:error];
     }
     [self unlock];
     return data;
@@ -151,50 +147,39 @@
 {
     [self lock];
     self.downloadDidCallComplete = YES;
-    [self.writingHandle synchronizeFile];
-    [self.writingHandle closeFile];
-    self.writingHandle = nil;
+    [self destoryWritingHandle];
     if (self.didClosed)
     {
         KTVHCLogDataNetworkSource(@"%p, Complete but did closed\nError : %@", self, error);
     }
-    else
+    else if (self.error)
     {
-        if (error)
+        KTVHCLogDataNetworkSource(@"%p, Complete but did failed\nself.error : %@\nerror : %@", self, self.error, error);
+    }
+    else if (error)
+    {
+        if (error.code != NSURLErrorCancelled)
         {
-            self.error = error;
-            if (self.error.code != NSURLErrorCancelled)
-            {
-                KTVHCLogDataNetworkSource(@"%p, Complete with error\nError : %@", self, error);
-                if ([self.delegate respondsToSelector:@selector(networkSource:didFailed:)])
-                {
-                    [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-                        [self.delegate networkSource:self didFailed:self.error];
-                    }];
-                }
-            }
-            else
-            {
-                KTVHCLogDataNetworkSource(@"%p, Complete with cancel\nError : %@", self, error);
-            }
+            [self callbackForFailed:error];
         }
         else
         {
-            if (self.downloadLength >= KTVHCRangeGetLength(self.response.range))
-            {
-                KTVHCLogDataNetworkSource(@"%p, Complete and finisehed", self);
-                if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishedDownload:)])
-                {
-                    [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-                        [self.delegate networkSourceDidFinishedDownload:self];
-                    }];
-                }
-            }
-            else
-            {
-                KTVHCLogDataNetworkSource(@"%p, Complete but not finisehed\nError : %@\ndownloadLength : %lld", self, error, self.downloadLength);
-            }
+            KTVHCLogDataNetworkSource(@"%p, Complete with cancel\nError : %@", self, error);
         }
+    }
+    else if (self.downloadLength >= KTVHCRangeGetLength(self.response.range))
+    {
+        KTVHCLogDataNetworkSource(@"%p, Complete and finisehed", self);
+        if ([self.delegate respondsToSelector:@selector(networkSourceDidFinishedDownload:)])
+        {
+            [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+                [self.delegate networkSourceDidFinishedDownload:self];
+            }];
+        }
+    }
+    else
+    {
+        KTVHCLogDataNetworkSource(@"%p, Complete but not finisehed\ndownloadLength : %lld", self, self.downloadLength);
     }
     [self unlock];
 }
@@ -202,6 +187,11 @@
 - (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
+    if (self.didClosed || self.error)
+    {
+        [self unlock];
+        return;
+    }
     _response = response;
     NSString * path = [KTVHCPathTools unitItemPathWithURL:self.request.URL offset:self.request.range.start];
     self.unitItem = [[KTVHCDataUnitItem alloc] initWithPath:path offset:self.request.range.start];
@@ -218,17 +208,65 @@
 - (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data
 {
     [self lock];
-    if (self.didClosed)
+    if (self.didClosed || self.error)
     {
         [self unlock];
         return;
     }
-    [self.writingHandle writeData:data];
-    self.downloadLength += data.length;
-    [self.unitItem setLength:self.downloadLength];
-    KTVHCLogDataNetworkSource(@"%p, Receive data : %lld, %lld, %lld", self, (long long)data.length, self.downloadLength, self.unitItem.length);
-    [self callbackForHasAvailableData];
+    @try
+    {
+        [self.writingHandle writeData:data];
+        self.downloadLength += data.length;
+        [self.unitItem setLength:self.downloadLength];
+        KTVHCLogDataNetworkSource(@"%p, Receive data : %lld, %lld, %lld", self, (long long)data.length, self.downloadLength, self.unitItem.length);
+        [self callbackForHasAvailableData];
+    }
+    @catch (NSException * exception)
+    {
+        NSError * error = [KTVHCError errorForException:exception];
+        KTVHCLogDataNetworkSource(@"%p, write exception\nError : %@", self, error);
+        [self callbackForFailed:error];
+        if (!self.downloadDidCallComplete)
+        {
+            KTVHCLogDataNetworkSource(@"%p, Cancel download task when write exception", self);
+            [self.downlaodTask cancel];
+            self.downlaodTask = nil;
+        }
+    }
     [self unlock];
+}
+
+- (void)destoryReadingHandle
+{
+    if (self.readingHandle)
+    {
+        @try
+        {
+            [self.readingHandle closeFile];
+        }
+        @catch (NSException * exception)
+        {
+            KTVHCLogDataFileSource(@"%p, Close reading handle exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
+        }
+        self.readingHandle = nil;
+    }
+}
+
+- (void)destoryWritingHandle
+{
+    if (self.writingHandle)
+    {
+        @try
+        {
+            [self.writingHandle synchronizeFile];
+            [self.writingHandle closeFile];
+        }
+        @catch (NSException * exception)
+        {
+            KTVHCLogDataFileSource(@"%p, Close writing handle exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
+        }
+        self.writingHandle = nil;
+    }
 }
 
 - (void)callbackForPrepared
@@ -269,6 +307,22 @@
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataNetworkSource(@"%p, Callback for has available data - End", self);
             [self.delegate networkSourceHasAvailableData:self];
+        }];
+    }
+}
+
+- (void)callbackForFailed:(NSError *)error
+{
+    if (self.didClosed || !error || self.error)
+    {
+        return;
+    }
+    self.error = error;
+    KTVHCLogDataNetworkSource(@"%p, Callback for failed\nError : %@", self, self.error);
+    if ([self.delegate respondsToSelector:@selector(networkSource:didFailed:)])
+    {
+        [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
+            [self.delegate networkSource:self didFailed:self.error];
         }];
     }
 }
