@@ -28,7 +28,15 @@
     if (self = [super init])
     {
         self.path = path;
-        self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.path];
+        @try
+        {
+            self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.path];
+        }
+        @catch (NSException * exception)
+        {
+            KTVHCLogDataUnitQueue(@"%p, Init exception\nname : %@\breason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
+            self.unitArray = nil;
+        }
         if (!self.unitArray)
         {
             self.unitArray = [NSMutableArray array];
