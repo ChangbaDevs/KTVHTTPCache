@@ -69,7 +69,7 @@
 
 + (NSString *)basePath
 {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
 }
 
 + (BOOL)isRelativePath:(NSString *)path
