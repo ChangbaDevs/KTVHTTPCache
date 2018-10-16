@@ -13,11 +13,14 @@
 #import "KTVHCURLTools.h"
 #import "KTVHCLog.h"
 
+#import <UIKit/UIKit.h>
+
 @interface KTVHCDataUnitPool () <NSLocking, KTVHCDataUnitFileDelegate>
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) KTVHCDataUnitQueue * unitQueue;
-@property (nonatomic, assign) int64_t archiveIndex;
+@property (nonatomic, assign) int64_t expectArchiveIndex;
+@property (nonatomic, assign) int64_t actualArchiveIndex;
 
 @end
 
@@ -42,9 +45,17 @@
         {
             obj.fileDelegate = self;
         }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+        [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
         KTVHCLogDataUnitPool(@"%p, Create Pool\nUnits : %@", self, self.unitQueue.allUnits);
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (KTVHCDataUnit *)unitWithURL:(NSURL *)URL
@@ -62,7 +73,7 @@
         unit.fileDelegate = self;
         KTVHCLogDataUnitPool(@"%p, Insert Unit, %@", self, unit);
         [self.unitQueue putUnit:unit];
-        [self archive];
+        [self setNeedsArchive];
     }
     [unit workingRetain];
     [self unlock];
@@ -146,7 +157,7 @@
         KTVHCLogDataUnit(@"%p, Delete Unit\nUnit : %@\nFunc : %s", self, obj, __func__);
         [obj deleteFiles];
         [self.unitQueue popUnit:obj];
-        [self archive];
+        [self setNeedsArchive];
     }
     [self unlock];
 }
@@ -195,7 +206,7 @@
     }
     if (needArchive)
     {
-        [self archive];
+        [self setNeedsArchive];
     }
     [self unlock];
 }
@@ -217,29 +228,61 @@
     }
     if (needArchive)
     {
-        [self archive];
+        [self setNeedsArchive];
     }
     [self unlock];
 }
 
 - (void)unitShouldRearchive:(KTVHCDataUnit *)unit
 {
-    [self archive];
+    [self setNeedsArchive];
 }
 
-- (void)archive
+- (void)setNeedsArchive
 {
-    self.archiveIndex += 1;
-    int64_t index = self.archiveIndex;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (index == self.archiveIndex)
+    [self lock];
+    self.expectArchiveIndex += 1;
+    int64_t expectArchiveIndex = self.expectArchiveIndex;
+    [self unlock];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self lock];
+        if (self.expectArchiveIndex == expectArchiveIndex)
         {
-            [self lock];
-            [self.unitQueue archive];
-            [self unlock];
+            [self archiveIfNeeded];
         }
+        [self unlock];
     });
 }
+
+- (void)archiveIfNeeded
+{
+    [self lock];
+    if (self.actualArchiveIndex != self.expectArchiveIndex)
+    {
+        self.actualArchiveIndex = self.expectArchiveIndex;
+        [self.unitQueue archive];
+    }
+    [self unlock];
+}
+
+#pragma mark - UIApplicationWillTerminateNotification
+
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+    [self archiveIfNeeded];
+}
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification
+{
+    [self archiveIfNeeded];
+}
+
+- (void)applicationWillResignActive:(NSNotification *)notification
+{
+    [self archiveIfNeeded];
+}
+
+#pragma mark - NSLocking
 
 - (void)lock
 {
