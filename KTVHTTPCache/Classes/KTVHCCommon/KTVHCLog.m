@@ -16,7 +16,6 @@
 @property (nonatomic, strong) NSLock * lock;
 @property (nonatomic, strong) NSFileHandle * writingHandle;
 @property (nonatomic, strong) NSMutableArray <NSError *> * internalErrors;
-@property (nonatomic, assign) BOOL createLogAndFileHandleToken;
 
 @end
 
@@ -47,29 +46,23 @@
 
 - (void)addRecordLog:(NSString *)log
 {
-    if (!self.consoleLogEnable)
-    {
-        return;
-    }
     if (!self.recordLogEnable)
     {
         return;
     }
-    if (log.length <= 0) {
-        return;
-    }
-    if (!self.createLogAndFileHandleToken)
-    {
-        [self createLogAndFileHandle];
-        self.createLogAndFileHandleToken = YES;
-    }
-    if (!self.writingHandle)
+    if (log.length <= 0)
     {
         return;
     }
     [self.lock lock];
-    log = [NSString stringWithFormat:@"%@  %@\n", [NSDate date], log];
-    NSData * data = [log dataUsingEncoding:NSUTF8StringEncoding];
+    NSString * string = [NSString stringWithFormat:@"%@  %@\n", [NSDate date], log];
+    NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    if (!self.writingHandle)
+    {
+        [KTVHCPathTools createFileAtPath:[KTVHCPathTools logPath]];
+        self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools logPath]];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+    }
     [self.writingHandle writeData:data];
     [self.lock unlock];
 }
@@ -78,15 +71,6 @@
 {
     [self.lock lock];
     [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools logPath]];
-    [self.lock unlock];
-}
-
-- (void)createLogAndFileHandle
-{
-    [self.lock lock];
-    [KTVHCPathTools createFileAtPath:[KTVHCPathTools logPath]];
-    self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools logPath]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
     [self.lock unlock];
 }
 
@@ -125,6 +109,10 @@
 {
     if (error && [error isKindOfClass:[NSError class]])
     {
+        if (self.internalErrors.count >= 20)
+        {
+            [self.internalErrors removeObjectAtIndex:0];
+        }
         [self.internalErrors addObject:error];
     }
 }
