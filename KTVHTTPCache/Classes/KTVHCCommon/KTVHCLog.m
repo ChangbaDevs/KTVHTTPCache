@@ -39,7 +39,6 @@
         self.recordLogEnable = NO;
         self.lock = [[NSLock alloc] init];
         self.internalErrors = [NSMutableArray array];
-        [self deleteRecordLog];
     }
     return self;
 }
@@ -59,6 +58,7 @@
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
     if (!self.writingHandle)
     {
+        [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools logPath]];
         [KTVHCPathTools createFileAtPath:[KTVHCPathTools logPath]];
         self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools logPath]];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
@@ -70,7 +70,10 @@
 - (void)deleteRecordLog
 {
     [self.lock lock];
-    [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools logPath]];
+    [self.writingHandle synchronizeFile];
+    [self.writingHandle closeFile];
+    self.writingHandle = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
     [self.lock unlock];
 }
 
@@ -121,11 +124,7 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    [self.lock lock];
-    [self.writingHandle closeFile];
-    self.writingHandle = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
-    [self.lock unlock];
+    [self deleteRecordLog];
 }
 
 @end
