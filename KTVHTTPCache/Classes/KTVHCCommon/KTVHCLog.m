@@ -67,6 +67,19 @@
     [self.lock unlock];
 }
 
+- (NSString *)recordLogFilePath
+{
+    NSString * path = nil;
+    [self.lock lock];
+    long long size = [KTVHCPathTools sizeOfItemAtPath:[KTVHCPathTools logPath]];
+    if (size > 0)
+    {
+        path = [KTVHCPathTools logPath];
+    }
+    [self.lock unlock];
+    return path;
+}
+
 - (void)deleteRecordLog
 {
     [self.lock lock];
@@ -75,19 +88,6 @@
     self.writingHandle = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
     [self.lock unlock];
-}
-
-- (NSString *)recordLogFilePath
-{
-    NSString * path = nil;
-    [self.lock lock];
-    long long logFileSize = [KTVHCPathTools sizeOfItemAtPath:[KTVHCPathTools logPath]];
-    if (logFileSize > 0)
-    {
-        path = [KTVHCPathTools logPath];
-    }
-    [self.lock unlock];
-    return path;
 }
 
 - (NSError *)lastError

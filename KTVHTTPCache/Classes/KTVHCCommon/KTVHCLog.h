@@ -143,9 +143,10 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
  *  RELEASE : default is NO.
  */
 @property (nonatomic, assign) BOOL recordLogEnable;
-@property (nonatomic, copy, readonly) NSString * recordLogFilePath;
 
 - (void)addRecordLog:(NSString *)log;
+
+- (NSString *)recordLogFilePath;
 - (void)deleteRecordLog;
 
 /**
