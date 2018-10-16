@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) NSRecursiveLock * coreLock;
 @property (nonatomic, strong) KTVHCDataUnitQueue * unitQueue;
+@property (nonatomic, assign) int64_t archiveIndex;
 
 @end
 
@@ -61,7 +62,7 @@
         unit.fileDelegate = self;
         KTVHCLogDataUnitPool(@"%p, Insert Unit, %@", self, unit);
         [self.unitQueue putUnit:unit];
-        [self.unitQueue archive];
+        [self archive];
     }
     [unit workingRetain];
     [self unlock];
@@ -145,7 +146,7 @@
         KTVHCLogDataUnit(@"%p, Delete Unit\nUnit : %@\nFunc : %s", self, obj, __func__);
         [obj deleteFiles];
         [self.unitQueue popUnit:obj];
-        [self.unitQueue archive];
+        [self archive];
     }
     [self unlock];
 }
@@ -194,7 +195,7 @@
     }
     if (needArchive)
     {
-        [self.unitQueue archive];
+        [self archive];
     }
     [self unlock];
 }
@@ -216,16 +217,28 @@
     }
     if (needArchive)
     {
-        [self.unitQueue archive];
+        [self archive];
     }
     [self unlock];
 }
 
 - (void)unitShouldRearchive:(KTVHCDataUnit *)unit
 {
-    [self lock];
-    [self.unitQueue archive];
-    [self unlock];
+    [self archive];
+}
+
+- (void)archive
+{
+    self.archiveIndex += 1;
+    int64_t index = self.archiveIndex;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (index == self.archiveIndex)
+        {
+            [self lock];
+            [self.unitQueue archive];
+            [self unlock];
+        }
+    });
 }
 
 - (void)lock
