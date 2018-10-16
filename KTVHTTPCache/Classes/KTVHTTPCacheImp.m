@@ -82,7 +82,7 @@
 
 + (long long)cacheTotalCacheLength
 {
-    return [[KTVHCDataStorage storage] totalCacheLength];
+    return [KTVHCDataStorage storage].totalCacheLength;
 }
 
 + (KTVHCDataCacheItem *)cacheCacheItemWithURL:(NSURL *)URL
