@@ -21,6 +21,7 @@
 @property (nonatomic, strong) KTVHCDataUnitQueue * unitQueue;
 @property (nonatomic, assign) int64_t expectArchiveIndex;
 @property (nonatomic, assign) int64_t actualArchiveIndex;
+@property (nonatomic, strong) dispatch_queue_t archiveQueue;
 
 @end
 
@@ -244,7 +245,11 @@
     self.expectArchiveIndex += 1;
     int64_t expectArchiveIndex = self.expectArchiveIndex;
     [self unlock];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    if (!self.archiveQueue)
+    {
+        self.archiveQueue = dispatch_queue_create("KTVHTTPCache-archiveQueue", DISPATCH_QUEUE_SERIAL);
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), self.archiveQueue, ^{
         [self lock];
         if (self.expectArchiveIndex == expectArchiveIndex)
         {

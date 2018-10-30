@@ -58,6 +58,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [self lock];
     [aCoder encodeObject:self.URL.absoluteString forKey:@"URLString"];
     [aCoder encodeObject:self.key forKey:@"uniqueIdentifier"];
     [aCoder encodeObject:@(self.createTimeInterval) forKey:@"createTimeInterval"];
@@ -65,6 +66,7 @@
     [aCoder encodeObject:self.responseHeaders forKey:@"responseHeaderFields"];
     [aCoder encodeObject:@(self.totalLength) forKey:@"totalContentLength"];
     [aCoder encodeObject:self.unitItemsInternal forKey:@"unitItems"];
+    [self unlock];
 }
 
 - (void)dealloc
