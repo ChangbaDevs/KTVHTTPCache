@@ -34,6 +34,7 @@
         _URL = URL;
         _key = [KTVHCURLTools keyWithURL:self.URL];
         _createTimeInterval = [NSDate date].timeIntervalSince1970;
+        _valid = YES;
         [self prepare];
     }
     return self;
@@ -44,14 +45,24 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
-        _URL = [NSURL URLWithString:[aDecoder decodeObjectForKey:@"URLString"]];
-        _key = [aDecoder decodeObjectForKey:@"uniqueIdentifier"];
-        _createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
-        _requestHeaders = [aDecoder decodeObjectForKey:@"requestHeaderFields"];
-        _responseHeaders = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
-        _totalLength = [[aDecoder decodeObjectForKey:@"totalContentLength"] longLongValue];
-        self.unitItemsInternal = [aDecoder decodeObjectForKey:@"unitItems"];
-        [self prepare];
+        @try {
+            _URL = [NSURL URLWithString:[aDecoder decodeObjectForKey:@"URLString"]];
+            _key = [aDecoder decodeObjectForKey:@"uniqueIdentifier"];
+            _valid = YES;
+        } @catch (NSException * exception) {
+            _valid = NO;
+        }
+        @try {
+            _createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
+            _requestHeaders = [aDecoder decodeObjectForKey:@"requestHeaderFields"];
+            _responseHeaders = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
+            _totalLength = [[aDecoder decodeObjectForKey:@"totalContentLength"] longLongValue];
+            self.unitItemsInternal = [aDecoder decodeObjectForKey:@"unitItems"];
+            [self prepare];
+            _valid = _valid && YES;
+        } @catch (NSException * exception) {
+            _valid = NO;
+        }
     }
     return self;
 }
@@ -246,6 +257,10 @@
 
 - (void)deleteFiles
 {
+    if (!self.URL)
+    {
+        return;
+    }
     [self lock];
     NSString * path = [KTVHCPathTools directoryPathWithURL:self.URL];
     [KTVHCPathTools deleteDirectoryAtPath:path];

@@ -24,6 +24,8 @@
 
 + (instancetype)unitWithURL:(NSURL *)URL;
 
+@property (nonatomic, assign, readonly) BOOL valid;
+
 @property (nonatomic, copy, readonly) NSURL * URL;
 @property (nonatomic, copy, readonly) NSURL * fileURL;
 @property (nonatomic, copy, readonly) NSString * key;       // Unique Identifier.

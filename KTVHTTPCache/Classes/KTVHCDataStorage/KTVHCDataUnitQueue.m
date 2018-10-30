@@ -28,18 +28,19 @@
     if (self = [super init])
     {
         self.path = path;
-        @try
-        {
-            self.unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.path];
-        }
-        @catch (NSException * exception)
-        {
+        NSMutableArray * unitArray = nil;
+        @try {
+            unitArray = [NSKeyedUnarchiver unarchiveObjectWithFile:self.path];
+        } @catch (NSException * exception) {
             KTVHCLogDataUnitQueue(@"%p, Init exception\nname : %@\breason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
-            self.unitArray = nil;
         }
-        if (!self.unitArray)
-        {
-            self.unitArray = [NSMutableArray array];
+        self.unitArray = [NSMutableArray array];
+        for (KTVHCDataUnit * obj in unitArray) {
+            if (obj.valid) {
+                [self.unitArray addObject:obj];
+            } else {
+                [obj deleteFiles];
+            }
         }
     }
     return self;
