@@ -73,7 +73,9 @@
     NSError * tempError = nil;
     [self.coreHTTPServer start:&tempError];
     if (tempError) {
-        * error = tempError;
+        if (error != NULL) {
+            * error = tempError;
+        }
         KTVHCLogHTTPServer(@"%p, Start server failed : %@", self, tempError);
     } else {
         KTVHCLogHTTPServer(@"%p, Start server success", self);
