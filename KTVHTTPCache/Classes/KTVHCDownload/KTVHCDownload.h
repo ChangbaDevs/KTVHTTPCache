@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVHCDataRequest.h"
 #import "KTVHCDataResponse.h"
+#import "KTVHCDataRequest.h"
 #import "KTVHCCommon.h"
 
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeVideo;
@@ -39,14 +39,14 @@ KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeBinaryOctetStream;
 /**
  *  Header Fields
  */
-@property (nonatomic, copy) NSArray <NSString *> * whitelistHeaderKeys;
-@property (nonatomic, copy) NSDictionary <NSString *, NSString *> * additionalHeaders;
+@property (nonatomic, copy) NSArray <NSString *> *whitelistHeaderKeys;
+@property (nonatomic, copy) NSDictionary <NSString *, NSString *> *additionalHeaders;
 
 /**
  *  Content-Type
  */
-@property (nonatomic, copy) NSArray <NSString *> * acceptContentTypes;
-@property (nonatomic, copy) BOOL (^unsupportContentTypeFilter)(NSURL * URL, NSString * contentType);
+@property (nonatomic, copy) NSArray <NSString *> *acceptContentTypes;
+@property (nonatomic, copy) BOOL (^unsupportContentTypeFilter)(NSURL *URL, NSString *contentType);
 
 - (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate;
 
