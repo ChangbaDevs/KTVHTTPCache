@@ -12,8 +12,7 @@
 
 - (instancetype)initWithTitle:(NSString *)title URLString:(NSString *)URLString
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         self.title = title;
         self.URLString = URLString;
     }

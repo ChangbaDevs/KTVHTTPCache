@@ -10,10 +10,10 @@
 
 @interface CacheItemView ()
 
-@property (nonatomic, strong) UILabel * totalLengthLabel;
-@property (nonatomic, strong) UILabel * cacheLengthLabel;
-@property (nonatomic, strong) UILabel * textLabel;
-@property (nonatomic, strong) UIButton * deleteButton;
+@property (nonatomic, strong) UILabel *totalLengthLabel;
+@property (nonatomic, strong) UILabel *cacheLengthLabel;
+@property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, strong) UIButton *deleteButton;
 
 @end
 
@@ -23,8 +23,7 @@
                       totalLength:(long long)totalLength
                       cacheLength:(long long)cacheLength
 {
-    if (self = [super initWithFrame:CGRectZero])
-    {
+    if (self = [super initWithFrame:CGRectZero]) {
         self.backgroundColor = [UIColor whiteColor];
         
         self.totalLengthLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -60,23 +59,10 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    self.totalLengthLabel.frame = CGRectMake(20,
-                                             15,
-                                             self.bounds.size.width - 40,
-                                             18);
-    self.cacheLengthLabel.frame = CGRectMake(20,
-                                             33,
-                                             self.bounds.size.width - 40,
-                                             18);
-    self.textLabel.frame = CGRectMake(20,
-                                      CGRectGetMaxY(self.cacheLengthLabel.frame) + 5,
-                                      self.bounds.size.width - 40,
-                                      self.bounds.size.height - 60);
-    self.deleteButton.frame = CGRectMake(self.bounds.size.width - 40 - 80,
-                                         20,
-                                         80,
-                                         26);
+    self.totalLengthLabel.frame = CGRectMake(20, 15, self.bounds.size.width - 40, 18);
+    self.cacheLengthLabel.frame = CGRectMake(20, 33, self.bounds.size.width - 40, 18);
+    self.textLabel.frame = CGRectMake(20, CGRectGetMaxY(self.cacheLengthLabel.frame) + 5, self.bounds.size.width - 40, self.bounds.size.height - 60);
+    self.deleteButton.frame = CGRectMake(self.bounds.size.width - 40 - 80, 20, 80, 26);
 }
 
 - (void)deleteButtonAction

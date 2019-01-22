@@ -10,7 +10,7 @@
 
 @interface MediaCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel * titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 
 @end
 

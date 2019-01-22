@@ -11,7 +11,7 @@
 
 @interface MediaViewController ()
 
-@property (nonatomic, strong) NSString * URLString;
+@property (nonatomic, strong) NSString *URLString;
 
 @end
 
@@ -19,8 +19,7 @@
 
 - (instancetype)initWithURLString:(NSString *)URLString
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         self.URLString = URLString;
     }
     return self;
@@ -29,7 +28,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.player = [AVPlayer playerWithURL:[NSURL URLWithString:self.URLString]];
     [self.player play];
 }

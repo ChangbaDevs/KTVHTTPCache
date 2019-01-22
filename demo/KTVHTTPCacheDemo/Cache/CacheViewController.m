@@ -13,8 +13,8 @@
 
 @interface CacheViewController () <UITableViewDelegate, UITableViewDataSource, CacheItemViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView * tableView;
-@property (nonatomic, strong) NSArray <KTVHCDataCacheItem *> * cacheItems;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSArray <KTVHCDataCacheItem *> *items;
 
 @end
 
@@ -23,13 +23,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self reloadData];
+    [self setupItems];
 }
 
-- (void)reloadData
+- (void)setupItems
 {
-    self.cacheItems = [KTVHTTPCache cacheAllCacheItems];
+    self.items = [KTVHTTPCache cacheAllCacheItems];
     [self.tableView reloadData];
 }
 
@@ -37,30 +36,28 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.cacheItems.count;
+    return self.items.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.cacheItems objectAtIndex:section].zones.count;
+    KTVHCDataCacheItem *item = [self.items objectAtIndex:section];
+    return item.zones.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    KTVHCDataCacheItemZone * zone = [[self.cacheItems objectAtIndex:indexPath.section].zones objectAtIndex:indexPath.row];
-
-    CacheItemZoneCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CacheItemZoneCell"];
+    KTVHCDataCacheItem *item = [self.items objectAtIndex:indexPath.section];
+    KTVHCDataCacheItemZone *zone = [item.zones objectAtIndex:indexPath.row];
+    CacheItemZoneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CacheItemZoneCell"];
     [cell configureWithOffset:zone.offset length:zone.length];
-    
     return cell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    KTVHCDataCacheItem * item = [self.cacheItems objectAtIndex:section];
-    CacheItemView * view = [[CacheItemView alloc] initWithURLString:item.URL.absoluteString
-                                                        totalLength:item.totalLength
-                                                        cacheLength:item.cacheLength];
+    KTVHCDataCacheItem *item = [self.items objectAtIndex:section];
+    CacheItemView *view = [[CacheItemView alloc] initWithURLString:item.URL.absoluteString totalLength:item.totalLength cacheLength:item.cacheLength];
     view.delegate = self;
     return view;
 }
@@ -75,13 +72,13 @@
 - (void)cacheItemView:(CacheItemView *)view deleteButtonDidClick:(NSString *)URLString
 {
     [KTVHTTPCache cacheDeleteCacheWithURLString:URLString];
-    [self reloadData];
+    [self setupItems];
 }
 
 - (IBAction)deleteAllCache:(UIButton *)sender
 {
     [KTVHTTPCache cacheDeleteAllCaches];
-    [self reloadData];
+    [self setupItems];
 }
 
 @end

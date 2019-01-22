@@ -10,8 +10,8 @@
 
 @interface CacheItemZoneCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel * offsetLabel;
-@property (weak, nonatomic) IBOutlet UILabel * lengthLabel;
+@property (nonatomic, weak) IBOutlet UILabel *offsetLabel;
+@property (nonatomic, weak) IBOutlet UILabel *lengthLabel;
 
 @end
 
