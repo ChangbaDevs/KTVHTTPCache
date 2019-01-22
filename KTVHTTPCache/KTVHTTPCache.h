@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#if __has_include(<SGPlayer/SGPlayer.h>)
+#if __has_include(<KTVHTTPCache/KTVHTTPCache.h>)
 
 FOUNDATION_EXPORT double KTVHTTPCacheVersionNumber;
 FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
