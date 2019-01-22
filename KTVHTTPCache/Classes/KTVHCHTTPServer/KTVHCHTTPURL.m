@@ -7,7 +7,7 @@
 //
 
 #import "KTVHCHTTPURL.h"
-#import "KTVHCURLTools.h"
+#import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
 
 static NSString * const kKTVHCHTTPURLRequestURLKey      = @"originalURL";
@@ -52,7 +52,7 @@ static NSString * const kKTVHCHTTPURLRequestTypePing    = @"ping";
                     NSString * value = tuple.lastObject;
                     if ([key isEqualToString:kKTVHCHTTPURLRequestURLKey])
                     {
-                        _URL = [NSURL URLWithString:[KTVHCURLTools URLDecode:value]];
+                        _URL = [NSURL URLWithString:[[KTVHCURLTool tool] URLDecode:value]];
                     }
                     else if ([key isEqualToString:kKTVHCHTTPURLRequestTypeKey])
                     {
@@ -102,7 +102,7 @@ static NSString * const kKTVHCHTTPURLRequestTypePing    = @"ping";
     {
         requestType = kKTVHCHTTPURLRequestTypePing;
     }
-    NSString * originalURLString = [KTVHCURLTools URLEncode:self.URL.absoluteString];
+    NSString * originalURLString = [[KTVHCURLTool tool] URLEncode:self.URL.absoluteString];
     NSString * URLString = [NSString stringWithFormat:@"http://localhost:%d/request%@?%@=%@&%@=%@",
                             (int)port,
                             pathExtension,

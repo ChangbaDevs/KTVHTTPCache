@@ -1,19 +1,19 @@
 //
-//  KTVHCURLTools.m
+//  KTVHCURLTool.m
 //  KTVHTTPCache
 //
 //  Created by Single on 2017/8/10.
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "KTVHCURLTools.h"
+#import "KTVHCURLTool.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-@implementation KTVHCURLTools
+@implementation KTVHCURLTool
 
-+ (instancetype)URLTools
++ (instancetype)tool
 {
-    static KTVHCURLTools * obj = nil;
+    static KTVHCURLTool *obj = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         obj = [[self alloc] init];
@@ -21,60 +21,49 @@
     return obj;
 }
 
-- (NSURL *)URLThroughURLFilter:(NSURL *)URL
+- (NSString *)keyWithURL:(NSURL *)URL
 {
-    if (self.URLFilter && URL.absoluteString.length > 0)
-    {
-        NSURL * retURL = self.URLFilter(URL);
-        if (retURL.absoluteString.length > 0)
-        {
-            return retURL;
+    if (self.URLConverter && URL.absoluteString.length > 0) {
+        NSURL *newURL = self.URLConverter(URL);
+        if (newURL.absoluteString.length > 0) {
+            URL = newURL;
         }
     }
-    return URL;
-}
-
-+ (NSString *)keyWithURL:(NSURL *)URL
-{
-    URL = [[KTVHCURLTools URLTools] URLThroughURLFilter:URL];
     return [self md5:URL.absoluteString];
 }
 
-+ (NSString *)md5:(NSString *)URLString
+- (NSString *)md5:(NSString *)URLString
 {
-    const char * value = [URLString UTF8String];
+    const char *value = [URLString UTF8String];
     unsigned char outputBuffer[CC_MD5_DIGEST_LENGTH];
     CC_MD5(value, (CC_LONG)strlen(value), outputBuffer);
-    NSMutableString * outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-    for (NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++)
-    {
+    NSMutableString *outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH *2];
+    for (NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++) {
         [outputString appendFormat:@"%02x", outputBuffer[count]];
     }
     return outputString;
 }
 
-+ (NSString *)base64Encode:(NSString *)URLString
+- (NSString *)base64Encode:(NSString *)URLString
 {
-    NSData * data = [URLString dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [URLString dataUsingEncoding:NSUTF8StringEncoding];
     return [data base64EncodedStringWithOptions:0];
 }
 
-+ (NSString *)base64Decode:(NSString *)URLString
+- (NSString *)base64Decode:(NSString *)URLString
 {
-    NSData * data = [[NSData alloc] initWithBase64EncodedString:URLString options:0];
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:URLString options:0];
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-+ (NSString *)URLEncode:(NSString *)URLString
+- (NSString *)URLEncode:(NSString *)URLString
 {
     URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSUInteger length = [URLString length];
-    const char * c = [URLString UTF8String];
-    NSString * resultString = @"";
-    for(int i = 0; i < length; i++)
-    {
-        switch (*c)
-        {
+    const char *c = [URLString UTF8String];
+    NSString *resultString = @"";
+    for(int i = 0; i < length; i++) {
+        switch (*c) {
             case '/':
                 resultString = [resultString stringByAppendingString:@"%2F"];
                 break;
@@ -137,7 +126,7 @@
     return resultString;
 }
 
-+ (NSString *)URLDecode:(NSString *)URLString
+- (NSString *)URLDecode:(NSString *)URLString
 {
     return [URLString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }

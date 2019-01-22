@@ -7,7 +7,7 @@
 //
 
 #import "KTVHCPathTools.h"
-#import "KTVHCURLTools.h"
+#import "KTVHCURLTool.h"
 
 @implementation KTVHCPathTools
 
@@ -32,7 +32,7 @@
 
 + (NSString *)directoryPathWithURL:(NSURL *)URL
 {
-    NSString * name = [KTVHCURLTools keyWithURL:URL];
+    NSString * name = [[KTVHCURLTool tool] keyWithURL:URL];
     NSString * path = [[self rootDirectory] stringByAppendingPathComponent:name];
     [self createDirectoryAtPath:path];
     return [self absoultePathWithRelativePath:path];
@@ -40,7 +40,7 @@
 
 + (NSString *)completeFilePathWithURL:(NSURL *)URL
 {
-    NSString * fileName = [KTVHCURLTools keyWithURL:URL];
+    NSString * fileName = [[KTVHCURLTool tool] keyWithURL:URL];
     fileName = [fileName stringByAppendingPathExtension:URL.pathExtension];
     NSString * directoryPath = [self directoryPathWithURL:URL];
     NSString * filePath = [directoryPath stringByAppendingPathComponent:fileName];
@@ -49,7 +49,7 @@
 
 + (NSString *)unitItemPathWithURL:(NSURL *)URL offset:(long long)offset
 {
-    NSString * baseFileName = [KTVHCURLTools keyWithURL:URL];
+    NSString * baseFileName = [[KTVHCURLTool tool] keyWithURL:URL];
     NSString * directoryPath = [self directoryPathWithURL:URL];
     int number = 0;
     NSString * filePath = nil;

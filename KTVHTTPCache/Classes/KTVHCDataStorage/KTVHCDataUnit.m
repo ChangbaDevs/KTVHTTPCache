@@ -7,7 +7,7 @@
 //
 
 #import "KTVHCDataUnit.h"
-#import "KTVHCURLTools.h"
+#import "KTVHCURLTool.h"
 #import "KTVHCPathTools.h"
 #import "KTVHCLog.h"
 
@@ -32,7 +32,7 @@
     {
         KTVHCLogAlloc(self);
         _URL = URL;
-        _key = [KTVHCURLTools keyWithURL:self.URL];
+        _key = [[KTVHCURLTool tool] keyWithURL:self.URL];
         _createTimeInterval = [NSDate date].timeIntervalSince1970;
         _valid = YES;
         [self prepare];

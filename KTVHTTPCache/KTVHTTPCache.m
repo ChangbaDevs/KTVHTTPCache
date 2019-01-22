@@ -10,7 +10,7 @@
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
 #import "KTVHCDownload.h"
-#import "KTVHCURLTools.h"
+#import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
 
 @implementation KTVHTTPCache
@@ -121,7 +121,7 @@
 
 + (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter
 {
-    [KTVHCURLTools URLTools].URLFilter = URLFilter;
+    [KTVHCURLTool tool].URLConverter = URLFilter;
 }
 
 #pragma mark - Download

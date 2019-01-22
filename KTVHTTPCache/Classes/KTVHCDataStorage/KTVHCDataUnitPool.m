@@ -10,7 +10,7 @@
 #import "KTVHCDataUnitQueue.h"
 #import "KTVHCDataPrivate.h"
 #import "KTVHCPathTools.h"
-#import "KTVHCURLTools.h"
+#import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
 
 #import <UIKit/UIKit.h>
@@ -66,7 +66,7 @@
         return nil;
     }
     [self lock];
-    NSString * key = [KTVHCURLTools keyWithURL:URL];
+    NSString * key = [[KTVHCURLTool tool] keyWithURL:URL];
     KTVHCDataUnit * unit = [self.unitQueue unitWithKey:key];
     if (!unit)
     {
@@ -102,7 +102,7 @@
     }
     [self lock];
     KTVHCDataCacheItem * cacheItem = nil;
-    NSString * key = [KTVHCURLTools keyWithURL:URL];
+    NSString * key = [[KTVHCURLTool tool] keyWithURL:URL];
     KTVHCDataUnit * obj = [self.unitQueue unitWithKey:key];
     if (obj)
     {
@@ -151,7 +151,7 @@
         return;
     }
     [self lock];
-    NSString * key = [KTVHCURLTools keyWithURL:URL];
+    NSString * key = [[KTVHCURLTool tool] keyWithURL:URL];
     KTVHCDataUnit * obj = [self.unitQueue unitWithKey:key];
     if (obj && obj.workingCount <= 0)
     {
