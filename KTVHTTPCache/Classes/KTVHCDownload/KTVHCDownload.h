@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataRequest.h"
-#import "KTVHCCommon.h"
+#import "KTVHCMacro.h"
 
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeVideo;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeAudio;

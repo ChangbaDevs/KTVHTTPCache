@@ -13,9 +13,9 @@
 
 @interface KTVHCLog ()
 
-@property (nonatomic, strong) NSLock * lock;
-@property (nonatomic, strong) NSFileHandle * writingHandle;
-@property (nonatomic, strong) NSMutableArray <NSError *> * internalErrors;
+@property (nonatomic, strong) NSLock *lock;
+@property (nonatomic, strong) NSFileHandle *writingHandle;
+@property (nonatomic, strong) NSMutableArray <NSError *> *internalErrors;
 
 @end
 
@@ -23,7 +23,7 @@
 
 + (instancetype)log
 {
-    static KTVHCLog * obj = nil;
+    static KTVHCLog *obj = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         obj = [[self alloc] init];
@@ -33,8 +33,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         self.consoleLogEnable = NO;
         self.recordLogEnable = NO;
         self.lock = [[NSLock alloc] init];
@@ -45,19 +44,16 @@
 
 - (void)addRecordLog:(NSString *)log
 {
-    if (!self.recordLogEnable)
-    {
+    if (!self.recordLogEnable) {
         return;
     }
-    if (log.length <= 0)
-    {
+    if (log.length <= 0) {
         return;
     }
     [self.lock lock];
-    NSString * string = [NSString stringWithFormat:@"%@  %@\n", [NSDate date], log];
-    NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    if (!self.writingHandle)
-    {
+    NSString *string = [NSString stringWithFormat:@"%@  %@\n", [NSDate date], log];
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    if (!self.writingHandle) {
         [KTVHCPathTool deleteFileAtPath:[KTVHCPathTool logPath]];
         [KTVHCPathTool createFileAtPath:[KTVHCPathTool logPath]];
         self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTool logPath]];
@@ -69,11 +65,10 @@
 
 - (NSString *)recordLogFilePath
 {
-    NSString * path = nil;
+    NSString *path = nil;
     [self.lock lock];
     long long size = [KTVHCPathTool sizeAtPath:[KTVHCPathTool logPath]];
-    if (size > 0)
-    {
+    if (size > 0) {
         path = [KTVHCPathTool logPath];
     }
     [self.lock unlock];
@@ -92,28 +87,18 @@
 
 - (NSError *)lastError
 {
-    if (self.internalErrors.count > 0)
-    {
-        return self.internalErrors.lastObject;
-    }
-    return nil;
+    return self.internalErrors.lastObject;
 }
 
 - (NSArray<NSError *> *)allErrors
 {
-    if (self.internalErrors.count > 0)
-    {
-        return [self.internalErrors copy];
-    }
-    return nil;
+    return [self.internalErrors copy];
 }
 
 - (void)addError:(NSError *)error
 {
-    if (error && [error isKindOfClass:[NSError class]])
-    {
-        if (self.internalErrors.count >= 20)
-        {
+    if (error && [error isKindOfClass:[NSError class]]) {
+        if (self.internalErrors.count >= 20) {
             [self.internalErrors removeObjectAtIndex:0];
         }
         [self.internalErrors addObject:error];

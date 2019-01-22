@@ -1,5 +1,5 @@
 //
-//  KTVHCCommon.h
+//  KTVHCMacro.h
 //  KTVHTTPCache
 //
 //  Created by Single on 2017/8/17.

@@ -20,7 +20,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import <KTVHTTPCache/KTVHCDataCacheItem.h>
 #import <KTVHTTPCache/KTVHCDataCacheItemZone.h>
 #import <KTVHTTPCache/KTVHCRange.h>
-#import <KTVHTTPCache/KTVHCCommon.h>
+#import <KTVHTTPCache/KTVHCMacro.h>
 
 #else
 
@@ -31,7 +31,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataCacheItemZone.h"
 #import "KTVHCRange.h"
-#import "KTVHCCommon.h"
+#import "KTVHCMacro.h"
 
 #endif
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCHTTPHeader.h"
-#import "KTVHCCommon.h"
+#import "KTVHCMacro.h"
 
 @class KTVHCHTTPConnection;
 
