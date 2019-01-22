@@ -9,7 +9,7 @@
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataUnitQueue.h"
 #import "KTVHCDataPrivate.h"
-#import "KTVHCPathTools.h"
+#import "KTVHCPathTool.h"
 #import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
 
@@ -41,7 +41,7 @@
 {
     if (self = [super init])
     {
-        self.unitQueue = [KTVHCDataUnitQueue queueWithPath:[KTVHCPathTools archivePath]];
+        self.unitQueue = [KTVHCDataUnitQueue queueWithPath:[KTVHCPathTool archivePath]];
         for (KTVHCDataUnit * obj in self.unitQueue.allUnits)
         {
             obj.fileDelegate = self;

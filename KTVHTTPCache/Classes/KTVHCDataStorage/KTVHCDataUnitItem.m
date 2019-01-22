@@ -7,7 +7,7 @@
 //
 
 #import "KTVHCDataUnitItem.h"
-#import "KTVHCPathTools.h"
+#import "KTVHCPathTool.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCDataUnitItem ()
@@ -46,7 +46,7 @@
     {
         KTVHCLogAlloc(self);
         _createTimeInterval = [NSDate date].timeIntervalSince1970;
-        _relativePath = [KTVHCPathTools relativePathWithAbsoultePath:path];
+        _relativePath = [KTVHCPathTool converToRelativePath:path];
         _offset = offset;
         [self prepare];
     }
@@ -80,8 +80,8 @@
 
 - (void)prepare
 {
-    _absolutePath = [KTVHCPathTools absoultePathWithRelativePath:self.relativePath];
-    self.length = [KTVHCPathTools sizeOfItemAtPath:self.absolutePath];
+    _absolutePath = [KTVHCPathTool converToAbsoultePath:self.relativePath];
+    self.length = [KTVHCPathTool sizeAtPath:self.absolutePath];
     KTVHCLogDataUnitItem(@"%p, Create Unit Item\nabsolutePath : %@\nrelativePath : %@\nOffset : %lld\nLength : %lld", self, self.absolutePath, self.relativePath, self.offset, self.length);
 }
 

@@ -8,7 +8,7 @@
 
 #import "KTVHCDataUnit.h"
 #import "KTVHCURLTool.h"
-#import "KTVHCPathTools.h"
+#import "KTVHCPathTool.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCDataUnit ()
@@ -99,7 +99,7 @@
         {
             if (obj.length <= 0)
             {
-                [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
+                [KTVHCPathTool deleteFileAtPath:obj.absolutePath];
                 [removeArray addObject:obj];
             }
         }
@@ -262,8 +262,8 @@
         return;
     }
     [self lock];
-    NSString * path = [KTVHCPathTools directoryPathWithURL:self.URL];
-    [KTVHCPathTools deleteDirectoryAtPath:path];
+    NSString * path = [KTVHCPathTool directoryPathWithURL:self.URL];
+    [KTVHCPathTool deleteDirectoryAtPath:path];
     KTVHCLogDataUnit(@"%p, Delete files", self);
     [self unlock];
 }
@@ -276,7 +276,7 @@
         [self unlock];
         return NO;
     }
-    NSString * path = [KTVHCPathTools completeFilePathWithURL:self.URL];
+    NSString * path = [KTVHCPathTool completeFilePathWithURL:self.URL];
     if ([self.unitItemsInternal.firstObject.absolutePath isEqualToString:path])
     {
         [self unlock];
@@ -289,8 +289,8 @@
     }
     BOOL failed = NO;
     long long offset = 0;
-    [KTVHCPathTools deleteFileAtPath:path];
-    [KTVHCPathTools createFileAtPath:path];
+    [KTVHCPathTool deleteFileAtPath:path];
+    [KTVHCPathTool createFileAtPath:path];
     NSFileHandle * writingHandle = [NSFileHandle fileHandleForWritingAtPath:path];
     for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
     {
@@ -355,9 +355,9 @@
         failed = YES;
     }
     KTVHCLogDataUnit(@"%p, Merge finished\ntotalLength : %lld\noffset : %lld", self, self.totalLength, offset);
-    if (failed || [KTVHCPathTools sizeOfItemAtPath:path] != self.totalLength)
+    if (failed || [KTVHCPathTool sizeAtPath:path] != self.totalLength)
     {
-        [KTVHCPathTools deleteFileAtPath:path];
+        [KTVHCPathTool deleteFileAtPath:path];
         [self unlock];
         return NO;
     }
@@ -365,7 +365,7 @@
     KTVHCDataUnitItem * item = [[KTVHCDataUnitItem alloc] initWithPath:path offset:0];
     for (KTVHCDataUnitItem * obj in self.unitItemsInternal)
     {
-        [KTVHCPathTools deleteFileAtPath:obj.absolutePath];
+        [KTVHCPathTool deleteFileAtPath:obj.absolutePath];
     }
     [self.unitItemsInternal removeAllObjects];
     [self.unitItemsInternal addObject:item];

@@ -9,7 +9,7 @@
 #import "KTVHCDataNetworkSource.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataCallback.h"
-#import "KTVHCPathTools.h"
+#import "KTVHCPathTool.h"
 #import "KTVHCDownload.h"
 #import "KTVHCError.h"
 #import "KTVHCLog.h"
@@ -193,7 +193,7 @@
         return;
     }
     _response = response;
-    NSString * path = [KTVHCPathTools unitItemPathWithURL:self.request.URL offset:self.request.range.start];
+    NSString * path = [KTVHCPathTool filePathWithURL:self.request.URL offset:self.request.range.start];
     self.unitItem = [[KTVHCDataUnitItem alloc] initWithPath:path offset:self.request.range.start];
     KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:self.request.URL];
     [unit insertUnitItem:self.unitItem];

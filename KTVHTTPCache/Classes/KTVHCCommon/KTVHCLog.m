@@ -7,7 +7,7 @@
 //
 
 #import "KTVHCLog.h"
-#import "KTVHCPathTools.h"
+#import "KTVHCPathTool.h"
 
 #import <UIKit/UIKit.h>
 
@@ -58,9 +58,9 @@
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
     if (!self.writingHandle)
     {
-        [KTVHCPathTools deleteFileAtPath:[KTVHCPathTools logPath]];
-        [KTVHCPathTools createFileAtPath:[KTVHCPathTools logPath]];
-        self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTools logPath]];
+        [KTVHCPathTool deleteFileAtPath:[KTVHCPathTool logPath]];
+        [KTVHCPathTool createFileAtPath:[KTVHCPathTool logPath]];
+        self.writingHandle = [NSFileHandle fileHandleForWritingAtPath:[KTVHCPathTool logPath]];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
     }
     [self.writingHandle writeData:data];
@@ -71,10 +71,10 @@
 {
     NSString * path = nil;
     [self.lock lock];
-    long long size = [KTVHCPathTools sizeOfItemAtPath:[KTVHCPathTools logPath]];
+    long long size = [KTVHCPathTool sizeAtPath:[KTVHCPathTool logPath]];
     if (size > 0)
     {
-        path = [KTVHCPathTools logPath];
+        path = [KTVHCPathTool logPath];
     }
     [self.lock unlock];
     return path;
