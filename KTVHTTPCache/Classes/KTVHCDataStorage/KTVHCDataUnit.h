@@ -43,7 +43,7 @@
 /**
  *  Unit Item
  */
-- (NSArray <KTVHCDataUnitItem *> *)unitItems;
+- (NSArray<KTVHCDataUnitItem *> *)unitItems;
 - (void)insertUnitItem:(KTVHCDataUnitItem *)unitItem;
 
 /**

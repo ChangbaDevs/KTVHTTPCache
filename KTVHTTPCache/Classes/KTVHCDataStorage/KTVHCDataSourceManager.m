@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSLock *coreLock;
 @property (nonatomic, strong) id <KTVHCDataSource> currentSource;
 @property (nonatomic, strong) KTVHCDataNetworkSource *currentNetworkSource;
-@property (nonatomic, strong) NSMutableArray <id<KTVHCDataSource>> *sources;
+@property (nonatomic, strong) NSMutableArray<id<KTVHCDataSource>> *sources;
 @property (nonatomic) BOOL calledPrepare;
 @property (nonatomic) BOOL calledReceiveResponse;
 

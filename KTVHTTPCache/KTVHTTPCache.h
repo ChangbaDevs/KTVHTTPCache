@@ -83,7 +83,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  */
 + (KTVHCDataCacheItem *)cacheCacheItemWithURL:(NSURL *)URL;
 + (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString;
-+ (NSArray <KTVHCDataCacheItem *> *)cacheAllCacheItems;
++ (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItems;
 
 /**
  *  Delete Cache.
@@ -109,20 +109,20 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 /**
  *  Whitelist Header Fields.
  */
-+ (void)downloadSetWhitelistHeaderKeys:(NSArray <NSString *> *)whitelistHeaderKeys;
-+ (NSArray <NSString *> *)downloadWhitelistHeaderKeys;
++ (void)downloadSetWhitelistHeaderKeys:(NSArray<NSString *> *)whitelistHeaderKeys;
++ (NSArray<NSString *> *)downloadWhitelistHeaderKeys;
 
 /**
  *  Additional Header Fields.
  */
-+ (void)downloadSetAdditionalHeaders:(NSDictionary <NSString *, NSString *> *)additionalHeaders;
-+ (NSDictionary <NSString *, NSString *> *)downloadAdditionalHeaders;
++ (void)downloadSetAdditionalHeaders:(NSDictionary<NSString *, NSString *> *)additionalHeaders;
++ (NSDictionary<NSString *, NSString *> *)downloadAdditionalHeaders;
 
 /**
  *  Default values: 'video/x', 'audio/x', 'application/mp4', 'application/octet-stream', 'binary/octet-stream'
  */
-+ (void)downloadSetAcceptContentTypes:(NSArray <NSString *> *)acceptContentTypes;
-+ (NSArray <NSString *> *)downloadAcceptContentTypes;
++ (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes;
++ (NSArray<NSString *> *)downloadAcceptContentTypes;
 
 /**
  *  If the receive response's Content-Type not included in acceptContentTypes, this method will be called.
@@ -155,7 +155,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 /**
  *  Error
  */
-+ (NSArray <NSError *> *)logAllErrors;
++ (NSArray<NSError *> *)logAllErrors;
 + (NSError *)logLastError;
 
 @end

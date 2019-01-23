@@ -16,7 +16,7 @@
 - (instancetype)init NS_UNAVAILABLE;
 
 @property (nonatomic, copy, readonly) NSURL *URL;
-@property (nonatomic, copy, readonly) NSArray <KTVHCDataCacheItemZone *> *zones;
+@property (nonatomic, copy, readonly) NSArray<KTVHCDataCacheItemZone *> *zones;
 
 @property (nonatomic, readonly) long long totalLength;
 @property (nonatomic, readonly) long long cacheLength;

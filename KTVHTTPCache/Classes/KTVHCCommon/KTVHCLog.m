@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) NSLock *lock;
 @property (nonatomic, strong) NSFileHandle *writingHandle;
-@property (nonatomic, strong) NSMutableArray <NSError *> *internalErrors;
+@property (nonatomic, strong) NSMutableArray<NSError *> *internalErrors;
 
 @end
 

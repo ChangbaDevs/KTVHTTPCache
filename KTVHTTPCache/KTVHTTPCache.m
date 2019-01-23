@@ -136,32 +136,32 @@
     return [KTVHCDownload download].timeoutInterval;
 }
 
-+ (void)downloadSetWhitelistHeaderKeys:(NSArray <NSString *> *)whitelistHeaderKeys
++ (void)downloadSetWhitelistHeaderKeys:(NSArray<NSString *> *)whitelistHeaderKeys
 {
     [KTVHCDownload download].whitelistHeaderKeys = whitelistHeaderKeys;
 }
 
-+ (NSArray <NSString *> *)downloadWhitelistHeaderKeys
++ (NSArray<NSString *> *)downloadWhitelistHeaderKeys
 {
     return [KTVHCDownload download].whitelistHeaderKeys;
 }
 
-+ (void)downloadSetAdditionalHeaders:(NSDictionary <NSString *, NSString *> *)additionalHeaders
++ (void)downloadSetAdditionalHeaders:(NSDictionary<NSString *, NSString *> *)additionalHeaders
 {
     [KTVHCDownload download].additionalHeaders = additionalHeaders;
 }
 
-+ (NSDictionary <NSString *, NSString *> *)downloadAdditionalHeaders
++ (NSDictionary<NSString *, NSString *> *)downloadAdditionalHeaders
 {
     return [KTVHCDownload download].additionalHeaders;
 }
 
-+ (void)downloadSetAcceptContentTypes:(NSArray <NSString *> *)acceptContentTypes
++ (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes
 {
     [KTVHCDownload download].acceptContentTypes = acceptContentTypes;
 }
 
-+ (NSArray <NSString *> *)downloadAcceptContentTypes
++ (NSArray<NSString *> *)downloadAcceptContentTypes
 {
     return [KTVHCDownload download].acceptContentTypes;
 }

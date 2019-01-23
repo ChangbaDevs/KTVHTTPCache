@@ -45,7 +45,7 @@ static NSString * const kKTVHCHTTPURLRequestTypePing    = @"ping";
                 NSString * tupleString = nil;
                 [scanner scanUpToCharactersFromSet:delimiterSet intoString:&tupleString];
                 [scanner scanCharactersFromSet:delimiterSet intoString:NULL];
-                NSArray <NSString *> * tuple = [tupleString componentsSeparatedByString:@"="];
+                NSArray<NSString *> * tuple = [tupleString componentsSeparatedByString:@"="];
                 if (tuple.count == 2)
                 {
                     NSString * key = tuple.firstObject;

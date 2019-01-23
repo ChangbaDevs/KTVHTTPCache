@@ -13,7 +13,7 @@
 @interface KTVHCDataCacheItem (Internal)
 
 - (instancetype)initWithURL:(NSURL *)URL
-                      zones:(NSArray <KTVHCDataCacheItemZone *> *)zones
+                      zones:(NSArray<KTVHCDataCacheItemZone *> *)zones
                 totalLength:(long long)totalLength
                 cacheLength:(long long)cacheLength
                 vaildLength:(long long)vaildLength;

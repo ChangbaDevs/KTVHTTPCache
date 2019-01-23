@@ -14,7 +14,7 @@
 @interface CacheViewController () <UITableViewDelegate, UITableViewDataSource, CacheItemViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray <KTVHCDataCacheItem *> *items;
+@property (nonatomic, strong) NSArray<KTVHCDataCacheItem *> *items;
 
 @end
 

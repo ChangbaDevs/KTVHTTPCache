@@ -107,8 +107,8 @@
 
 - (void)prepareSourceManager
 {
-    NSMutableArray <KTVHCDataFileSource *> *fileSources = [NSMutableArray array];
-    NSMutableArray <KTVHCDataNetworkSource *> *networkSources = [NSMutableArray array];
+    NSMutableArray<KTVHCDataFileSource *> *fileSources = [NSMutableArray array];
+    NSMutableArray<KTVHCDataNetworkSource *> *networkSources = [NSMutableArray array];
     long long min = self.request.range.start;
     long long max = self.request.range.end;
     NSArray *unitItems = self.unit.unitItems;
@@ -157,7 +157,7 @@
         KTVHCDataNetworkSource *source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
         [networkSources addObject:source];
     }
-    NSMutableArray <id<KTVHCDataSource>> *sources = [NSMutableArray array];
+    NSMutableArray<id<KTVHCDataSource>> *sources = [NSMutableArray array];
     [sources addObjectsFromArray:fileSources];
     [sources addObjectsFromArray:networkSources];
     self.sourceManager = [[KTVHCDataSourceManager alloc] initWithSources:sources delegate:self delegateQueue:self.internalDelegateQueue];

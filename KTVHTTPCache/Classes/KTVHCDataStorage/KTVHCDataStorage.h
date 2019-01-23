@@ -39,7 +39,7 @@
  *  Get cache item.
  */
 - (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL;
-- (NSArray <KTVHCDataCacheItem *> *)allCacheItems;
+- (NSArray<KTVHCDataCacheItem *> *)allCacheItems;
 
 /**
  *  Get cache length.

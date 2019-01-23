@@ -15,7 +15,7 @@
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray <MediaItem *> *items;
+@property (nonatomic, strong) NSArray<MediaItem *> *items;
 
 @end
 

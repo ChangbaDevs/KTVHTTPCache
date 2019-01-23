@@ -42,7 +42,7 @@
     return value;
 }
 
-- (NSArray <NSString *> *)withoutHeaderKeys
+- (NSArray<NSString *> *)withoutHeaderKeys
 {
     static NSArray *obj = nil;
     static dispatch_once_t onceToken;

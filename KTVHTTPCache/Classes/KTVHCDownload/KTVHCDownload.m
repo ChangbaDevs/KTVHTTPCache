@@ -26,9 +26,9 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 @property (nonatomic, strong) NSURLSession *session;
 @property (nonatomic, strong) NSOperationQueue *sessionDelegateQueue;
 @property (nonatomic, strong) NSURLSessionConfiguration *sessionConfiguration;
-@property (nonatomic, strong) NSMutableDictionary <NSURLSessionTask *, NSError *> *errorDictionary;
-@property (nonatomic, strong) NSMutableDictionary <NSURLSessionTask *, KTVHCDataRequest *> *requestDictionary;
-@property (nonatomic, strong) NSMutableDictionary <NSURLSessionTask *, id<KTVHCDownloadDelegate>> *delegateDictionary;
+@property (nonatomic, strong) NSMutableDictionary<NSURLSessionTask *, NSError *> *errorDictionary;
+@property (nonatomic, strong) NSMutableDictionary<NSURLSessionTask *, KTVHCDataRequest *> *requestDictionary;
+@property (nonatomic, strong) NSMutableDictionary<NSURLSessionTask *, id<KTVHCDownloadDelegate>> *delegateDictionary;
 
 @end
 
@@ -83,9 +83,9 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSArray <NSString *> *)availableHeaderKeys
+- (NSArray<NSString *> *)availableHeaderKeys
 {
-    static NSArray <NSString *> *obj = nil;
+    static NSArray<NSString *> *obj = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         obj = @[@"User-Agent",

@@ -158,7 +158,7 @@
     }
     path = [self converToAbsoultePath:path];
     NSError *error = nil;
-    NSDictionary <NSFileAttributeKey, id> *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
+    NSDictionary<NSFileAttributeKey, id> *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
     if (!error || attributes.count > 0) {
         NSNumber *size = [attributes objectForKey:NSFileSize];
         return size.longLongValue;

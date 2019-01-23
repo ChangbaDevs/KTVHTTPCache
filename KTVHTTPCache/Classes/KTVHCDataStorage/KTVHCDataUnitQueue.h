@@ -16,7 +16,7 @@
 
 - (instancetype)initWithPath:(NSString *)path;
 
-- (NSArray <KTVHCDataUnit *> *)allUnits;
+- (NSArray<KTVHCDataUnit *> *)allUnits;
 - (KTVHCDataUnit *)unitWithKey:(NSString *)key;
 
 - (void)putUnit:(KTVHCDataUnit *)unit;
