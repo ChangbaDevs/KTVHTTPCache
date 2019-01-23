@@ -31,7 +31,6 @@
         KTVHCLogAlloc(self);
         self.unit = [[KTVHCDataUnitPool pool] unitWithURL:request.URL];
         self->_request = [request requestWithTotalLength:self.unit.totalLength];
-        [self.unit updateRequestHeaders:self.request.headers];
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
         KTVHCLogDataReader(@"%p, Create reader\norignalRequest : %@\nfinalRequest : %@\nUnit : %@", self, request, self.request, self.unit);
@@ -174,7 +173,7 @@
 - (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
-    [self.unit updateResponseHeaders:response.headers totalLength:response.totalLength];
+    [self.unit updateResponseHeaderFields:response.headerFields totalLength:response.totalLength];
     [self callbackForPrepared];
     [self unlock];
 }
@@ -234,8 +233,8 @@
     if (self.sourceManager.prepared && self.unit.totalLength > 0) {
         long long totalLength = self.unit.totalLength;
         KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);
-        NSDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength);
-        self->_response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headers:headers];
+        NSDictionary *headerFields = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaderFields, totalLength);
+        self->_response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headerFields:headerFields];
         self->_prepared = YES;
         KTVHCLogDataReader(@"%p, Reader did prepared\nResponse : %@", self, self.response);
         if ([self.delegate respondsToSelector:@selector(readerDidPrepare:)]) {

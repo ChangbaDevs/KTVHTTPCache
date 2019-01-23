@@ -31,7 +31,7 @@
         KTVHCLogAlloc(self);
         self.connection = connection;
         self.request = request;
-        KTVHCDataRequest * dataRequest = [[KTVHCDataRequest alloc] initWithURL:self.request.URL headers:self.request.headers];
+        KTVHCDataRequest * dataRequest = [[KTVHCDataRequest alloc] initWithURL:self.request.URL headerFields:self.request.headers];
         self.reader = [[KTVHCDataStorage storage] readerWithRequest:dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
@@ -77,8 +77,8 @@
 
 - (NSDictionary *)httpHeaders
 {
-    KTVHCLogHTTPResponse(@"%p, Header\n%@", self, self.reader.response.headersWithoutRangeAndLength);
-    return self.reader.response.headersWithoutRangeAndLength;
+    KTVHCLogHTTPResponse(@"%p, Header\n%@", self, self.reader.response.headerFieldsWithoutRangeAndLength);
+    return self.reader.response.headerFieldsWithoutRangeAndLength;
 }
 
 - (UInt64)offset

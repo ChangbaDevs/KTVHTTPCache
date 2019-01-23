@@ -14,11 +14,11 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithURL:(NSURL *)URL headerFields:(NSDictionary *)headerFields NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, copy, readonly) NSURL *URL;
-@property (nonatomic, copy, readonly) NSDictionary *headers;
-@property (nonatomic, copy, readonly) NSDictionary *headersWithoutRangeAndLength;
+@property (nonatomic, copy, readonly) NSDictionary *headerFields;
+@property (nonatomic, copy, readonly) NSDictionary *headerFieldsWithoutRangeAndLength;
 @property (nonatomic, copy, readonly) NSString *contentType;
 @property (nonatomic, readonly) KTVHCRange range;
 @property (nonatomic, readonly) long long totalLength;

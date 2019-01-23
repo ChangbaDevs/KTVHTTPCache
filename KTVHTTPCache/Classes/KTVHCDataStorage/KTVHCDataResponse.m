@@ -11,19 +11,19 @@
 
 @implementation KTVHCDataResponse
 
-- (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers
+- (instancetype)initWithURL:(NSURL *)URL headerFields:(NSDictionary *)headerFields
 {
     if (self = [super init]) {
         KTVHCLogAlloc(self);
         self->_URL = URL;
-        self->_headers = headers;
-        NSMutableDictionary *headersWithoutRangeAndLength = [headers mutableCopy];
-        [headersWithoutRangeAndLength removeObjectsForKeys:[self withoutHeaderKeys]];
-        self->_headersWithoutRangeAndLength = headersWithoutRangeAndLength;
+        self->_headerFields = headerFields;
+        NSMutableDictionary *headerFieldsWithoutRangeAndLength = [headerFields mutableCopy];
+        [headerFieldsWithoutRangeAndLength removeObjectsForKeys:[self withoutHeaderKeys]];
+        self->_headerFieldsWithoutRangeAndLength = headerFieldsWithoutRangeAndLength;
         self->_contentType = [self headerValueWithKey:@"Content-Type"];
         self->_currentLength = [self headerValueWithKey:@"Content-Length"].longLongValue;
         self->_range = KTVHCRangeWithResponseHeaderValue([self headerValueWithKey:@"Content-Range"], &self->_totalLength);
-        KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\nheadersWithoutRangeAndLength : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld", self, self.URL, self.headers, self.headersWithoutRangeAndLength, self.contentType, self.totalLength, self.currentLength);
+        KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\nheaderFieldsWithoutRangeAndLength : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld", self, self.URL, self.headerFields, self.headerFieldsWithoutRangeAndLength, self.contentType, self.totalLength, self.currentLength);
     }
     return self;
 }
@@ -35,9 +35,9 @@
 
 - (NSString *)headerValueWithKey:(NSString *)key
 {
-    NSString *value = [self.headers objectForKey:key];
+    NSString *value = [self.headerFields objectForKey:key];
     if (!value) {
-        value = [self.headers objectForKey:[key lowercaseString]];
+        value = [self.headerFields objectForKey:[key lowercaseString]];
     }
     return value;
 }
@@ -57,10 +57,9 @@
 
 - (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range
 {
-    if (!KTVHCEqualRanges(self.range, range))
-    {
-        NSDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.headers, self.totalLength);
-        KTVHCDataResponse *obj = [[KTVHCDataResponse alloc] initWithURL:self.URL headers:headers];
+    if (!KTVHCEqualRanges(self.range, range)) {
+        NSDictionary *headerFields = KTVHCRangeFillToResponseHeaders(range, self.headerFields, self.totalLength);
+        KTVHCDataResponse *obj = [[KTVHCDataResponse alloc] initWithURL:self.URL headerFields:headerFields];
         return obj;
     }
     return self;

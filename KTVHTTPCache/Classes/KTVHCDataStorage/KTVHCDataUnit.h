@@ -29,13 +29,9 @@
 @property (nonatomic, copy, readonly) NSURL *URL;
 @property (nonatomic, copy, readonly) NSURL *fileURL;
 @property (nonatomic, copy, readonly) NSString *key;       // Unique Identifier.
-
+@property (nonatomic, copy, readonly) NSDictionary *responseHeaderFields;
 @property (nonatomic, readonly) NSTimeInterval createTimeInterval;
 @property (nonatomic, readonly) NSTimeInterval lastItemCreateInterval;
-
-@property (nonatomic, copy, readonly) NSDictionary *requestHeaders;
-@property (nonatomic, copy, readonly) NSDictionary *responseHeaders;
-
 @property (nonatomic, readonly) long long totalLength;
 @property (nonatomic, readonly) long long cacheLength;
 @property (nonatomic, readonly) long long validLength;
@@ -49,8 +45,7 @@
 /**
  *  Info Sync
  */
-- (void)updateRequestHeaders:(NSDictionary *)requestHeaders;
-- (void)updateResponseHeaders:(NSDictionary *)responseHeaders totalLength:(long long)totalLength;
+- (void)updateResponseHeaderFields:(NSDictionary *)responseHeaders totalLength:(long long)totalLength;
 
 /**
  *  Working

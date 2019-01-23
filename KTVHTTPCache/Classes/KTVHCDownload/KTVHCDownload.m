@@ -104,7 +104,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     NSMutableURLRequest *mRequest = [NSMutableURLRequest requestWithURL:request.URL];
     mRequest.timeoutInterval = self.timeoutInterval;
     mRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-    [request.headers enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
+    [request.headerFields enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
         if ([self.availableHeaderKeys containsObject:key] ||
             [self.whitelistHeaderKeys containsObject:key]) {
             [mRequest setValue:obj forHTTPHeaderField:key];
@@ -118,7 +118,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [self.delegateDictionary setObject:delegate forKey:task];
     task.priority = 1.0;
     [task resume];
-    KTVHCLogDownload(@"%p, Add Request\nrequest : %@\nURL : %@\nheaders : %@\nHTTPRequest headers : %@\nCount : %d", self, request, request.URL, request.headers, mRequest.allHTTPHeaderFields, (int)self.delegateDictionary.count);
+    KTVHCLogDownload(@"%p, Add Request\nrequest : %@\nURL : %@\nheaders : %@\nHTTPRequest headers : %@\nCount : %d", self, request, request.URL, request.headerFields, mRequest.allHTTPHeaderFields, (int)self.delegateDictionary.count);
     [self unlock];
     return task;
 }
@@ -145,7 +145,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 {
     [self lock];
     KTVHCDataRequest *dataRequest = [self.requestDictionary objectForKey:task];
-    KTVHCDataResponse *dataResponse = [[KTVHCDataResponse alloc] initWithURL:dataRequest.URL headers:response.allHeaderFields];
+    KTVHCDataResponse *dataResponse = [[KTVHCDataResponse alloc] initWithURL:dataRequest.URL headerFields:response.allHeaderFields];
     KTVHCLogDownload(@"%p, Receive response\nrequest : %@\nresponse : %@\nHTTPResponse : %@", self, dataRequest, dataResponse, response.allHeaderFields);
     NSError *error = nil;
     if (!error) {
