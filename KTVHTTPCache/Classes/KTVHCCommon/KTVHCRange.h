@@ -22,6 +22,7 @@ BOOL KTVHCEqualRanges(KTVHCRange range1, KTVHCRange range2);
 long long KTVHCRangeGetLength(KTVHCRange range);
 NSString * KTVHCStringFromRange(KTVHCRange range);
 NSDictionary * KTVHCRangeFillToRequestHeaders(KTVHCRange range, NSDictionary * headers);
+NSDictionary * KTVHCRangeFillToRequestHeadersIfNeeded(KTVHCRange range, NSDictionary * headers);
 NSDictionary * KTVHCRangeFillToResponseHeaders(KTVHCRange range, NSDictionary * headers, long long totalLength);
 
 KTVHCRange KTVHCMakeRange(long long start, long long end);

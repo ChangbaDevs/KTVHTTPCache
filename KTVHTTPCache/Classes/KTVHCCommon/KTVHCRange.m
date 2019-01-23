@@ -61,6 +61,14 @@ NSDictionary *KTVHCRangeFillToRequestHeaders(KTVHCRange range, NSDictionary *hea
     return ret;
 }
 
+NSDictionary *KTVHCRangeFillToRequestHeadersIfNeeded(KTVHCRange range, NSDictionary *headers)
+{
+    if ([headers objectForKey:@"Range"]) {
+        return headers;
+    }
+    return KTVHCRangeFillToRequestHeaders(range, headers);
+}
+
 NSDictionary *KTVHCRangeFillToResponseHeaders(KTVHCRange range, NSDictionary *headers, long long totalLength)
 {
     NSMutableDictionary *ret = [NSMutableDictionary dictionaryWithDictionary:headers];

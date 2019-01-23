@@ -18,7 +18,7 @@
 
 @property (nonatomic, copy, readonly) NSURL * URL;
 @property (nonatomic, copy, readonly) NSDictionary * headers;
-@property (nonatomic, assign, readonly) KTVHCRange range;
+@property (nonatomic, readonly) KTVHCRange range;
 
 - (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range;
 - (KTVHCDataRequest *)requestWithTotalLength:(long long)totalLength;
