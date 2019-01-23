@@ -43,7 +43,7 @@
         self->_relativePath = [KTVHCPathTool converToRelativePath:path];
         self->_absolutePath = [KTVHCPathTool converToAbsoultePath:path];
         self->_offset = offset;
-        self->_length = 0;
+        self->_length = [KTVHCPathTool sizeAtPath:self.absolutePath];
         [self commonInit];
     }
     return self;
