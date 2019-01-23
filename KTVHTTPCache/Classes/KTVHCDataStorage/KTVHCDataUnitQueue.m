@@ -36,10 +36,10 @@
         }
         self.unitArray = [NSMutableArray array];
         for (KTVHCDataUnit * obj in unitArray) {
-            if (obj.valid) {
-                [self.unitArray addObject:obj];
-            } else {
+            if (obj.error) {
                 [obj deleteFiles];
+            } else {
+                [self.unitArray addObject:obj];
             }
         }
     }

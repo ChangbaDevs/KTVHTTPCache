@@ -22,23 +22,23 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)unitWithURL:(NSURL *)URL;
+- (instancetype)initWithURL:(NSURL *)URL;
 
-@property (nonatomic, assign, readonly) BOOL valid;
+@property (nonatomic, copy, readonly) NSError *error;
 
-@property (nonatomic, copy, readonly) NSURL * URL;
-@property (nonatomic, copy, readonly) NSURL * fileURL;
-@property (nonatomic, copy, readonly) NSString * key;       // Unique Identifier.
+@property (nonatomic, copy, readonly) NSURL *URL;
+@property (nonatomic, copy, readonly) NSURL *fileURL;
+@property (nonatomic, copy, readonly) NSString *key;       // Unique Identifier.
 
-@property (nonatomic, assign, readonly) NSTimeInterval createTimeInterval;
-@property (nonatomic, assign, readonly) NSTimeInterval lastItemCreateInterval;
+@property (nonatomic, readonly) NSTimeInterval createTimeInterval;
+@property (nonatomic, readonly) NSTimeInterval lastItemCreateInterval;
 
-@property (nonatomic, copy, readonly) NSDictionary * requestHeaders;
-@property (nonatomic, copy, readonly) NSDictionary * responseHeaders;
+@property (nonatomic, copy, readonly) NSDictionary *requestHeaders;
+@property (nonatomic, copy, readonly) NSDictionary *responseHeaders;
 
-@property (nonatomic, assign, readonly) long long totalLength;
-@property (nonatomic, assign, readonly) long long cacheLength;
-@property (nonatomic, assign, readonly) long long validLength;
+@property (nonatomic, readonly) long long totalLength;
+@property (nonatomic, readonly) long long cacheLength;
+@property (nonatomic, readonly) long long validLength;
 
 /**
  *  Unit Item

@@ -70,7 +70,7 @@
     KTVHCDataUnit * unit = [self.unitQueue unitWithKey:key];
     if (!unit)
     {
-        unit = [KTVHCDataUnit unitWithURL:URL];
+        unit = [[KTVHCDataUnit alloc] initWithURL:URL];
         unit.fileDelegate = self;
         KTVHCLogDataUnitPool(@"%p, Insert Unit, %@", self, unit);
         [self.unitQueue putUnit:unit];
