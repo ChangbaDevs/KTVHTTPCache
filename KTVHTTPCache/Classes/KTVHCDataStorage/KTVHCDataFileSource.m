@@ -22,14 +22,19 @@
 
 @implementation KTVHCDataFileSource
 
+@synthesize range = _range;
+@synthesize closed = _closed;
+@synthesize prepared = _prepared;
+@synthesize finished = _finished;
+
 - (instancetype)initWithPath:(NSString *)path range:(KTVHCRange)range readRange:(KTVHCRange)readRange
 {
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
-        _path = path;
-        _range = range;
-        _readRange = readRange;
+        self->_path = path;
+        self->_range = range;
+        self->_readRange = readRange;
         KTVHCLogDataFileSource(@"%p, Create file source\npath : %@\nrange : %@\nreadRange : %@", self, path, KTVHCStringFromRange(range), KTVHCStringFromRange(readRange));
     }
     return self;
@@ -43,8 +48,7 @@
 - (void)prepare
 {
     [self lock];
-    if (self.didPrepared)
-    {
+    if (self.prepared) {
         [self unlock];
         return;
     }
@@ -53,7 +57,7 @@
     @try
     {
         [self.readingHandle seekToFileOffset:self.readRange.start];
-        _didPrepared = YES;
+        self->_prepared = YES;
         if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepared:)])
         {
             KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
@@ -75,12 +79,12 @@
 - (void)close
 {
     [self lock];
-    if (self.didClosed)
+    if (self.closed)
     {
         [self unlock];
         return;
     }
-    _didClosed = YES;
+    self->_closed = YES;
     KTVHCLogDataFileSource(@"%p, Call close", self);
     [self destoryReadingHandle];
     [self unlock];
@@ -89,12 +93,12 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.didClosed)
+    if (self.closed)
     {
         [self unlock];
         return nil;
     }
-    if (self.didFinished)
+    if (self.finished)
     {
         [self unlock];
         return nil;
@@ -114,7 +118,7 @@
         {
             KTVHCLogDataFileSource(@"%p, Read data did finished", self);
             [self destoryReadingHandle];
-            _didFinished = YES;
+            self->_finished = YES;
         }
     }
     @catch (NSException * exception)

@@ -18,7 +18,7 @@
 @property (nonatomic, assign) BOOL didCalledReceiveResponse;
 
 @property (nonatomic, strong) KTVHCDataSourceQueue * sourceQueue;
-@property (nonatomic, strong) id <KTVHCDataSourceProtocol> currentSource;
+@property (nonatomic, strong) id <KTVHCDataSource> currentSource;
 @property (nonatomic, strong) KTVHCDataNetworkSource * currentNetworkSource;
 
 @end
@@ -43,7 +43,7 @@
     KTVHCLogDataReader(@"%p, Destory reader\nError : %@\ncurrentSource : %@\ncurrentNetworkSource : %@", self, self.error, self.currentSource, self.currentNetworkSource);
 }
 
-- (void)putSource:(id<KTVHCDataSourceProtocol>)source
+- (void)putSource:(id<KTVHCDataSource>)source
 {
     KTVHCLogDataSourceManager(@"%p, Put source : %@", self, source);
     [self.sourceQueue putSource:source];
@@ -111,7 +111,7 @@
     }
     NSData * data = [self.currentSource readDataOfLength:length];
     KTVHCLogDataSourceManager(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.currentSource.didFinished)
+    if (self.currentSource.finished)
     {
         self.currentSource = [self.sourceQueue nextSource:self.currentSource];
         if (self.currentSource)

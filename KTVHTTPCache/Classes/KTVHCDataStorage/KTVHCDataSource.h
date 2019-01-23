@@ -1,5 +1,5 @@
 //
-//  KTVHCDataSourceProtocol.h
+//  KTVHCDataSource.h
 //  KTVHTTPCache
 //
 //  Created by Single on 2017/8/11.
@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCRange.h"
 
-@protocol KTVHCDataSourceProtocol <NSObject>
+@protocol KTVHCDataSource <NSObject>
 
-- (KTVHCRange)range;
+@property (nonatomic, readonly) KTVHCRange range;
 
-- (BOOL)didPrepared;
-- (BOOL)didFinished;
-- (BOOL)didClosed;
+@property (nonatomic, readonly) BOOL prepared;
+@property (nonatomic, readonly) BOOL finished;
+@property (nonatomic, readonly) BOOL closed;
 
 - (void)prepare;
 - (void)close;

@@ -33,6 +33,11 @@
 
 @implementation KTVHCDataNetworkSource
 
+@synthesize range = _range;
+@synthesize closed = _closed;
+@synthesize prepared = _prepared;
+@synthesize finished = _finished;
+
 - (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust
 {
     if (self = [super init])
@@ -54,7 +59,7 @@
 - (void)prepare
 {
     [self lock];
-    if (self.didClosed)
+    if (self.closed)
     {
         [self unlock];
         return;
@@ -73,12 +78,12 @@
 - (void)close
 {
     [self lock];
-    if (self.didClosed)
+    if (self.closed)
     {
         [self unlock];
         return;
     }
-    _didClosed = YES;
+    self->_closed = YES;
     KTVHCLogDataNetworkSource(@"%p, Call close", self);
     if (!self.downloadDidCallComplete)
     {
@@ -94,7 +99,7 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.didClosed || self.didFinished || self.error)
+    if (self.closed || self.finished || self.error)
     {
         [self unlock];
         return nil;
@@ -122,7 +127,7 @@
         KTVHCLogDataNetworkSource(@"%p, Read data\nLength : %lld\ndownloadLength : %lld\nreadedLength : %lld", self, (long long)data.length, self.downloadReadedLength, self.downloadLength);
         if (self.downloadReadedLength >= KTVHCRangeGetLength(self.response.range))
         {
-            _didFinished = YES;
+            self->_finished = YES;
             KTVHCLogDataNetworkSource(@"%p, Read data did finished", self);
             [self destoryReadingHandle];
         }
@@ -148,7 +153,7 @@
     [self lock];
     self.downloadDidCallComplete = YES;
     [self destoryWritingHandle];
-    if (self.didClosed)
+    if (self.closed)
     {
         KTVHCLogDataNetworkSource(@"%p, Complete but did closed\nError : %@", self, error);
     }
@@ -187,7 +192,7 @@
 - (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
-    if (self.didClosed || self.error)
+    if (self.closed || self.error)
     {
         [self unlock];
         return;
@@ -208,7 +213,7 @@
 - (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data
 {
     [self lock];
-    if (self.didClosed || self.error)
+    if (self.closed || self.error)
     {
         [self unlock];
         return;
@@ -271,15 +276,15 @@
 
 - (void)callbackForPrepared
 {
-    if (self.didClosed)
+    if (self.closed)
     {
         return;
     }
-    if (self.didPrepared)
+    if (self.prepared)
     {
         return;
     }
-    _didPrepared = YES;
+    self->_prepared = YES;
     if ([self.delegate respondsToSelector:@selector(networkSourceDidPrepared:)])
     {
         KTVHCLogDataNetworkSource(@"%p, Callback for prepared - Begin", self);
@@ -292,7 +297,7 @@
 
 - (void)callbackForHasAvailableData
 {
-    if (self.didClosed)
+    if (self.closed)
     {
         return;
     }
@@ -313,7 +318,7 @@
 
 - (void)callbackForFailed:(NSError *)error
 {
-    if (self.didClosed || !error || self.error)
+    if (self.closed || !error || self.error)
     {
         return;
     }

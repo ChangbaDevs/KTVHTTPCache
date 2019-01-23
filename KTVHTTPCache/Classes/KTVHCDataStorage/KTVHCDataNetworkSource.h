@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVHCDataSourceProtocol.h"
+#import "KTVHCDataSource.h"
 #import "KTVHCDataRequest.h"
 #import "KTVHCDataResponse.h"
 
@@ -22,7 +22,7 @@
 
 @end
 
-@interface KTVHCDataNetworkSource : NSObject <KTVHCDataSourceProtocol>
+@interface KTVHCDataNetworkSource : NSObject <KTVHCDataSource>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -31,16 +31,6 @@
 
 @property (nonatomic, strong, readonly) KTVHCDataRequest * request;
 @property (nonatomic, strong, readonly) KTVHCDataResponse * response;
-@property (nonatomic, assign, readonly) KTVHCRange range;
-
-@property (nonatomic, assign, readonly) BOOL didPrepared;
-@property (nonatomic, assign, readonly) BOOL didFinished;
-@property (nonatomic, assign, readonly) BOOL didClosed;
-
-- (void)prepare;
-- (void)close;
-
-- (NSData *)readDataOfLength:(NSUInteger)length;
 
 @property (nonatomic, weak, readonly) id<KTVHCDataNetworkSourceDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
