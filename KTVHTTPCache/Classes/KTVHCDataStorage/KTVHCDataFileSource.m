@@ -15,7 +15,6 @@
 
 @property (nonatomic, strong) NSLock *coreLock;
 @property (nonatomic, strong) NSFileHandle *readingHandle;
-@property (nonatomic) long long readedLength;
 
 @end
 
@@ -26,6 +25,7 @@
 @synthesize closed = _closed;
 @synthesize prepared = _prepared;
 @synthesize finished = _finished;
+@synthesize readedLength = _readedLength;
 
 - (instancetype)initWithPath:(NSString *)path range:(KTVHCRange)range readRange:(KTVHCRange)readRange
 {
@@ -101,8 +101,8 @@
         long long readLength = KTVHCRangeGetLength(self.readRange);
         length = (NSUInteger)MIN(readLength - self.readedLength, length);
         data = [self.readingHandle readDataOfLength:length];
+        self->_readedLength += data.length;
         if (data.length > 0) {
-            self.readedLength += data.length;
             KTVHCLogDataFileSource(@"%p, Read data : %lld, %lld, %lld", self, (long long)data.length, self.readedLength, readLength);
         }
         if (self.readedLength >= readLength) {

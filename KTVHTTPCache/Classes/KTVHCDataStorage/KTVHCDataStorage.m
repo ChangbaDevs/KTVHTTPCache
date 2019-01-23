@@ -46,7 +46,7 @@
         KTVHCLogDataStorage(@"Invaild reader request, %@", request.URL);
         return nil;
     }
-    KTVHCDataReader * reader = [KTVHCDataReader readerWithRequest:request];
+    KTVHCDataReader * reader = [[KTVHCDataReader alloc] initWithRequest:request];
     return reader;
 }
 

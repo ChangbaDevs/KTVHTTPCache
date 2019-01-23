@@ -29,7 +29,7 @@
     if (self = [super init])
     {
         KTVHCLogAlloc(self);
-        self.reader = [KTVHCDataReader readerWithRequest:request];
+        self.reader = [[KTVHCDataReader alloc] initWithRequest:request];
         self.reader.delegate = self;
         KTVHCLogDataLoader(@"%p, Create loader\norignalRequest : %@\nreader : %@", self, request, self.reader);
     }
@@ -72,17 +72,17 @@
 
 - (BOOL)didClosed
 {
-    return self.reader.didClosed;
+    return self.reader.closed;
 }
 
 - (BOOL)didFinished
 {
-    return self.reader.didFinished;
+    return self.reader.finished;
 }
 
 #pragma mark - KTVHCDataReaderDelegate
 
-- (void)readerDidPrepared:(KTVHCDataReader *)reader
+- (void)readerDidPrepare:(KTVHCDataReader *)reader
 {
     [self readData];
 }
@@ -92,7 +92,7 @@
     [self readData];
 }
 
-- (void)reader:(KTVHCDataReader *)reader didFailed:(NSError *)error
+- (void)reader:(KTVHCDataReader *)reader didFailWithError:(NSError *)error
 {
     KTVHCLogDataLoader(@"%p, Callback for failed", self);
     if ([self.delegate respondsToSelector:@selector(loader:didFailed:)])
@@ -108,7 +108,7 @@
         @autoreleasepool
         {
             NSData * data = [self.reader readDataOfLength:1024 * 1024 * 1];
-            if (self.reader.didFinished)
+            if (self.reader.finished)
             {
                 _progress = 1.0f;
                 if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)])
@@ -123,7 +123,7 @@
             }
             else if (data)
             {
-                _progress = (double)self.reader.readOffset / (double)self.response.currentLength;
+                _progress = (double)self.reader.readedLength / (double)self.response.currentLength;
                 if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)])
                 {
                     [self.delegate loader:self didChangeProgress:_progress];

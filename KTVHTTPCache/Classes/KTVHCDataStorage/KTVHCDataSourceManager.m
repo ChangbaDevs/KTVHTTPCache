@@ -28,6 +28,7 @@
 @synthesize closed = _closed;
 @synthesize prepared = _prepared;
 @synthesize finished = _finished;
+@synthesize readedLength = _readedLength;
 
 - (instancetype)initWithSources:(NSArray<id<KTVHCDataSource>> *)sources delegate:(id<KTVHCDataSourceManagerDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
@@ -121,6 +122,7 @@
         return nil;
     }
     NSData *data = [self.currentSource readDataOfLength:length];
+    self->_readedLength += data.length;
     KTVHCLogDataSourceManager(@"%p, Read data : %lld", self, (long long)data.length);
     if (self.currentSource.finished) {
         self.currentSource = [self nextSource];
