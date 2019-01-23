@@ -39,6 +39,10 @@
         @try {
             self->_URL = [NSURL URLWithString:[aDecoder decodeObjectForKey:@"URLString"]];
             self->_key = [aDecoder decodeObjectForKey:@"uniqueIdentifier"];
+        } @catch (NSException *exception) {
+            self->_error = [KTVHCError errorForException:exception];
+        }
+        @try {
             self->_createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
             self->_requestHeaders = [aDecoder decodeObjectForKey:@"requestHeaderFields"];
             self->_responseHeaders = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
