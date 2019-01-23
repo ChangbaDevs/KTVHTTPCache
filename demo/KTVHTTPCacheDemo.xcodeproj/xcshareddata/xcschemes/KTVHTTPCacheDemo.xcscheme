@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9C7EDA881F3C0334003B6C14"
-               BuildableName = "KTVHTTPCache.framework"
-               BlueprintName = "KTVHTTPCache"
-               ReferencedContainer = "container:KTVHTTPCache.xcodeproj">
+               BlueprintIdentifier = "9C7A44B71F3C09CF00ED01BA"
+               BuildableName = "KTVHTTPCache.app"
+               BlueprintName = "KTVHTTPCacheDemo"
+               ReferencedContainer = "container:KTVHTTPCacheDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,11 +29,20 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "9C7A44B71F3C09CF00ED01BA"
+            BuildableName = "KTVHTTPCache.app"
+            BlueprintName = "KTVHTTPCacheDemo"
+            ReferencedContainer = "container:KTVHTTPCacheDemo.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -42,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9C7EDA881F3C0334003B6C14"
-            BuildableName = "KTVHTTPCache.framework"
-            BlueprintName = "KTVHTTPCache"
-            ReferencedContainer = "container:KTVHTTPCache.xcodeproj">
+            BlueprintIdentifier = "9C7A44B71F3C09CF00ED01BA"
+            BuildableName = "KTVHTTPCache.app"
+            BlueprintName = "KTVHTTPCacheDemo"
+            ReferencedContainer = "container:KTVHTTPCacheDemo.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -60,15 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9C7EDA881F3C0334003B6C14"
-            BuildableName = "KTVHTTPCache.framework"
-            BlueprintName = "KTVHTTPCache"
-            ReferencedContainer = "container:KTVHTTPCache.xcodeproj">
+            BlueprintIdentifier = "9C7A44B71F3C09CF00ED01BA"
+            BuildableName = "KTVHTTPCache.app"
+            BlueprintName = "KTVHTTPCacheDemo"
+            ReferencedContainer = "container:KTVHTTPCacheDemo.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
