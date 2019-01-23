@@ -14,7 +14,7 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithPath:(NSString *)path;
+- (instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 - (NSArray<KTVHCDataUnit *> *)allUnits;
 - (KTVHCDataUnit *)unitWithKey:(NSString *)key;

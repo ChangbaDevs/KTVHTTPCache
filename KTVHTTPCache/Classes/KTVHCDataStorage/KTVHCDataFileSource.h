@@ -23,7 +23,7 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithPath:(NSString *)path range:(KTVHCRange)range readRange:(KTVHCRange)readRange;
+- (instancetype)initWithPath:(NSString *)path range:(KTVHCRange)range readRange:(KTVHCRange)readRange NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, copy, readonly) NSString * path;
 @property (nonatomic, readonly) KTVHCRange readRange;

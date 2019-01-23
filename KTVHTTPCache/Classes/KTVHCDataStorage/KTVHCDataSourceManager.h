@@ -28,7 +28,7 @@
 
 - (instancetype)initWithSources:(NSArray<id<KTVHCDataSource>> *)sources
                        delegate:(id <KTVHCDataSourceManagerDelegate>)delegate
-                  delegateQueue:(dispatch_queue_t)delegateQueue;
+                  delegateQueue:(dispatch_queue_t)delegateQueue NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, weak, readonly) id <KTVHCDataSourceManagerDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;

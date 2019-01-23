@@ -17,6 +17,6 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection request:(KTVHCHTTPRequest *)request;
+- (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection request:(KTVHCHTTPRequest *)request NS_DESIGNATED_INITIALIZER;
 
 @end
