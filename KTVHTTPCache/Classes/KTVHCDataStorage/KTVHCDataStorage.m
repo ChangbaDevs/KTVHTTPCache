@@ -57,7 +57,7 @@
         KTVHCLogDataStorage(@"Invaild loader request, %@", request.URL);
         return nil;
     }
-    KTVHCDataLoader * loader = [KTVHCDataLoader loaderWithRequest:request];
+    KTVHCDataLoader * loader = [[KTVHCDataLoader alloc] initWithRequest:request];
     return loader;
 }
 

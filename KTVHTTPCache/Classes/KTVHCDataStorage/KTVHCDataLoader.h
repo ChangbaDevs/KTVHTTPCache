@@ -14,8 +14,8 @@
 
 @protocol KTVHCDataLoaderDelegate <NSObject>
 
-- (void)loaderDidFinished:(KTVHCDataLoader *)loader;
-- (void)loader:(KTVHCDataLoader *)loader didFailed:(NSError *)error;
+- (void)loaderDidFinish:(KTVHCDataLoader *)loader;
+- (void)loader:(KTVHCDataLoader *)loader didFailWithError:(NSError *)error;
 - (void)loader:(KTVHCDataLoader *)loader didChangeProgress:(double)progress;
 
 @end
@@ -25,21 +25,20 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)loaderWithRequest:(KTVHCDataRequest *)request;
+- (instancetype)initWithRequest:(KTVHCDataRequest *)request NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, weak) id <KTVHCDataLoaderDelegate> delegate;
-
 @property (nonatomic, strong) id object;
 
-@property (nonatomic, strong, readonly) KTVHCDataRequest * request;
-@property (nonatomic, strong, readonly) KTVHCDataResponse * response;
+@property (nonatomic, strong, readonly) KTVHCDataRequest *request;
+@property (nonatomic, strong, readonly) KTVHCDataResponse *response;
 
-@property (nonatomic, strong, readonly) NSError * error;
+@property (nonatomic, copy, readonly) NSError *error;
 
-@property (nonatomic, assign, readonly) BOOL didClosed;
-@property (nonatomic, assign, readonly) BOOL didFinished;
+@property (nonatomic, readonly) BOOL finished;
+@property (nonatomic, readonly) BOOL closed;
 
-@property (nonatomic, assign, readonly) double progress;
+@property (nonatomic, readonly) double progress;
 
 - (void)prepare;
 - (void)close;

@@ -7,27 +7,21 @@
 //
 
 #import "KTVHCDataLoader.h"
-#import "KTVHCDataReader.h"
 #import "KTVHCDataResponse.h"
+#import "KTVHCDataReader.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCDataLoader () <KTVHCDataReaderDelegate>
 
-@property (nonatomic, strong) KTVHCDataReader * reader;
+@property (nonatomic, strong) KTVHCDataReader *reader;
 
 @end
 
 @implementation KTVHCDataLoader
 
-+ (instancetype)loaderWithRequest:(KTVHCDataRequest *)request
-{
-    return [[self alloc] initWithRequest:request];
-}
-
 - (instancetype)initWithRequest:(KTVHCDataRequest *)request
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         KTVHCLogAlloc(self);
         self.reader = [[KTVHCDataReader alloc] initWithRequest:request];
         self.reader.delegate = self;
@@ -95,37 +89,28 @@
 - (void)reader:(KTVHCDataReader *)reader didFailWithError:(NSError *)error
 {
     KTVHCLogDataLoader(@"%p, Callback for failed", self);
-    if ([self.delegate respondsToSelector:@selector(loader:didFailed:)])
-    {
-        [self.delegate loader:self didFailed:error];
+    if ([self.delegate respondsToSelector:@selector(loader:didFailWithError:)]) {
+        [self.delegate loader:self didFailWithError:error];
     }
 }
 
 - (void)readData
 {
-    while (YES)
-    {
-        @autoreleasepool
-        {
-            NSData * data = [self.reader readDataOfLength:1024 * 1024 * 1];
-            if (self.reader.finished)
-            {
-                _progress = 1.0f;
-                if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)])
-                {
+    while (YES) {
+        @autoreleasepool {
+            NSData *data = [self.reader readDataOfLength:1024 * 1024 * 1];
+            if (self.reader.finished) {
+                self->_progress = 1.0f;
+                if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
                     [self.delegate loader:self didChangeProgress:_progress];
                 }
                 KTVHCLogDataLoader(@"%p, Callback finished", self);
-                if ([self.delegate respondsToSelector:@selector(loaderDidFinished:)])
-                {
-                    [self.delegate loaderDidFinished:self];
+                if ([self.delegate respondsToSelector:@selector(loaderDidFinish:)]) {
+                    [self.delegate loaderDidFinish:self];
                 }
-            }
-            else if (data)
-            {
-                _progress = (double)self.reader.readedLength / (double)self.response.currentLength;
-                if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)])
-                {
+            } else if (data) {
+                self->_progress = (double)self.reader.readedLength / (double)self.response.currentLength;
+                if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
                     [self.delegate loader:self didChangeProgress:_progress];
                 }
                 KTVHCLogDataLoader(@"%p, read data progress %f", self, _progress);
