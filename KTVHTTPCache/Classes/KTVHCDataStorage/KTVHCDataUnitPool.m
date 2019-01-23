@@ -8,7 +8,7 @@
 
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataUnitQueue.h"
-#import "KTVHCDataPrivate.h"
+#import "KTVHCData+Internal.h"
 #import "KTVHCPathTool.h"
 #import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
@@ -110,14 +110,18 @@
         NSMutableArray * itemZones = [NSMutableArray array];
         for (KTVHCDataUnitItem * unitItem in items)
         {
-            KTVHCDataCacheItemZone * itemZone = [KTVHCDataCacheItemZone itemZoneWithOffset:unitItem.offset length:unitItem.length];
+            KTVHCDataCacheItemZone * itemZone = [[KTVHCDataCacheItemZone alloc] initWithOffset:unitItem.offset length:unitItem.length];
             [itemZones addObject:itemZone];
         }
         if (itemZones.count <= 0)
         {
             itemZones = nil;
         }
-        cacheItem = [KTVHCDataCacheItem itemWithURL:obj.URL totalLength:obj.totalLength cacheLength:obj.cacheLength vaildLength:obj.validLength zones:itemZones];
+        cacheItem = [[KTVHCDataCacheItem alloc] initWithURL:obj.URL
+                                                      zones:itemZones
+                                                totalLength:obj.totalLength
+                                                cacheLength:obj.cacheLength
+                                                vaildLength:obj.validLength];
     }
     [self unlock];
     return cacheItem;
