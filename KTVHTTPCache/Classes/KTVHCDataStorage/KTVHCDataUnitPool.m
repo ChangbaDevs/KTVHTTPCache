@@ -40,7 +40,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.unitQueue = [KTVHCDataUnitQueue queueWithPath:[KTVHCPathTool archivePath]];
+        self.unitQueue = [[KTVHCDataUnitQueue alloc] initWithPath:[KTVHCPathTool archivePath]];
         for (KTVHCDataUnit *obj in self.unitQueue.allUnits) {
             obj.fileDelegate = self;
         }
