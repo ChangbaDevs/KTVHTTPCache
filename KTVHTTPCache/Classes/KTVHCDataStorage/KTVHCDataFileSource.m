@@ -13,15 +13,15 @@
 
 @interface KTVHCDataFileSource () <NSLocking>
 
-@property (nonatomic, strong) NSError * error;
-@property (nonatomic, strong) NSLock * coreLock;
-@property (nonatomic, strong) NSFileHandle * readingHandle;
-@property (nonatomic, assign) long long readedLength;
+@property (nonatomic, strong) NSLock *coreLock;
+@property (nonatomic, strong) NSFileHandle *readingHandle;
+@property (nonatomic) long long readedLength;
 
 @end
 
 @implementation KTVHCDataFileSource
 
+@synthesize error = _error;
 @synthesize range = _range;
 @synthesize closed = _closed;
 @synthesize prepared = _prepared;
@@ -54,23 +54,19 @@
     }
     KTVHCLogDataFileSource(@"%p, Call prepare", self);
     self.readingHandle = [NSFileHandle fileHandleForReadingAtPath:self.path];
-    @try
-    {
+    @try {
         [self.readingHandle seekToFileOffset:self.readRange.start];
         self->_prepared = YES;
-        if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepared:)])
-        {
+        if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepare:)]) {
             KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 KTVHCLogDataFileSource(@"%p, Callback for prepared - End", self);
-                [self.delegate fileSourceDidPrepared:self];
+                [self.delegate fileSourceDidPrepare:self];
             }];
         }
-    }
-    @catch (NSException * exception)
-    {
+    } @catch (NSException *exception) {
         KTVHCLogDataFileSource(@"%p, Seek file exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
-        NSError * error = [KTVHCError errorForException:exception];
+        NSError *error = [KTVHCError errorForException:exception];
         [self callbackForFailed:error];
     }
     [self unlock];
@@ -79,8 +75,7 @@
 - (void)close
 {
     [self lock];
-    if (self.closed)
-    {
+    if (self.closed) {
         [self unlock];
         return;
     }
@@ -93,38 +88,31 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.closed)
-    {
+    if (self.closed) {
         [self unlock];
         return nil;
     }
-    if (self.finished)
-    {
+    if (self.finished) {
         [self unlock];
         return nil;
     }
-    NSData * data = nil;
-    @try
-    {
+    NSData *data = nil;
+    @try {
         long long readLength = KTVHCRangeGetLength(self.readRange);
         length = (NSUInteger)MIN(readLength - self.readedLength, length);
         data = [self.readingHandle readDataOfLength:length];
-        if (data.length > 0)
-        {
+        if (data.length > 0) {
             self.readedLength += data.length;
             KTVHCLogDataFileSource(@"%p, Read data : %lld, %lld, %lld", self, (long long)data.length, self.readedLength, readLength);
         }
-        if (self.readedLength >= readLength)
-        {
+        if (self.readedLength >= readLength) {
             KTVHCLogDataFileSource(@"%p, Read data did finished", self);
             [self destoryReadingHandle];
             self->_finished = YES;
         }
-    }
-    @catch (NSException * exception)
-    {
+    } @catch (NSException *exception) {
         KTVHCLogDataFileSource(@"%p, Read exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
-        NSError * error = [KTVHCError errorForException:exception];
+        NSError *error = [KTVHCError errorForException:exception];
         [self callbackForFailed:error];
     }
     [self unlock];
@@ -133,14 +121,10 @@
 
 - (void)destoryReadingHandle
 {
-    if (self.readingHandle)
-    {
-        @try
-        {
+    if (self.readingHandle) {
+        @try {
             [self.readingHandle closeFile];
-        }
-        @catch (NSException * exception)
-        {
+        } @catch (NSException *exception) {
             KTVHCLogDataFileSource(@"%p, Close exception\nname : %@\nreason : %@\nuserInfo : %@", self, exception.name, exception.reason, exception.userInfo);
         }
         self.readingHandle = nil;
@@ -149,35 +133,31 @@
 
 - (void)callbackForFailed:(NSError *)error
 {
-    if (!error)
-    {
+    if (!error) {
         return;
     }
-    if (self.error)
-    {
+    if (self.error) {
         return;
     }
-    self.error = error;
-    if ([self.delegate respondsToSelector:@selector(fileSource:didFailed:)])
-    {
+    self->_error = error;
+    if ([self.delegate respondsToSelector:@selector(fileSource:didFailWithError:)]) {
         KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataFileSource(@"%p, Callback for prepared - End", self);
-            [self.delegate fileSource:self didFailed:self.error];
+            [self.delegate fileSource:self didFailWithError:self.error];
         }];
     }
 }
 
 - (void)setDelegate:(id <KTVHCDataFileSourceDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue
 {
-    _delegate = delegate;
-    _delegateQueue = delegateQueue;
+    self->_delegate = delegate;
+    self->_delegateQueue = delegateQueue;
 }
 
 - (void)lock
 {
-    if (!self.coreLock)
-    {
+    if (!self.coreLock) {
         self.coreLock = [[NSLock alloc] init];
     }
     [self.coreLock lock];

@@ -109,7 +109,7 @@
     NSData * data = [self.sourceManager readDataOfLength:length];;
     _readOffset += data.length;
     KTVHCLogDataReader(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.sourceManager.didFinished)
+    if (self.sourceManager.finished)
     {
         KTVHCLogDataReader(@"%p, Read data did finished", self);
         _didFinished = YES;
@@ -121,7 +121,6 @@
 
 - (void)prepareSourceManager
 {
-    self.sourceManager = [[KTVHCDataSourceManager alloc] initWithDelegate:self delegateQueue:self.internalDelegateQueue];
     NSMutableArray <KTVHCDataFileSource *> * fileSources = [NSMutableArray array];
     NSMutableArray <KTVHCDataNetworkSource *> * networkSources = [NSMutableArray array];
     long long min = self.request.range.start;
@@ -179,18 +178,14 @@
         KTVHCDataNetworkSource * source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
         [networkSources addObject:source];
     }
-    for (KTVHCDataFileSource * obj in fileSources)
-    {
-        [self.sourceManager putSource:obj];
-    }
-    for (KTVHCDataNetworkSource * obj in networkSources)
-    {
-        [self.sourceManager putSource:obj];
-    }
+    NSMutableArray <id<KTVHCDataSource>> * sources = [NSMutableArray array];
+    [sources addObjectsFromArray:fileSources];
+    [sources addObjectsFromArray:networkSources];
+    self.sourceManager = [[KTVHCDataSourceManager alloc] initWithSources:sources delegate:self delegateQueue:self.internalDelegateQueue];
     [self.sourceManager prepare];
 }
 
-- (void)sourceManagerDidPrepared:(KTVHCDataSourceManager *)sourceManager
+- (void)sourceManagerDidPrepare:(KTVHCDataSourceManager *)sourceManager
 {
     [self lock];
     [self callbackForPrepared];
@@ -224,7 +219,7 @@
     [self unlock];
 }
 
-- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didFailed:(NSError *)error
+- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didFailWithError:(NSError *)error
 {
     if (!error)
     {
@@ -265,7 +260,7 @@
     {
         return;
     }
-    if (self.sourceManager.didPrepared && self.unit.totalLength > 0)
+    if (self.sourceManager.prepared && self.unit.totalLength > 0)
     {
         long long totalLength = self.unit.totalLength;
         KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);

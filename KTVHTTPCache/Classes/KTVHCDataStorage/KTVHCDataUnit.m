@@ -97,7 +97,7 @@
 - (void)sortUnitItems
 {
     [self lock];
-    KTVHCLogDataSourceQueue(@"%p, Sort unitItems - Begin\n%@", self, self.unitItemsInternal);
+    KTVHCLogDataUnit(@"%p, Sort unitItems - Begin\n%@", self, self.unitItemsInternal);
     [self.unitItemsInternal sortUsingComparator:^NSComparisonResult(KTVHCDataUnitItem *obj1, KTVHCDataUnitItem *obj2) {
         NSComparisonResult result = NSOrderedDescending;
         if (obj1.offset < obj2.offset) {
@@ -107,7 +107,7 @@
         }
         return result;
     }];
-    KTVHCLogDataSourceQueue(@"%p, Sort unitItems - End  \n%@", self, self.unitItemsInternal);
+    KTVHCLogDataUnit(@"%p, Sort unitItems - End  \n%@", self, self.unitItemsInternal);
     [self unlock];
 }
 
@@ -118,7 +118,7 @@
     for (KTVHCDataUnitItem *obj in self.unitItemsInternal) {
         [objs addObject:[obj copy]];
     }
-    KTVHCLogDataSourceQueue(@"%p, Get unitItems\n%@", self, self.unitItemsInternal);
+    KTVHCLogDataUnit(@"%p, Get unitItems\n%@", self, self.unitItemsInternal);
     [self unlock];
     return objs;
 }

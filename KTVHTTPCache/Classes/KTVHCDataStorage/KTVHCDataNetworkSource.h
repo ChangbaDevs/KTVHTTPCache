@@ -15,10 +15,10 @@
 
 @protocol KTVHCDataNetworkSourceDelegate <NSObject>
 
-- (void)networkSourceDidPrepared:(KTVHCDataNetworkSource *)networkSource;
+- (void)networkSourceDidPrepare:(KTVHCDataNetworkSource *)networkSource;
 - (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource;
-- (void)networkSourceDidFinishedDownload:(KTVHCDataNetworkSource *)networkSource;
-- (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailed:(NSError *)error;
+- (void)networkSourceDidFinisheDownload:(KTVHCDataNetworkSource *)networkSource;
+- (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailWithError:(NSError *)error;
 
 @end
 

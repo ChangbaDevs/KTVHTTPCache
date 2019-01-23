@@ -11,8 +11,9 @@
 
 @protocol KTVHCDataSource <NSObject>
 
-@property (nonatomic, readonly) KTVHCRange range;
+@property (nonatomic, copy, readonly) NSError *error;
 
+@property (nonatomic, readonly) KTVHCRange range;
 @property (nonatomic, readonly) BOOL prepared;
 @property (nonatomic, readonly) BOOL finished;
 @property (nonatomic, readonly) BOOL closed;
