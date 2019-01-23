@@ -217,7 +217,7 @@
     {
         [self.writingHandle writeData:data];
         self.downloadLength += data.length;
-        [self.unitItem setLength:self.downloadLength];
+        [self.unitItem updateLength:self.downloadLength];
         KTVHCLogDataNetworkSource(@"%p, Receive data : %lld, %lld, %lld", self, (long long)data.length, self.downloadLength, self.unitItem.length);
         [self callbackForHasAvailableData];
     }
