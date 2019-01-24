@@ -211,7 +211,7 @@
     }
     self->_error = error;
     [self close];
-    [[KTVHCLog log] addError:self.error];
+    [[KTVHCLog log] addError:self.error forURL:self.request.URL];
     if ([self.delegate respondsToSelector:@selector(reader:didFailWithError:)]) {
         KTVHCLogDataReader(@"%p, Callback for failed - Begin\nError : %@", self, self.error);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{

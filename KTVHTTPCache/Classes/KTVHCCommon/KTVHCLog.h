@@ -152,8 +152,9 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 /**
  *  Error
  */
-- (NSError *)lastError;
-- (NSArray<NSError *> *)allErrors;
-- (void)addError:(NSError *)error;
+- (void)addError:(NSError *)error forURL:(NSURL *)URL;
+- (NSDictionary<NSURL *, NSError *> *)errors;
+- (NSError *)errorForURL:(NSURL *)URL;
+- (void)cleanErrorForURL:(NSURL *)URL;
 
 @end

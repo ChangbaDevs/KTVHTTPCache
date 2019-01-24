@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) NSLock *lock;
 @property (nonatomic, strong) NSFileHandle *writingHandle;
-@property (nonatomic, strong) NSMutableArray<NSError *> *internalErrors;
+@property (nonatomic, strong) NSMutableDictionary<NSURL *, NSError *> *internalErrors;
 
 @end
 
@@ -37,7 +37,7 @@
         self.consoleLogEnable = NO;
         self.recordLogEnable = NO;
         self.lock = [[NSLock alloc] init];
-        self.internalErrors = [NSMutableArray array];
+        self.internalErrors = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -85,24 +85,30 @@
     [self.lock unlock];
 }
 
-- (NSError *)lastError
+- (void)addError:(NSError *)error forURL:(NSURL *)URL
 {
-    return self.internalErrors.lastObject;
+    if (!URL || ![error isKindOfClass:[NSError class]]) {
+        return;
+    }
+    [self.internalErrors setObject:error forKey:URL];
 }
 
-- (NSArray<NSError *> *)allErrors
+- (NSDictionary<NSURL *,NSError *> *)errors
 {
     return [self.internalErrors copy];
 }
 
-- (void)addError:(NSError *)error
+- (NSError *)errorForURL:(NSURL *)URL
 {
-    if (error && [error isKindOfClass:[NSError class]]) {
-        if (self.internalErrors.count >= 20) {
-            [self.internalErrors removeObjectAtIndex:0];
-        }
-        [self.internalErrors addObject:error];
+    if (!URL) {
+        return nil;
     }
+    return [self.internalErrors objectForKey:URL];
+}
+
+- (void)cleanErrorForURL:(NSURL *)URL
+{
+    [self.internalErrors removeObjectForKey:URL];
 }
 
 #pragma mark - UIApplicationWillTerminateNotification

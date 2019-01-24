@@ -211,14 +211,19 @@
     [[KTVHCLog log] deleteRecordLog];
 }
 
-+ (NSArray<NSError *> *)logAllErrors
++ (NSDictionary<NSURL *, NSError *> *)logErrors
 {
-    return [[KTVHCLog log] allErrors];
+    return [[KTVHCLog log] errors];
 }
 
-+ (NSError *)logLastError
++ (void)logCleanErrorForURL:(NSURL *)URL
 {
-    return [[KTVHCLog log] lastError];
+    [[KTVHCLog log] cleanErrorForURL:URL];
+}
+
++ (NSError *)logErrorForURL:(NSURL *)URL
+{
+    return [[KTVHCLog log] errorForURL:URL];
 }
 
 @end

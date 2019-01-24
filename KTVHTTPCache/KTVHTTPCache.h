@@ -155,7 +155,8 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 /**
  *  Error
  */
-+ (NSArray<NSError *> *)logAllErrors;
-+ (NSError *)logLastError;
++ (NSDictionary<NSURL *, NSError *> *)logErrors;
++ (NSError *)logErrorForURL:(NSURL *)URL;
++ (void)logCleanErrorForURL:(NSURL *)URL;
 
 @end
