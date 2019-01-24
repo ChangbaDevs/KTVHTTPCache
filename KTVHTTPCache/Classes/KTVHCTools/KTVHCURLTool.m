@@ -131,4 +131,35 @@
     return [URLString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
+- (NSDictionary<NSString *,NSString *> *)parseQuery:(NSString *)query
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSScanner *scanner = [[NSScanner alloc] initWithString:query];
+    [scanner setCharactersToBeSkipped:nil];
+    while (1) {
+        NSString *key = nil;
+        if (![scanner scanUpToString:@"=" intoString:&key] || [scanner isAtEnd]) {
+            break;
+        }
+        [scanner setScanLocation:([scanner scanLocation] + 1)];
+        NSString *value = nil;
+        [scanner scanUpToString:@"&" intoString:&value];
+        if (value == nil) {
+            value = @"";
+        }
+        key = [key stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+        NSString *unescapedKey = key ? [self URLDecode:key] : nil;
+        value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+        NSString *unescapedValue = value ? [self URLDecode:value] : nil;
+        if (unescapedKey && unescapedValue) {
+            [parameters setObject:unescapedValue forKey:unescapedKey];
+        }
+        if ([scanner isAtEnd]) {
+            break;
+        }
+        [scanner setScanLocation:([scanner scanLocation] + 1)];
+    }
+    return parameters;
+}
+
 @end

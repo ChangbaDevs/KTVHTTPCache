@@ -8,34 +8,28 @@
 
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCHTTPConnection.h"
-#import "KTVHCHTTPRequest.h"
 #import "KTVHCDataStorage.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCHTTPResponse () <KTVHCDataReaderDelegate>
 
-@property (nonatomic, weak) KTVHCHTTPConnection * connection;
-@property (nonatomic, strong) KTVHCHTTPRequest * request;
-@property (nonatomic, strong) KTVHCDataRequest * dataRequest;
-@property (nonatomic, strong) KTVHCDataReader * reader;
-@property (nonatomic) BOOL waitingResponseHeader;
+@property (nonatomic) BOOL waitingResponse;
+@property (nonatomic, strong) KTVHCDataReader *reader;
+@property (nonatomic, weak) KTVHCHTTPConnection *connection;
 
 @end
 
 @implementation KTVHCHTTPResponse
 
-- (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection request:(KTVHCHTTPRequest *)request
+- (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection dataRequest:(KTVHCDataRequest *)dataRequest
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         KTVHCLogAlloc(self);
         self.connection = connection;
-        self.request = request;
-        KTVHCDataRequest * dataRequest = [[KTVHCDataRequest alloc] initWithURL:self.request.URL headerFields:self.request.headers];
         self.reader = [[KTVHCDataStorage storage] readerWithRequest:dataRequest];
         self.reader.delegate = self;
         [self.reader prepare];
-        KTVHCLogHTTPResponse(@"%p, Create response\nrequest : %@", self, self.request);
+        KTVHCLogHTTPResponse(@"%p, Create response\nrequest : %@", self, dataRequest);
     }
     return self;
 }
@@ -50,10 +44,9 @@
 
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
-    NSData * data = [self.reader readDataOfLength:length];
+    NSData *data = [self.reader readDataOfLength:length];
     KTVHCLogHTTPResponse(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.reader.finished)
-    {
+    if (self.reader.finished) {
         KTVHCLogHTTPResponse(@"%p, Read data did finished", self);
         [self.reader close];
         [self.connection responseDidAbort:self];
@@ -64,8 +57,8 @@
 - (BOOL)delayResponseHeaders
 {
     BOOL waiting = !self.reader.prepared;
-    self.waitingResponseHeader = waiting;
-    KTVHCLogHTTPResponse(@"%p, Delay response : %d", self, self.waitingResponseHeader);
+    self.waitingResponse = waiting;
+    KTVHCLogHTTPResponse(@"%p, Delay response : %d", self, self.waitingResponse);
     return waiting;
 }
 
@@ -114,8 +107,7 @@
 - (void)readerDidPrepare:(KTVHCDataReader *)reader
 {
     KTVHCLogHTTPResponse(@"%p, Prepared", self);
-    if (self.reader.prepared && self.waitingResponseHeader == YES)
-    {
+    if (self.reader.prepared && self.waitingResponse == YES) {
         KTVHCLogHTTPResponse(@"%p, Call connection did prepared", self);
         [self.connection responseHasAvailableData:self];
     }

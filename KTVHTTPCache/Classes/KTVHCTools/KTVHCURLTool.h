@@ -22,4 +22,6 @@
 - (NSString *)URLEncode:(NSString *)URLString;
 - (NSString *)URLDecode:(NSString *)URLString;
 
+- (NSDictionary<NSString *, NSString *> *)parseQuery:(NSString *)query;
+
 @end

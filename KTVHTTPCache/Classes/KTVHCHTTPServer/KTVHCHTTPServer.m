@@ -9,7 +9,7 @@
 #import "KTVHCHTTPServer.h"
 #import "KTVHCHTTPConnection.h"
 #import "KTVHCHTTPHeader.h"
-#import "KTVHCHTTPURL.h"
+#import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCHTTPServer ()
@@ -78,8 +78,14 @@
 
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL
 {
-    KTVHCHTTPURL *HCURL = [[KTVHCHTTPURL alloc] initWithOriginalURL:URL];
-    URL = [HCURL proxyURLWithPort:self.server.listeningPort];
+    if (!URL || URL.isFileURL || URL.absoluteString.length == 0) {
+        return URL;
+    }
+    NSString *original = [[KTVHCURLTool tool] URLEncode:URL.absoluteString];
+    NSString *server = [NSString stringWithFormat:@"http://localhost:%d/", self.server.listeningPort];
+    NSString *extension = URL.pathExtension ? [NSString stringWithFormat:@".%@", URL.pathExtension] : @"";
+    NSString *URLString = [NSString stringWithFormat:@"%@request%@?url=%@", server, extension, original];
+    URL = [NSURL URLWithString:URLString];
     KTVHCLogHTTPServer(@"%p, Return URL\nURL : %@", self, URL);
     return URL;
 }
