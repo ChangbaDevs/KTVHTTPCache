@@ -16,8 +16,8 @@
 
 @property (nonatomic, strong) HTTPServer * coreHTTPServer;
 
-@property (nonatomic, assign) BOOL pinging;
-@property (nonatomic, assign) BOOL pingResult;
+@property (nonatomic) BOOL pinging;
+@property (nonatomic) BOOL pingResult;
 @property (nonatomic, strong) NSCondition * pingCondition;
 @property (nonatomic, strong) NSURLSession * pingSession;
 @property (nonatomic, strong) NSURLSessionDataTask * pingTask;

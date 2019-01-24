@@ -18,7 +18,7 @@
 @property (nonatomic, strong) KTVHCHTTPRequest * request;
 @property (nonatomic, strong) KTVHCDataRequest * dataRequest;
 @property (nonatomic, strong) KTVHCDataReader * reader;
-@property (nonatomic, assign) BOOL waitingResponseHeader;
+@property (nonatomic) BOOL waitingResponseHeader;
 
 @end
 

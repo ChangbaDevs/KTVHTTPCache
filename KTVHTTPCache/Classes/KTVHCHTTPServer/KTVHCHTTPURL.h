@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, KTVHCHTTPURLType)
 - (instancetype)initWithProxyURL:(NSURL *)URL;
 - (instancetype)initWithOriginalURL:(NSURL *)URL;
 
-@property (nonatomic, assign, readonly) KTVHCHTTPURLType type;
+@property (nonatomic, readonly) KTVHCHTTPURLType type;
 @property (nonatomic, copy, readonly) NSURL * URL;
 
 - (NSURL *)proxyURLWithPort:(NSInteger)port;

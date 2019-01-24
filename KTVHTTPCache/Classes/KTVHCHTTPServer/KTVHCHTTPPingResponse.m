@@ -16,7 +16,7 @@ NSString * const KTVHCHTTPPingResponseResponseValue = @"pang";
 
 @property (nonatomic, weak) KTVHCHTTPConnection * connection;
 @property (nonatomic, strong) NSData * responseData;
-@property (nonatomic, assign) long long readOffset;
+@property (nonatomic) long long readOffset;
 
 @end
 

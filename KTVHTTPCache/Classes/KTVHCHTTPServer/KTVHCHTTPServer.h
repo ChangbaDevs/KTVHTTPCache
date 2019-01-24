@@ -15,7 +15,7 @@
 
 + (instancetype)server;
 
-@property (nonatomic, assign, readonly) BOOL running;
+@property (nonatomic, readonly) BOOL running;
 
 - (void)start:(NSError **)error;
 - (void)stop;

@@ -34,7 +34,7 @@ KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeBinaryOctetStream;
 
 + (instancetype)download;
 
-@property (nonatomic, assign) NSTimeInterval timeoutInterval;
+@property (nonatomic) NSTimeInterval timeoutInterval;
 
 /**
  *  Header Fields

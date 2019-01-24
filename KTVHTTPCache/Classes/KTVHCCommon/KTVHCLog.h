@@ -136,13 +136,13 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
  *  DEBUG   : default is NO.
  *  RELEASE : default is NO.
  */
-@property (nonatomic, assign) BOOL consoleLogEnable;
+@property (nonatomic) BOOL consoleLogEnable;
 
 /**
  *  DEBUG   : default is NO.
  *  RELEASE : default is NO.
  */
-@property (nonatomic, assign) BOOL recordLogEnable;
+@property (nonatomic) BOOL recordLogEnable;
 
 - (void)addRecordLog:(NSString *)log;
 

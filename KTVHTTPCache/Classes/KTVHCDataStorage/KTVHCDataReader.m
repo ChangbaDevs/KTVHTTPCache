@@ -19,7 +19,7 @@
 @property (nonatomic, strong) dispatch_queue_t delegateQueue;
 @property (nonatomic, strong) dispatch_queue_t internalDelegateQueue;
 @property (nonatomic, strong) KTVHCDataSourceManager *sourceManager;
-@property (nonatomic, assign) BOOL calledPrepare;
+@property (nonatomic) BOOL calledPrepare;
 
 @end
 

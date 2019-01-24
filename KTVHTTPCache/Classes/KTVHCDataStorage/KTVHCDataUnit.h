@@ -50,7 +50,7 @@
 /**
  *  Working
  */
-@property (nonatomic, assign, readonly) NSInteger workingCount;
+@property (nonatomic, readonly) NSInteger workingCount;
 
 - (void)workingRetain;
 - (void)workingRelease;
