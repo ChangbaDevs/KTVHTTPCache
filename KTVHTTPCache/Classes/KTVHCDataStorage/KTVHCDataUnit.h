@@ -11,9 +11,9 @@
 
 @class KTVHCDataUnit;
 
-@protocol KTVHCDataUnitFileDelegate <NSObject>
+@protocol KTVHCDataUnitDelegate <NSObject>
 
-- (void)unitShouldRearchive:(KTVHCDataUnit *)unit;
+- (void)unitDidChangeMetadata:(KTVHCDataUnit *)unit;
 
 @end
 
@@ -58,7 +58,7 @@
 /**
  *  File Control
  */
-@property (nonatomic, weak) id <KTVHCDataUnitFileDelegate> fileDelegate;
+@property (nonatomic, weak) id <KTVHCDataUnitDelegate> delegate;
 
 - (void)deleteFiles;
 

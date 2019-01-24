@@ -15,7 +15,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KTVHCDataUnitPool () <NSLocking, KTVHCDataUnitFileDelegate>
+@interface KTVHCDataUnitPool () <NSLocking, KTVHCDataUnitDelegate>
 
 @property (nonatomic, strong) NSRecursiveLock *coreLock;
 @property (nonatomic, strong) KTVHCDataUnitQueue *unitQueue;
@@ -42,7 +42,7 @@
     if (self = [super init]) {
         self.unitQueue = [[KTVHCDataUnitQueue alloc] initWithPath:[KTVHCPathTool archivePath]];
         for (KTVHCDataUnit *obj in self.unitQueue.allUnits) {
-            obj.fileDelegate = self;
+            obj.delegate = self;
         }
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
         [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -67,7 +67,7 @@
     KTVHCDataUnit *unit = [self.unitQueue unitWithKey:key];
     if (!unit) {
         unit = [[KTVHCDataUnit alloc] initWithURL:URL];
-        unit.fileDelegate = self;
+        unit.delegate = self;
         KTVHCLogDataUnitPool(@"%p, Insert Unit, %@", self, unit);
         [self.unitQueue putUnit:unit];
         [self setNeedsArchive];
@@ -216,7 +216,7 @@
     [self unlock];
 }
 
-- (void)unitShouldRearchive:(KTVHCDataUnit *)unit
+- (void)unitDidChangeMetadata:(KTVHCDataUnit *)unit
 {
     [self setNeedsArchive];
 }
