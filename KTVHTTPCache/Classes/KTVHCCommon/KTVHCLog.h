@@ -28,10 +28,7 @@ KTVHCLogEnable(Common,            YES, YES)
  */
 KTVHCLogEnable(HTTPServer,        YES, YES)
 KTVHCLogEnable(HTTPConnection,    YES, YES)
-KTVHCLogEnable(HTTPRequest,       YES, YES)
 KTVHCLogEnable(HTTPResponse,      YES, YES)
-KTVHCLogEnable(HTTPResponsePing,  YES, YES)
-KTVHCLogEnable(HTTPURL,           YES, YES)
 
 /**
  *  Data Storage
@@ -48,7 +45,6 @@ KTVHCLogEnable(DataUnitPool,      YES, YES)
 KTVHCLogEnable(DataUnitQueue,     YES, YES)
 
 KTVHCLogEnable(DataSourceManager, YES, YES)
-KTVHCLogEnable(DataSourceQueue,   YES, YES)
 KTVHCLogEnable(DataFileSource,    YES, YES)
 KTVHCLogEnable(DataNetworkSource, YES, YES)
 
@@ -90,10 +86,7 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
  */
 #define KTVHCLogHTTPServer(...)             KTVHCLogging(@"KTVHCHTTPServer       ", KTVHCLogEnableValueConsoleLog(HTTPServer),        KTVHCLogEnableValueRecordLog(HTTPServer),        ##__VA_ARGS__)
 #define KTVHCLogHTTPConnection(...)         KTVHCLogging(@"KTVHCHTTPConnection   ", KTVHCLogEnableValueConsoleLog(HTTPConnection),    KTVHCLogEnableValueRecordLog(HTTPConnection),    ##__VA_ARGS__)
-#define KTVHCLogHTTPRequest(...)            KTVHCLogging(@"KTVHCHTTPRequest      ", KTVHCLogEnableValueConsoleLog(HTTPRequest),       KTVHCLogEnableValueRecordLog(HTTPRequest),       ##__VA_ARGS__)
 #define KTVHCLogHTTPResponse(...)           KTVHCLogging(@"KTVHCHTTPResponse     ", KTVHCLogEnableValueConsoleLog(HTTPResponse),      KTVHCLogEnableValueRecordLog(HTTPResponse),      ##__VA_ARGS__)
-#define KTVHCLogHTTPResponsePing(...)       KTVHCLogging(@"KTVHCHTTPPingResponse ", KTVHCLogEnableValueConsoleLog(HTTPResponsePing),  KTVHCLogEnableValueRecordLog(HTTPResponsePing),  ##__VA_ARGS__)
-#define KTVHCLogHTTPURL(...)                KTVHCLogging(@"KTVHCHTTPURL          ", KTVHCLogEnableValueConsoleLog(HTTPURL),           KTVHCLogEnableValueRecordLog(HTTPURL),           ##__VA_ARGS__)
 
 /**
  *  Data Storage
@@ -110,7 +103,6 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 #define KTVHCLogDataUnitQueue(...)          KTVHCLogging(@"KTVHCDataUnitQueue    ", KTVHCLogEnableValueConsoleLog(DataUnitQueue),     KTVHCLogEnableValueRecordLog(DataUnitQueue),     ##__VA_ARGS__)
 
 #define KTVHCLogDataSourceManager(...)      KTVHCLogging(@"KTVHCDataSourceManager", KTVHCLogEnableValueConsoleLog(DataSourceManager), KTVHCLogEnableValueRecordLog(DataSourceManager), ##__VA_ARGS__)
-#define KTVHCLogDataSourceQueue(...)        KTVHCLogging(@"KTVHCDataSourceQueue  ", KTVHCLogEnableValueConsoleLog(DataSourceQueue),   KTVHCLogEnableValueRecordLog(DataSourceQueue),   ##__VA_ARGS__)
 #define KTVHCLogDataFileSource(...)         KTVHCLogging(@"KTVHCDataFileSource   ", KTVHCLogEnableValueConsoleLog(DataFileSource),    KTVHCLogEnableValueRecordLog(DataFileSource),    ##__VA_ARGS__)
 #define KTVHCLogDataNetworkSource(...)      KTVHCLogging(@"KTVHCDataNetworkSource", KTVHCLogEnableValueConsoleLog(DataNetworkSource), KTVHCLogEnableValueRecordLog(DataNetworkSource), ##__VA_ARGS__)
 
