@@ -29,6 +29,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 @property (nonatomic, strong) NSMutableDictionary<NSURLSessionTask *, NSError *> *errorDictionary;
 @property (nonatomic, strong) NSMutableDictionary<NSURLSessionTask *, KTVHCDataRequest *> *requestDictionary;
 @property (nonatomic, strong) NSMutableDictionary<NSURLSessionTask *, id<KTVHCDownloadDelegate>> *delegateDictionary;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 
 @end
 
@@ -49,6 +50,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     if (self = [super init]) {
         KTVHCLogAlloc(self);
         self.timeoutInterval = 30.0f;
+        self.backgroundTask = UIBackgroundTaskInvalid;
         self.errorDictionary = [NSMutableDictionary dictionary];
         self.requestDictionary = [NSMutableDictionary dictionary];
         self.delegateDictionary = [NSMutableDictionary dictionary];
@@ -136,7 +138,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [self.requestDictionary removeObjectForKey:task];
     [self.errorDictionary removeObjectForKey:task];
     if (self.delegateDictionary.count <= 0) {
-        [self cleanBackgroundTaskAsync];
+        [self endBackgroundTaskDelay];
     }
     [self unlock];
 }
@@ -243,49 +245,41 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 
 #pragma mark - Background Task
 
-static UIBackgroundTaskIdentifier backgroundTaskIdentifier = -1;
-
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-    [self cleanBackgroundTask];
     [self lock];
     if (self.delegateDictionary.count > 0) {
-        backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-            [self cleanBackgroundTask];
-        }];
-        UIBackgroundTaskIdentifier identifier = backgroundTaskIdentifier;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(300 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (identifier == backgroundTaskIdentifier) {
-                [self cleanBackgroundTask];
-            }
-        });
+        [self beginBackgroundTask];
     }
     [self unlock];
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification
 {
-    [self cleanBackgroundTask];
+    [self endBackgroundTask];
 }
 
-- (void)cleanBackgroundTask
+- (void)beginBackgroundTask
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-    });
-    if (backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:backgroundTaskIdentifier];
-        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        [self endBackgroundTask];
+    }];
+}
+
+- (void)endBackgroundTask
+{
+    if (self.backgroundTask != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+        self.backgroundTask = UIBackgroundTaskInvalid;
     }
 }
 
-- (void)cleanBackgroundTaskAsync
+- (void)endBackgroundTaskDelay
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self lock];
         if (self.delegateDictionary.count <= 0) {
-            [self cleanBackgroundTask];
+            [self endBackgroundTask];
         }
         [self unlock];
     });
