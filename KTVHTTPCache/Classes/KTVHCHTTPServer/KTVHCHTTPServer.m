@@ -105,36 +105,32 @@
     self.server = nil;
 }
 
-#pragma mark - Background
+#pragma mark - Background Task
 
 - (void)applicationDidEnterBackground
 {
     if (self.server.numberOfHTTPConnections > 0) {
         [self beginBackgroundTask];
     } else {
-        [self endBackgroundTask];
+        [self stopInternal];
     }
 }
 
 - (void)applicationWillEnterForeground
 {
-    if (self.backgroundTask == UIBackgroundTaskInvalid) {
-        if (self.wantsRunning) {
-            [self startInternal:nil];
-        }
-    } else {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-        self.backgroundTask = UIBackgroundTaskInvalid;
+    if (self.backgroundTask == UIBackgroundTaskInvalid && self.wantsRunning) {
+        [self startInternal:nil];
     }
+    [self endBackgroundTask];
 }
 
 - (void)HTTPConnectionDidDie
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground &&
-            self.backgroundTask != UIBackgroundTaskInvalid &&
             self.server.numberOfHTTPConnections == 0) {
             [self endBackgroundTask];
+            [self stopInternal];
         }
     });
 }
@@ -143,14 +139,16 @@
 {
     self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
         [self endBackgroundTask];
+        [self stopInternal];
     }];
 }
 
 - (void)endBackgroundTask
 {
-    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-    self.backgroundTask = UIBackgroundTaskInvalid;
-    [self stopInternal];
+    if (self.backgroundTask != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+        self.backgroundTask = UIBackgroundTaskInvalid;
+    }
 }
 
 @end
