@@ -77,8 +77,13 @@
 
 - (NSDictionary *)httpHeaders
 {
-    KTVHCLogHTTPResponse(@"%p, Header\n%@", self, self.reader.response.headerFieldsWithoutRangeAndLength);
-    return self.reader.response.headerFieldsWithoutRangeAndLength;
+    NSMutableDictionary *headers = [self.reader.response.headerFields mutableCopy];
+    [headers removeObjectForKey:@"Content-Range"];
+    [headers removeObjectForKey:@"content-range"];
+    [headers removeObjectForKey:@"Content-Length"];
+    [headers removeObjectForKey:@"content-length"];
+    KTVHCLogHTTPResponse(@"%p, Header\n%@", self, headers);
+    return headers;
 }
 
 - (UInt64)offset
@@ -100,7 +105,7 @@
 
 - (void)connectionDidClose
 {
-    KTVHCLogHTTPResponse(@"%p, Connection did closed : %lld, %lld", self, self.reader.response.currentLength, self.reader.readedLength);
+    KTVHCLogHTTPResponse(@"%p, Connection did closed : %lld, %lld", self, self.reader.response.contentLength, self.reader.readedLength);
     [self.reader close];
 }
 

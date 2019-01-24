@@ -174,9 +174,9 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         }
     }
     if (!error) {
-        if (dataResponse.currentLength <= 0 ||
+        if (dataResponse.contentLength <= 0 ||
             (!KTVHCRangeIsFull(dataRequest.range) &&
-             (dataResponse.currentLength != KTVHCRangeGetLength(dataRequest.range)))) {
+             (dataResponse.contentLength != KTVHCRangeGetLength(dataRequest.range)))) {
                 error = [KTVHCError errorForUnsupportContentType:task.currentRequest.URL
                                                          request:task.currentRequest
                                                         response:task.response];
@@ -186,13 +186,13 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         long long (^getDeletionLength)(long long) = ^(long long desireLength){
             return desireLength + [KTVHCDataStorage storage].totalCacheLength - [KTVHCDataStorage storage].maxCacheLength;
         };
-        long long length = getDeletionLength(dataResponse.currentLength);
+        long long length = getDeletionLength(dataResponse.contentLength);
         if (length > 0) {
             [[KTVHCDataUnitPool pool] deleteUnitsWithLength:length];
-            length = getDeletionLength(dataResponse.currentLength);
+            length = getDeletionLength(dataResponse.contentLength);
             if (length > 0) {
                 error = [KTVHCError errorForNotEnoughDiskSpace:dataResponse.totalLength
-                                                       request:dataResponse.currentLength
+                                                       request:dataResponse.contentLength
                                               totalCacheLength:[KTVHCDataStorage storage].totalCacheLength
                                                 maxCacheLength:[KTVHCDataStorage storage].maxCacheLength];
             }

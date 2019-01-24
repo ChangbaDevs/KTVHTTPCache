@@ -18,11 +18,11 @@
 
 @property (nonatomic, copy, readonly) NSURL *URL;
 @property (nonatomic, copy, readonly) NSDictionary *headerFields;
-@property (nonatomic, copy, readonly) NSDictionary *headerFieldsWithoutRangeAndLength;
 @property (nonatomic, copy, readonly) NSString *contentType;
-@property (nonatomic, readonly) KTVHCRange range;
+@property (nonatomic, copy, readonly) NSString *contentRangeString;
+@property (nonatomic, readonly) KTVHCRange contentRange;
+@property (nonatomic, readonly) long long contentLength;
 @property (nonatomic, readonly) long long totalLength;
-@property (nonatomic, readonly) long long currentLength;
 
 - (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range;
 

@@ -115,7 +115,7 @@
         data = [self.readingHandle readDataOfLength:(NSUInteger)MIN(self.downloadLength - self.readedLength, length)];
         self->_readedLength += data.length;
         KTVHCLogDataNetworkSource(@"%p, Read data\nLength : %lld\ndownloadLength : %lld\nreadedLength : %lld", self, (long long)data.length, self.readedLength, self.downloadLength);
-        if (self.readedLength >= KTVHCRangeGetLength(self.response.range)) {
+        if (self.readedLength >= KTVHCRangeGetLength(self.response.contentRange)) {
             self->_finished = YES;
             KTVHCLogDataNetworkSource(@"%p, Read data did finished", self);
             [self destoryReadingHandle];
@@ -150,7 +150,7 @@
         } else {
             KTVHCLogDataNetworkSource(@"%p, Complete with cancel\nError : %@", self, error);
         }
-    } else if (self.downloadLength >= KTVHCRangeGetLength(self.response.range)) {
+    } else if (self.downloadLength >= KTVHCRangeGetLength(self.response.contentRange)) {
         KTVHCLogDataNetworkSource(@"%p, Complete and finisehed", self);
         if ([self.delegate respondsToSelector:@selector(networkSourceDidFinisheDownload:)]) {
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{

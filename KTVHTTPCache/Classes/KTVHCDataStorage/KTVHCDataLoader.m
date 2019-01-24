@@ -109,7 +109,7 @@
                     [self.delegate loaderDidFinish:self];
                 }
             } else if (data) {
-                self->_progress = (double)self.reader.readedLength / (double)self.response.currentLength;
+                self->_progress = (double)self.reader.readedLength / (double)self.response.contentLength;
                 if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
                     [self.delegate loader:self didChangeProgress:_progress];
                 }
