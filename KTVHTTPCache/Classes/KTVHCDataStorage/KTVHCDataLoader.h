@@ -35,8 +35,8 @@
 
 @property (nonatomic, copy, readonly) NSError *error;
 
-@property (nonatomic, readonly) BOOL finished;
-@property (nonatomic, readonly) BOOL closed;
+@property (nonatomic, readonly, getter=isFinished) BOOL finished;
+@property (nonatomic, readonly, getter=isClosed) BOOL closed;
 
 @property (nonatomic, readonly) double progress;
 

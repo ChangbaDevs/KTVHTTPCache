@@ -59,7 +59,7 @@
 - (void)prepare
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -76,7 +76,7 @@
 - (void)close
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -95,7 +95,7 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.closed || self.finished || self.error) {
+    if (self.isClosed || self.isFinished || self.error) {
         [self unlock];
         return nil;
     }
@@ -140,7 +140,7 @@
     [self lock];
     self.downloadCalledComplete = YES;
     [self destoryWritingHandle];
-    if (self.closed) {
+    if (self.isClosed) {
         KTVHCLogDataNetworkSource(@"%p, Complete but did closed\nError : %@", self, error);
     } else if (self.error) {
         KTVHCLogDataNetworkSource(@"%p, Complete but did failed\nself.error : %@\nerror : %@", self, self.error, error);
@@ -166,7 +166,7 @@
 - (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
-    if (self.closed || self.error) {
+    if (self.isClosed || self.error) {
         [self unlock];
         return;
     }
@@ -186,7 +186,7 @@
 - (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data
 {
     [self lock];
-    if (self.closed || self.error) {
+    if (self.isClosed || self.error) {
         [self unlock];
         return;
     }
@@ -236,10 +236,10 @@
 
 - (void)callbackForPrepared
 {
-    if (self.closed) {
+    if (self.isClosed) {
         return;
     }
-    if (self.prepared) {
+    if (self.isPrepared) {
         return;
     }
     self->_prepared = YES;
@@ -254,7 +254,7 @@
 
 - (void)callbackForHasAvailableData
 {
-    if (self.closed) {
+    if (self.isClosed) {
         return;
     }
     if (!self.callHasAvailableData) {
@@ -272,7 +272,7 @@
 
 - (void)callbackForFailed:(NSError *)error
 {
-    if (self.closed || !error || self.error) {
+    if (self.isClosed || !error || self.error) {
         return;
     }
     self->_error = error;

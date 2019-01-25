@@ -50,7 +50,7 @@
 - (void)prepare
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -94,7 +94,7 @@
 - (void)close
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -109,11 +109,11 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return nil;
     }
-    if (self.finished) {
+    if (self.isFinished) {
         [self unlock];
         return nil;
     }
@@ -124,7 +124,7 @@
     NSData *data = [self.currentSource readDataOfLength:length];
     self->_readedLength += data.length;
     KTVHCLogDataSourceManager(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.currentSource.finished) {
+    if (self.currentSource.isFinished) {
         self.currentSource = [self nextSource];
         if (self.currentSource) {
             KTVHCLogDataSourceManager(@"%p, Switch to next source, %@", self, self.currentSource);
@@ -219,10 +219,10 @@
 
 - (void)callbackForPrepared
 {
-    if (self.closed) {
+    if (self.isClosed) {
         return;
     }
-    if (self.prepared) {
+    if (self.isPrepared) {
         return;
     }
     self->_prepared = YES;
@@ -237,7 +237,7 @@
 
 - (void)callbackForReceiveResponse:(KTVHCDataResponse *)response
 {
-    if (self.closed) {
+    if (self.isClosed) {
         return;
     }
     if (self.calledReceiveResponse) {
@@ -259,7 +259,7 @@
         return;
     }
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }

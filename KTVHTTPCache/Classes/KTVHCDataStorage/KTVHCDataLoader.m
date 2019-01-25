@@ -66,12 +66,12 @@
 
 - (BOOL)didClosed
 {
-    return self.reader.closed;
+    return self.reader.isClosed;
 }
 
 - (BOOL)didFinished
 {
-    return self.reader.finished;
+    return self.reader.isFinished;
 }
 
 #pragma mark - KTVHCDataReaderDelegate
@@ -99,7 +99,7 @@
     while (YES) {
         @autoreleasepool {
             NSData *data = [self.reader readDataOfLength:1024 * 1024 * 1];
-            if (self.reader.finished) {
+            if (self.reader.isFinished) {
                 self->_progress = 1.0f;
                 if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
                     [self.delegate loader:self didChangeProgress:_progress];

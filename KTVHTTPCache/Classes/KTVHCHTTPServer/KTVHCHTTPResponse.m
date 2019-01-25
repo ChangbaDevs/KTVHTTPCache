@@ -46,7 +46,7 @@
 {
     NSData *data = [self.reader readDataOfLength:length];
     KTVHCLogHTTPResponse(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.reader.finished) {
+    if (self.reader.isFinished) {
         KTVHCLogHTTPResponse(@"%p, Read data did finished", self);
         [self.reader close];
         [self.connection responseDidAbort:self];
@@ -56,7 +56,7 @@
 
 - (BOOL)delayResponseHeaders
 {
-    BOOL waiting = !self.reader.prepared;
+    BOOL waiting = !self.reader.isPrepared;
     self.waitingResponse = waiting;
     KTVHCLogHTTPResponse(@"%p, Delay response : %d", self, self.waitingResponse);
     return waiting;
@@ -92,8 +92,8 @@
 
 - (BOOL)isDone
 {
-    KTVHCLogHTTPResponse(@"%p, Check done : %d", self, self.reader.finished);
-    return self.reader.finished;
+    KTVHCLogHTTPResponse(@"%p, Check done : %d", self, self.reader.isFinished);
+    return self.reader.isFinished;
 }
 
 - (void)connectionDidClose
@@ -107,7 +107,7 @@
 - (void)readerDidPrepare:(KTVHCDataReader *)reader
 {
     KTVHCLogHTTPResponse(@"%p, Prepared", self);
-    if (self.reader.prepared && self.waitingResponse == YES) {
+    if (self.reader.isPrepared && self.waitingResponse == YES) {
         KTVHCLogHTTPResponse(@"%p, Call connection did prepared", self);
         [self.connection responseHasAvailableData:self];
     }

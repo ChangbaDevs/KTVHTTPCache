@@ -48,7 +48,7 @@
 - (void)prepare
 {
     [self lock];
-    if (self.prepared) {
+    if (self.isPrepared) {
         [self unlock];
         return;
     }
@@ -75,7 +75,7 @@
 - (void)close
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -88,11 +88,11 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return nil;
     }
-    if (self.finished) {
+    if (self.isFinished) {
         [self unlock];
         return nil;
     }

@@ -48,7 +48,7 @@
 - (void)prepare
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -65,7 +65,7 @@
 - (void)close
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -80,11 +80,11 @@
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return nil;
     }
-    if (self.finished) {
+    if (self.isFinished) {
         [self unlock];
         return nil;
     }
@@ -95,7 +95,7 @@
     NSData *data = [self.sourceManager readDataOfLength:length];;
     self->_readedLength += data.length;
     KTVHCLogDataReader(@"%p, Read data : %lld", self, (long long)data.length);
-    if (self.sourceManager.finished) {
+    if (self.sourceManager.isFinished) {
         KTVHCLogDataReader(@"%p, Read data did finished", self);
         self->_finished = YES;
         [self close];
@@ -181,7 +181,7 @@
 - (void)sourceManagerHasAvailableData:(KTVHCDataSourceManager *)sourceManager
 {
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -201,7 +201,7 @@
         return;
     }
     [self lock];
-    if (self.closed) {
+    if (self.isClosed) {
         [self unlock];
         return;
     }
@@ -224,13 +224,13 @@
 
 - (void)callbackForPrepared
 {
-    if (self.closed) {
+    if (self.isClosed) {
         return;
     }
-    if (self.prepared) {
+    if (self.isPrepared) {
         return;
     }
-    if (self.sourceManager.prepared && self.unit.totalLength > 0) {
+    if (self.sourceManager.isPrepared && self.unit.totalLength > 0) {
         long long totalLength = self.unit.totalLength;
         KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);
         NSDictionary *headerFields = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaderFields, totalLength);
