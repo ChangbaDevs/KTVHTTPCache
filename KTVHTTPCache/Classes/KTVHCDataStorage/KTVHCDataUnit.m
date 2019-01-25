@@ -162,17 +162,17 @@
     }
 }
 
-- (NSURL *)fileURL
+- (NSURL *)completeURL
 {
     [self lock];
-    NSURL *fileURL = nil;
+    NSURL *completeURL = nil;
     KTVHCDataUnitItem *item = self.unitItemsInternal.firstObject;
     if (item.offset == 0 && item.length > 0 && item.length == self.totalLength) {
-        fileURL = [NSURL fileURLWithPath:item.absolutePath];
-        KTVHCLogDataUnit(@"%p, Get file path\n%@", self, fileURL);
+        completeURL = [NSURL fileURLWithPath:item.absolutePath];
+        KTVHCLogDataUnit(@"%p, Get file path\n%@", self, completeURL);
     }
     [self unlock];
-    return fileURL;
+    return completeURL;
 }
 
 - (long long)cacheLength

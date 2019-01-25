@@ -33,9 +33,9 @@
 - (NSURL *)completeFileURLWithURL:(NSURL *)URL
 {
     KTVHCDataUnit *unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
-    NSURL *fileURL = unit.fileURL;
+    NSURL *completeURL = unit.completeURL;
     [unit workingRelease];
-    return fileURL;
+    return completeURL;
 }
 
 - (KTVHCDataReader *)readerWithRequest:(KTVHCDataRequest *)request

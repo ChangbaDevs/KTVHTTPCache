@@ -27,7 +27,7 @@
 @property (nonatomic, copy, readonly) NSError *error;
 
 @property (nonatomic, copy, readonly) NSURL *URL;
-@property (nonatomic, copy, readonly) NSURL *fileURL;
+@property (nonatomic, copy, readonly) NSURL *completeURL;
 @property (nonatomic, copy, readonly) NSString *key;       // Unique Identifier.
 @property (nonatomic, copy, readonly) NSDictionary *responseHeaderFields;
 @property (nonatomic, readonly) NSTimeInterval createTimeInterval;
