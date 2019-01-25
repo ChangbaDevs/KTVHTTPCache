@@ -173,7 +173,7 @@
 - (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
-    [self.unit updateResponseHeaderFields:response.headerFields totalLength:response.totalLength];
+    [self.unit updateResponseHeaders:response.headers totalLength:response.totalLength];
     [self callbackForPrepared];
     [self unlock];
 }
@@ -233,8 +233,8 @@
     if (self.sourceManager.isPrepared && self.unit.totalLength > 0) {
         long long totalLength = self.unit.totalLength;
         KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);
-        NSDictionary *headerFields = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaderFields, totalLength);
-        self->_response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headerFields:headerFields];
+        NSDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength);
+        self->_response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headers:headers];
         self->_prepared = YES;
         KTVHCLogDataReader(@"%p, Reader did prepared\nResponse : %@", self, self.response);
         if ([self.delegate respondsToSelector:@selector(readerDidPrepare:)]) {

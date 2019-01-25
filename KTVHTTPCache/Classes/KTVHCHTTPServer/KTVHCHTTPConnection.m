@@ -32,7 +32,7 @@
     KTVHCLogHTTPConnection(@"%p, Receive request\nmethod : %@\npath : %@\nURL : %@", self, method, path, request.url);
     NSDictionary<NSString *,NSString *> *parameters = [[KTVHCURLTool tool] parseQuery:request.url.query];
     NSURL *URL = [NSURL URLWithString:[parameters objectForKey:@"url"]];
-    KTVHCDataRequest *dataRequest = [[KTVHCDataRequest alloc] initWithURL:URL headerFields:request.allHeaderFields];
+    KTVHCDataRequest *dataRequest = [[KTVHCDataRequest alloc] initWithURL:URL headers:request.allHeaderFields];
     KTVHCHTTPResponse *response = [[KTVHCHTTPResponse alloc] initWithConnection:self dataRequest:dataRequest];
     return response;
 }

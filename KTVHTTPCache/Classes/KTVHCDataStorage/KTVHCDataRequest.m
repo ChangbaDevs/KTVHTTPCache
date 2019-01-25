@@ -11,14 +11,14 @@
 
 @implementation KTVHCDataRequest
 
-- (instancetype)initWithURL:(NSURL *)URL headerFields:(NSDictionary *)headerFields
+- (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers
 {
     if (self = [super init]) {
         KTVHCLogAlloc(self);
         self->_URL = URL;
-        self->_headerFields = KTVHCRangeFillToRequestHeadersIfNeeded(KTVHCRangeFull(), headerFields);
-        self->_range = KTVHCRangeWithRequestHeaderValue([self.headerFields objectForKey:@"Range"]);
-        KTVHCLogDataRequest(@"%p Create data request\nURL : %@\nHeaders : %@\nRange : %@", self, self.URL, self.headerFields, KTVHCStringFromRange(self.range));
+        self->_headers = KTVHCRangeFillToRequestHeadersIfNeeded(KTVHCRangeFull(), headers);
+        self->_range = KTVHCRangeWithRequestHeaderValue([self.headers objectForKey:@"Range"]);
+        KTVHCLogDataRequest(@"%p Create data request\nURL : %@\nHeaders : %@\nRange : %@", self, self.URL, self.headers, KTVHCStringFromRange(self.range));
     }
     return self;
 }
@@ -30,8 +30,8 @@
 
 - (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range
 {
-    NSDictionary *headerFields = KTVHCRangeFillToRequestHeaders(range, self.headerFields);
-    KTVHCDataRequest *obj = [[KTVHCDataRequest alloc] initWithURL:self.URL headerFields:headerFields];
+    NSDictionary *headers = KTVHCRangeFillToRequestHeaders(range, self.headers);
+    KTVHCDataRequest *obj = [[KTVHCDataRequest alloc] initWithURL:self.URL headers:headers];
     return obj;
 }
 

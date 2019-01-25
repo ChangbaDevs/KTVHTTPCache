@@ -29,7 +29,7 @@
 @property (nonatomic, copy, readonly) NSURL *URL;
 @property (nonatomic, copy, readonly) NSURL *completeURL;
 @property (nonatomic, copy, readonly) NSString *key;       // Unique Identifier.
-@property (nonatomic, copy, readonly) NSDictionary *responseHeaderFields;
+@property (nonatomic, copy, readonly) NSDictionary *responseHeaders;
 @property (nonatomic, readonly) NSTimeInterval createTimeInterval;
 @property (nonatomic, readonly) NSTimeInterval lastItemCreateInterval;
 @property (nonatomic, readonly) long long totalLength;
@@ -45,7 +45,7 @@
 /**
  *  Info Sync
  */
-- (void)updateResponseHeaderFields:(NSDictionary *)responseHeaders totalLength:(long long)totalLength;
+- (void)updateResponseHeaders:(NSDictionary *)responseHeaders totalLength:(long long)totalLength;
 
 /**
  *  Working

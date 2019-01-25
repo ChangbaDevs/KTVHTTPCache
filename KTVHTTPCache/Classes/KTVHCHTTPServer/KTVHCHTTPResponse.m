@@ -70,7 +70,7 @@
 
 - (NSDictionary *)httpHeaders
 {
-    NSMutableDictionary *headers = [self.reader.response.headerFields mutableCopy];
+    NSMutableDictionary *headers = [self.reader.response.headers mutableCopy];
     [headers removeObjectForKey:@"Content-Range"];
     [headers removeObjectForKey:@"content-range"];
     [headers removeObjectForKey:@"Content-Length"];

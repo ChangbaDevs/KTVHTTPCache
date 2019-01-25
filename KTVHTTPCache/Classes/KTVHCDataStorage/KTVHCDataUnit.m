@@ -44,7 +44,7 @@
         }
         @try {
             self->_createTimeInterval = [[aDecoder decodeObjectForKey:@"createTimeInterval"] doubleValue];
-            self->_responseHeaderFields = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
+            self->_responseHeaders = [aDecoder decodeObjectForKey:@"responseHeaderFields"];
             self->_totalLength = [[aDecoder decodeObjectForKey:@"totalContentLength"] longLongValue];
             self->_unitItemsInternal = [[aDecoder decodeObjectForKey:@"unitItems"] mutableCopy];
             [self commonInit];
@@ -61,7 +61,7 @@
     [aCoder encodeObject:self.URL.absoluteString forKey:@"URLString"];
     [aCoder encodeObject:self.key forKey:@"uniqueIdentifier"];
     [aCoder encodeObject:@(self.createTimeInterval) forKey:@"createTimeInterval"];
-    [aCoder encodeObject:self.responseHeaderFields forKey:@"responseHeaderFields"];
+    [aCoder encodeObject:self.responseHeaders forKey:@"responseHeaderFields"];
     [aCoder encodeObject:@(self.totalLength) forKey:@"totalContentLength"];
     [aCoder encodeObject:self.unitItemsInternal forKey:@"unitItems"];
     [self unlock];
@@ -88,7 +88,7 @@
     }
     [self.unitItemsInternal removeObjectsInArray:removal];
     [self sortUnitItems];
-    KTVHCLogDataUnit(@"%p, Create Unit\nURL : %@\nkey : %@\ntimeInterval : %@\ntotalLength : %lld\ncacheLength : %lld\nvaildLength : %lld\nresponseHeaders : %@\nunitItems : %@", self, self.URL, self.key, [NSDate dateWithTimeIntervalSince1970:self.createTimeInterval], self.totalLength, self.cacheLength, self.validLength, self.responseHeaderFields, self.unitItemsInternal);
+    KTVHCLogDataUnit(@"%p, Create Unit\nURL : %@\nkey : %@\ntimeInterval : %@\ntotalLength : %lld\ncacheLength : %lld\nvaildLength : %lld\nresponseHeaders : %@\nunitItems : %@", self, self.URL, self.key, [NSDate dateWithTimeIntervalSince1970:self.createTimeInterval], self.totalLength, self.cacheLength, self.validLength, self.responseHeaders, self.unitItemsInternal);
     [self unlock];
 }
 
@@ -131,7 +131,7 @@
     [self.delegate unitDidChangeMetadata:self];
 }
 
-- (void)updateResponseHeaderFields:(NSDictionary *)responseHeaderFields totalLength:(long long)totalLength
+- (void)updateResponseHeaders:(NSDictionary *)responseHeaders totalLength:(long long)totalLength
 {
     [self lock];
     BOOL needs = NO;
@@ -143,19 +143,19 @@
                       @"Content-Type",
                       @"Server"];
     });
-    NSMutableDictionary *headerFields = [NSMutableDictionary dictionary];
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     for (NSString *key in whiteList) {
-        NSString *value = [responseHeaderFields objectForKey:key];
+        NSString *value = [responseHeaders objectForKey:key];
         if (value) {
-            [headerFields setObject:value forKey:key];
+            [headers setObject:value forKey:key];
         }
     }
-    if (self.totalLength != totalLength || ![self.responseHeaderFields isEqualToDictionary:headerFields]) {
-        self->_responseHeaderFields = headerFields;
+    if (self.totalLength != totalLength || ![self.responseHeaders isEqualToDictionary:headers]) {
+        self->_responseHeaders = headers;
         self->_totalLength = totalLength;
         needs = YES;
     }
-    KTVHCLogDataUnit(@"%p, Update responseHeaders\ntotalLength : %lld\n%@", self, self.totalLength, self.responseHeaderFields);
+    KTVHCLogDataUnit(@"%p, Update responseHeaders\ntotalLength : %lld\n%@", self, self.totalLength, self.responseHeaders);
     [self unlock];
     if (needs) {
         [self.delegate unitDidChangeMetadata:self];
