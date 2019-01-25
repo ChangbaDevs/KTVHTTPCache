@@ -71,7 +71,7 @@
 
 - (void)cacheItemView:(CacheItemView *)view deleteButtonDidClick:(NSString *)URLString
 {
-    [KTVHTTPCache cacheDeleteCacheWithURLString:URLString];
+    [KTVHTTPCache cacheDeleteCacheWithURL:[NSURL URLWithString:URLString]];
     [self setupItems];
 }
 

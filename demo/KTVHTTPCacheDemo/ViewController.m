@@ -41,11 +41,11 @@
     } else {
         NSLog(@"Proxy Start Success");
     }
-    [KTVHTTPCache tokenSetURLFilter:^NSURL *(NSURL *URL) {
+    [KTVHTTPCache encodeSetURLConverter:^NSURL *(NSURL *URL) {
         NSLog(@"URL Filter reviced URL : %@", URL);
         return URL;
     }];
-    [KTVHTTPCache downloadSetUnsupportContentTypeFilter:^BOOL(NSURL *URL, NSString *contentType) {
+    [KTVHTTPCache downloadSetUnacceptableContentTypeDisposer:^BOOL(NSURL *URL, NSString *contentType) {
         NSLog(@"Unsupport Content-Type Filter reviced URL : %@, %@", URL, contentType);
         return NO;
     }];
@@ -86,10 +86,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MediaItem *item = [self.items objectAtIndex:indexPath.row];
-    NSString *URLString = item.URLString;
-    URLString = [item.URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    URLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
-    MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URLString];
+    NSString *URLString = [item.URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *URL = [KTVHTTPCache proxyURLWithOriginalURL:[NSURL URLWithString:URLString]];
+    MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
     [self presentViewController:vc animated:YES completion:nil];
 }
 
