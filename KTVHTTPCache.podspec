@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.source_files        = "KTVHTTPCache", "KTVHTTPCache/**/*.{h,m}"
   s.public_header_files =
                           "KTVHTTPCache/KTVHTTPCache.h",
-                          "KTVHTTPCache/Classes/Common/KTVHCRange.h",
+                          "KTVHTTPCache/Classes/KTVHCCommon/KTVHCRange.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataReader.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataLoader.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataRequest.h",
