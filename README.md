@@ -5,7 +5,7 @@ KTVHTTPCache is a smart media cache framework. It can cache HTTP request, very s
 
 ## Flow Chart
 
-![KTVHTTPCache Flow Chart](http://oxl6mxy2t.bkt.clouddn.com/changba/KTVHTTPCache-flow-chart.jpeg)
+![KTVHTTPCache Flow Chart](http://libobjc-libs.oss-cn-beijing.aliyuncs.com/Resource/KTVHTTPCache-flow-chart-thin.jpeg)
 
 
 ## Features
