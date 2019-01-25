@@ -24,6 +24,4 @@
 @property (nonatomic, readonly) long long contentLength;
 @property (nonatomic, readonly) long long totalLength;
 
-- (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range;
-
 @end

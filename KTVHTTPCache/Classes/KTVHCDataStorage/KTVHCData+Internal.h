@@ -9,6 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCDataCacheItemZone.h"
 #import "KTVHCDataCacheItem.h"
+#import "KTVHCDataResponse.h"
+
+@interface KTVHCDataResponse (Internal)
+
+- (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range;
+
+@end
 
 @interface KTVHCDataCacheItem (Internal)
 
