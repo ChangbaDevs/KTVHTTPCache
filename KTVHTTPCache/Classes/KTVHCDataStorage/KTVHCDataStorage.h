@@ -23,7 +23,7 @@
 /**
  *  Return file path if the content did finished cache.
  */
-- (NSURL *)completeFileURLIfExistedWithURL:(NSURL *)URL;
+- (NSURL *)completeFileURLWithURL:(NSURL *)URL;
 
 /**
  *  Reader for certain request.

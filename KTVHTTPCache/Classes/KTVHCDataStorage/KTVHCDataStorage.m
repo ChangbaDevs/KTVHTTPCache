@@ -30,7 +30,7 @@
     return self;
 }
 
-- (NSURL *)completeFileURLIfExistedWithURL:(NSURL *)URL
+- (NSURL *)completeFileURLWithURL:(NSURL *)URL
 {
     KTVHCDataUnit *unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
     NSURL *fileURL = unit.fileURL;

@@ -62,11 +62,11 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
                                                      delegate:self
                                                 delegateQueue:self.sessionDelegateQueue];
-        self.acceptContentTypes = @[KTVHCContentTypeVideo,
-                                    KTVHCContentTypeAudio,
-                                    KTVHCContentTypeApplicationMPEG4,
-                                    KTVHCContentTypeApplicationOctetStream,
-                                    KTVHCContentTypeBinaryOctetStream];
+        self.acceptableContentTypes = @[KTVHCContentTypeVideo,
+                                        KTVHCContentTypeAudio,
+                                        KTVHCContentTypeApplicationMPEG4,
+                                        KTVHCContentTypeApplicationOctetStream,
+                                        KTVHCContentTypeBinaryOctetStream];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationDidEnterBackground:)
                                                      name:UIApplicationDidEnterBackgroundNotification
@@ -160,13 +160,13 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     if (!error) {
         BOOL vaild = NO;
         if (dataResponse.contentType.length > 0) {
-            for (NSString *obj in self.acceptContentTypes) {
+            for (NSString *obj in self.acceptableContentTypes) {
                 if ([[dataResponse.contentType lowercaseString] containsString:[obj lowercaseString]]) {
                     vaild = YES;
                 }
             }
-            if (!vaild && self.unsupportContentTypeFilter) {
-                vaild = self.unsupportContentTypeFilter(dataRequest.URL, dataResponse.contentType);
+            if (!vaild && self.unacceptableContentTypeDisposer) {
+                vaild = self.unacceptableContentTypeDisposer(dataRequest.URL, dataResponse.contentType);
             }
         }
         if (!vaild) {

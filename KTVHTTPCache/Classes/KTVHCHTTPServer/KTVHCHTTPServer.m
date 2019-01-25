@@ -64,10 +64,10 @@
     return self.server.isRunning;
 }
 
-- (void)start:(NSError **)error
+- (BOOL)start:(NSError **)error
 {
     self.wantsRunning = YES;
-    [self startInternal:error];
+    return [self startInternal:error];
 }
 
 - (void)stop
@@ -92,17 +92,19 @@
 
 #pragma mark - Internal
 
-- (void)startInternal:(NSError **)error
+- (BOOL)startInternal:(NSError **)error
 {
     self.server = [[HTTPServer alloc] init];
     [self.server setConnectionClass:[KTVHCHTTPConnection class]];
     [self.server setType:@"_http._tcp."];
     [self.server setPort:80];
-    if ([self.server start:error]) {
+    BOOL ret = [self.server start:error];
+    if (ret) {
         KTVHCLogHTTPServer(@"%p, Start server success", self);
     } else {
         KTVHCLogHTTPServer(@"%p, Start server failed", self);
     }
+    return ret;
 }
 
 - (void)stopInternal

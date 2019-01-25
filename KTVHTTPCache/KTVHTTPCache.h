@@ -42,7 +42,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 /**
  *  Start & Stop HTTP Server.
  */
-+ (void)proxyStart:(NSError **)error;
++ (BOOL)proxyStart:(NSError **)error;
 + (void)proxyStop;
 
 + (BOOL)proxyIsRunning;
@@ -51,15 +51,13 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  *  Return the URL string for local server.
  */
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL;
-+ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString;
 
 #pragma mark - Data Storage
 
 /**
  *  If the content of the URL is finish cached, return the file path for the content. Otherwise return nil.
  */
-+ (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL;
-+ (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString;
++ (NSURL *)cacheCompleteFileURLWithURL:(NSURL *)URL;
 
 /**
  *  Data Reader.
@@ -82,24 +80,22 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  *  Cache Item.
  */
 + (KTVHCDataCacheItem *)cacheCacheItemWithURL:(NSURL *)URL;
-+ (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString;
 + (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItems;
 
 /**
  *  Delete Cache.
  */
 + (void)cacheDeleteCacheWithURL:(NSURL *)URL;
-+ (void)cacheDeleteCacheWithURLString:(NSString *)URLString;
 + (void)cacheDeleteAllCaches;
 
-#pragma mark - Token
+#pragma mark - Encode
 
 /**
- *  URL Filter.
+ *  URL Converter.
  *
  *  High frequency call. Make it simple.
  */
-+ (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter;
++ (void)encodeSetURLConverter:(NSURL * (^)(NSURL *URL))URLConverter;
 
 #pragma mark - Download
 
@@ -121,14 +117,14 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 /**
  *  Default values: 'video/x', 'audio/x', 'application/mp4', 'application/octet-stream', 'binary/octet-stream'
  */
-+ (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes;
-+ (NSArray<NSString *> *)downloadAcceptContentTypes;
++ (void)downloadSetAcceptableContentTypes:(NSArray<NSString *> *)acceptableContentTypes;
++ (NSArray<NSString *> *)downloadAcceptableContentTypes;
 
 /**
  *  If the receive response's Content-Type not included in acceptContentTypes, this method will be called.
  *  The return value of block to decide whether to continue to load resources. Otherwise the HTTP task will be rejected.
  */
-+ (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL * URL, NSString * contentType))contentTypeFilter;
++ (void)downloadSetUnacceptableContentTypeDisposer:(BOOL(^)(NSURL *URL, NSString *contentType))unacceptableContentTypeDisposer;
 
 #pragma mark - Log
 
@@ -158,5 +154,24 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (NSDictionary<NSURL *, NSError *> *)logErrors;
 + (NSError *)logErrorForURL:(NSURL *)URL;
 + (void)logCleanErrorForURL:(NSURL *)URL;
+
+@end
+
+#pragma mark - Deprecated
+
+@interface KTVHTTPCache (Deprecated)
+
+/**
+ *  These API will be removed in future versions.
+ */
++ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString         __attribute__((deprecated("Use +proxyURLWithOriginalURL: instead.")));
++ (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL                    __attribute__((deprecated("Use +cacheCompleteFileURLWithURL: instead.")));
++ (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString __attribute__((deprecated("Use +cacheCompleteFileURLWithURL: instead.")));
++ (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString       __attribute__((deprecated("Use +cacheCacheItemWithURL: instead.")));
++ (void)cacheDeleteCacheWithURLString:(NSString *)URLString                     __attribute__((deprecated("Use +cacheDeleteCacheWithURL: instead.")));
++ (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter                   __attribute__((deprecated("Use +encodeSetURLConverter: instead.")));
++ (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes __attribute__((deprecated("Use +downloadSetAcceptableContentTypes: instead.")));
++ (NSArray<NSString *> *)downloadAcceptContentTypes                             __attribute__((deprecated("Use +downloadAcceptableContentTypes instead.")));
++ (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL *URL, NSString *contentType))contentTypeFilter __attribute__((deprecated("Use +downloadSetUnacceptableContentTypeDisposer: instead.")));
 
 @end

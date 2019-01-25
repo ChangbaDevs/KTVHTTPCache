@@ -7,8 +7,8 @@
 //
 
 #import "KTVHTTPCache.h"
-#import "KTVHCHTTPServer.h"
 #import "KTVHCDataStorage.h"
+#import "KTVHCHTTPServer.h"
 #import "KTVHCDownload.h"
 #import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
@@ -17,9 +17,9 @@
 
 #pragma mark - HTTP Server
 
-+ (void)proxyStart:(NSError * __autoreleasing *)error
++ (BOOL)proxyStart:(NSError **)error
 {
-    [[KTVHCHTTPServer server] start:error];
+    return [[KTVHCHTTPServer server] start:error];
 }
 
 + (void)proxyStop
@@ -29,35 +29,19 @@
 
 + (BOOL)proxyIsRunning
 {
-    return [KTVHCHTTPServer server].running;
+    return [KTVHCHTTPServer server].isRunning;
 }
 
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL
 {
-    URL = [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
-    return URL;
-}
-
-+ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString
-{
-    NSURL * URL = [NSURL URLWithString:URLString];
-    URL = [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
-    return URL.absoluteString;
+    return [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
 }
 
 #pragma mark - Data Storage
 
-+ (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL
++ (NSURL *)cacheCompleteFileURLWithURL:(NSURL *)URL
 {
-    URL = [[KTVHCDataStorage storage] completeFileURLIfExistedWithURL:URL];
-    return URL;
-}
-
-+ (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString
-{
-    NSURL * URL = [NSURL URLWithString:URLString];
-    URL = [[KTVHCDataStorage storage] completeFileURLIfExistedWithURL:URL];
-    return URL.path;
+    return [[KTVHCDataStorage storage] completeFileURLWithURL:URL];
 }
 
 + (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request
@@ -90,12 +74,6 @@
     return [[KTVHCDataStorage storage] cacheItemWithURL:URL];
 }
 
-+ (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString
-{
-    NSURL * URL = [NSURL URLWithString:URLString];
-    return [[KTVHCDataStorage storage] cacheItemWithURL:URL];
-}
-
 + (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItems
 {
     return [[KTVHCDataStorage storage] allCacheItems];
@@ -106,22 +84,16 @@
     [[KTVHCDataStorage storage] deleteCacheWithURL:URL];
 }
 
-+ (void)cacheDeleteCacheWithURLString:(NSString *)URLString
-{
-    NSURL * URL = [NSURL URLWithString:URLString];
-    [[KTVHCDataStorage storage] deleteCacheWithURL:URL];
-}
-
 + (void)cacheDeleteAllCaches
 {
     [[KTVHCDataStorage storage] deleteAllCaches];
 }
 
-#pragma mark - Token
+#pragma mark - Encode
 
-+ (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter
++ (void)encodeSetURLConverter:(NSURL * (^)(NSURL *URL))URLConverter;
 {
-    [KTVHCURLTool tool].URLConverter = URLFilter;
+    [KTVHCURLTool tool].URLConverter = URLConverter;
 }
 
 #pragma mark - Download
@@ -156,27 +128,26 @@
     return [KTVHCDownload download].additionalHeaders;
 }
 
-+ (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes
++ (void)downloadSetAcceptableContentTypes:(NSArray<NSString *> *)acceptableContentTypes
 {
-    [KTVHCDownload download].acceptContentTypes = acceptContentTypes;
+    [KTVHCDownload download].acceptableContentTypes = acceptableContentTypes;
 }
 
-+ (NSArray<NSString *> *)downloadAcceptContentTypes
++ (NSArray<NSString *> *)downloadAcceptableContentTypes
 {
-    return [KTVHCDownload download].acceptContentTypes;
+    return [KTVHCDownload download].acceptableContentTypes;
 }
 
-+ (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL * URL, NSString * contentType))contentTypeFilter
++ (void)downloadSetUnacceptableContentTypeDisposer:(BOOL(^)(NSURL *URL, NSString *contentType))unacceptableContentTypeDisposer
 {
-    [KTVHCDownload download].unsupportContentTypeFilter = contentTypeFilter;
+    [KTVHCDownload download].unacceptableContentTypeDisposer = unacceptableContentTypeDisposer;
 }
 
 #pragma mark - Log
 
 + (void)logAddLog:(NSString *)log
 {
-    if (log.length > 0)
-    {
+    if (log.length > 0) {
         KTVHCLogCommon(@"%@", log);
     }
 }
@@ -224,6 +195,61 @@
 + (NSError *)logErrorForURL:(NSURL *)URL
 {
     return [[KTVHCLog log] errorForURL:URL];
+}
+
+@end
+
+#pragma mark - Deprecated
+
+@implementation KTVHTTPCache (Deprecated)
+
++ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString
+{
+    NSURL *URL = [NSURL URLWithString:URLString];
+    return [self proxyURLWithOriginalURL:URL].absoluteString;
+}
+
++ (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL
+{
+    return [self cacheCompleteFileURLWithURL:URL];
+}
+
++ (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString
+{
+    NSURL *URL = [NSURL URLWithString:URLString];
+    return [self cacheCompleteFileURLWithURL:URL].path;
+}
+
++ (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString
+{
+    NSURL *URL = [NSURL URLWithString:URLString];
+    return [self cacheCacheItemWithURL:URL];
+}
+
++ (void)cacheDeleteCacheWithURLString:(NSString *)URLString
+{
+    NSURL *URL = [NSURL URLWithString:URLString];
+    [self cacheDeleteCacheWithURL:URL];
+}
+
++ (void)tokenSetURLFilter:(NSURL * (^)(NSURL *URL))URLFilter
+{
+    [self encodeSetURLConverter:URLFilter];
+}
+
++ (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes
+{
+    [self downloadSetAcceptableContentTypes:acceptContentTypes];
+}
+
++ (NSArray<NSString *> *)downloadAcceptContentTypes
+{
+    return [self downloadAcceptableContentTypes];
+}
+
++ (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL *URL, NSString *contentType))contentTypeFilter
+{
+    [self downloadSetUnacceptableContentTypeDisposer:contentTypeFilter];
 }
 
 @end
