@@ -25,7 +25,7 @@
 
 - (instancetype)initWithPath:(NSString *)path range:(KTVHCRange)range readRange:(KTVHCRange)readRange NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, copy, readonly) NSString * path;
+@property (nonatomic, copy, readonly) NSString path;
 @property (nonatomic, readonly) KTVHCRange readRange;
 
 @property (nonatomic, weak, readonly) id<KTVHCDataFileSourceDelegate> delegate;

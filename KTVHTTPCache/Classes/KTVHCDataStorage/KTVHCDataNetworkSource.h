@@ -29,8 +29,8 @@
 
 - (instancetype)initWithRequest:(KTVHCDataRequest *)reqeust NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, strong, readonly) KTVHCDataRequest * request;
-@property (nonatomic, strong, readonly) KTVHCDataResponse * response;
+@property (nonatomic, strong, readonly) KTVHCDataRequest *request;
+@property (nonatomic, strong, readonly) KTVHCDataResponse *response;
 
 @property (nonatomic, weak, readonly) id<KTVHCDataNetworkSourceDelegate> delegate;
 @property (nonatomic, strong, readonly) dispatch_queue_t delegateQueue;
