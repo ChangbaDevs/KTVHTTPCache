@@ -118,15 +118,19 @@
 - (void)applicationDidEnterBackground
 {
     if (self.server.numberOfHTTPConnections > 0) {
+        KTVHCLogHTTPServer(@"%p, enter background", self);
         [self beginBackgroundTask];
     } else {
+        KTVHCLogHTTPServer(@"%p, enter background and stop server", self);
         [self stopInternal];
     }
 }
 
 - (void)applicationWillEnterForeground
 {
+    KTVHCLogHTTPServer(@"%p, enter foreground", self);
     if (self.backgroundTask == UIBackgroundTaskInvalid && self.wantsRunning) {
+        KTVHCLogHTTPServer(@"%p, restart server", self);
         [self startInternal:nil];
     }
     [self endBackgroundTask];
@@ -134,9 +138,11 @@
 
 - (void)HTTPConnectionDidDie
 {
+    KTVHCLogHTTPServer(@"%p, connection did die", self);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground &&
             self.server.numberOfHTTPConnections == 0) {
+            KTVHCLogHTTPServer(@"%p, server idle", self);
             [self endBackgroundTask];
             [self stopInternal];
         }
@@ -145,7 +151,9 @@
 
 - (void)beginBackgroundTask
 {
+    KTVHCLogHTTPServer(@"%p, begin background task", self);
     self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        KTVHCLogHTTPServer(@"%p, background task expiration", self);
         [self endBackgroundTask];
         [self stopInternal];
     }];
@@ -154,6 +162,7 @@
 - (void)endBackgroundTask
 {
     if (self.backgroundTask != UIBackgroundTaskInvalid) {
+        KTVHCLogHTTPServer(@"%p, end background task", self);
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
         self.backgroundTask = UIBackgroundTaskInvalid;
     }
