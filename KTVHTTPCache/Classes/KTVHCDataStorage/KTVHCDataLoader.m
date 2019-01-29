@@ -64,14 +64,14 @@
     return self.reader.error;
 }
 
-- (BOOL)didClosed
-{
-    return self.reader.isClosed;
-}
-
-- (BOOL)didFinished
+- (BOOL)isFinished
 {
     return self.reader.isFinished;
+}
+
+- (BOOL)isClosed
+{
+    return self.reader.isClosed;
 }
 
 #pragma mark - KTVHCDataReaderDelegate
