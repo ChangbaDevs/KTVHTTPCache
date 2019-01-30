@@ -90,12 +90,17 @@
     if (!URL || ![error isKindOfClass:[NSError class]]) {
         return;
     }
+    [self.lock lock];
     [self.internalErrors setObject:error forKey:URL];
+    [self.lock unlock];
 }
 
 - (NSDictionary<NSURL *,NSError *> *)errors
 {
-    return [self.internalErrors copy];
+    [self.lock lock];
+    NSDictionary<NSURL *,NSError *> *ret = [self.internalErrors copy];
+    [self.lock unlock];
+    return ret;
 }
 
 - (NSError *)errorForURL:(NSURL *)URL
@@ -103,12 +108,17 @@
     if (!URL) {
         return nil;
     }
-    return [self.internalErrors objectForKey:URL];
+    [self.lock lock];
+    NSError *ret = [self.internalErrors objectForKey:URL];
+    [self.lock unlock];
+    return ret;
 }
 
 - (void)cleanErrorForURL:(NSURL *)URL
 {
+    [self.lock lock];
     [self.internalErrors removeObjectForKey:URL];
+    [self.lock unlock];
 }
 
 #pragma mark - UIApplicationWillTerminateNotification
