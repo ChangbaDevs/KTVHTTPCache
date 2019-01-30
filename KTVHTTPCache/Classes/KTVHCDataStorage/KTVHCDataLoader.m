@@ -102,7 +102,7 @@
             if (self.reader.isFinished) {
                 self->_progress = 1.0f;
                 if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
-                    [self.delegate loader:self didChangeProgress:_progress];
+                    [self.delegate loader:self didChangeProgress:self.progress];
                 }
                 KTVHCLogDataLoader(@"%p, Callback finished", self);
                 if ([self.delegate respondsToSelector:@selector(loaderDidFinish:)]) {
@@ -111,9 +111,9 @@
             } else if (data) {
                 self->_progress = (double)self.reader.readedLength / (double)self.response.contentLength;
                 if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
-                    [self.delegate loader:self didChangeProgress:_progress];
+                    [self.delegate loader:self didChangeProgress:self.progress];
                 }
-                KTVHCLogDataLoader(@"%p, read data progress %f", self, _progress);
+                KTVHCLogDataLoader(@"%p, read data progress %f", self, self.progress);
                 continue;
             }
             KTVHCLogDataLoader(@"%p, read data break", self);
