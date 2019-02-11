@@ -160,7 +160,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 @interface KTVHTTPCache (Deprecated)
 
 /**
- *  These API will be removed in future versions.
+ *  These APIs will be removed in future versions.
  */
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString         __attribute__((deprecated("Use +proxyURLWithOriginalURL: instead.")));
 + (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL                    __attribute__((deprecated("Use +cacheCompleteFileURLWithURL: instead.")));
