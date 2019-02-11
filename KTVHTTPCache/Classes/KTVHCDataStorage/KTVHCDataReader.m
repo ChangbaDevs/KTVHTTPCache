@@ -92,8 +92,13 @@
         [self unlock];
         return nil;
     }
-    NSData *data = [self.sourceManager readDataOfLength:length];;
-    self->_readedLength += data.length;
+    NSData *data = [self.sourceManager readDataOfLength:length];
+    if (data.length > 0) {
+        self->_readedLength += data.length;
+        if (self.response.contentLength > 0) {
+            self->_progress = (double)self.readedLength / (double)self.response.contentLength;
+        }
+    }
     KTVHCLogDataReader(@"%p, Read data : %lld", self, (long long)data.length);
     if (self.sourceManager.isFinished) {
         KTVHCLogDataReader(@"%p, Read data did finished", self);

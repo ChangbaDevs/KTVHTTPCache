@@ -40,6 +40,7 @@
 @property (nonatomic, readonly, getter=isClosed) BOOL closed;
 
 @property (nonatomic, readonly) long long readedLength;
+@property (nonatomic, readonly) double progress;
 
 - (void)prepare;
 - (void)close;
