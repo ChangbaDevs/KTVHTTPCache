@@ -59,7 +59,7 @@
     [self stopInternal];
 }
 
-- (BOOL)running
+- (BOOL)isRunning
 {
     return self.server.isRunning;
 }
@@ -79,6 +79,9 @@
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL
 {
     if (!URL || URL.isFileURL || URL.absoluteString.length == 0) {
+        return URL;
+    }
+    if (!self.isRunning) {
         return URL;
     }
     NSString *original = [[KTVHCURLTool tool] URLEncode:URL.absoluteString];
