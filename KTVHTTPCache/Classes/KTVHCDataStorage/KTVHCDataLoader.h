@@ -14,9 +14,9 @@
 
 @protocol KTVHCDataLoaderDelegate <NSObject>
 
-- (void)loaderDidFinish:(KTVHCDataLoader *)loader;
-- (void)loader:(KTVHCDataLoader *)loader didFailWithError:(NSError *)error;
-- (void)loader:(KTVHCDataLoader *)loader didChangeProgress:(double)progress;
+- (void)dataLoaderDidFinish:(KTVHCDataLoader *)loader;
+- (void)dataLoader:(KTVHCDataLoader *)loader didFailWithError:(NSError *)error;
+- (void)dataLoader:(KTVHCDataLoader *)loader didChangeProgress:(double)progress;
 
 @end
 
@@ -38,6 +38,7 @@
 @property (nonatomic, readonly, getter=isFinished) BOOL finished;
 @property (nonatomic, readonly, getter=isClosed) BOOL closed;
 
+@property (nonatomic, readonly) long long loadedLength;
 @property (nonatomic, readonly) double progress;
 
 - (void)prepare;

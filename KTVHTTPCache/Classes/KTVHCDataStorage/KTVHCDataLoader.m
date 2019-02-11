@@ -89,8 +89,8 @@
 - (void)reader:(KTVHCDataReader *)reader didFailWithError:(NSError *)error
 {
     KTVHCLogDataLoader(@"%p, Callback for failed", self);
-    if ([self.delegate respondsToSelector:@selector(loader:didFailWithError:)]) {
-        [self.delegate loader:self didFailWithError:error];
+    if ([self.delegate respondsToSelector:@selector(dataLoader:didFailWithError:)]) {
+        [self.delegate dataLoader:self didFailWithError:error];
     }
 }
 
@@ -100,18 +100,22 @@
         @autoreleasepool {
             NSData *data = [self.reader readDataOfLength:1024 * 1024 * 1];
             if (self.reader.isFinished) {
+                self->_loadedLength = self.reader.readedLength;
                 self->_progress = 1.0f;
-                if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
-                    [self.delegate loader:self didChangeProgress:self.progress];
+                if ([self.delegate respondsToSelector:@selector(dataLoader:didChangeProgress:)]) {
+                    [self.delegate dataLoader:self didChangeProgress:self.progress];
                 }
                 KTVHCLogDataLoader(@"%p, Callback finished", self);
-                if ([self.delegate respondsToSelector:@selector(loaderDidFinish:)]) {
-                    [self.delegate loaderDidFinish:self];
+                if ([self.delegate respondsToSelector:@selector(dataLoaderDidFinish:)]) {
+                    [self.delegate dataLoaderDidFinish:self];
                 }
             } else if (data) {
-                self->_progress = (double)self.reader.readedLength / (double)self.response.contentLength;
-                if ([self.delegate respondsToSelector:@selector(loader:didChangeProgress:)]) {
-                    [self.delegate loader:self didChangeProgress:self.progress];
+                self->_loadedLength = self.reader.readedLength;
+                if (self.response.contentLength > 0) {
+                    self->_progress = (double)self.reader.readedLength / (double)self.response.contentLength;
+                }
+                if ([self.delegate respondsToSelector:@selector(dataLoader:didChangeProgress:)]) {
+                    [self.delegate dataLoader:self didChangeProgress:self.progress];
                 }
                 KTVHCLogDataLoader(@"%p, read data progress %f", self, self.progress);
                 continue;
