@@ -33,135 +33,312 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
 #endif
 
+/**
+ *  KTVHTTPCache is a smart media cache framework.
+ */
 @interface KTVHTTPCache : NSObject
 
+/**
+ *  HTTP Server
+ *
+ *  This part is used to access the local HTTP server module.
+ *  The prefix for API is 'proxy'.
+ */
 #pragma mark - HTTP Server
 
 /**
- *  Start & Stop HTTP Server.
+ *  Start the proxy service.
+ *
+ *  @param error : Pointer to receive service error.
+ *  @return YES when the proxy service is successfully started, otherwise NO.
  */
 + (BOOL)proxyStart:(NSError **)error;
+
+/**
+ *  Stop the proxy service.
+ */
 + (void)proxyStop;
 
+/**
+ *  Proxy service running status.
+ *
+ *  @return YES when the proxy service is running, otherwise NO.
+ */
 + (BOOL)proxyIsRunning;
 
 /**
- *  Return the URL string for local server.
+ *  Convert the URL to the proxy URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @return If the param is a file URL or the proxy service isn't running, return URL. Otherwise reutrn the proxy URL.
  */
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL;
 
+/**
+ *  Data Storage
+ *
+ *  This part is used to access the data storage module.
+ *  The prefix for API is 'cache'.
+ */
 #pragma mark - Data Storage
 
 /**
- *  If the content of the URL is finish cached, return the file path for the content. Otherwise return nil.
+ *  Convert the URL to the file URL if the cache is complete.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @return If the contents of the URL have all been cached, return the complete file URL. Otherwise return nil.
  */
 + (NSURL *)cacheCompleteFileURLWithURL:(NSURL *)URL;
 
 /**
- *  Data Reader.
+ *  Create the data reader for the request.
+ *
+ *  @param request : The request of the expected data.
+ *  @return The data reader for request.
  */
 + (KTVHCDataReader *)cacheReaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
- *  Data Loader.
+ *  Create the data loader for the request.
+ *
+ *  @param request : The request of the expected data.
+ *  @return The data loader for request.
  */
 + (KTVHCDataLoader *)cacheLoaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
- *  Cache State.
+ *  Set the maximum cache length.
+ *  If the current cache length exceeds the maximum length, it will be deleted starting with the oldest cached data.
+ *
+ *  @param maxCacheLength : The maximum cache length.
  */
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength;
+
+/**
+ *  Get the maximum cache length.
+ *
+ *  @return Maximum cache length.
+ */
 + (long long)cacheMaxCacheLength;
+
+/**
+ *  Get the current cached length.
+ *
+ *  @return Current cached length
+ */
 + (long long)cacheTotalCacheLength;
 
 /**
- *  Cache Item.
+ *  Create the cache item for the URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @return The cache item for URL.
  */
 + (KTVHCDataCacheItem *)cacheCacheItemWithURL:(NSURL *)URL;
+
+/**
+ *  Get all cache items.
+ *
+ *  @return All cache items.
+ */
 + (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItems;
 
 /**
- *  Delete Cache.
+ *  Delete cache for URL.
+ *
+ *  @param URL : The URL for HTTP content.
  */
 + (void)cacheDeleteCacheWithURL:(NSURL *)URL;
+
+/**
+ *  Delete all caches.
+ */
 + (void)cacheDeleteAllCaches;
 
+/**
+ *  Encode
+ *
+ *  This part is used to access the encode module.
+ *  The prefix for API is 'encode'.
+ */
 #pragma mark - Encode
 
 /**
- *  URL Converter.
+ *  Set URL converter.
+ *  If the URL contains authentication parameters. It can be removed here to ensure that the indeterminate URL can use the same cache.
  *
- *  High frequency call. Make it simple.
+ *  @warning High frequency call. Make it simple.
+ *
+ *  @param URLConverter : The URLConverter.
  */
 + (void)encodeSetURLConverter:(NSURL * (^)(NSURL *URL))URLConverter;
 
+/**
+ *  Download
+ *
+ *  This part is used to access the download module.
+ *  The prefix for API is 'download'.
+ */
 #pragma mark - Download
 
+/**
+ *  Set the HTTP timeout interval.
+ *
+ *  @param timeoutInterval : The HTTP timeout interval.
+ */
 + (void)downloadSetTimeoutInterval:(NSTimeInterval)timeoutInterval;
+
+/**
+ *  Set HTTP timeout interval.
+ *
+ *  @return The current HTTP timeout interval.
+ */
 + (NSTimeInterval)downloadTimeoutInterval;
 
 /**
- *  Whitelist Header Fields.
+ *  Set the whitelist header keys.
+ *  The following keys are only supported by default:
+ *      User-Agent, Connection, Accept, Accept-Encoding, Accept-Language, Range
+ *  If you want to allow other keys, set them here.
+ *
+ *  @param whitelistHeaderKeys : The keys can be allowed.
  */
 + (void)downloadSetWhitelistHeaderKeys:(NSArray<NSString *> *)whitelistHeaderKeys;
+
+/**
+ *  Get the current whitelist header keys.
+ */
 + (NSArray<NSString *> *)downloadWhitelistHeaderKeys;
 
 /**
- *  Additional Header Fields.
+ *  Set the additional headers.
+ *  If you want to add extra headers, set them here.
+ *
+ *  @param additionalHeaders : The headers will be added.
  */
 + (void)downloadSetAdditionalHeaders:(NSDictionary<NSString *, NSString *> *)additionalHeaders;
+
+/**
+ *  Get the current additional headers.
+ */
 + (NSDictionary<NSString *, NSString *> *)downloadAdditionalHeaders;
 
 /**
- *  Default values: 'video/x', 'audio/x', 'application/mp4', 'application/octet-stream', 'binary/octet-stream'
+ *  Set the acceptable content types.
+ *  The following values are only supported by default:
+ *      video/x, audio/x, application/mp4, application/octet-stream, binary/octet-stream
+ *  If you want to allow other content types, set them here.
+ *
+ *  @param acceptableContentTypes : The content types can be allowed.
  */
 + (void)downloadSetAcceptableContentTypes:(NSArray<NSString *> *)acceptableContentTypes;
+
+/**
+ *  Get the current acceptable content types.
+ */
 + (NSArray<NSString *> *)downloadAcceptableContentTypes;
 
 /**
+ *  Set the unacceptable content type disposer.
  *  If the receive response's Content-Type not included in acceptContentTypes, this method will be called.
- *  The return value of block to decide whether to continue to load resources. Otherwise the HTTP task will be rejected.
+ *  If the return value of block is YES, you can continue to load resources. Otherwise the HTTP task will be rejected.
+ *
+ *  @param unacceptableContentTypeDisposer : The unacceptable content type disposer.
  */
 + (void)downloadSetUnacceptableContentTypeDisposer:(BOOL(^)(NSURL *URL, NSString *contentType))unacceptableContentTypeDisposer;
 
+/**
+ *  Log
+ *
+ *  This part is used to access the Log module.
+ *  The prefix for API is 'log'.
+ */
 #pragma mark - Log
 
 /**
- *  Console & Record.
+ *  Add an external log.
+ *
+ *  @param log : An external log.
  */
 + (void)logAddLog:(NSString *)log;
 
 /**
- *  DEBUG & RELEASE : Default is NO.
+ *  Set whether to enable the console log.
+ *  Default is NO.
+ *
+ *  @param consoleLogEnable : The value to enable the console log.
  */
 + (void)logSetConsoleLogEnable:(BOOL)consoleLogEnable;
+
+/**
+ *  Get the value that enables the console log.
+ *
+ *  @return The value that enables the console log.
+ */
 + (BOOL)logConsoleLogEnable;
 
 /**
- *  DEBUG & RELEASE : Default is NO.
+ *  Set whether to enable the record log.
+ *  Default is NO.
+ *
+ *  @param recordLogEnable : The value to enable the record log.
  */
 + (void)logSetRecordLogEnable:(BOOL)recordLogEnable;
+
+/**
+ *  Get the value that enables the record log.
+ *
+ *  @return The value that enables the record log.
+ */
 + (BOOL)logRecordLogEnable;
 
-+ (NSString *)logRecordLogFilePath;      // nullable
+/**
+ *  Get the path to the log file.
+ *
+ *  @return The path to the log file.
+ */
++ (NSString *)logRecordLogFilePath;
+
+/**
+ *  Delete the log file.
+ */
 + (void)logDeleteRecordLog;
 
 /**
- *  Error
+ *  Get all errors
+ *
+ *  @return All errors.
  */
 + (NSDictionary<NSURL *, NSError *> *)logErrors;
+
+/**
+ *  Get the error for the URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @return The error for the URL.
+ */
 + (NSError *)logErrorForURL:(NSURL *)URL;
+
+/**
+ *  Delete the error for the URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ */
 + (void)logCleanErrorForURL:(NSURL *)URL;
 
 @end
 
+/**
+ *  Deprecated
+ *
+ *  This part is for compatibility with historical versions\
+ *
+ *  @warning This part will be removed in future versions.
+ */
 #pragma mark - Deprecated
 
 @interface KTVHTTPCache (Deprecated)
 
-/**
- *  These APIs will be removed in future versions.
- */
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString         __attribute__((deprecated("Use +proxyURLWithOriginalURL: instead.")));
 + (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL                    __attribute__((deprecated("Use +cacheCompleteFileURLWithURL: instead.")));
 + (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString __attribute__((deprecated("Use +cacheCompleteFileURLWithURL: instead.")));
