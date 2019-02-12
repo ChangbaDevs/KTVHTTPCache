@@ -10,25 +10,61 @@
 #import "KTVHCDataCacheItemZone.h"
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataResponse.h"
+#import "KTVHCDataRequest.h"
+#import "KTVHCDataReader.h"
+#import "KTVHCDataLoader.h"
 
-@interface KTVHCDataResponse (Internal)
+#pragma mark - KTVHCDataReader
+
+@interface KTVHCDataReader ()
+
+- (instancetype)initWithRequest:(KTVHCDataRequest *)request NS_DESIGNATED_INITIALIZER;
+
+@end
+
+#pragma mark - KTVHCDataLoader
+
+@interface KTVHCDataLoader ()
+
+- (instancetype)initWithRequest:(KTVHCDataRequest *)request NS_DESIGNATED_INITIALIZER;
+
+@end
+
+#pragma mark - KTVHCDataRequest
+
+@interface KTVHCDataRequest ()
+
+- (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range;
+- (KTVHCDataRequest *)requestWithTotalLength:(long long)totalLength;
+
+@end
+
+#pragma mark - KTVHCDataResponse
+
+@interface KTVHCDataResponse ()
+
+- (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers NS_DESIGNATED_INITIALIZER;
 
 - (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range;
 
 @end
 
-@interface KTVHCDataCacheItem (Internal)
+#pragma mark - KTVHCDataCacheItem
+
+@interface KTVHCDataCacheItem ()
 
 - (instancetype)initWithURL:(NSURL *)URL
                       zones:(NSArray<KTVHCDataCacheItemZone *> *)zones
                 totalLength:(long long)totalLength
                 cacheLength:(long long)cacheLength
-                vaildLength:(long long)vaildLength;
+                vaildLength:(long long)vaildLength NS_DESIGNATED_INITIALIZER;
 
 @end
 
-@interface KTVHCDataCacheItemZone (Internal)
+#pragma mark - KTVHCDataCacheItemZone
 
-- (instancetype)initWithOffset:(long long)offset length:(long long)length;
+@interface KTVHCDataCacheItemZone ()
+
+- (instancetype)initWithOffset:(long long)offset length:(long long)length NS_DESIGNATED_INITIALIZER;
 
 @end

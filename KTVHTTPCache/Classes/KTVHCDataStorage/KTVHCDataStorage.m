@@ -7,6 +7,7 @@
 //
 
 #import "KTVHCDataStorage.h"
+#import "KTVHCData+Internal.h"
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCLog.h"
 

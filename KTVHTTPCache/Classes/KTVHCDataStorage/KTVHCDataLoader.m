@@ -7,8 +7,7 @@
 //
 
 #import "KTVHCDataLoader.h"
-#import "KTVHCDataResponse.h"
-#import "KTVHCDataReader.h"
+#import "KTVHCData+Internal.h"
 #import "KTVHCLog.h"
 
 @interface KTVHCDataLoader () <KTVHCDataReaderDelegate>

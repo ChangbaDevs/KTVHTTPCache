@@ -25,8 +25,6 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithRequest:(KTVHCDataRequest *)request NS_DESIGNATED_INITIALIZER;
-
 @property (nonatomic, weak) id <KTVHCDataLoaderDelegate> delegate;
 @property (nonatomic, strong) id object;
 

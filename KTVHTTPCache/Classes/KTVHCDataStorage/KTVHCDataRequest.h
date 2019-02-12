@@ -20,7 +20,4 @@
 @property (nonatomic, copy, readonly) NSDictionary *headers;
 @property (nonatomic, readonly) KTVHCRange range;
 
-- (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range;
-- (KTVHCDataRequest *)requestWithTotalLength:(long long)totalLength;
-
 @end
