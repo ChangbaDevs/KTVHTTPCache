@@ -134,7 +134,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         error = [self.errorDictionary objectForKey:task];
     }
     id<KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
-    [delegate download:self didCompleteWithError:error];
+    [delegate ktv_download:self didCompleteWithError:error];
     [self.delegateDictionary removeObjectForKey:task];
     [self.requestDictionary removeObjectForKey:task];
     [self.errorDictionary removeObjectForKey:task];
@@ -207,7 +207,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         completionHandler(NSURLSessionResponseCancel);
     } else {
         id<KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
-        [delegate download:self didReceiveResponse:dataResponse];
+        [delegate ktv_download:self didReceiveResponse:dataResponse];
         completionHandler(NSURLSessionResponseAllow);
     }
     [self unlock];
@@ -226,7 +226,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [self lock];
     KTVHCLogDownload(@"%p, Receive data - Begin\nLength : %lld\nURL : %@", self, (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     id<KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:dataTask];
-    [delegate download:self didReceiveData:data];
+    [delegate ktv_download:self didReceiveData:data];
     KTVHCLogDownload(@"%p, Receive data - End\nLength : %lld\nURL : %@", self, (long long)data.length, dataTask.originalRequest.URL.absoluteString);
     [self unlock];
 }

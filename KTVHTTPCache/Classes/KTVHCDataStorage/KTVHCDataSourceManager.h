@@ -14,10 +14,10 @@
 
 @protocol KTVHCDataSourceManagerDelegate <NSObject>
 
-- (void)sourceManagerDidPrepare:(KTVHCDataSourceManager *)sourceManager;
-- (void)sourceManagerHasAvailableData:(KTVHCDataSourceManager *)sourceManager;
-- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didFailWithError:(NSError *)error;
-- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response;
+- (void)ktv_sourceManagerDidPrepare:(KTVHCDataSourceManager *)sourceManager;
+- (void)ktv_sourceManagerHasAvailableData:(KTVHCDataSourceManager *)sourceManager;
+- (void)ktv_sourceManager:(KTVHCDataSourceManager *)sourceManager didFailWithError:(NSError *)error;
+- (void)ktv_sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response;
 
 @end
 

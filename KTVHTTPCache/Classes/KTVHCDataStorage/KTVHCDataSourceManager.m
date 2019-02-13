@@ -167,21 +167,21 @@
 
 #pragma mark - KTVHCDataFileSourceDelegate
 
-- (void)fileSourceDidPrepare:(KTVHCDataFileSource *)fileSource
+- (void)ktv_fileSourceDidPrepare:(KTVHCDataFileSource *)fileSource
 {
     [self lock];
     [self callbackForPrepared];
     [self unlock];
 }
 
-- (void)fileSource:(KTVHCDataFileSource *)fileSource didFailWithError:(NSError *)error
+- (void)ktv_fileSource:(KTVHCDataFileSource *)fileSource didFailWithError:(NSError *)error
 {
     [self callbackForFailed:error];
 }
 
 #pragma mark - KTVHCDataNetworkSourceDelegate
 
-- (void)networkSourceDidPrepare:(KTVHCDataNetworkSource *)networkSource
+- (void)ktv_networkSourceDidPrepare:(KTVHCDataNetworkSource *)networkSource
 {
     [self lock];
     [self callbackForPrepared];
@@ -189,20 +189,20 @@
     [self unlock];
 }
 
-- (void)networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource
+- (void)ktv_networkSourceHasAvailableData:(KTVHCDataNetworkSource *)networkSource
 {
     [self lock];
-    if ([self.delegate respondsToSelector:@selector(sourceManagerHasAvailableData:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_sourceManagerHasAvailableData:)]) {
         KTVHCLogDataSourceManager(@"%p, Callback for has available data - Begin\nSource : %@", self, networkSource);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataSourceManager(@"%p, Callback for has available data - End", self);
-            [self.delegate sourceManagerHasAvailableData:self];
+            [self.delegate ktv_sourceManagerHasAvailableData:self];
         }];
     }
     [self unlock];
 }
 
-- (void)networkSourceDidFinisheDownload:(KTVHCDataNetworkSource *)networkSource
+- (void)ktv_networkSourceDidFinisheDownload:(KTVHCDataNetworkSource *)networkSource
 {
     [self lock];
     self.currentNetworkSource = [self nextNetworkSource];
@@ -210,7 +210,7 @@
     [self unlock];
 }
 
-- (void)networkSource:(KTVHCDataNetworkSource *)networkSource didFailWithError:(NSError *)error
+- (void)ktv_networkSource:(KTVHCDataNetworkSource *)networkSource didFailWithError:(NSError *)error
 {
     [self callbackForFailed:error];
 }
@@ -226,11 +226,11 @@
         return;
     }
     self->_prepared = YES;
-    if ([self.delegate respondsToSelector:@selector(sourceManagerDidPrepare:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_sourceManagerDidPrepare:)]) {
         KTVHCLogDataSourceManager(@"%p, Callback for prepared - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataSourceManager(@"%p, Callback for prepared - End", self);
-            [self.delegate sourceManagerDidPrepare:self];
+            [self.delegate ktv_sourceManagerDidPrepare:self];
         }];
     }
 }
@@ -244,11 +244,11 @@
         return;
     }
     self->_calledReceiveResponse = YES;
-    if ([self.delegate respondsToSelector:@selector(sourceManager:didReceiveResponse:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_sourceManager:didReceiveResponse:)]) {
         KTVHCLogDataSourceManager(@"%p, Callback for did receive response - End", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataSourceManager(@"%p, Callback for did receive response - End", self);
-            [self.delegate sourceManager:self didReceiveResponse:response];
+            [self.delegate ktv_sourceManager:self didReceiveResponse:response];
         }];
     }
 }
@@ -269,11 +269,11 @@
     }
     self->_error = error;
     KTVHCLogDataSourceManager(@"failure, %d", (int)self.error.code);
-    if (self.error && [self.delegate respondsToSelector:@selector(sourceManager:didFailWithError:)]) {
+    if (self.error && [self.delegate respondsToSelector:@selector(ktv_sourceManager:didFailWithError:)]) {
         KTVHCLogDataSourceManager(@"%p, Callback for network source failed - Begin\nError : %@", self, self.error);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataSourceManager(@"%p, Callback for network source failed - End", self);
-            [self.delegate sourceManager:self didFailWithError:self.error];
+            [self.delegate ktv_sourceManager:self didFailWithError:self.error];
         }];
     }
     [self unlock];

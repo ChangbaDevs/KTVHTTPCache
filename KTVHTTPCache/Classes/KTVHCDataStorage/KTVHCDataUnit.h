@@ -13,7 +13,7 @@
 
 @protocol KTVHCDataUnitDelegate <NSObject>
 
-- (void)unitDidChangeMetadata:(KTVHCDataUnit *)unit;
+- (void)ktv_unitDidChangeMetadata:(KTVHCDataUnit *)unit;
 
 @end
 

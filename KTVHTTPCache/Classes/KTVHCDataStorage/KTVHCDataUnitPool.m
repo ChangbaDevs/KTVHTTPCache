@@ -216,11 +216,6 @@
     [self unlock];
 }
 
-- (void)unitDidChangeMetadata:(KTVHCDataUnit *)unit
-{
-    [self setNeedsArchive];
-}
-
 - (void)setNeedsArchive
 {
     [self lock];
@@ -247,6 +242,13 @@
         [self.unitQueue archive];
     }
     [self unlock];
+}
+
+#pragma mark - KTVHCDataUnitDelegate
+
+- (void)ktv_unitDidChangeMetadata:(KTVHCDataUnit *)unit
+{
+    [self setNeedsArchive];
 }
 
 #pragma mark - UIApplicationWillTerminateNotification

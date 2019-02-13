@@ -169,14 +169,14 @@
     [self.sourceManager prepare];
 }
 
-- (void)sourceManagerDidPrepare:(KTVHCDataSourceManager *)sourceManager
+- (void)ktv_sourceManagerDidPrepare:(KTVHCDataSourceManager *)sourceManager
 {
     [self lock];
     [self callbackForPrepared];
     [self unlock];
 }
 
-- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response
+- (void)ktv_sourceManager:(KTVHCDataSourceManager *)sourceManager didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
     [self.unit updateResponseHeaders:response.headers totalLength:response.totalLength];
@@ -184,7 +184,7 @@
     [self unlock];
 }
 
-- (void)sourceManagerHasAvailableData:(KTVHCDataSourceManager *)sourceManager
+- (void)ktv_sourceManagerHasAvailableData:(KTVHCDataSourceManager *)sourceManager
 {
     [self lock];
     if (self.isClosed) {
@@ -201,7 +201,7 @@
     [self unlock];
 }
 
-- (void)sourceManager:(KTVHCDataSourceManager *)sourceManager didFailWithError:(NSError *)error
+- (void)ktv_sourceManager:(KTVHCDataSourceManager *)sourceManager didFailWithError:(NSError *)error
 {
     if (!error) {
         return;

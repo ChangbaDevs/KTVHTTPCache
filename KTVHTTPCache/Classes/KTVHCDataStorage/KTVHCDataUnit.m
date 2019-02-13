@@ -128,7 +128,7 @@
     [self sortUnitItems];
     KTVHCLogDataUnit(@"%p, Insert unitItem, %@", self, unitItem);
     [self unlock];
-    [self.delegate unitDidChangeMetadata:self];
+    [self.delegate ktv_unitDidChangeMetadata:self];
 }
 
 - (void)updateResponseHeaders:(NSDictionary *)responseHeaders totalLength:(long long)totalLength
@@ -158,7 +158,7 @@
     KTVHCLogDataUnit(@"%p, Update responseHeaders\ntotalLength : %lld\n%@", self, self.totalLength, self.responseHeaders);
     [self unlock];
     if (needs) {
-        [self.delegate unitDidChangeMetadata:self];
+        [self.delegate ktv_unitDidChangeMetadata:self];
     }
 }
 
@@ -230,7 +230,7 @@
     BOOL needs = [self mergeFilesIfNeeded];
     [self unlock];
     if (needs) {
-        [self.delegate unitDidChangeMetadata:self];
+        [self.delegate ktv_unitDidChangeMetadata:self];
     }
 }
 

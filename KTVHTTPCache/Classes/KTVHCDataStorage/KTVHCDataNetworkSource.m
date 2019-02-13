@@ -135,7 +135,7 @@
     self->_delegateQueue = delegateQueue;
 }
 
-- (void)download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error
+- (void)ktv_download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error
 {
     [self lock];
     self.downloadCalledComplete = YES;
@@ -152,9 +152,9 @@
         }
     } else if (self.downloadLength >= KTVHCRangeGetLength(self.response.contentRange)) {
         KTVHCLogDataNetworkSource(@"%p, Complete and finisehed", self);
-        if ([self.delegate respondsToSelector:@selector(networkSourceDidFinisheDownload:)]) {
+        if ([self.delegate respondsToSelector:@selector(ktv_networkSourceDidFinisheDownload:)]) {
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-                [self.delegate networkSourceDidFinisheDownload:self];
+                [self.delegate ktv_networkSourceDidFinisheDownload:self];
             }];
         }
     } else {
@@ -163,7 +163,7 @@
     [self unlock];
 }
 
-- (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response
+- (void)ktv_download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response
 {
     [self lock];
     if (self.isClosed || self.error) {
@@ -183,7 +183,7 @@
     [self unlock];
 }
 
-- (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data
+- (void)ktv_download:(KTVHCDownload *)download didReceiveData:(NSData *)data
 {
     [self lock];
     if (self.isClosed || self.error) {
@@ -243,11 +243,11 @@
         return;
     }
     self->_prepared = YES;
-    if ([self.delegate respondsToSelector:@selector(networkSourceDidPrepare:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_networkSourceDidPrepare:)]) {
         KTVHCLogDataNetworkSource(@"%p, Callback for prepared - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataNetworkSource(@"%p, Callback for prepared - End", self);
-            [self.delegate networkSourceDidPrepare:self];
+            [self.delegate ktv_networkSourceDidPrepare:self];
         }];
     }
 }
@@ -261,11 +261,11 @@
         return;
     }
     self.callHasAvailableData = NO;
-    if ([self.delegate respondsToSelector:@selector(networkSourceHasAvailableData:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_networkSourceHasAvailableData:)]) {
         KTVHCLogDataNetworkSource(@"%p, Callback for has available data - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataNetworkSource(@"%p, Callback for has available data - End", self);
-            [self.delegate networkSourceHasAvailableData:self];
+            [self.delegate ktv_networkSourceHasAvailableData:self];
         }];
     }
 }
@@ -277,9 +277,9 @@
     }
     self->_error = error;
     KTVHCLogDataNetworkSource(@"%p, Callback for failed\nError : %@", self, self.error);
-    if ([self.delegate respondsToSelector:@selector(networkSource:didFailWithError:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_networkSource:didFailWithError:)]) {
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
-            [self.delegate networkSource:self didFailWithError:self.error];
+            [self.delegate ktv_networkSource:self didFailWithError:self.error];
         }];
     }
 }

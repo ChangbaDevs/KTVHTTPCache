@@ -57,11 +57,11 @@
     @try {
         [self.readingHandle seekToFileOffset:self.readRange.start];
         self->_prepared = YES;
-        if ([self.delegate respondsToSelector:@selector(fileSourceDidPrepare:)]) {
+        if ([self.delegate respondsToSelector:@selector(ktv_fileSourceDidPrepare:)]) {
             KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 KTVHCLogDataFileSource(@"%p, Callback for prepared - End", self);
-                [self.delegate fileSourceDidPrepare:self];
+                [self.delegate ktv_fileSourceDidPrepare:self];
             }];
         }
     } @catch (NSException *exception) {
@@ -140,11 +140,11 @@
         return;
     }
     self->_error = error;
-    if ([self.delegate respondsToSelector:@selector(fileSource:didFailWithError:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_fileSource:didFailWithError:)]) {
         KTVHCLogDataFileSource(@"%p, Callback for prepared - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataFileSource(@"%p, Callback for prepared - End", self);
-            [self.delegate fileSource:self didFailWithError:self.error];
+            [self.delegate ktv_fileSource:self didFailWithError:self.error];
         }];
     }
 }

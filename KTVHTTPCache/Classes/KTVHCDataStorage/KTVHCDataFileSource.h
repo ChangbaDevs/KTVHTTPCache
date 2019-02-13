@@ -13,8 +13,8 @@
 
 @protocol KTVHCDataFileSourceDelegate <NSObject>
 
-- (void)fileSourceDidPrepare:(KTVHCDataFileSource *)fileSource;
-- (void)fileSource:(KTVHCDataFileSource *)fileSource didFailWithError:(NSError *)error;
+- (void)ktv_fileSourceDidPrepare:(KTVHCDataFileSource *)fileSource;
+- (void)ktv_fileSource:(KTVHCDataFileSource *)fileSource didFailWithError:(NSError *)error;
 
 @end
 

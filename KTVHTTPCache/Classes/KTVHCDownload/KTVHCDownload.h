@@ -21,9 +21,9 @@ KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeBinaryOctetStream;
 
 @protocol KTVHCDownloadDelegate <NSObject>
 
-- (void)download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error;
-- (void)download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response;
-- (void)download:(KTVHCDownload *)download didReceiveData:(NSData *)data;
+- (void)ktv_download:(KTVHCDownload *)download didCompleteWithError:(NSError *)error;
+- (void)ktv_download:(KTVHCDownload *)download didReceiveResponse:(KTVHCDataResponse *)response;
+- (void)ktv_download:(KTVHCDownload *)download didReceiveData:(NSData *)data;
 
 @end
 
