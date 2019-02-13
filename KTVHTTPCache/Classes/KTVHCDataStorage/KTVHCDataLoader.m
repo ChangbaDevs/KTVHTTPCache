@@ -75,17 +75,17 @@
 
 #pragma mark - KTVHCDataReaderDelegate
 
-- (void)readerDidPrepare:(KTVHCDataReader *)reader
+- (void)ktv_readerDidPrepare:(KTVHCDataReader *)reader
 {
     [self readData];
 }
 
-- (void)readerHasAvailableData:(KTVHCDataReader *)reader
+- (void)ktv_readerHasAvailableData:(KTVHCDataReader *)reader
 {
     [self readData];
 }
 
-- (void)reader:(KTVHCDataReader *)reader didFailWithError:(NSError *)error
+- (void)ktv_reader:(KTVHCDataReader *)reader didFailWithError:(NSError *)error
 {
     KTVHCLogDataLoader(@"%p, Callback for failed", self);
     if ([self.delegate respondsToSelector:@selector(ktv_loader:didFailWithError:)]) {

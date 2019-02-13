@@ -104,7 +104,7 @@
 
 #pragma mark - KTVHCDataReaderDelegate
 
-- (void)readerDidPrepare:(KTVHCDataReader *)reader
+- (void)ktv_readerDidPrepare:(KTVHCDataReader *)reader
 {
     KTVHCLogHTTPResponse(@"%p, Prepared", self);
     if (self.reader.isPrepared && self.waitingResponse == YES) {
@@ -113,13 +113,13 @@
     }
 }
 
-- (void)readerHasAvailableData:(KTVHCDataReader *)reader
+- (void)ktv_readerHasAvailableData:(KTVHCDataReader *)reader
 {
     KTVHCLogHTTPResponse(@"%p, Has available data", self);
     [self.connection responseHasAvailableData:self];
 }
 
-- (void)reader:(KTVHCDataReader *)reader didFailWithError:(NSError *)error
+- (void)ktv_reader:(KTVHCDataReader *)reader didFailWithError:(NSError *)error
 {
     KTVHCLogHTTPResponse(@"%p, Failed\nError : %@", self, error);
     [self.reader close];

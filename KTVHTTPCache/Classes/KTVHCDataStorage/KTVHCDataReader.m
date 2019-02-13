@@ -191,11 +191,11 @@
         [self unlock];
         return;
     }
-    if ([self.delegate respondsToSelector:@selector(readerHasAvailableData:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_readerHasAvailableData:)]) {
         KTVHCLogDataReader(@"%p, Callback for has available data - Begin", self);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataReader(@"%p, Callback for has available data - End", self);
-            [self.delegate readerHasAvailableData:self];
+            [self.delegate ktv_readerHasAvailableData:self];
         }];
     }
     [self unlock];
@@ -218,11 +218,11 @@
     self->_error = error;
     [self close];
     [[KTVHCLog log] addError:self.error forURL:self.request.URL];
-    if ([self.delegate respondsToSelector:@selector(reader:didFailWithError:)]) {
+    if ([self.delegate respondsToSelector:@selector(ktv_reader:didFailWithError:)]) {
         KTVHCLogDataReader(@"%p, Callback for failed - Begin\nError : %@", self, self.error);
         [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
             KTVHCLogDataReader(@"%p, Callback for failed - End", self);
-            [self.delegate reader:self didFailWithError:self.error];
+            [self.delegate ktv_reader:self didFailWithError:self.error];
         }];
     }
     [self unlock];
@@ -243,11 +243,11 @@
         self->_response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headers:headers];
         self->_prepared = YES;
         KTVHCLogDataReader(@"%p, Reader did prepared\nResponse : %@", self, self.response);
-        if ([self.delegate respondsToSelector:@selector(readerDidPrepare:)]) {
+        if ([self.delegate respondsToSelector:@selector(ktv_readerDidPrepare:)]) {
             KTVHCLogDataReader(@"%p, Callback for prepared - Begin", self);
             [KTVHCDataCallback callbackWithQueue:self.delegateQueue block:^{
                 KTVHCLogDataReader(@"%p, Callback for prepared - End", self);
-                [self.delegate readerDidPrepare:self];
+                [self.delegate ktv_readerDidPrepare:self];
             }];
         }
     }
