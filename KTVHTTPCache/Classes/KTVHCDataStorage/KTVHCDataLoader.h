@@ -14,9 +14,9 @@
 
 @protocol KTVHCDataLoaderDelegate <NSObject>
 
-- (void)dataLoaderDidFinish:(KTVHCDataLoader *)loader;
-- (void)dataLoader:(KTVHCDataLoader *)loader didFailWithError:(NSError *)error;
-- (void)dataLoader:(KTVHCDataLoader *)loader didChangeProgress:(double)progress;
+- (void)ktv_loaderDidFinish:(KTVHCDataLoader *)loader;
+- (void)ktv_loader:(KTVHCDataLoader *)loader didFailWithError:(NSError *)error;
+- (void)ktv_loader:(KTVHCDataLoader *)loader didChangeProgress:(double)progress;
 
 @end
 
