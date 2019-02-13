@@ -331,7 +331,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 /**
  *  Deprecated
  *
- *  This part is for compatibility with historical versions\
+ *  This part is for compatibility with historical versions.
  *
  *  @warning This part will be removed in future versions.
  */
