@@ -75,7 +75,7 @@
     return URL;
 }
 
-- (void)deleteRecordLog
+- (void)deleteRecordLogFile
 {
     [self.lock lock];
     [self.writingHandle synchronizeFile];
@@ -125,7 +125,7 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    [self deleteRecordLog];
+    [self deleteRecordLogFile];
 }
 
 @end

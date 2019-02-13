@@ -177,9 +177,9 @@
     [KTVHCLog log].recordLogEnable = recordLogEnable;
 }
 
-+ (void)logDeleteRecordLog
++ (void)logDeleteRecordLogFile
 {
-    [[KTVHCLog log] deleteRecordLog];
+    [[KTVHCLog log] deleteRecordLogFile];
 }
 
 + (NSDictionary<NSURL *, NSError *> *)logErrors
@@ -202,6 +202,16 @@
 #pragma mark - Deprecated
 
 @implementation KTVHTTPCache (Deprecated)
+
++ (void)logDeleteRecordLog
+{
+    [self logDeleteRecordLogFile];
+}
+
++ (NSString *)logRecordLogFilePath
+{
+    return [self logRecordLogFileURL].path;
+}
 
 + (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString
 {
@@ -250,11 +260,6 @@
 + (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL *URL, NSString *contentType))contentTypeFilter
 {
     [self downloadSetUnacceptableContentTypeDisposer:contentTypeFilter];
-}
-
-+ (NSString *)logRecordLogFilePath
-{
-    return [self logRecordLogFileURL].path;
 }
 
 @end
