@@ -45,8 +45,6 @@
 
 - (instancetype)initWithURL:(NSURL *)URL headers:(NSDictionary *)headers NS_DESIGNATED_INITIALIZER;
 
-- (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range;
-
 @end
 
 #pragma mark - KTVHCDataCacheItem

@@ -41,14 +41,4 @@
     return value;
 }
 
-- (KTVHCDataResponse *)responseWithRange:(KTVHCRange)range
-{
-    if (!KTVHCEqualRanges(self.contentRange, range)) {
-        NSDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.headers, self.totalLength);
-        KTVHCDataResponse *obj = [[KTVHCDataResponse alloc] initWithURL:self.URL headers:headers];
-        return obj;
-    }
-    return self;
-}
-
 @end
