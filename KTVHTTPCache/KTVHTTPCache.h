@@ -297,7 +297,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  *
  *  @return The path to the log file.
  */
-+ (NSString *)logRecordLogFilePath;
++ (NSURL *)logRecordLogFileURL;
 
 /**
  *  Delete the log file.
@@ -348,5 +348,6 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes __attribute__((deprecated("Use +downloadSetAcceptableContentTypes: instead.")));
 + (NSArray<NSString *> *)downloadAcceptContentTypes                             __attribute__((deprecated("Use +downloadAcceptableContentTypes instead.")));
 + (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL *URL, NSString *contentType))contentTypeFilter __attribute__((deprecated("Use +downloadSetUnacceptableContentTypeDisposer: instead.")));
++ (NSString *)logRecordLogFilePath __attribute__((deprecated("Use +logRecordLogFilePath instead.")));
 
 @end

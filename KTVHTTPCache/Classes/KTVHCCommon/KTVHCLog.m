@@ -63,16 +63,16 @@
     [self.lock unlock];
 }
 
-- (NSString *)recordLogFilePath
+- (NSURL *)recordLogFileURL
 {
-    NSString *path = nil;
+    NSURL *URL = nil;
     [self.lock lock];
     long long size = [KTVHCPathTool sizeAtPath:[KTVHCPathTool logPath]];
     if (size > 0) {
-        path = [KTVHCPathTool logPath];
+        URL = [NSURL fileURLWithPath:[KTVHCPathTool logPath]];
     }
     [self.lock unlock];
-    return path;
+    return URL;
 }
 
 - (void)deleteRecordLog

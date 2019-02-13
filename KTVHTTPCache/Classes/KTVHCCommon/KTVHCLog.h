@@ -138,7 +138,7 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 
 - (void)addRecordLog:(NSString *)log;
 
-- (NSString *)recordLogFilePath;
+- (NSURL *)recordLogFileURL;
 - (void)deleteRecordLog;
 
 /**

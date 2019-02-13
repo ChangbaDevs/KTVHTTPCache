@@ -167,9 +167,9 @@
     return [KTVHCLog log].recordLogEnable;
 }
 
-+ (NSString *)logRecordLogFilePath
++ (NSURL *)logRecordLogFileURL
 {
-    return [KTVHCLog log].recordLogFilePath;
+    return [KTVHCLog log].recordLogFileURL;
 }
 
 + (void)logSetRecordLogEnable:(BOOL)recordLogEnable
@@ -250,6 +250,11 @@
 + (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL *URL, NSString *contentType))contentTypeFilter
 {
     [self downloadSetUnacceptableContentTypeDisposer:contentTypeFilter];
+}
+
++ (NSString *)logRecordLogFilePath
+{
+    return [self logRecordLogFileURL].path;
 }
 
 @end
