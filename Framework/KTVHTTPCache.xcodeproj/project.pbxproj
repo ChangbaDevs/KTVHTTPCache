@@ -139,6 +139,9 @@
 		9CACF7FB20AFBF9C00A72CB6 /* KTVCocoaHTTPServer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KTVCocoaHTTPServer.xcodeproj; path = KTVCocoaHTTPServer/KTVCocoaHTTPServer.xcodeproj; sourceTree = "<group>"; };
 		9CBD87E521F70AFC006BCBF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CBD87E621F70AFC006BCBF5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		9CF672C32213BEB4008CEFBE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		9CF672C42213BEB4008CEFBE /* KTVHTTPCache.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = KTVHTTPCache.podspec; path = ../KTVHTTPCache.podspec; sourceTree = "<group>"; };
+		9CF672C52213BEB4008CEFBE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +160,9 @@
 			children = (
 				9CBD87E521F70AFC006BCBF5 /* Info.plist */,
 				9CBD87E621F70AFC006BCBF5 /* module.modulemap */,
+				9CF672C32213BEB4008CEFBE /* LICENSE */,
+				9CF672C52213BEB4008CEFBE /* README.md */,
+				9CF672C42213BEB4008CEFBE /* KTVHTTPCache.podspec */,
 				9CA86E8821F709700007B098 /* KTVHTTPCache */,
 				9CD8C1FB20AF2B5C00949350 /* Vendors */,
 				9C7EDA8A1F3C0334003B6C14 /* Products */,
