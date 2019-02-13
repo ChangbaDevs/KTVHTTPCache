@@ -34,8 +34,8 @@
 
 @interface KTVHCDataRequest ()
 
-- (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range;
-- (KTVHCDataRequest *)requestWithTotalLength:(long long)totalLength;
+- (KTVHCDataRequest *)newRequestWithRange:(KTVHCRange)range;
+- (KTVHCDataRequest *)newRequestWithTotalLength:(long long)totalLength;
 
 @end
 

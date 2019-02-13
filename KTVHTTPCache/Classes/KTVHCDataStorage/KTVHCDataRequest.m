@@ -29,17 +29,17 @@
     KTVHCLogDealloc(self);
 }
 
-- (KTVHCDataRequest *)requestWithRange:(KTVHCRange)range
+- (KTVHCDataRequest *)newRequestWithRange:(KTVHCRange)range
 {
     NSDictionary *headers = KTVHCRangeFillToRequestHeaders(range, self.headers);
     KTVHCDataRequest *obj = [[KTVHCDataRequest alloc] initWithURL:self.URL headers:headers];
     return obj;
 }
 
-- (KTVHCDataRequest *)requestWithTotalLength:(long long)totalLength
+- (KTVHCDataRequest *)newRequestWithTotalLength:(long long)totalLength
 {
     KTVHCRange range = KTVHCRangeWithEnsureLength(self.range, totalLength);
-    return [self requestWithRange:range];
+    return [self newRequestWithRange:range];
 }
 
 @end

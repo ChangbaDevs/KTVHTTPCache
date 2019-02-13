@@ -31,7 +31,7 @@
     if (self = [super init]) {
         KTVHCLogAlloc(self);
         self.unit = [[KTVHCDataUnitPool pool] unitWithURL:request.URL];
-        self->_request = [request requestWithTotalLength:self.unit.totalLength];
+        self->_request = [request newRequestWithTotalLength:self.unit.totalLength];
         self.delegateQueue = dispatch_queue_create("KTVHCDataReader_delegateQueue", DISPATCH_QUEUE_SERIAL);
         self.internalDelegateQueue = dispatch_queue_create("KTVHCDataReader_internalDelegateQueue", DISPATCH_QUEUE_SERIAL);
         KTVHCLogDataReader(@"%p, Create reader\norignalRequest : %@\nfinalRequest : %@\nUnit : %@", self, request, self.request, self.unit);
@@ -147,7 +147,7 @@
         long long delta = obj.range.start + obj.readRange.start - offset;
         if (delta > 0) {
             KTVHCRange range = KTVHCMakeRange(offset, offset + delta - 1);
-            KTVHCDataRequest *request = [self.request requestWithRange:range];
+            KTVHCDataRequest *request = [self.request newRequestWithRange:range];
             KTVHCDataNetworkSource *source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
             [networkSources addObject:source];
             offset += delta;
@@ -158,7 +158,7 @@
     }
     if (length > 0) {
         KTVHCRange range = KTVHCMakeRange(offset, self.request.range.end);
-        KTVHCDataRequest *request = [self.request requestWithRange:range];
+        KTVHCDataRequest *request = [self.request newRequestWithRange:range];
         KTVHCDataNetworkSource *source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
         [networkSources addObject:source];
     }
