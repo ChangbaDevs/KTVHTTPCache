@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                = "KTVHTTPCache"
   s.version             = "2.0.0"
-  s.summary             = "A media cache framework from Changba iOS Team."
+  s.summary             = "A powerful media cache framework."
   s.homepage            = "https://github.com/ChangbaDevs/KTVHTTPCache"
   s.license             = { :type => "MIT", :file => "LICENSE" }
   s.author              = { "Single" => "libobjc@gmail.com" }
