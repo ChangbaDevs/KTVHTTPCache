@@ -101,6 +101,11 @@
     return [[KTVHCDataStorage storage] allCacheItems];
 }
 
++ (void)insertUnitWithURL:(NSURL *)URL fileURL:(NSURL *)fileURL;// zhou zhuoqian added
+{
+    [[KTVHCDataStorage storage] insertUnitWithURL:URL fileURL:fileURL];
+}
+
 + (void)cacheDeleteCacheWithURL:(NSURL *)URL
 {
     [[KTVHCDataStorage storage] deleteCacheWithURL:URL];

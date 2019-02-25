@@ -67,6 +67,17 @@
     return [self absoultePathWithRelativePath:filePath];;
 }
 
++ (NSString *)unitItemPathWithURL:(NSURL *)URL copyFromOriginalFileURL:(NSURL *)fileURL;
+{
+    NSString * baseFileName = [KTVHCURLTools keyWithURL:URL];
+    NSString * directoryPath = [self directoryPathWithURL:URL];
+    NSString *temp_path = [directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4", baseFileName]];
+    NSError * error;
+    [[NSFileManager defaultManager] copyItemAtURL:fileURL toURL:[NSURL fileURLWithPath:temp_path] error:&error];
+    NSLog(@"%@", error);
+    return [self absoultePathWithRelativePath:temp_path];;
+}
+
 + (NSString *)basePath
 {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];

@@ -75,6 +75,11 @@
 {
     return [[KTVHCDataUnitPool pool] totalCacheLength];
 }
+- (void)insertUnitWithURL:(NSURL *)URL fileURL:(NSURL *)fileURL;// zhou zhuoqian added
+{
+    [[KTVHCDataUnitPool pool] deleteUnitWithURL:URL];
+    [[KTVHCDataUnitPool pool] insertUnitWithURL:URL fileURL:fileURL];
+}
 
 - (void)deleteCacheWithURL:(NSURL *)URL
 {

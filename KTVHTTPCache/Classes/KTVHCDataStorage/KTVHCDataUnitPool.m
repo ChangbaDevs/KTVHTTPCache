@@ -144,6 +144,22 @@
     return cacheItems;
 }
 
+
+
+- (void)insertUnitWithURL:(NSURL *)URL fileURL:(NSURL *)fileURL;// zhou zhuoqian added
+{
+    long long offset = 0;
+    // 把自己路径下的文件, 拷贝到对方的路径中
+    NSString * path = [KTVHCPathTools unitItemPathWithURL:URL copyFromOriginalFileURL:fileURL];
+    KTVHCDataUnitItem *unitItem = [[KTVHCDataUnitItem alloc] initWithPath:path offset:offset];
+    unsigned long long fileLength  = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil].fileSize;
+    [unitItem setLength:  fileLength ];
+    KTVHCDataUnit * unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
+    [unit updateResponseHeaders:nil totalLength:fileLength];
+    [unit insertUnitItem:unitItem];
+    
+}
+
 - (void)deleteUnitWithURL:(NSURL *)URL
 {
     if (URL.absoluteString.length <= 0)

@@ -17,6 +17,9 @@
 + (NSString *)completeFilePathWithURL:(NSURL *)URL;
 + (NSString *)unitItemPathWithURL:(NSURL *)URL offset:(long long)offset;
 
+// 拷贝文件路径, zhouzhuoqian
++ (NSString *)unitItemPathWithURL:(NSURL *)URL copyFromOriginalFileURL:(NSURL *)fileURL;
+
 + (BOOL)isRelativePath:(NSString *)path;
 + (BOOL)isAbsolutePath:(NSString *)path;
 

@@ -63,6 +63,8 @@
 + (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString;
 + (NSArray <KTVHCDataCacheItem *> *)cacheAllCacheItems;
 
++ (void)insertUnitWithURL:(NSURL *)URL fileURL:(NSURL *)fileURL;// zhou zhuoqian added
+
 /**
  *  Delete Cache.
  */
