@@ -1,0 +1,482 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9C76736A21F70D090092B84B /* KTVHTTPCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736921F70CF40092B84B /* KTVHTTPCache.framework */; };
+		9C76736C21F70D160092B84B /* KTVCocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */; };
+		9C7A44BD1F3C09CF00ED01BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BC1F3C09CF00ED01BA /* main.m */; };
+		9C7A44C01F3C09CF00ED01BA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BF1F3C09CF00ED01BA /* AppDelegate.m */; };
+		9C7A44C31F3C09CF00ED01BA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44C21F3C09CF00ED01BA /* ViewController.m */; };
+		9C7A44C61F3C09CF00ED01BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A44C41F3C09CF00ED01BA /* Main.storyboard */; };
+		9C7A44C81F3C09CF00ED01BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A44C71F3C09CF00ED01BA /* Assets.xcassets */; };
+		9C7A44CB1F3C09CF00ED01BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A44C91F3C09CF00ED01BA /* LaunchScreen.storyboard */; };
+		9C9E98C81F40978C00914D89 /* CacheItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98BE1F40978C00914D89 /* CacheItemView.m */; };
+		9C9E98C91F40978C00914D89 /* CacheItemZoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C01F40978C00914D89 /* CacheItemZoneCell.m */; };
+		9C9E98CA1F40978C00914D89 /* CacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C21F40978C00914D89 /* CacheViewController.m */; };
+		9C9E98CB1F40978C00914D89 /* MediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C51F40978C00914D89 /* MediaCell.m */; };
+		9C9E98CC1F40978C00914D89 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C71F40978C00914D89 /* MediaItem.m */; };
+		9CAF35E421F822180097820C /* KTVCocoaHTTPServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9CAF35E721F822280097820C /* KTVHTTPCache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736921F70CF40092B84B /* KTVHTTPCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9CD2D4901F4142FC0052E85A /* MediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD2D48F1F4142FC0052E85A /* MediaViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9C76736821F70CF40092B84B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C7EDA891F3C0334003B6C14;
+			remoteInfo = KTVHTTPCache;
+		};
+		9CAF35E821F822280097820C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C7EDA881F3C0334003B6C14;
+			remoteInfo = KTVHTTPCache;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9CA821B61FD7A6D2008EBF3B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9CAF35E421F822180097820C /* KTVCocoaHTTPServer.framework in Embed Frameworks */,
+				9CAF35E721F822280097820C /* KTVHTTPCache.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9C29F2B21F4064280079C49B /* CocoaHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServer.framework; path = "../../Vendors/CocoaHTTPServer/build/Debug-iphoneos/CocoaHTTPServer.framework"; sourceTree = "<group>"; };
+		9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KTVHTTPCache.xcodeproj; path = ../Framework/KTVHTTPCache.xcodeproj; sourceTree = "<group>"; };
+		9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KTVCocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C7A44B81F3C09CF00ED01BA /* KTVHTTPCache.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KTVHTTPCache.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C7A44BC1F3C09CF00ED01BA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9C7A44BE1F3C09CF00ED01BA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9C7A44BF1F3C09CF00ED01BA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9C7A44C11F3C09CF00ED01BA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9C7A44C21F3C09CF00ED01BA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		9C7A44C51F3C09CF00ED01BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9C7A44C71F3C09CF00ED01BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9C7A44CA1F3C09CF00ED01BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9C7A44CC1F3C09CF00ED01BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C9249B21F3D4D6B00647335 /* CocoaHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServer.framework; path = "../../../../Library/Developer/Xcode/DerivedData/KTVHTTPCacheDemo-ghcrzsodwfjrimgorlsrrylpvxds/Build/Products/Debug-iphoneos/CocoaHTTPServer.framework"; sourceTree = "<group>"; };
+		9C9E98BD1F40978C00914D89 /* CacheItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheItemView.h; sourceTree = "<group>"; };
+		9C9E98BE1F40978C00914D89 /* CacheItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheItemView.m; sourceTree = "<group>"; };
+		9C9E98BF1F40978C00914D89 /* CacheItemZoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheItemZoneCell.h; sourceTree = "<group>"; };
+		9C9E98C01F40978C00914D89 /* CacheItemZoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheItemZoneCell.m; sourceTree = "<group>"; };
+		9C9E98C11F40978C00914D89 /* CacheViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheViewController.h; sourceTree = "<group>"; };
+		9C9E98C21F40978C00914D89 /* CacheViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheViewController.m; sourceTree = "<group>"; };
+		9C9E98C41F40978C00914D89 /* MediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaCell.h; sourceTree = "<group>"; };
+		9C9E98C51F40978C00914D89 /* MediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaCell.m; sourceTree = "<group>"; };
+		9C9E98C61F40978C00914D89 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
+		9C9E98C71F40978C00914D89 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
+		9CD2D48E1F4142FC0052E85A /* MediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaViewController.h; sourceTree = "<group>"; };
+		9CD2D48F1F4142FC0052E85A /* MediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9C7A44B51F3C09CF00ED01BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C76736C21F70D160092B84B /* KTVCocoaHTTPServer.framework in Frameworks */,
+				9C76736A21F70D090092B84B /* KTVHTTPCache.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9C76736421F70CF40092B84B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C76736921F70CF40092B84B /* KTVHTTPCache.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9C7A44AF1F3C09CF00ED01BA = {
+			isa = PBXGroup;
+			children = (
+				9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */,
+				9C7A44BA1F3C09CF00ED01BA /* KTVHTTPCacheDemo */,
+				9C7A44B91F3C09CF00ED01BA /* Products */,
+				9C9249B11F3D4D6B00647335 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		9C7A44B91F3C09CF00ED01BA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C7A44B81F3C09CF00ED01BA /* KTVHTTPCache.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9C7A44BA1F3C09CF00ED01BA /* KTVHTTPCacheDemo */ = {
+			isa = PBXGroup;
+			children = (
+				9C7A44BE1F3C09CF00ED01BA /* AppDelegate.h */,
+				9C7A44BF1F3C09CF00ED01BA /* AppDelegate.m */,
+				9C7A44C11F3C09CF00ED01BA /* ViewController.h */,
+				9C7A44C21F3C09CF00ED01BA /* ViewController.m */,
+				9C9E98BC1F40978C00914D89 /* Cache */,
+				9C9E98C31F40978C00914D89 /* Media */,
+				9C7A44C41F3C09CF00ED01BA /* Main.storyboard */,
+				9C7A44C71F3C09CF00ED01BA /* Assets.xcassets */,
+				9C7A44C91F3C09CF00ED01BA /* LaunchScreen.storyboard */,
+				9C7A44CC1F3C09CF00ED01BA /* Info.plist */,
+				9C7A44BB1F3C09CF00ED01BA /* Supporting Files */,
+			);
+			path = KTVHTTPCacheDemo;
+			sourceTree = "<group>";
+		};
+		9C7A44BB1F3C09CF00ED01BA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C7A44BC1F3C09CF00ED01BA /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9C9249B11F3D4D6B00647335 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */,
+				9C29F2B21F4064280079C49B /* CocoaHTTPServer.framework */,
+				9C9249B21F3D4D6B00647335 /* CocoaHTTPServer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9C9E98BC1F40978C00914D89 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				9C9E98C11F40978C00914D89 /* CacheViewController.h */,
+				9C9E98C21F40978C00914D89 /* CacheViewController.m */,
+				9C9E98BF1F40978C00914D89 /* CacheItemZoneCell.h */,
+				9C9E98C01F40978C00914D89 /* CacheItemZoneCell.m */,
+				9C9E98BD1F40978C00914D89 /* CacheItemView.h */,
+				9C9E98BE1F40978C00914D89 /* CacheItemView.m */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		9C9E98C31F40978C00914D89 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				9CD2D48E1F4142FC0052E85A /* MediaViewController.h */,
+				9CD2D48F1F4142FC0052E85A /* MediaViewController.m */,
+				9C9E98C61F40978C00914D89 /* MediaItem.h */,
+				9C9E98C71F40978C00914D89 /* MediaItem.m */,
+				9C9E98C41F40978C00914D89 /* MediaCell.h */,
+				9C9E98C51F40978C00914D89 /* MediaCell.m */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9C7A44B71F3C09CF00ED01BA /* KTVHTTPCacheDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C7A44CF1F3C09CF00ED01BA /* Build configuration list for PBXNativeTarget "KTVHTTPCacheDemo" */;
+			buildPhases = (
+				9C7A44B41F3C09CF00ED01BA /* Sources */,
+				9C7A44B51F3C09CF00ED01BA /* Frameworks */,
+				9C7A44B61F3C09CF00ED01BA /* Resources */,
+				9CA821B61FD7A6D2008EBF3B /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9CAF35E921F822280097820C /* PBXTargetDependency */,
+			);
+			name = KTVHTTPCacheDemo;
+			productName = KTVHTTPCacheDemo;
+			productReference = 9C7A44B81F3C09CF00ED01BA /* KTVHTTPCache.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C7A44B01F3C09CF00ED01BA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = Single;
+				TargetAttributes = {
+					9C7A44B71F3C09CF00ED01BA = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 2EN49MUBLA;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 9C7A44B31F3C09CF00ED01BA /* Build configuration list for PBXProject "KTVHTTPCacheDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9C7A44AF1F3C09CF00ED01BA;
+			productRefGroup = 9C7A44B91F3C09CF00ED01BA /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9C76736421F70CF40092B84B /* Products */;
+					ProjectRef = 9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				9C7A44B71F3C09CF00ED01BA /* KTVHTTPCacheDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9C76736921F70CF40092B84B /* KTVHTTPCache.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KTVHTTPCache.framework;
+			remoteRef = 9C76736821F70CF40092B84B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9C7A44B61F3C09CF00ED01BA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C7A44CB1F3C09CF00ED01BA /* LaunchScreen.storyboard in Resources */,
+				9C7A44C81F3C09CF00ED01BA /* Assets.xcassets in Resources */,
+				9C7A44C61F3C09CF00ED01BA /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9C7A44B41F3C09CF00ED01BA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C9E98C81F40978C00914D89 /* CacheItemView.m in Sources */,
+				9C7A44C31F3C09CF00ED01BA /* ViewController.m in Sources */,
+				9C9E98C91F40978C00914D89 /* CacheItemZoneCell.m in Sources */,
+				9C9E98CA1F40978C00914D89 /* CacheViewController.m in Sources */,
+				9CD2D4901F4142FC0052E85A /* MediaViewController.m in Sources */,
+				9C7A44C01F3C09CF00ED01BA /* AppDelegate.m in Sources */,
+				9C9E98CC1F40978C00914D89 /* MediaItem.m in Sources */,
+				9C9E98CB1F40978C00914D89 /* MediaCell.m in Sources */,
+				9C7A44BD1F3C09CF00ED01BA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9CAF35E921F822280097820C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = KTVHTTPCache;
+			targetProxy = 9CAF35E821F822280097820C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9C7A44C41F3C09CF00ED01BA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C7A44C51F3C09CF00ED01BA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9C7A44C91F3C09CF00ED01BA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C7A44CA1F3C09CF00ED01BA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9C7A44CD1F3C09CF00ED01BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9C7A44CE1F3C09CF00ED01BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9C7A44D01F3C09CF00ED01BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				DEVELOPMENT_TEAM = 2EN49MUBLA;
+				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemo;
+				PRODUCT_NAME = KTVHTTPCache;
+			};
+			name = Debug;
+		};
+		9C7A44D11F3C09CF00ED01BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				DEVELOPMENT_TEAM = 2EN49MUBLA;
+				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemo;
+				PRODUCT_NAME = KTVHTTPCache;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9C7A44B31F3C09CF00ED01BA /* Build configuration list for PBXProject "KTVHTTPCacheDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C7A44CD1F3C09CF00ED01BA /* Debug */,
+				9C7A44CE1F3C09CF00ED01BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C7A44CF1F3C09CF00ED01BA /* Build configuration list for PBXNativeTarget "KTVHTTPCacheDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C7A44D01F3C09CF00ED01BA /* Debug */,
+				9C7A44D11F3C09CF00ED01BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9C7A44B01F3C09CF00ED01BA /* Project object */;
+}
