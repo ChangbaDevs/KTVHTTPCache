@@ -47,6 +47,14 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #pragma mark - HTTP Server
 
 /**
+ *  Set Custom Port. Defalut is 80
+ *  Should set custom Port Before Server Run!
+ *
+ *  @return YES when the port is successfully setted , otherwise NO.
+ */
++ (BOOL)setCustomPort:(UInt16)port;
+
+/**
  *  Start the proxy service.
  *
  *  @param error : Pointer to receive service error.

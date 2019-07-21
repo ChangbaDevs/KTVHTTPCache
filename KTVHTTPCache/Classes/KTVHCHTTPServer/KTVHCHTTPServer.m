@@ -17,6 +17,7 @@
 @property (nonatomic, strong) HTTPServer *server;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 @property (nonatomic) BOOL wantsRunning;
+@property (nonatomic) UInt16 port;
 
 @end
 
@@ -36,10 +37,11 @@
 {
     if (self = [super init]) {
         KTVHCLogAlloc(self);
+        _port = 80;
         self.server = [[HTTPServer alloc] init];
         [self.server setConnectionClass:[KTVHCHTTPConnection class]];
         [self.server setType:@"_http._tcp."];
-        [self.server setPort:80];
+        [self.server setPort:_port];
         self.backgroundTask = UIBackgroundTaskInvalid;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationDidEnterBackground)
@@ -66,6 +68,16 @@
 - (BOOL)isRunning
 {
     return self.server.isRunning;
+}
+
+- (BOOL)setCustomPort:(UInt16)port
+{
+    if ([self.server isRunning]) {
+        return NO;
+    }else{
+        [self.server setPort:port];
+        return YES;
+    }
 }
 
 - (BOOL)start:(NSError **)error

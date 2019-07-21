@@ -17,6 +17,11 @@
 
 #pragma mark - HTTP Server
 
++ (BOOL)setCustomPort:(UInt16)port
+{
+    return [[KTVHCHTTPServer server]setCustomPort:port];
+}
+
 + (BOOL)proxyStart:(NSError **)error
 {
     return [[KTVHCHTTPServer server] start:error];

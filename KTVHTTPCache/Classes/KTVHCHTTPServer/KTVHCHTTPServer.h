@@ -17,6 +17,7 @@
 
 @property (nonatomic, readonly, getter=isRunning) BOOL running;
 
+- (BOOL)setCustomPort:(UInt16)port;
 - (BOOL)start:(NSError **)error;
 - (void)stop;
 
