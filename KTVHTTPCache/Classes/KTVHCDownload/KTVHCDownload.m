@@ -50,6 +50,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 {
     if (self = [super init]) {
         KTVHCLogAlloc(self);
+        self.coreLock = [[NSLock alloc] init];
         self.timeoutInterval = 30.0f;
         self.backgroundTask = UIBackgroundTaskInvalid;
         self.errorDictionary = [NSMutableDictionary dictionary];
@@ -233,9 +234,6 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 
 - (void)lock
 {
-    if (!self.coreLock) {
-        self.coreLock = [[NSLock alloc] init];
-    }
     [self.coreLock lock];
 }
 
