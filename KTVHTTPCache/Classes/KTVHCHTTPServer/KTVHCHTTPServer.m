@@ -37,6 +37,7 @@
     if (self = [super init]) {
         KTVHCLogAlloc(self);
         self.server = [[HTTPServer alloc] init];
+        [self.server setDocumentRoot:[NSString stringWithFormat:@"%@/Documents/KTVHTTPCache",NSHomeDirectory()]];
         [self.server setConnectionClass:[KTVHCHTTPConnection class]];
         [self.server setType:@"_http._tcp."];
         [self.server setPort:80];
