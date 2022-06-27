@@ -1,5 +1,9 @@
 #import "HTTPServer.h"
+#if __has_include(<CocoaAsyncSocket/GCDAsyncSocket.h>)
+#import <CocoaAsyncSocket/GCDAsyncSocket.h>
+#else
 #import "GCDAsyncSocket.h"
+#endif
 #import "HTTPConnection.h"
 #import "WebSocket.h"
 #import "HTTPLogging.h"

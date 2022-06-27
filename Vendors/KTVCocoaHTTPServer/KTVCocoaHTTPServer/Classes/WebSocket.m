@@ -1,6 +1,10 @@
 #import "WebSocket.h"
 #import "HTTPMessage.h"
+#if __has_include(<CocoaAsyncSocket/GCDAsyncSocket.h>)
+#import <CocoaAsyncSocket/GCDAsyncSocket.h>
+#else
 #import "GCDAsyncSocket.h"
+#endif
 #import "DDNumber.h"
 #import "DDData.h"
 #import "HTTPLogging.h"
