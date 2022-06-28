@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name                = "KTVCocoaHTTPServer"
+  s.name                = "LFKTVCocoaHTTPServer"
   s.version             = "1.0.0"
   s.summary             = "CocoaHTTPServer for KTV."
   s.homepage            = "https://github.com/ChangbaDevs/KTVCocoaHTTPServer"

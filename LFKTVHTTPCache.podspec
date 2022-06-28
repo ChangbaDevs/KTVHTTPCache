@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name                = "KTVHTTPCache"
-  s.version             = "2.0.1"
+  s.name                = "LFKTVHTTPCache"
+  s.version             = "2.0.2"
   s.summary             = "A powerful media cache framework."
   s.homepage            = "https://github.com/ChangbaDevs/KTVHTTPCache"
   s.license             = { :type => "MIT", :file => "LICENSE" }
@@ -20,5 +20,5 @@ Pod::Spec.new do |s|
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItemZone.h"
   s.frameworks          = "UIKit", "Foundation"
   s.requires_arc        = true
-  s.dependency 'KTVCocoaHTTPServer'
+  s.dependency 'LFKTVCocoaHTTPServer'
 end

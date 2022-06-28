@@ -9,6 +9,6 @@
 #ifndef KTVHCHTTPHeader_h
 #define KTVHCHTTPHeader_h
 
-#import <KTVCocoaHTTPServer/KTVCocoaHTTPServer.h>
+#import <LFKTVCocoaHTTPServer/KTVCocoaHTTPServer.h>
 
 #endif /* KTVHCHTTPHeader_h */
