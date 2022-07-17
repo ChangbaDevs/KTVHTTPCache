@@ -20,6 +20,8 @@
 @property (nonatomic, readonly) NSTimeInterval createTimeInterval;
 @property (nonatomic, readonly) long long offset;
 @property (nonatomic, readonly) long long length;
+@property (nonatomic, assign) BOOL isM3u8;
+
 
 - (void)updateLength:(long long)length;
 

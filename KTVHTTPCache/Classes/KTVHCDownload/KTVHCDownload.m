@@ -17,6 +17,8 @@
 
 NSString * const KTVHCContentTypeVideo                  = @"video/";
 NSString * const KTVHCContentTypeAudio                  = @"audio/";
+NSString * const KTVHCContentTypeM3U8                  = @"application/x-mpegURL";
+NSString * const KTVHCContentTypeM3U8Audio                 = @"audio/x-mpegurl";
 NSString * const KTVHCContentTypeApplicationMPEG4       = @"application/mp4";
 NSString * const KTVHCContentTypeApplicationOctetStream = @"application/octet-stream";
 NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream";
@@ -65,6 +67,8 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
                                                 delegateQueue:self.sessionDelegateQueue];
         self.acceptableContentTypes = @[KTVHCContentTypeVideo,
                                         KTVHCContentTypeAudio,
+                                        KTVHCContentTypeM3U8,
+                                        KTVHCContentTypeM3U8Audio,
                                         KTVHCContentTypeApplicationMPEG4,
                                         KTVHCContentTypeApplicationOctetStream,
                                         KTVHCContentTypeBinaryOctetStream];
@@ -160,6 +164,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     }
     if (!error) {
         BOOL vaild = NO;
+        NSLog(@"KTVHTTPCache contentType === %@",dataResponse.contentType);
         if (dataResponse.contentType.length > 0) {
             for (NSString *obj in self.acceptableContentTypes) {
                 if ([[dataResponse.contentType lowercaseString] containsString:[obj lowercaseString]]) {

@@ -420,7 +420,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 		}
 		else
 		{
-			HTTPLogError(@"%@: Failed to start HTTP Server: %@", THIS_FILE, err);
+			HTTPLogError(@"%@: Failed to start HTTP Server: %@ port = \(port)", THIS_FILE, err,port);
 		}
 	}});
 	

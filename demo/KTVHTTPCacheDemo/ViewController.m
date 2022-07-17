@@ -35,6 +35,7 @@
 {
     [KTVHTTPCache logSetConsoleLogEnable:YES];
     NSError *error = nil;
+
     [KTVHTTPCache proxyStart:&error];
     if (error) {
         NSLog(@"Proxy Start Failure, %@", error);
@@ -49,6 +50,8 @@
         NSLog(@"Unsupport Content-Type Filter reviced URL : %@, %@", URL, contentType);
         return NO;
     }];
+    
+    NSLog(@"logRecordLogFileURL == %@",KTVHTTPCache.logRecordLogFilePath);
 }
 
 - (void)setupItems
@@ -61,7 +64,10 @@
                                               URLString:@"http://qiniuuwmp3.changba.com/941946870.mp4"];
     MediaItem *item4 = [[MediaItem alloc] initWithTitle:@"张学友 - 我真的受伤了"
                                               URLString:@"http://lzaiuw.changba.com/userdata/video/940071102.mp4"];
-    self.items = @[item1, item2, item3, item4];
+    MediaItem *item5 = [[MediaItem alloc] initWithTitle:@"你好我是m3u8"
+                                              URLString:@"https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560_video_720_3000000.m3u8"];
+    
+    self.items = @[item1, item2, item3, item4, item5];
     [self.tableView reloadData];
 }
 

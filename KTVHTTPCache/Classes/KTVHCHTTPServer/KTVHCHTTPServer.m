@@ -39,7 +39,7 @@
         self.server = [[HTTPServer alloc] init];
         [self.server setConnectionClass:[KTVHCHTTPConnection class]];
         [self.server setType:@"_http._tcp."];
-        [self.server setPort:80];
+        [self.server setPort:8089];
         self.backgroundTask = UIBackgroundTaskInvalid;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationDidEnterBackground)
@@ -96,6 +96,8 @@
     KTVHCLogHTTPServer(@"%p, Return URL\nURL : %@", self, URL);
     return URL;
 }
+
+
 
 #pragma mark - Internal
 

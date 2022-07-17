@@ -66,7 +66,9 @@
 
 + (NSString *)basePath
 {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSLog(@"KTVHTTPCache basePath = %@",path);
+    return path;
 }
 
 + (BOOL)isRelativePath:(NSString *)path

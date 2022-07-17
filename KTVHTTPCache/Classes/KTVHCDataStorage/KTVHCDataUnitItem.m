@@ -27,6 +27,7 @@
     obj->_createTimeInterval = self.createTimeInterval;
     obj->_offset = self.offset;
     obj->_length = self.length;
+    obj->_isM3u8 = self.isM3u8;
     [self unlock];
     return obj;
 }
