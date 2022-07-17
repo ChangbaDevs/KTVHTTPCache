@@ -228,6 +228,9 @@
     [self unlock];
 }
 
+
+
+
 - (void)callbackForPrepared
 {
     if (self.isClosed) {
@@ -238,8 +241,23 @@
     }
     if (self.sourceManager.isPrepared && self.unit.totalLength > 0) {
         long long totalLength = self.unit.totalLength;
+        BOOL isFix = NO;
+        if ([self.request.URL.absoluteString hasSuffix:@".m3u8"]) {
+            long long totalLength1 = self.unit.cacheLength;
+            if (totalLength < totalLength1 ) {
+                totalLength = totalLength1;
+                isFix = YES;
+            }
+        }
+        
         KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);
-        NSDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength);
+        NSMutableDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength).mutableCopy;
+//        "Content-Length" = 2390
+        if (isFix) {
+            headers[@"Content-Length"] = [NSString stringWithFormat:@"%lld",totalLength];
+            [self.unit updateResponseHeaders:headers totalLength:totalLength];
+        }
+        
         self->_response = [[KTVHCDataResponse alloc] initWithURL:self.request.URL headers:headers];
         self->_prepared = YES;
         KTVHCLogDataReader(@"%p, Reader did prepared\nResponse : %@", self, self.response);
