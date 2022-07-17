@@ -1,7 +1,7 @@
 # KTVHTTPCache
 
 KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and very suitable for media resources.
-
+感谢开源 ,接下来我来维护, 此版本兼容m3u8视频缓存
 
 ## Flow Chart
 
@@ -15,7 +15,7 @@ KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and
 - Accurate view caching information.
 - Provide different levels of interface.
 - Adjust the download configuration.
-
+- Compatible with M3U8 format video
 
 ## Installation
 
@@ -24,7 +24,7 @@ KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and
 To integrate KTVHTTPCache into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
-pod 'KTVHTTPCache', '~> 2.0.0'
+pod 'KTVHTTPCache',:git => 'https://github.com/QiuYeHong90/KTVHTTPCache.git',:tag=>'3.0.0'
 ```
 
 Run `pod install`
@@ -109,9 +109,9 @@ KTVHTTPCache is released under the MIT license.
 
 ## Feedback
 
-- GitHub : [Single](https://github.com/libobjc)
+- GitHub : [Single](https://github.com/QiuYeHong90)
 - Email : libobjc@gmail.com
-
+- Email : 793983383@gmail.com
 
 ## Developed by Single
 
