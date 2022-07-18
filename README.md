@@ -24,7 +24,7 @@ KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and
 To integrate KTVHTTPCache into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
-pod 'KTVHTTPCache',:git => 'https://github.com/QiuYeHong90/KTVHTTPCache.git',:tag=>'3.0.0'
+pod 'KTVHTTPCache',:git => 'https://github.com/QiuYeHong90/KTVHTTPCache.git',:tag=>'3.0.1'
 ```
 
 Run `pod install`
