@@ -64,8 +64,11 @@
                                               URLString:@"http://qiniuuwmp3.changba.com/941946870.mp4"];
     MediaItem *item4 = [[MediaItem alloc] initWithTitle:@"张学友 - 我真的受伤了"
                                               URLString:@"http://lzaiuw.changba.com/userdata/video/940071102.mp4"];
+//    MediaItem *item5 = [[MediaItem alloc] initWithTitle:@"你好我是m3u8"
+//                                              URLString:@"https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560_video_720_3000000.m3u8"];
     MediaItem *item5 = [[MediaItem alloc] initWithTitle:@"你好我是m3u8"
-                                              URLString:@"https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560_video_720_3000000.m3u8"];
+                                              URLString:@"https://dev-cdn.livbylive.com/video/hk1f33icc7mi4hgno9mq9o18v3/f3ed9f7f284c8dab121335b5a9611308_hk1f33icc7mi4hgno9mq9o18v3.m3u8"];
+
     
     self.items = @[item1, item2, item3, item4, item5];
     [self.tableView reloadData];
@@ -94,6 +97,7 @@
     MediaItem *item = [self.items objectAtIndex:indexPath.row];
     NSString *URLString = [item.URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *URL = [KTVHTTPCache proxyURLWithOriginalURL:[NSURL URLWithString:URLString]];
+//    NSURL * URL = [NSURL URLWithString:URLString];
     NSLog(@"absoluteString === %@",URL.absoluteString);
     MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
     [self presentViewController:vc animated:YES completion:nil];

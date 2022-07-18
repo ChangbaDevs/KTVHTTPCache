@@ -208,23 +208,27 @@
 //        https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560_video_1080_5000000.m3u8
             NSString * urStr = self.request.URL.absoluteString;
             NSString * oriM3u8String  =[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-
+            BOOL isHasFormat = NO;
+            if ([oriM3u8String hasPrefix:@"../"]) {
+                isHasFormat = YES;
+            }
+            
             if (urStr.length > 0) {
                 NSRange r;
                 NSString *a = urStr;
-                for (int i = 0; i < 2; i ++) {
+                NSInteger count = isHasFormat ? 2:1;
+                for (int i = 0; i < count; i ++) {
                     r = [a rangeOfString:@"/" options:NSBackwardsSearch];
                     a = [a substringToIndex:r.location];
                 }
-
                 NSString * formatStr = [a  stringByAppendingString:@"/"];
+                NSLog(@"urStr = %@ \n formatStr = %@",urStr,formatStr);
                 NSArray <NSString *>* listStrs = [oriM3u8String componentsSeparatedByString:@"\n"];
                 NSMutableArray * newListStrs = @[].mutableCopy;
                 for (NSString *object in listStrs) {
                     if ([object hasSuffix:@".ts"]) {
                         NSString * newStr = object;
-                        if ([object hasPrefix:@"../"]) {
+                        if (isHasFormat) {
                             newStr = [newStr stringByReplacingOccurrencesOfString:@"../" withString:formatStr];
                         } else {
                             newStr = [NSString stringWithFormat:@"%@%@",formatStr,object];
