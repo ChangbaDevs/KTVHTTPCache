@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
+#import "KTVHCHTTPServer.h"
 #import "KTVHCDataReader.h"
 #import "KTVHCData+Internal.h"
 #import "KTVHCDataSourceManager.h"
@@ -78,6 +79,61 @@
     [self unlock];
 }
 
+-(NSData *)newDataWithLength:(NSUInteger)length data:(NSData *)data {
+    if ([self.request.URL.absoluteString hasSuffix:@".m3u8"]) {
+        NSString * urStr = self.request.URL.absoluteString;
+        NSString * oriM3u8String  =[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        BOOL isHasFormat = NO;
+        if ([oriM3u8String hasPrefix:@"../"]) {
+            isHasFormat = YES;
+        }
+        
+        if (urStr.length > 0) {
+            NSRange r;
+            NSString *a = urStr;
+            NSInteger count = isHasFormat ? 2:1;
+            for (int i = 0; i < count; i ++) {
+                r = [a rangeOfString:@"/" options:NSBackwardsSearch];
+                a = [a substringToIndex:r.location];
+            }
+            NSString * formatStr = [a  stringByAppendingString:@"/"];
+            NSLog(@"urStr = %@ \n formatStr = %@",urStr,formatStr);
+            NSArray <NSString *>* listStrs = [oriM3u8String componentsSeparatedByString:@"\n"];
+            NSMutableArray * newListStrs = @[].mutableCopy;
+            for (NSString *object in listStrs) {
+                if ([object hasSuffix:@".ts"]) {
+                    NSString * newStr = object;
+                    if (isHasFormat) {
+                        newStr = [newStr stringByReplacingOccurrencesOfString:@"../" withString:formatStr];
+                    } else {
+                        newStr = [NSString stringWithFormat:@"%@%@",formatStr,object];
+                    }
+                    
+                    NSURL * oringalUrl = [[NSURL alloc] initWithString: newStr];
+                    NSURL * newOrigalUrl = [[KTVHCHTTPServer server] URLWithOriginalURL:oringalUrl];
+                    [newListStrs addObject:newOrigalUrl.absoluteString];
+                } else {
+                    [newListStrs addObject:object];
+                }
+                
+            }
+            oriM3u8String = [newListStrs componentsJoinedByString:@"\n"];
+        }
+        
+        
+        
+        NSData * newData = [oriM3u8String dataUsingEncoding:NSUTF8StringEncoding];
+//        [self.response setValue:@(newData.length) forKey:@"contentLength"];
+//        KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, newData.length);
+//        NSMutableDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, newData.length).mutableCopy;
+//        [self.unit updateResponseHeaders:headers totalLength:newData.length];
+//        [self->_response updateHeaders:headers];
+        NSLog(@"isM3u8 ====  ==%@",oriM3u8String);
+        return  newData;
+    }
+    return data;
+}
+
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
     [self lock];
@@ -94,6 +150,7 @@
         return nil;
     }
     NSData *data = [self.sourceManager readDataOfLength:length];
+    data = [self newDataWithLength:length data:data];
     if (data.length > 0) {
         self->_readedLength += data.length;
         if (self.response.contentLength > 0) {
@@ -243,16 +300,14 @@
         long long totalLength = self.unit.totalLength;
         BOOL isFix = NO;
         if ([self.request.URL.absoluteString hasSuffix:@".m3u8"]) {
-            long long totalLength1 = self.unit.cacheLength;
+            long long totalLength1 = totalLength * 10;
             if (totalLength < totalLength1 ) {
                 totalLength = totalLength1;
                 isFix = YES;
             }
         }
-        
         KTVHCRange range = KTVHCRangeWithEnsureLength(self.request.range, totalLength);
         NSMutableDictionary *headers = KTVHCRangeFillToResponseHeaders(range, self.unit.responseHeaders, totalLength).mutableCopy;
-//        "Content-Length" = 2390
         if (isFix) {
             headers[@"Content-Length"] = [NSString stringWithFormat:@"%lld",totalLength];
             [self.unit updateResponseHeaders:headers totalLength:totalLength];

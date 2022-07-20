@@ -17,15 +17,20 @@
     if (self = [super init]) {
         KTVHCLogAlloc(self);
         self->_URL = URL;
-        self->_headers = headers;
-        self->_contentType = [self headerValueWithKey:@"Content-Type"];
-        self->_contentRangeString = [self headerValueWithKey:@"Content-Range"];
-        self->_contentLength = [self headerValueWithKey:@"Content-Length"].longLongValue;
-        self->_contentRange = KTVHCRangeWithResponseHeaderValue(self.contentRangeString, &self->_totalLength);
-        KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld", self, self.URL, self.headers, self.contentType, self.totalLength, self.contentLength);
+        [self updateHeaders:headers];
     }
     return self;
 }
+
+-(void)updateHeaders:(NSDictionary *)headers {
+    self->_headers = headers;
+    self->_contentType = [self headerValueWithKey:@"Content-Type"];
+    self->_contentRangeString = [self headerValueWithKey:@"Content-Range"];
+    self->_contentLength = [self headerValueWithKey:@"Content-Length"].longLongValue;
+    self->_contentRange = KTVHCRangeWithResponseHeaderValue(self.contentRangeString, &self->_totalLength);
+    KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld", self, self.URL, self.headers, self.contentType, self.totalLength, self.contentLength);
+}
+
 
 - (void)dealloc
 {

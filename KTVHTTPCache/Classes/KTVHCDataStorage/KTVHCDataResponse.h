@@ -21,5 +21,5 @@
 @property (nonatomic, readonly) KTVHCRange contentRange;
 @property (nonatomic, readonly) long long contentLength;
 @property (nonatomic, readonly) long long totalLength;
-
+-(void)updateHeaders:(NSDictionary *)headers;
 @end
