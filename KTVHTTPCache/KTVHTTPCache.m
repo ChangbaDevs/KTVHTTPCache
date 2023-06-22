@@ -123,6 +123,11 @@
     [KTVHCDownload download].additionalHeaders = additionalHeaders;
 }
 
++ (void)downloadSetAdditionalHeaders:(NSDictionary<NSString *,NSString *> *)additionalHeaders forURL:(NSURL *)url
+{
+    [KTVHCDownload download].additionalHeadersWithKey[url] = additionalHeaders;
+}
+
 + (NSDictionary<NSString *, NSString *> *)downloadAdditionalHeaders
 {
     return [KTVHCDownload download].additionalHeaders;
