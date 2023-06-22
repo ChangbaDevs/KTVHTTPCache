@@ -42,6 +42,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         obj = [[self alloc] init];
+        obj.additionalHeadersWithURL = [NSMutableDictionary dictionary];
     });
     return obj;
 }
@@ -112,6 +113,9 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
             [self.whitelistHeaderKeys containsObject:key]) {
             [mRequest setValue:obj forHTTPHeaderField:key];
         }
+    }];
+    [self.additionalHeadersWithURL[request.URL] enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+        [mRequest setValue:obj forHTTPHeaderField:key];
     }];
     [self.additionalHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
         [mRequest setValue:obj forHTTPHeaderField:key];
