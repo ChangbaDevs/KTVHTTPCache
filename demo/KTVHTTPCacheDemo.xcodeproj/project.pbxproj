@@ -220,7 +220,7 @@
 				TargetAttributes = {
 					9C7A44B71F3C09CF00ED01BA = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 2EN49MUBLA;
+						DevelopmentTeam = YQ2BBNYL5U;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -431,12 +431,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
-				DEVELOPMENT_TEAM = 2EN49MUBLA;
+				DEVELOPMENT_TEAM = YQ2BBNYL5U;
 				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemofff;
 				PRODUCT_NAME = KTVHTTPCache;
 			};
 			name = Debug;

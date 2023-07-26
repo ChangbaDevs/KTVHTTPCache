@@ -48,7 +48,7 @@
     }];
     [KTVHTTPCache downloadSetUnacceptableContentTypeDisposer:^BOOL(NSURL *URL, NSString *contentType) {
         NSLog(@"Unsupport Content-Type Filter reviced URL : %@, %@", URL, contentType);
-        return NO;
+        return YES;
     }];
     
     NSLog(@"logRecordLogFileURL == %@",KTVHTTPCache.logRecordLogFilePath);
@@ -65,7 +65,7 @@
     MediaItem *item4 = [[MediaItem alloc] initWithTitle:@"张学友 - 我真的受伤了"
                                               URLString:@"http://lzaiuw.changba.com/userdata/video/940071102.mp4"];
     MediaItem *item5 = [[MediaItem alloc] initWithTitle:@"你好我是m3u8"
-                                              URLString:@"https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560_video_720_3000000.m3u8"];
+                                              URLString:@"https://pptv.sd-play.com/202307/19/ZHp3S7jWhm3/video/900k_0X480_64k_25/hls/index.m3u8"];
     
     self.items = @[item1, item2, item3, item4, item5];
     [self.tableView reloadData];
