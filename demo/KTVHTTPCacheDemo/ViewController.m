@@ -98,14 +98,14 @@
     MediaItem *item = [self.items objectAtIndex:indexPath.row];
     NSString *URLString = [item.URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 
-    NSURL *URL = [KTVHTTPCache proxyURLWithOriginalURL:[NSURL URLWithString:URLString]];
+//    NSURL *URL = [KTVHTTPCache proxyURLWithOriginalURL:[NSURL URLWithString:URLString]];
 //    NSURL * URL = [NSURL URLWithString:URLString];
-    NSLog(@"absoluteString === %@",URL.absoluteString);
-    MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
-    [self presentViewController:vc animated:YES completion:nil];
+//    NSLog(@"absoluteString === %@",URL.absoluteString);
+//    MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
+//    [self presentViewController:vc animated:YES completion:nil];
 
     __weak ViewController * weakself = self;
-    [M3U8Tool proxyURLWithOriginalURL:URLString complete:^(NSURL * _Nonnull url) {
+    [M3U8Tool proxyURLWithOriginalURL:item.URLString complete:^(NSURL * _Nonnull url) {
         
         NSLog(@"absoluteString === %@",url.absoluteString);
         MediaViewController *vc = [[MediaViewController alloc] initWithURLString:url.absoluteString];
