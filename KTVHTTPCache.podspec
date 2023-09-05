@@ -17,7 +17,10 @@ Pod::Spec.new do |s|
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataRequest.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataResponse.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItem.h",
-                          "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItemZone.h"
+                          "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItemZone.h",
+                          "KTVHTTPCache/Classes/KTVHCTools/KTVHCURLTool.h",
+                          "KTVHTTPCache/Classes/KTVHCTools/KTVHCPathTool.h"
+                          
   s.frameworks          = "UIKit", "Foundation"
   s.requires_arc        = true
   s.dependency 'KTVCocoaHTTPServer'

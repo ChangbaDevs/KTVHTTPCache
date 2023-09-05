@@ -80,6 +80,24 @@
     [self stopInternal];
 }
 
+- (NSURL *)URLWithFileOriginalURL:(NSURL *)fileURL
+{
+    if (!fileURL.isFileURL) {
+        return fileURL;
+    }
+    if (!self.isRunning) {
+        return fileURL;
+    }
+    NSString *original = [[KTVHCURLTool tool] URLEncode:fileURL.absoluteString];
+    NSString *server = [NSString stringWithFormat:@"http://localhost:%d/", self.server.listeningPort];
+    NSString *extension = fileURL.pathExtension ? [NSString stringWithFormat:@".%@", fileURL.pathExtension] : @"";
+    NSString *URLString = [NSString stringWithFormat:@"%@request%@?fileUrl=%@", server, extension, original];
+    fileURL = [NSURL URLWithString:URLString];
+    KTVHCLogHTTPServer(@"%p, Return fileURL\fileURL : %@", self, fileURL);
+    return fileURL;
+}
+
+
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL
 {
     if (!URL || URL.isFileURL || URL.absoluteString.length == 0) {

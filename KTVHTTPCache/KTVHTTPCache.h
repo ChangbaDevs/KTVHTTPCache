@@ -20,7 +20,8 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import <KTVHTTPCache/KTVHCDataResponse.h>
 #import <KTVHTTPCache/KTVHCDataCacheItem.h>
 #import <KTVHTTPCache/KTVHCDataCacheItemZone.h>
-
+#import <KTVHTTPCache/KTVHCURLTool.h>
+#import <KTVHTTPCache/KTVHCPathTool.h>
 #else
 
 #import "KTVHCRange.h"
@@ -30,7 +31,8 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataCacheItemZone.h"
-
+#import "KTVHCURLTool.h"
+#import "KTVHCPathTool.h"
 #endif
 
 /**
@@ -73,7 +75,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  *  @return If the param is a file URL or the proxy service isn't running, return URL. Otherwise reutrn the proxy URL.
  */
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL;
-
++ (NSURL *)proxyURLWithOriginalfileURL:(NSURL *)fileURL;
 /**
  *  Data Storage
  *

@@ -10,8 +10,8 @@
 		9CA86ECD21F709700007B098 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8921F709700007B098 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA86ECE21F709700007B098 /* KTVHCPathTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E8C21F709700007B098 /* KTVHCPathTool.m */; };
 		9CA86ECF21F709700007B098 /* KTVHCURLTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E8D21F709700007B098 /* KTVHCURLTool.m */; };
-		9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8E21F709700007B098 /* KTVHCPathTool.h */; };
-		9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8F21F709700007B098 /* KTVHCURLTool.h */; };
+		9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8E21F709700007B098 /* KTVHCPathTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8F21F709700007B098 /* KTVHCURLTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA86ED221F709700007B098 /* KTVHCHTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E9121F709700007B098 /* KTVHCHTTPResponse.h */; };
 		9CA86ED621F709700007B098 /* KTVHCHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E9521F709700007B098 /* KTVHCHTTPServer.h */; };
 		9CA86ED721F709700007B098 /* KTVHCHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E9621F709700007B098 /* KTVHCHTTPConnection.m */; };
@@ -319,6 +319,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */,
+				9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */,
 				9CA86ECD21F709700007B098 /* KTVHTTPCache.h in Headers */,
 				9CA86F0721F709700007B098 /* KTVHCRange.h in Headers */,
 				9CA86EFF21F709700007B098 /* KTVHCDataCacheItemZone.h in Headers */,
@@ -332,7 +334,6 @@
 				9CA86EE121F709700007B098 /* KTVHCDataNetworkSource.h in Headers */,
 				9CA86ED221F709700007B098 /* KTVHCHTTPResponse.h in Headers */,
 				9CA86EDE21F709700007B098 /* KTVHCHTTPConnection.h in Headers */,
-				9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */,
 				9CA86F0421F709700007B098 /* KTVHCLog.h in Headers */,
 				9CA86EF821F709700007B098 /* KTVHCDataUnit.h in Headers */,
 				9CA86EE221F709700007B098 /* KTVHCData+Internal.h in Headers */,
@@ -346,7 +347,6 @@
 				9CA86EF121F709700007B098 /* KTVHCDataUnitPool.h in Headers */,
 				9CA86F0021F709700007B098 /* KTVHCDataUnitItem.h in Headers */,
 				9CA86ED621F709700007B098 /* KTVHCHTTPServer.h in Headers */,
-				9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */,
 				9CA86EFB21F709700007B098 /* KTVHCDataFileSource.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
