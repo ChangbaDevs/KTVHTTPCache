@@ -103,14 +103,14 @@
 //    NSLog(@"absoluteString === %@",URL.absoluteString);
 //    MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
 //    [self presentViewController:vc animated:YES completion:nil];
-
     __weak ViewController * weakself = self;
-    [M3U8Tool proxyURLWithOriginalURL:item.URLString complete:^(NSURL * _Nonnull url) {
+    [KTVHTTPCache proxyURLWithOriginalURL:item.URLString complete:^(NSURL *url) {
         
         NSLog(@"absoluteString === %@",url.absoluteString);
         MediaViewController *vc = [[MediaViewController alloc] initWithURLString:url.absoluteString];
         [weakself presentViewController:vc animated:YES completion:nil];
     }];
+
     
     
 }
