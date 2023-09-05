@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItemZone.h",
                           "KTVHTTPCache/Classes/KTVHCTools/KTVHCURLTool.h",
                           "KTVHTTPCache/Classes/KTVHCTools/KTVHCPathTool.h"
+                          "KTVHTTPCache/Classes/KTVHCTools/M3U8Tool.h"
                           
   s.frameworks          = "UIKit", "Foundation"
   s.requires_arc        = true

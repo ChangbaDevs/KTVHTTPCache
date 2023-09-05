@@ -64,6 +64,7 @@
 
 - (UInt64)contentLength
 {
+    
     KTVHCLogHTTPResponse(@"%p, Conetnt length : %lld", self, self.reader.response.totalLength);
     return self.reader.response.totalLength;
 }

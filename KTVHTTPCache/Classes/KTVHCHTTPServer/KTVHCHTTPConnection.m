@@ -34,6 +34,7 @@
     NSDictionary<NSString *,NSString *> *parameters = [[KTVHCURLTool tool] parseQuery:request.url.query];
     NSURL *URL = [NSURL URLWithString:[parameters objectForKey:@"url"]];
     NSString *fileUrlStr = [parameters objectForKey:@"fileUrl"];
+    NSString *m3u8urlStr = [parameters objectForKey:@"m3u8url"];
     if (fileUrlStr != nil) {
         NSURL * fileUrl = [[NSURL alloc] initWithString:fileUrlStr];
         NSLog(@"fileUrlStr === %@ = %@",fileUrlStr,fileUrl);
@@ -42,6 +43,16 @@
             response.fileUrl = fileUrl;
             return  response;
         }
+    }
+    
+    if (m3u8urlStr != nil) {
+        NSURL * m3u8url = [[NSURL alloc] initWithString:m3u8urlStr];
+        NSLog(@"m3u8urlStr === %@ = %@",m3u8urlStr,m3u8url);
+        KTVHCDataRequest *dataRequest = [[KTVHCDataRequest alloc] initWithURL:URL headers:request.allHeaderFields];
+        KTVHCHTTPResponse *response = [[KTVHCHTTPResponse alloc] initWithConnection:self dataRequest:dataRequest];
+        response.isM3u8 = YES;
+        
+        return response;
     }
     
     

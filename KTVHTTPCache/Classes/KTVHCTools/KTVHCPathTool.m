@@ -66,7 +66,7 @@
 
 + (NSString *)basePath
 {
-    NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString * path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     NSLog(@"KTVHTTPCache basePath = %@",path);
     return path;
 }

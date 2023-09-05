@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7136BC202AA5EE2A00E88667 /* M3U8Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7136BC1F2AA5EE2A00E88667 /* M3U8Tool.m */; };
 		9C76736A21F70D090092B84B /* KTVHTTPCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736921F70CF40092B84B /* KTVHTTPCache.framework */; };
 		9C76736C21F70D160092B84B /* KTVCocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */; };
 		9C7A44BD1F3C09CF00ED01BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BC1F3C09CF00ED01BA /* main.m */; };
@@ -287,7 +286,6 @@
 				9C7A44C31F3C09CF00ED01BA /* ViewController.m in Sources */,
 				9C9E98C91F40978C00914D89 /* CacheItemZoneCell.m in Sources */,
 				9C9E98CA1F40978C00914D89 /* CacheViewController.m in Sources */,
-				7136BC202AA5EE2A00E88667 /* M3U8Tool.m in Sources */,
 				9CD2D4901F4142FC0052E85A /* MediaViewController.m in Sources */,
 				9C7A44C01F3C09CF00ED01BA /* AppDelegate.m in Sources */,
 				9C9E98CC1F40978C00914D89 /* MediaItem.m in Sources */,

@@ -6,11 +6,14 @@
 //  Copyright © 2023 Single. All rights reserved.
 //
 
-#import <KTVHTTPCache/KTVHTTPCache.h>
-#import <KTVHTTPCache/KTVHCURLTool.h>
-#import <KTVHTTPCache/KTVHCPathTool.h>
+//#import <KTVHTTPCache/KTVHTTPCache.h>
+//#import <KTVHTTPCache/KTVHCURLTool.h>
+//#import <KTVHTTPCache/KTVHCPathTool.h>
 
 #import "M3U8Tool.h"
+#import "KTVHCURLTool.h"
+#import "KTVHCPathTool.h"
+#import "KTVHTTPCache.h"
 
 @implementation M3U8Tool
 

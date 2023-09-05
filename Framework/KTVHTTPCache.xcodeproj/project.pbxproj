@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		719ECAAE2AA72ECC00ADECAC /* M3U8Tool.h in Headers */ = {isa = PBXBuildFile; fileRef = 719ECAAC2AA72ECC00ADECAC /* M3U8Tool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		719ECAAF2AA72ECC00ADECAC /* M3U8Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 719ECAAD2AA72ECC00ADECAC /* M3U8Tool.m */; };
 		9CA86ECD21F709700007B098 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8921F709700007B098 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA86ECE21F709700007B098 /* KTVHCPathTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E8C21F709700007B098 /* KTVHCPathTool.m */; };
 		9CA86ECF21F709700007B098 /* KTVHCURLTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E8D21F709700007B098 /* KTVHCURLTool.m */; };
@@ -81,6 +83,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		719ECAAC2AA72ECC00ADECAC /* M3U8Tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3U8Tool.h; sourceTree = "<group>"; };
+		719ECAAD2AA72ECC00ADECAC /* M3U8Tool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M3U8Tool.m; sourceTree = "<group>"; };
 		9C7EDA891F3C0334003B6C14 /* KTVHTTPCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KTVHTTPCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CA86E8921F709700007B098 /* KTVHTTPCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHTTPCache.h; sourceTree = "<group>"; };
 		9CA86E8C21F709700007B098 /* KTVHCPathTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCPathTool.m; sourceTree = "<group>"; };
@@ -204,6 +208,8 @@
 		9CA86E8B21F709700007B098 /* KTVHCTools */ = {
 			isa = PBXGroup;
 			children = (
+				719ECAAC2AA72ECC00ADECAC /* M3U8Tool.h */,
+				719ECAAD2AA72ECC00ADECAC /* M3U8Tool.m */,
 				9CA86E8E21F709700007B098 /* KTVHCPathTool.h */,
 				9CA86E8C21F709700007B098 /* KTVHCPathTool.m */,
 				9CA86E8F21F709700007B098 /* KTVHCURLTool.h */,
@@ -319,6 +325,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				719ECAAE2AA72ECC00ADECAC /* M3U8Tool.h in Headers */,
 				9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */,
 				9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */,
 				9CA86ECD21F709700007B098 /* KTVHTTPCache.h in Headers */,
@@ -451,6 +458,7 @@
 				9CA86EFA21F709700007B098 /* KTVHCDataCallback.m in Sources */,
 				9CA86EDC21F709700007B098 /* KTVHCHTTPServer.m in Sources */,
 				9CA86EEC21F709700007B098 /* KTVHCDataUnit.m in Sources */,
+				719ECAAF2AA72ECC00ADECAC /* M3U8Tool.m in Sources */,
 				9CA86EED21F709700007B098 /* KTVHCDataRequest.m in Sources */,
 				9CA86F0221F709700007B098 /* KTVHCRange.m in Sources */,
 				9CA86F0A21F709700007B098 /* KTVHTTPCache.m in Sources */,

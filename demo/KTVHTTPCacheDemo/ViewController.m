@@ -94,27 +94,31 @@
 {
     MediaItem *item = [self.items objectAtIndex:indexPath.row];
     NSString *URLString = [item.URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    if ([item.URLString hasSuffix:@".m3u8"]) {
+//    if ([item.URLString hasSuffix:@".m3u8"]) {
+//
+//        NSString * path = [M3U8Tool saveM3u8WithUrl:item.URLString];
+//        NSURL * fileUrl = [[NSURL alloc] initFileURLWithPath:path];
+//
+//        NSURL *URL = [KTVHTTPCache proxyURLWithOriginalfileURL:fileUrl];
+//
+//        MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
+//
+//
+//        [self presentViewController:vc animated:YES completion:nil];
+//        return;
+//    }
+    __weak ViewController * weakself = self;
+    [M3U8Tool proxyURLWithOriginalURL:URLString complete:^(NSURL * _Nonnull url) {
         
-        NSString * path = [M3U8Tool saveM3u8WithUrl:item.URLString];
-        NSURL * fileUrl = [[NSURL alloc] initFileURLWithPath:path];
-        
-        NSURL *URL = [KTVHTTPCache proxyURLWithOriginalfileURL:fileUrl];
-        
-        MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
-        
-        
-        [self presentViewController:vc animated:YES completion:nil];
-        return;
-    }
+        NSLog(@"absoluteString === %@",url.absoluteString);
+        MediaViewController *vc = [[MediaViewController alloc] initWithURLString:url.absoluteString];
+        [weakself presentViewController:vc animated:YES completion:nil];
+    }];
     
     
-    NSURL *URL = [KTVHTTPCache proxyURLWithOriginalURL:[NSURL URLWithString:URLString]];
-    NSLog(@"absoluteString === %@",URL.absoluteString);
-    MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
     
     
-    [self presentViewController:vc animated:YES completion:nil];
+    
 }
 
 
