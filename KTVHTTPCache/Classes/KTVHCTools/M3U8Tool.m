@@ -72,23 +72,19 @@
     NSURL * urlJJ = [[NSURL alloc] initWithString:url];
     NSString * path = [self getM3u8PathWithUrl:urlJJ];
     NSString * oldFile = [self getOldM3u8PathWithUrl:urlJJ];
+    
+    NSString * lastPath = [urlJJ lastPathComponent];
+    NSString * currentPath = [url stringByReplacingOccurrencesOfString:@"" withString:lastPath];
     BOOL isDirectory = NO;
     BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
-    if (isExists) {
-        return path;
-    }
+//    if (isExists) {
+//        return path;
+//    }
     NSString * oriM3u8String = [[NSString alloc] initWithContentsOfURL: urlJJ encoding:NSUTF8StringEncoding error:nil ];
     NSString * oldString = oriM3u8String;
 
     if (urStr.length > 0) {
-        NSRange r;
-        NSString *a = urStr;
-        for (int i = 0; i < 2; i ++) {
-            r = [a rangeOfString:@"/" options:NSBackwardsSearch];
-            a = [a substringToIndex:r.location];
-        }
-
-        NSString * formatStr = [a  stringByAppendingString:@"/"];
+        
         NSArray <NSString *>* listStrs = [oriM3u8String componentsSeparatedByString:@"\n"];
         NSMutableArray * newListStrs = @[].mutableCopy;
         for (NSString *object in listStrs) {
@@ -97,8 +93,23 @@
                 if ([object hasPrefix:@"http"]) {
                     newStr = object;
                 } else if ([object hasPrefix:@"../"]) {
+                    NSRange r;
+                    NSString *a = urStr;
+                    for (int i = 0; i < 2; i ++) {
+                        r = [a rangeOfString:@"/" options:NSBackwardsSearch];
+                        a = [a substringToIndex:r.location];
+                    }
+                    NSString * formatStr = [a  stringByAppendingString:@"/"];
                     newStr = [newStr stringByReplacingOccurrencesOfString:@"../" withString:formatStr];
                 } else {
+                    NSRange r;
+                    NSString *a = urStr;
+                    for (int i = 0; i < 1; i ++) {
+                        r = [a rangeOfString:@"/" options:NSBackwardsSearch];
+                        a = [a substringToIndex:r.location];
+                    }
+
+                    NSString * formatStr = [a  stringByAppendingString:@"/"];
                     newStr = [NSString stringWithFormat:@"%@%@",formatStr,object];
                 }
 

@@ -58,8 +58,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7136BC1E2AA5EE2A00E88667 /* M3U8Tool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = M3U8Tool.h; sourceTree = "<group>"; };
-		7136BC1F2AA5EE2A00E88667 /* M3U8Tool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M3U8Tool.m; sourceTree = "<group>"; };
 		9C29F2B21F4064280079C49B /* CocoaHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServer.framework; path = "../../Vendors/CocoaHTTPServer/build/Debug-iphoneos/CocoaHTTPServer.framework"; sourceTree = "<group>"; };
 		9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KTVHTTPCache.xcodeproj; path = ../Framework/KTVHTTPCache.xcodeproj; sourceTree = "<group>"; };
 		9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KTVCocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,8 +139,6 @@
 				9C7A44C91F3C09CF00ED01BA /* LaunchScreen.storyboard */,
 				9C7A44CC1F3C09CF00ED01BA /* Info.plist */,
 				9C7A44BB1F3C09CF00ED01BA /* Supporting Files */,
-				7136BC1E2AA5EE2A00E88667 /* M3U8Tool.h */,
-				7136BC1F2AA5EE2A00E88667 /* M3U8Tool.m */,
 			);
 			path = KTVHTTPCacheDemo;
 			sourceTree = "<group>";
