@@ -4,8 +4,8 @@ KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and
 感谢开源 , 此版本兼容m3u8视频缓存
 添加对m3u8的支持 请使用此方法
 ```
-__weak ViewController * weakself = self;
-    [M3U8Tool proxyURLWithOriginalURL:item.URLString complete:^(NSURL * _Nonnull url) {
+    __weak ViewController * weakself = self;
+    [KTVHTTPCache proxyURLWithOriginalURL:item.URLString complete:^(NSURL *url) {
         
         NSLog(@"absoluteString === %@",url.absoluteString);
         MediaViewController *vc = [[MediaViewController alloc] initWithURLString:url.absoluteString];
@@ -34,7 +34,7 @@ __weak ViewController * weakself = self;
 To integrate KTVHTTPCache into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
-pod 'KTVHTTPCache',:git => 'https://github.com/QiuYeHong90/KTVHTTPCache.git',:tag=>'3.0.3'
+pod 'KTVHTTPCache',:git => 'https://github.com/QiuYeHong90/KTVHTTPCache.git',:tag=>'3.0.8'
 ```
 
 Run `pod install`
