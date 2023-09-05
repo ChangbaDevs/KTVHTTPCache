@@ -12,7 +12,7 @@
 #import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
 
-@class  HTTPFileResponse;
+@class  HTTPSHFileResponse;
 @implementation KTVHCHTTPConnection
 
 - (id)initWithAsyncSocket:(GCDAsyncSocket *)newSocket configuration:(HTTPConfig *)aConfig
@@ -39,7 +39,7 @@
         NSURL * fileUrl = [[NSURL alloc] initWithString:fileUrlStr];
         NSLog(@"fileUrlStr === %@ = %@",fileUrlStr,fileUrl);
         if (fileUrl.isFileURL) {
-            HTTPFileResponse * response = [[HTTPFileResponse  alloc] init];
+            HTTPSHFileResponse * response = [[HTTPSHFileResponse  alloc] init];
             response.fileUrl = fileUrl;
             return  response;
         }
@@ -64,14 +64,14 @@
 
 @end
 
-@interface HTTPFileResponse ()<HTTPResponse>
+@interface HTTPSHFileResponse ()<HTTPResponse>
 
 
 
 @end
 
 
-@implementation HTTPFileResponse
+@implementation HTTPSHFileResponse
 
 
 
