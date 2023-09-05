@@ -79,7 +79,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL;
 /// 播放本地的 m3u8
 + (NSURL *)proxyURLWithOriginalfileURL:(NSURL *)fileURL;
-
++(void)proxyURLWithOriginalURL: (NSString *)urlStr complete: (void(^)(NSURL * url))complete;
 /**
  *  Data Storage
  *

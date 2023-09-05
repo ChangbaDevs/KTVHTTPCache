@@ -12,6 +12,7 @@
 #import "KTVHCDownload.h"
 #import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
+#import "M3U8Tool.h"
 
 @implementation KTVHTTPCache
 
@@ -33,6 +34,12 @@
 }
 
 
++(void)proxyURLWithOriginalURL: (NSString *)urlStr complete: (void(^)(NSURL * url))complete
+{
+    
+    [M3U8Tool proxyURLWithOriginalURL:urlStr complete:complete];
+}
+
 + (NSURL *)proxyURLWithOriginalfileURL:(NSURL *)fileURL
 {
     return [[KTVHCHTTPServer server] URLWithFileOriginalURL:fileURL];
@@ -41,6 +48,9 @@
 {
     return [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
 }
+
+
+
 
 #pragma mark - Data Storage
 
