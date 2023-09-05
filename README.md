@@ -1,7 +1,17 @@
 # KTVHTTPCache
 
 KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and very suitable for media resources.
-感谢开源 ,接下来我来维护, 此版本兼容m3u8视频缓存
+感谢开源 , 此版本兼容m3u8视频缓存
+添加对m3u8的支持 请使用此方法
+```
+__weak ViewController * weakself = self;
+    [M3U8Tool proxyURLWithOriginalURL:item.URLString complete:^(NSURL * _Nonnull url) {
+        
+        NSLog(@"absoluteString === %@",url.absoluteString);
+        MediaViewController *vc = [[MediaViewController alloc] initWithURLString:url.absoluteString];
+        [weakself presentViewController:vc animated:YES completion:nil];
+    }];
+```
 
 ## Flow Chart
 
