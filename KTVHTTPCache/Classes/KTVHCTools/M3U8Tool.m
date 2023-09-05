@@ -65,6 +65,20 @@
     return filePath;
 }
 
++ (NSError *)deleteAll
+{
+    NSString * path = [self rootDirectory];
+    if (path.length <= 0) {
+        return nil;
+    }
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    BOOL result = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
+    if (result && isDirectory) {
+        result = [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+    }
+    return error;
+}
 
 +(NSString *)saveM3u8WithUrl: (NSString *)url {
     

@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface M3U8Tool : NSObject
 +(NSString *)saveM3u8WithUrl: (NSString *)url;
 +(void)proxyURLWithOriginalURL: (NSString *)urlStr complete: (void(^)(NSURL * url))complete;
+
++ (NSError *)deleteAll;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -102,6 +102,8 @@
 + (void)cacheDeleteAllCaches
 {
     [[KTVHCDataStorage storage] deleteAllCaches];
+    
+    [M3U8Tool deleteAll];
 }
 
 #pragma mark - Encode
