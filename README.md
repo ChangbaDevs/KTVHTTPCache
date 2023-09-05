@@ -22,12 +22,13 @@ import threading
 import requests
 from queue import Queue
 # 预下载，获取m3u8文件，读出ts链接，并写入文档
+# http://www.lvhuisb.com/vp/99570/1-1.html
 
 rootPath = "/Users/yeqiu/Documents/downLoadM/cache/"
-
+m3u8Url = 'https://tophy.qoqkkhy.com/202308/30/14K5KmzgEq3/video/1000k_0X720_64k_25/hls/index.m3u8'
 def down():
   # m3u8链接
-  url = 'https://tophy.qoqkkhy.com/202308/30/14K5KmzgEq3/video/1000k_0X720_64k_25/hls/index.m3u8'
+  url = m3u8Url
   # 当ts文件链接不完整时，需拼凑
   # 大部分网站可使用该方法拼接，部分特殊网站需单独拼接
   base_url = re.split(r"[a-zA-Z0-9-_\.]+\.m3u8", url)[0]
@@ -91,7 +92,11 @@ def merge(concatfile, name):
   except:
     print('合并失败')
 if __name__ == '__main__':
+  m3u8Url = input('请输入m3u8 url：')
+  rootPath = input('请输入下载的目录：')
+  rootPath = rootPath + "/"
   name = input('请输入视频名称：')
+  
   start = datetime.datetime.now().replace(microsecond=0)
   s,concatfile = down()
   print(s,concatfile)
