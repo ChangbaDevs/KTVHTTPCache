@@ -77,9 +77,9 @@
     NSString * currentPath = [url stringByReplacingOccurrencesOfString:@"" withString:lastPath];
     BOOL isDirectory = NO;
     BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
-//    if (isExists) {
-//        return path;
-//    }
+    if (isExists) {
+        return path;
+    }
     NSString * oriM3u8String = [[NSString alloc] initWithContentsOfURL: urlJJ encoding:NSUTF8StringEncoding error:nil ];
     NSString * oldString = oriM3u8String;
 

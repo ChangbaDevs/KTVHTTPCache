@@ -6,7 +6,7 @@
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "M3U8Tool.h"
+
 #import "ViewController.h"
 #import "MediaViewController.h"
 #import "MediaItem.h"
