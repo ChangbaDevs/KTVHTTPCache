@@ -64,7 +64,7 @@
 
 @end
 
-@interface HTTPFileResponse ()
+@interface HTTPFileResponse ()<HTTPResponse>
 
 
 
