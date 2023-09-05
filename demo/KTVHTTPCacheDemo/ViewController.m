@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
+#import "M3U8Tool.h"
 #import "ViewController.h"
 #import "MediaViewController.h"
 #import "MediaItem.h"
@@ -48,7 +49,7 @@
     }];
     [KTVHTTPCache downloadSetUnacceptableContentTypeDisposer:^BOOL(NSURL *URL, NSString *contentType) {
         NSLog(@"Unsupport Content-Type Filter reviced URL : %@, %@", URL, contentType);
-        return NO;
+        return YES;
     }];
     
     NSLog(@"logRecordLogFileURL == %@",KTVHTTPCache.logRecordLogFilePath);
@@ -67,8 +68,8 @@
 //    MediaItem *item5 = [[MediaItem alloc] initWithTitle:@"你好我是m3u8"
 //                                              URLString:@"https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560_video_720_3000000.m3u8"];
     MediaItem *item5 = [[MediaItem alloc] initWithTitle:@"你好我是m3u8"
-                                              URLString:@"https://dev-cdn.livbylive.com/video/hk1f33icc7mi4hgno9mq9o18v3/f3ed9f7f284c8dab121335b5a9611308_hk1f33icc7mi4hgno9mq9o18v3.m3u8"];
 
+                                              URLString:@"https://pptv.sd-play.com/202307/19/ZHp3S7jWhm3/video/900k_0X480_64k_25/hls/index.m3u8"];
     
     self.items = @[item1, item2, item3, item4, item5];
     [self.tableView reloadData];
@@ -96,11 +97,22 @@
 {
     MediaItem *item = [self.items objectAtIndex:indexPath.row];
     NSString *URLString = [item.URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
     NSURL *URL = [KTVHTTPCache proxyURLWithOriginalURL:[NSURL URLWithString:URLString]];
 //    NSURL * URL = [NSURL URLWithString:URLString];
     NSLog(@"absoluteString === %@",URL.absoluteString);
     MediaViewController *vc = [[MediaViewController alloc] initWithURLString:URL.absoluteString];
     [self presentViewController:vc animated:YES completion:nil];
+
+    __weak ViewController * weakself = self;
+    [M3U8Tool proxyURLWithOriginalURL:URLString complete:^(NSURL * _Nonnull url) {
+        
+        NSLog(@"absoluteString === %@",url.absoluteString);
+        MediaViewController *vc = [[MediaViewController alloc] initWithURLString:url.absoluteString];
+        [weakself presentViewController:vc animated:YES completion:nil];
+    }];
+    
+    
 }
 
 

@@ -204,10 +204,64 @@
     }
     @try {
         NSLog(@"isM3u8 =====%d == %@",self.unitItem.isM3u8,self.request.URL.absoluteString);
-       
+//        if (self.unitItem.isM3u8) {
+////        https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560_video_1080_5000000.m3u8
+//            NSString * urStr = self.request.URL.absoluteString;
+//            NSString * oriM3u8String  =[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//
+//
+//            if (urStr.length > 0) {
+//                NSRange r;
+//                NSString *a = urStr;
+//                for (int i = 0; i < 2; i ++) {
+//                    r = [a rangeOfString:@"/" options:NSBackwardsSearch];
+//                    a = [a substringToIndex:r.location];
+//                }
+//
+//                NSString * formatStr = [a  stringByAppendingString:@"/"];
+//                NSArray <NSString *>* listStrs = [oriM3u8String componentsSeparatedByString:@"\n"];
+//                NSMutableArray * newListStrs = @[].mutableCopy;
+//                for (NSString *object in listStrs) {
+//                    if ([object hasSuffix:@".ts"]) {
+//                        NSString * newStr = object;
+//                        if ([object hasPrefix:@"../"]) {
+//                            newStr = [newStr stringByReplacingOccurrencesOfString:@"../" withString:formatStr];
+//                        } else {
+//                            newStr = [NSString stringWithFormat:@"%@%@",formatStr,object];
+//                        }
+//
+//                        NSURL * oringalUrl = [[NSURL alloc] initWithString: newStr];
+//                        NSURL * newOrigalUrl = [[KTVHCHTTPServer server] URLWithOriginalURL:oringalUrl];
+//                        [newListStrs addObject:newOrigalUrl.absoluteString];
+//                    } else {
+//                        [newListStrs addObject:object];
+//                    }
+//
+//                }
+//                oriM3u8String = [newListStrs componentsJoinedByString:@"\n"];
+//            }
+//
+//
+//
+//            NSLog(@"isM3u8 ====  ==%@",oriM3u8String);
+//
+//            NSData * newData = [oriM3u8String dataUsingEncoding:NSUTF8StringEncoding];
+//            [self.writingHandle writeData:newData];
+//            self.downloadLength += newData.length;
+//
+//            [self.unitItem updateLength:self.downloadLength];
+//        } else {
+//            [self.writingHandle writeData:data];
+//            self.downloadLength += data.length;
+//            [self.unitItem updateLength:self.downloadLength];
+//        }
         [self.writingHandle writeData:data];
         self.downloadLength += data.length;
         [self.unitItem updateLength:self.downloadLength];
+        
+//        [self.writingHandle writeData:data];
+//        self.downloadLength += data.length;
+//        [self.unitItem updateLength:self.downloadLength];
         
         KTVHCLogDataNetworkSource(@"%p, Receive data : %lld, %lld, %lld", self, (long long)data.length, self.downloadLength, self.unitItem.length);
         [self callbackForHasAvailableData];

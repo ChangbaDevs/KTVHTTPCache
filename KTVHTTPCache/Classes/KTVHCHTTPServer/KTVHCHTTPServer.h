@@ -19,7 +19,7 @@
 
 - (BOOL)start:(NSError **)error;
 - (void)stop;
-
+- (NSURL *)URLWithFileOriginalURL:(NSURL *)fileURL;
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL;
 
 @end

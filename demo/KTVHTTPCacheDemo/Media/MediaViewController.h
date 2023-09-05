@@ -11,5 +11,5 @@
 @interface MediaViewController : AVPlayerViewController
 
 - (instancetype)initWithURLString:(NSString *)URLString;
-
+- (instancetype)initWithFileUrl:(NSURL *)fileUrl;
 @end

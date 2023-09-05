@@ -32,6 +32,11 @@
     return [KTVHCHTTPServer server].isRunning;
 }
 
+
++ (NSURL *)proxyURLWithOriginalfileURL:(NSURL *)fileURL
+{
+    return [[KTVHCHTTPServer server] URLWithFileOriginalURL:fileURL];
+}
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL
 {
     return [[KTVHCHTTPServer server] URLWithOriginalURL:URL];

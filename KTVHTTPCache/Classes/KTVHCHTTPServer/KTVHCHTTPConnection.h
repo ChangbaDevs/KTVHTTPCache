@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVHCHTTPHeader.h"
-
+@interface HTTPFileResponse : NSObject<HTTPResponse>
+@property (nonatomic,strong) NSURL * fileUrl;
+@end
 @interface KTVHCHTTPConnection : HTTPConnection
 
 @end

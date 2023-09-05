@@ -20,7 +20,9 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import <KTVHTTPCache/KTVHCDataResponse.h>
 #import <KTVHTTPCache/KTVHCDataCacheItem.h>
 #import <KTVHTTPCache/KTVHCDataCacheItemZone.h>
-
+#import <KTVHTTPCache/KTVHCURLTool.h>
+#import <KTVHTTPCache/KTVHCPathTool.h>
+#import <KTVHTTPCache/M3U8Tool.h>
 #else
 
 #import "KTVHCRange.h"
@@ -30,7 +32,9 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
 #import "KTVHCDataCacheItemZone.h"
-
+#import "KTVHCURLTool.h"
+#import "KTVHCPathTool.h"
+#import "M3U8Tool.h"
 #endif
 
 /**
@@ -73,6 +77,8 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  *  @return If the param is a file URL or the proxy service isn't running, return URL. Otherwise reutrn the proxy URL.
  */
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL;
+/// 播放本地的 m3u8
++ (NSURL *)proxyURLWithOriginalfileURL:(NSURL *)fileURL;
 
 /**
  *  Data Storage

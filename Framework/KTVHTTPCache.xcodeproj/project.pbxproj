@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		719ECAAE2AA72ECC00ADECAC /* M3U8Tool.h in Headers */ = {isa = PBXBuildFile; fileRef = 719ECAAC2AA72ECC00ADECAC /* M3U8Tool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		719ECAAF2AA72ECC00ADECAC /* M3U8Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 719ECAAD2AA72ECC00ADECAC /* M3U8Tool.m */; };
 		9CA86ECD21F709700007B098 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8921F709700007B098 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA86ECE21F709700007B098 /* KTVHCPathTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E8C21F709700007B098 /* KTVHCPathTool.m */; };
 		9CA86ECF21F709700007B098 /* KTVHCURLTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E8D21F709700007B098 /* KTVHCURLTool.m */; };
-		9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8E21F709700007B098 /* KTVHCPathTool.h */; };
-		9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8F21F709700007B098 /* KTVHCURLTool.h */; };
+		9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8E21F709700007B098 /* KTVHCPathTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E8F21F709700007B098 /* KTVHCURLTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA86ED221F709700007B098 /* KTVHCHTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E9121F709700007B098 /* KTVHCHTTPResponse.h */; };
 		9CA86ED621F709700007B098 /* KTVHCHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86E9521F709700007B098 /* KTVHCHTTPServer.h */; };
 		9CA86ED721F709700007B098 /* KTVHCHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86E9621F709700007B098 /* KTVHCHTTPConnection.m */; };
@@ -81,6 +83,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		719ECAAC2AA72ECC00ADECAC /* M3U8Tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3U8Tool.h; sourceTree = "<group>"; };
+		719ECAAD2AA72ECC00ADECAC /* M3U8Tool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M3U8Tool.m; sourceTree = "<group>"; };
 		9C7EDA891F3C0334003B6C14 /* KTVHTTPCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KTVHTTPCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CA86E8921F709700007B098 /* KTVHTTPCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVHTTPCache.h; sourceTree = "<group>"; };
 		9CA86E8C21F709700007B098 /* KTVHCPathTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVHCPathTool.m; sourceTree = "<group>"; };
@@ -204,6 +208,8 @@
 		9CA86E8B21F709700007B098 /* KTVHCTools */ = {
 			isa = PBXGroup;
 			children = (
+				719ECAAC2AA72ECC00ADECAC /* M3U8Tool.h */,
+				719ECAAD2AA72ECC00ADECAC /* M3U8Tool.m */,
 				9CA86E8E21F709700007B098 /* KTVHCPathTool.h */,
 				9CA86E8C21F709700007B098 /* KTVHCPathTool.m */,
 				9CA86E8F21F709700007B098 /* KTVHCURLTool.h */,
@@ -319,6 +325,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				719ECAAE2AA72ECC00ADECAC /* M3U8Tool.h in Headers */,
+				9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */,
+				9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */,
 				9CA86ECD21F709700007B098 /* KTVHTTPCache.h in Headers */,
 				9CA86F0721F709700007B098 /* KTVHCRange.h in Headers */,
 				9CA86EFF21F709700007B098 /* KTVHCDataCacheItemZone.h in Headers */,
@@ -332,7 +341,6 @@
 				9CA86EE121F709700007B098 /* KTVHCDataNetworkSource.h in Headers */,
 				9CA86ED221F709700007B098 /* KTVHCHTTPResponse.h in Headers */,
 				9CA86EDE21F709700007B098 /* KTVHCHTTPConnection.h in Headers */,
-				9CA86ED021F709700007B098 /* KTVHCPathTool.h in Headers */,
 				9CA86F0421F709700007B098 /* KTVHCLog.h in Headers */,
 				9CA86EF821F709700007B098 /* KTVHCDataUnit.h in Headers */,
 				9CA86EE221F709700007B098 /* KTVHCData+Internal.h in Headers */,
@@ -346,7 +354,6 @@
 				9CA86EF121F709700007B098 /* KTVHCDataUnitPool.h in Headers */,
 				9CA86F0021F709700007B098 /* KTVHCDataUnitItem.h in Headers */,
 				9CA86ED621F709700007B098 /* KTVHCHTTPServer.h in Headers */,
-				9CA86ED121F709700007B098 /* KTVHCURLTool.h in Headers */,
 				9CA86EFB21F709700007B098 /* KTVHCDataFileSource.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +400,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 9C7EDA7F1F3C0334003B6C14;
@@ -450,6 +458,7 @@
 				9CA86EFA21F709700007B098 /* KTVHCDataCallback.m in Sources */,
 				9CA86EDC21F709700007B098 /* KTVHCHTTPServer.m in Sources */,
 				9CA86EEC21F709700007B098 /* KTVHCDataUnit.m in Sources */,
+				719ECAAF2AA72ECC00ADECAC /* M3U8Tool.m in Sources */,
 				9CA86EED21F709700007B098 /* KTVHCDataRequest.m in Sources */,
 				9CA86F0221F709700007B098 /* KTVHCRange.m in Sources */,
 				9CA86F0A21F709700007B098 /* KTVHTTPCache.m in Sources */,
@@ -525,7 +534,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -579,7 +588,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -600,7 +609,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MODULEMAP_FILE = "$(PROJECT_DIR)/module.modulemap";
@@ -623,7 +632,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MODULEMAP_FILE = "$(PROJECT_DIR)/module.modulemap";

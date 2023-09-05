@@ -13,9 +13,10 @@
 @class KTVHCDataRequest;
 
 @interface KTVHCHTTPResponse : NSObject <HTTPResponse>
-
+@property (nonatomic,assign) BOOL isM3u8;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
+
 
 - (instancetype)initWithConnection:(KTVHCHTTPConnection *)connection dataRequest:(KTVHCDataRequest *)dataRequest NS_DESIGNATED_INITIALIZER;
 
