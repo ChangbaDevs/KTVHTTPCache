@@ -21,5 +21,7 @@
 - (void)stop;
 - (NSURL *)URLWithFileOriginalURL:(NSURL *)fileURL;
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL;
+- (NSURL *)LocalHostURLWithOriginalURL:(NSURL *)URL;
 
++ (NSString *)deviceIPAdress;
 @end

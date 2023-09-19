@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)proxyURLWithOriginalURL: (NSString *)urlStr complete: (void(^)(NSURL * url))complete;
 
 + (NSError *)deleteAll;
+
++(NSData *)getCurerentM3u8DataWithOld: (NSData *)dataStr ;
 @end
 
 NS_ASSUME_NONNULL_END

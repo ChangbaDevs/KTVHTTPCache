@@ -128,7 +128,8 @@
                 }
 
                 NSURL * oringalUrl = [[NSURL alloc] initWithString: newStr];
-                NSURL *newOrigalUrl = [KTVHTTPCache proxyURLWithOriginalURL:oringalUrl];
+                
+                NSURL *newOrigalUrl = [KTVHTTPCache LocalHostURLWithOriginalURL:oringalUrl];
                 [newListStrs addObject:newOrigalUrl.absoluteString];
             } else {
                 [newListStrs addObject:object];
@@ -148,6 +149,21 @@
     [oldData writeToFile:oldFile atomically: YES];
     [newData writeToFile:path atomically: YES];
     return  path;
+}
+
+
++(NSData *)getCurerentM3u8DataWithOld: (NSData *)dataStr {
+    
+    NSString * doman = [KTVHTTPCache deviceIPAdress];
+    if ([doman  isEqual: @"localhost"]) {
+        return dataStr;
+    }
+    
+    NSString * str = [[NSString alloc] initWithData: dataStr encoding:NSUTF8StringEncoding];
+    NSString * newStr = [str stringByReplacingOccurrencesOfString:@"localhost" withString:doman];
+    NSLog(@"newStr === %@",newStr);
+    NSData * newData = [newStr dataUsingEncoding:NSUTF8StringEncoding];
+    return newData;
 }
 
 

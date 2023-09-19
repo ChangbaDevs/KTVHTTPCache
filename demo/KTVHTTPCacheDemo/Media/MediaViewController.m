@@ -6,25 +6,19 @@
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
+#import "MediaViewModel.h"
 #import "MediaViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface MediaViewController ()
 
+@property (nonatomic,strong) MediaViewModel * viewModel;
 @property (nonatomic, strong) NSString *URLString;
-@property (nonatomic, strong) NSURL *fileUrl;
 
 @end
 
 @implementation MediaViewController
-- (instancetype)initWithFileUrl:(NSURL *)fileUrl
-{
-    if (self = [super init]) {
-        self.fileUrl = fileUrl;
-        self.URLString = nil;
-    }
-    return self;
-}
+
 - (instancetype)initWithURLString:(NSString *)URLString
 {
     if (self = [super init]) {
@@ -36,13 +30,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (self.URLString == nil) {
-        self.player = [AVPlayer playerWithURL:self.fileUrl];
-        [self.player play];
-        return;
-    }
     self.player = [AVPlayer playerWithURL:[NSURL URLWithString:self.URLString]];
     [self.player play];
+    _viewModel = [MediaViewModel new];
+    self.delegate = _viewModel;
+    
+    
+//    var timeObserver = avPlayerVC.player?.addPeriodicTimeObserver(forInterval: CMTime.init(value: 1, timescale: CMTimeScale(NSEC_PER_SEC)), queue: nil, using: {(cmtime) in
+//                    let progress = cmtime.seconds / CMTimeGetSeconds(self.avPlayerVC.player!.currentItem!.duration)
+//                    if (progress == 1.0) {
+//                        //播放百分比为1表示已经播放完毕
+//                        print("播放完成")
+//                        //处理播放完成之后的操作
+//                        clickblock()
+//                    }
+//                })
+    
 }
 
 - (void)dealloc
@@ -52,4 +55,8 @@
     [self.player cancelPendingPrerolls];
 }
 
+
+
 @end
+
+

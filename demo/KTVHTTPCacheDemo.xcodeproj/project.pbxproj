@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		718840762AB99E3300C9FB0C /* MediaViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 718840752AB99E3300C9FB0C /* MediaViewModel.m */; };
 		9C76736A21F70D090092B84B /* KTVHTTPCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736921F70CF40092B84B /* KTVHTTPCache.framework */; };
 		9C76736C21F70D160092B84B /* KTVCocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */; };
 		9C7A44BD1F3C09CF00ED01BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BC1F3C09CF00ED01BA /* main.m */; };
@@ -58,6 +59,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		718840742AB99E3300C9FB0C /* MediaViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaViewModel.h; sourceTree = "<group>"; };
+		718840752AB99E3300C9FB0C /* MediaViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaViewModel.m; sourceTree = "<group>"; };
 		9C29F2B21F4064280079C49B /* CocoaHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServer.framework; path = "../../Vendors/CocoaHTTPServer/build/Debug-iphoneos/CocoaHTTPServer.framework"; sourceTree = "<group>"; };
 		9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KTVHTTPCache.xcodeproj; path = ../Framework/KTVHTTPCache.xcodeproj; sourceTree = "<group>"; };
 		9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KTVCocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,6 +186,8 @@
 				9C9E98C71F40978C00914D89 /* MediaItem.m */,
 				9C9E98C41F40978C00914D89 /* MediaCell.h */,
 				9C9E98C51F40978C00914D89 /* MediaCell.m */,
+				718840742AB99E3300C9FB0C /* MediaViewModel.h */,
+				718840752AB99E3300C9FB0C /* MediaViewModel.m */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C9E98C81F40978C00914D89 /* CacheItemView.m in Sources */,
+				718840762AB99E3300C9FB0C /* MediaViewModel.m in Sources */,
 				9C7A44C31F3C09CF00ED01BA /* ViewController.m in Sources */,
 				9C9E98C91F40978C00914D89 /* CacheItemZoneCell.m in Sources */,
 				9C9E98CA1F40978C00914D89 /* CacheViewController.m in Sources */,

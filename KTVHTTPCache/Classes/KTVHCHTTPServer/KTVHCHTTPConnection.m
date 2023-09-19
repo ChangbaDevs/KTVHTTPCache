@@ -11,6 +11,7 @@
 #import "KTVHCDataStorage.h"
 #import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
+#import "M3U8Tool.h"
 
 @class  HTTPSHFileResponse;
 @implementation KTVHCHTTPConnection
@@ -77,6 +78,7 @@
 
 - (UInt64)contentLength {
     NSData * dataF = [[NSData alloc] initWithContentsOfURL:self.fileUrl];
+    dataF = [M3U8Tool getCurerentM3u8DataWithOld:dataF];
     return  [dataF length];
 }
 
@@ -89,11 +91,8 @@
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length {
-    
     NSData * dataF = [[NSData alloc] initWithContentsOfURL:self.fileUrl];
-
-    NSString * str = [[NSString alloc] initWithData: dataF encoding:NSUTF8StringEncoding];
-    NSLog(@"str_+-===== %@",str);
+    dataF = [M3U8Tool getCurerentM3u8DataWithOld:dataF];
     return dataF;
 }
 
