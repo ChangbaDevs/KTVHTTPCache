@@ -94,7 +94,7 @@ KTVHCRange KTVHCRangeFull(void)
     return KTVHCMakeRange(0, KTVHCNotFound);
 }
 
-KTVHCRange KTVHCRangeInvaild()
+KTVHCRange KTVHCRangeInvaild(void)
 {
     return KTVHCMakeRange(KTVHCNotFound, KTVHCNotFound);
 }

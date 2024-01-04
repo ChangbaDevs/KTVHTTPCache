@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVHCRange.h"
+#import <KTVHTTPCache/KTVHCRange.h>
 
 @interface KTVHCDataResponse : NSObject
 

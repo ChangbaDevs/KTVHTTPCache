@@ -58,7 +58,7 @@
 
 - (NSString *)URLEncode:(NSString *)URLString
 {
-    URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSUInteger length = [URLString length];
     const char *c = [URLString UTF8String];
     NSString *resultString = @"";
@@ -130,7 +130,7 @@
 
 - (NSString *)URLDecode:(NSString *)URLString
 {
-    return [URLString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [URLString stringByRemovingPercentEncoding];
 }
 
 - (NSDictionary<NSString *,NSString *> *)parseQuery:(NSString *)query
