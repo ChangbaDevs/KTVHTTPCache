@@ -56,7 +56,7 @@
 		9CA86F0321F709700007B098 /* KTVHCError.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86EC421F709700007B098 /* KTVHCError.m */; };
 		9CA86F0421F709700007B098 /* KTVHCLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86EC521F709700007B098 /* KTVHCLog.h */; };
 		9CA86F0521F709700007B098 /* KTVHCMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86EC621F709700007B098 /* KTVHCMacro.h */; };
-		9CA86F0621F709700007B098 /* KTVHCError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86EC721F709700007B098 /* KTVHCError.h */; };
+		9CA86F0621F709700007B098 /* KTVHCError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86EC721F709700007B098 /* KTVHCError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA86F0721F709700007B098 /* KTVHCRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86EC821F709700007B098 /* KTVHCRange.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CA86F0821F709700007B098 /* KTVHCDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA86ECA21F709700007B098 /* KTVHCDownload.h */; };
 		9CA86F0921F709700007B098 /* KTVHCDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA86ECB21F709700007B098 /* KTVHCDownload.m */; };
@@ -320,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CA86ECD21F709700007B098 /* KTVHTTPCache.h in Headers */,
+				9CA86F0621F709700007B098 /* KTVHCError.h in Headers */,
 				9CA86F0721F709700007B098 /* KTVHCRange.h in Headers */,
 				9CA86EFF21F709700007B098 /* KTVHCDataCacheItemZone.h in Headers */,
 				9CA86EE421F709700007B098 /* KTVHCDataCacheItem.h in Headers */,
@@ -341,7 +342,6 @@
 				9CA86F0821F709700007B098 /* KTVHCDownload.h in Headers */,
 				9CA86EFE21F709700007B098 /* KTVHCDataStorage.h in Headers */,
 				9CA86ED821F709700007B098 /* KTVHCHTTPHeader.h in Headers */,
-				9CA86F0621F709700007B098 /* KTVHCError.h in Headers */,
 				9CA86EF021F709700007B098 /* KTVHCDataSource.h in Headers */,
 				9CA86EF121F709700007B098 /* KTVHCDataUnitPool.h in Headers */,
 				9CA86F0021F709700007B098 /* KTVHCDataUnitItem.h in Headers */,

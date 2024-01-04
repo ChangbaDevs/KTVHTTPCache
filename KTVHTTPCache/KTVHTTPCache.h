@@ -13,6 +13,7 @@
 FOUNDATION_EXPORT double KTVHTTPCacheVersionNumber;
 FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
+#import <KTVHTTPCache/KTVHCError.h>
 #import <KTVHTTPCache/KTVHCRange.h>
 #import <KTVHTTPCache/KTVHCDataReader.h>
 #import <KTVHTTPCache/KTVHCDataLoader.h>
@@ -23,6 +24,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
 #else
 
+#import "KTVHCError.h"
 #import "KTVHCRange.h"
 #import "KTVHCDataReader.h"
 #import "KTVHCDataLoader.h"
