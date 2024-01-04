@@ -294,7 +294,11 @@
                 }
                 KTVHCLogDataUnit(@"%p, Merge write data : %lld", self, (long long)data.length);
                 @try {
-                    [writingHandle writeData:data];
+                    if (@available(iOS 13.0, *)) {
+                        [writingHandle writeData:data error:&error];
+                    } else {
+                        [writingHandle writeData:data];
+                    }
                 } @catch (NSException *exception) {
                     KTVHCLogDataUnit(@"%p, Merge files write exception\n%@", self, exception);
                     error = [KTVHCError errorForException:exception];

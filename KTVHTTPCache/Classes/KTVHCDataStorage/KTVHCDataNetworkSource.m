@@ -192,11 +192,25 @@
         return;
     }
     @try {
-        [self.writingHandle writeData:data];
-        self.downloadLength += data.length;
-        [self.unitItem updateLength:self.downloadLength];
-        KTVHCLogDataNetworkSource(@"%p, Receive data : %lld, %lld, %lld", self, (long long)data.length, self.downloadLength, self.unitItem.length);
-        [self callbackForHasAvailableData];
+        NSError *error = nil;
+        if (@available(iOS 13.0, *)) {
+            [self.writingHandle writeData:data error:&error];
+        } else {
+            [self.writingHandle writeData:data];
+        }
+        if (error) {
+            [self callbackForFailed:error];
+            if (!self.downloadCalledComplete) {
+                KTVHCLogDataNetworkSource(@"%p, Cancel download task because data could not be written", self);
+                [self.downlaodTask cancel];
+                self.downlaodTask = nil;
+            }
+        } else {
+            self.downloadLength += data.length;
+            [self.unitItem updateLength:self.downloadLength];
+            KTVHCLogDataNetworkSource(@"%p, Receive data : %lld, %lld, %lld", self, (long long)data.length, self.downloadLength, self.unitItem.length);
+            [self callbackForHasAvailableData];
+        }
     } @catch (NSException *exception) {
         NSError *error = [KTVHCError errorForException:exception];
         KTVHCLogDataNetworkSource(@"%p, write exception\nError : %@", self, error);
