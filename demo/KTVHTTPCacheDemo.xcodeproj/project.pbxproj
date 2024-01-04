@@ -220,7 +220,7 @@
 				TargetAttributes = {
 					9C7A44B71F3C09CF00ED01BA = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 2EN49MUBLA;
+						DevelopmentTeam = TW8SS868PP;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -230,6 +230,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -430,9 +431,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
-				DEVELOPMENT_TEAM = 2EN49MUBLA;
+				DEVELOPMENT_TEAM = TW8SS868PP;
 				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemo;
@@ -445,9 +446,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
-				DEVELOPMENT_TEAM = 2EN49MUBLA;
+				DEVELOPMENT_TEAM = TW8SS868PP;
 				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc.KTVHTTPCacheDemo;
