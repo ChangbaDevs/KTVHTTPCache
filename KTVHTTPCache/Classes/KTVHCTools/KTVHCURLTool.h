@@ -18,9 +18,7 @@
 @property (nonatomic, copy) NSURL * (^URLConverter)(NSURL *URL);
 
 - (NSString *)keyWithURL:(NSURL *)URL;
-
 - (NSString *)URLEncode:(NSString *)URLString;
-- (NSString *)URLDecode:(NSString *)URLString;
 
 - (NSDictionary<NSString *, NSString *> *)parseQuery:(NSString *)query;
 

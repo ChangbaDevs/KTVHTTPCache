@@ -9,6 +9,13 @@
 #import "KTVHCURLTool.h"
 #import <CommonCrypto/CommonCrypto.h>
 
+@interface KTVHCURLTool ()
+
+@property (nonatomic, strong) NSLock *lock;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *md5s;
+
+@end
+
 @implementation KTVHCURLTool
 
 + (instancetype)tool
@@ -19,6 +26,15 @@
         obj = [[self alloc] init];
     });
     return obj;
+}
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.lock = [[NSLock alloc] init];
+        self.md5s = [NSMutableDictionary dictionary];
+    }
+    return self;
 }
 
 - (NSString *)keyWithURL:(NSURL *)URL
@@ -34,98 +50,28 @@
 
 - (NSString *)md5:(NSString *)URLString
 {
-    const char *value = [URLString UTF8String];
-    unsigned char outputBuffer[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(value, (CC_LONG)strlen(value), outputBuffer);
-    NSMutableString *outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH *2];
-    for (NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++) {
-        [outputString appendFormat:@"%02x", outputBuffer[count]];
+    [self.lock lock];
+    NSString *result = [self.md5s objectForKey:URLString];
+    if (!result || result.length == 0) {
+        const char *value = [URLString UTF8String];
+        unsigned char outputBuffer[CC_MD5_DIGEST_LENGTH];
+        CC_MD5(value, (CC_LONG)strlen(value), outputBuffer);
+        NSMutableString *outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH *2];
+        for (NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++) {
+            [outputString appendFormat:@"%02x", outputBuffer[count]];
+        }
+        result = outputString;
+        [self.md5s setObject:result forKey:URLString];
     }
-    return outputString;
-}
-
-- (NSString *)base64Encode:(NSString *)URLString
-{
-    NSData *data = [URLString dataUsingEncoding:NSUTF8StringEncoding];
-    return [data base64EncodedStringWithOptions:0];
-}
-
-- (NSString *)base64Decode:(NSString *)URLString
-{
-    NSData *data = [[NSData alloc] initWithBase64EncodedString:URLString options:0];
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    [self.lock unlock];
+    return result;
 }
 
 - (NSString *)URLEncode:(NSString *)URLString
 {
-    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSUInteger length = [URLString length];
-    const char *c = [URLString UTF8String];
-    NSString *resultString = @"";
-    for(int i = 0; i < length; i++) {
-        @autoreleasepool {
-            switch (*c) {
-                case '/':
-                    resultString = [resultString stringByAppendingString:@"%2F"];
-                    break;
-                case '\'':
-                    resultString = [resultString stringByAppendingString:@"%27"];
-                    break;
-                case ';':
-                    resultString = [resultString stringByAppendingString:@"%3B"];
-                    break;
-                case '?':
-                    resultString = [resultString stringByAppendingString:@"%3F"];
-                    break;
-                case ':':
-                    resultString = [resultString stringByAppendingString:@"%3A"];
-                    break;
-                case '@':
-                    resultString = [resultString stringByAppendingString:@"%40"];
-                    break;
-                case '&':
-                    resultString = [resultString stringByAppendingString:@"%26"];
-                    break;
-                case '=':
-                    resultString = [resultString stringByAppendingString:@"%3D"];
-                    break;
-                case '+':
-                    resultString = [resultString stringByAppendingString:@"%2B"];
-                    break;
-                case '$':
-                    resultString = [resultString stringByAppendingString:@"%24"];
-                    break;
-                case ',':
-                    resultString = [resultString stringByAppendingString:@"%2C"];
-                    break;
-                case '[':
-                    resultString = [resultString stringByAppendingString:@"%5B"];
-                    break;
-                case ']':
-                    resultString = [resultString stringByAppendingString:@"%5D"];
-                    break;
-                case '#':
-                    resultString = [resultString stringByAppendingString:@"%23"];
-                    break;
-                case '!':
-                    resultString = [resultString stringByAppendingString:@"%21"];
-                    break;
-                case '(':
-                    resultString = [resultString stringByAppendingString:@"%28"];
-                    break;
-                case ')':
-                    resultString = [resultString stringByAppendingString:@"%29"];
-                    break;
-                case '*':
-                    resultString = [resultString stringByAppendingString:@"%2A"];
-                    break;
-                default:
-                    resultString = [resultString stringByAppendingFormat:@"%c", *c];
-            }
-            c++;
-        }
-    }
-    return resultString;
+    static NSString *characters =  @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:characters];
+    return [URLString stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
 }
 
 - (NSString *)URLDecode:(NSString *)URLString
