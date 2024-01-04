@@ -40,6 +40,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
+        self.coreLock = [[NSRecursiveLock alloc] init];
         self.unitQueue = [[KTVHCDataUnitQueue alloc] initWithPath:[KTVHCPathTool archivePath]];
         for (KTVHCDataUnit *obj in self.unitQueue.allUnits) {
             obj.delegate = self;
@@ -272,9 +273,6 @@
 
 - (void)lock
 {
-    if (!self.coreLock) {
-        self.coreLock = [[NSRecursiveLock alloc] init];
-    }
     [self.coreLock lock];
 }
 

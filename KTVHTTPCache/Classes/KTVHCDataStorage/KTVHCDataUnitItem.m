@@ -77,6 +77,7 @@
 - (void)commonInit
 {
     KTVHCLogAlloc(self);
+    self.coreLock = [[NSRecursiveLock alloc] init];
     KTVHCLogDataUnitItem(@"%p, Create Unit Item\nabsolutePath : %@\nrelativePath : %@\nOffset : %lld\nLength : %lld", self, self.absolutePath, self.relativePath, self.offset, self.length);
 }
 
@@ -90,9 +91,6 @@
 
 - (void)lock
 {
-    if (!self.coreLock) {
-        self.coreLock = [[NSRecursiveLock alloc] init];
-    }
     [self.coreLock lock];
 }
 
