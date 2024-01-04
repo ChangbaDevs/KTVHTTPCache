@@ -28,8 +28,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.player = [AVPlayer playerWithURL:[NSURL URLWithString:self.URLString]];
-    [self.player play];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.player = [AVPlayer playerWithURL:[NSURL URLWithString:self.URLString]];
+        [self.player play];
+    });
 }
 
 - (void)dealloc
