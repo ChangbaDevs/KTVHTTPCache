@@ -123,6 +123,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     task.priority = 1.0;
     [task resume];
     KTVHCLogDownload(@"%p, Add Request\nrequest : %@\nURL : %@\nheaders : %@\nHTTPRequest headers : %@\nCount : %d", self, request, request.URL, request.headers, mRequest.allHTTPHeaderFields, (int)self.delegateDictionary.count);
+    [self beginBackgroundTaskAsync];
     [self unlock];
     return task;
 }
@@ -139,7 +140,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [self.delegateDictionary removeObjectForKey:task];
     [self.requestDictionary removeObjectForKey:task];
     [self.errorDictionary removeObjectForKey:task];
-    if (self.delegateDictionary.count <= 0) {
+    if (self.delegateDictionary.count <= 0 && self.backgroundTask != UIBackgroundTaskInvalid) {
         [self endBackgroundTaskDelay];
     }
     [self unlock];
@@ -255,41 +256,52 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-    [self lock];
-    if (self.delegateDictionary.count > 0) {
-        [self beginBackgroundTask];
-    }
-    [self unlock];
+    [self beginBackgroundTaskIfNeeded];
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification
 {
-    [self endBackgroundTask];
+    [self endBackgroundTaskIfNeeded:YES];
 }
 
-- (void)beginBackgroundTask
+- (void)beginBackgroundTaskIfNeeded
 {
-    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        [self endBackgroundTask];
-    }];
-}
-
-- (void)endBackgroundTask
-{
-    if (self.backgroundTask != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-        self.backgroundTask = UIBackgroundTaskInvalid;
+    [self lock];
+    if (self.backgroundTask == UIBackgroundTaskInvalid && self.delegateDictionary.count > 0) {
+        __weak typeof(self) weakSelf = self;
+        self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            [strongSelf endBackgroundTaskIfNeeded:YES];
+        }];
     }
+    [self unlock];
+}
+
+- (void)endBackgroundTaskIfNeeded:(BOOL)force
+{
+    [self lock];
+    if (force || self.delegateDictionary.count <= 0) {
+        if (self.backgroundTask != UIBackgroundTaskInvalid) {
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+            self.backgroundTask = UIBackgroundTaskInvalid;
+        }
+    }
+    [self unlock];
+}
+
+- (void)beginBackgroundTaskAsync
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+            [self beginBackgroundTaskIfNeeded];
+        }
+    });
 }
 
 - (void)endBackgroundTaskDelay
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self lock];
-        if (self.delegateDictionary.count <= 0) {
-            [self endBackgroundTask];
-        }
-        [self unlock];
+        [self endBackgroundTaskIfNeeded:NO];
     });
 }
 
