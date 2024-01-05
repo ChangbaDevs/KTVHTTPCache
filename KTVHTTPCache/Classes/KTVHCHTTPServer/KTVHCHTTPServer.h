@@ -21,5 +21,6 @@
 - (void)stop;
 
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL;
+- (NSURL *)URLWithOriginalURL:(NSURL *)URL bindToLocalhost:(BOOL)bindToLocalhost;
 
 @end

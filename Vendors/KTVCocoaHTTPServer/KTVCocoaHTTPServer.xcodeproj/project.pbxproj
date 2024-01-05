@@ -33,7 +33,7 @@
 		9C1F0EA820AFBBC600FCC0B2 /* MultipartMessageHeaderField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0E8220AFBBC600FCC0B2 /* MultipartMessageHeaderField.m */; };
 		9C1F0EA920AFBBC600FCC0B2 /* HTTPAsyncFileResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C1F0E8420AFBBC600FCC0B2 /* HTTPAsyncFileResponse.h */; };
 		9C1F0EAA20AFBBC600FCC0B2 /* HTTPAsyncFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0E8520AFBBC600FCC0B2 /* HTTPAsyncFileResponse.m */; };
-		9C1F0EAB20AFBBC600FCC0B2 /* HTTPDataResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C1F0E8620AFBBC600FCC0B2 /* HTTPDataResponse.h */; };
+		9C1F0EAB20AFBBC600FCC0B2 /* HTTPDataResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C1F0E8620AFBBC600FCC0B2 /* HTTPDataResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C1F0EAC20AFBBC600FCC0B2 /* HTTPDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0E8720AFBBC600FCC0B2 /* HTTPDataResponse.m */; };
 		9C1F0EAD20AFBBC600FCC0B2 /* HTTPDynamicFileResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C1F0E8820AFBBC600FCC0B2 /* HTTPDynamicFileResponse.h */; };
 		9C1F0EAE20AFBBC600FCC0B2 /* HTTPDynamicFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0E8920AFBBC600FCC0B2 /* HTTPDynamicFileResponse.m */; };
@@ -228,6 +228,7 @@
 				9C1F0E9A20AFBBC600FCC0B2 /* HTTPConnection.h in Headers */,
 				9C1F0EA520AFBBC600FCC0B2 /* MultipartMessageHeader.h in Headers */,
 				9C1F0EA020AFBBC600FCC0B2 /* HTTPResponse.h in Headers */,
+				9C1F0EAB20AFBBC600FCC0B2 /* HTTPDataResponse.h in Headers */,
 				9C1F0EA120AFBBC600FCC0B2 /* HTTPServer.h in Headers */,
 				9C1F0EB120AFBBC600FCC0B2 /* HTTPFileResponse.h in Headers */,
 				9C1F0EAD20AFBBC600FCC0B2 /* HTTPDynamicFileResponse.h in Headers */,
@@ -244,7 +245,6 @@
 				9C1F0E9C20AFBBC600FCC0B2 /* HTTPLogging.h in Headers */,
 				9C1F0EB520AFBBC600FCC0B2 /* WebSocket.h in Headers */,
 				9C1F0EAF20AFBBC600FCC0B2 /* HTTPErrorResponse.h in Headers */,
-				9C1F0EAB20AFBBC600FCC0B2 /* HTTPDataResponse.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

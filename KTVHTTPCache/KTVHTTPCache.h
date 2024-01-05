@@ -70,11 +70,21 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 
 /**
  *  Convert the URL to the proxy URL.
+ *  Only accept HTTP requests coming from localhost i.e. not from the outside network.
  *
  *  @param URL : The URL for HTTP content.
  *  @return If the param is a file URL or the proxy service isn't running, return URL. Otherwise reutrn the proxy URL.
  */
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL;
+
+/**
+ *  Convert the URL to the proxy URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @param bindToLocalhost : If you want to connect to other devices on the LAN, set to NO.  i.e. AirPlay and other functions.
+ *  @return If the param is a file URL or the proxy service isn't running, return URL. Otherwise reutrn the proxy URL.
+ */
++ (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL bindToLocalhost:(BOOL)bindToLocalhost;
 
 /**
  *  Data Storage

@@ -37,6 +37,11 @@
     return [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
 }
 
++ (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL bindToLocalhost:(BOOL)bindToLocalhost
+{
+    return [[KTVHCHTTPServer server] URLWithOriginalURL:URL bindToLocalhost:bindToLocalhost];
+}
+
 #pragma mark - Data Storage
 
 + (NSURL *)cacheCompleteFileURLWithURL:(NSURL *)URL

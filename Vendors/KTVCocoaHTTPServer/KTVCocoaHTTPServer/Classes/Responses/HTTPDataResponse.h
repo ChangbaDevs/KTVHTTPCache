@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "HTTPResponse.h"
+#import <KTVCocoaHTTPServer/KTVCocoaHTTPServer.h>
 
 
 @interface HTTPDataResponse : NSObject <HTTPResponse>

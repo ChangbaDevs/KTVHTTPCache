@@ -15,3 +15,4 @@ FOUNDATION_EXPORT const unsigned char KTVCocoaHTTPServerVersionString[];
 #import <KTVCocoaHTTPServer/HTTPConnection.h>
 #import <KTVCocoaHTTPServer/HTTPMessage.h>
 #import <KTVCocoaHTTPServer/HTTPResponse.h>
+#import <KTVCocoaHTTPServer/HTTPDataResponse.h>
