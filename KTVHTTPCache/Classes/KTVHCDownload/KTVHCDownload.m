@@ -145,19 +145,27 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [self unlock];
 }
 
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task didReceiveResponse:(NSHTTPURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
 {
     [self lock];
-    KTVHCDataRequest *dataRequest = [self.requestDictionary objectForKey:task];
-    KTVHCDataResponse *dataResponse = [[KTVHCDataResponse alloc] initWithURL:dataRequest.URL headers:response.allHeaderFields];
-    KTVHCLogDownload(@"%p, Receive response\nrequest : %@\nresponse : %@\nHTTPResponse : %@", self, dataRequest, dataResponse, response.allHeaderFields);
     NSError *error = nil;
-    if (!error) {
-        if (response.statusCode > 400) {
+    KTVHCDataRequest *dataRequest = nil;
+    KTVHCDataResponse *dataResponse = nil;
+    NSHTTPURLResponse *HTTPURLResponse = nil;
+    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+        HTTPURLResponse = (NSHTTPURLResponse *)response;
+        if (HTTPURLResponse.statusCode > 400) {
             error = [KTVHCError errorForResponseUnavailable:task.currentRequest.URL
                                                     request:task.currentRequest
                                                    response:task.response];
+        } else {
+            dataRequest = [self.requestDictionary objectForKey:task];
+            dataResponse = [[KTVHCDataResponse alloc] initWithURL:dataRequest.URL headers:HTTPURLResponse.allHeaderFields];
         }
+    } else {
+        error = [KTVHCError errorForResponseUnavailable:task.currentRequest.URL
+                                                request:task.currentRequest
+                                               response:task.response];
     }
     if (!error) {
         BOOL vaild = NO;
@@ -181,9 +189,9 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         if (dataResponse.contentLength <= 0 ||
             (!KTVHCRangeIsFull(dataRequest.range) &&
              (dataResponse.contentLength != KTVHCRangeGetLength(dataRequest.range)))) {
-                error = [KTVHCError errorForUnsupportContentType:task.currentRequest.URL
-                                                         request:task.currentRequest
-                                                        response:task.response];
+                error = [KTVHCError errorForResponseUnavailable:task.currentRequest.URL
+                                                        request:task.currentRequest
+                                                       response:task.response];
             }
     }
     if (!error) {
@@ -207,6 +215,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         [self.errorDictionary setObject:error forKey:task];
         completionHandler(NSURLSessionResponseCancel);
     } else {
+        KTVHCLogDownload(@"%p, Receive response\nrequest : %@\nresponse : %@\nHTTPResponse : %@", self, dataRequest, dataResponse, HTTPURLResponse);
         id<KTVHCDownloadDelegate> delegate = [self.delegateDictionary objectForKey:task];
         [delegate ktv_download:self didReceiveResponse:dataResponse];
         completionHandler(NSURLSessionResponseAllow);

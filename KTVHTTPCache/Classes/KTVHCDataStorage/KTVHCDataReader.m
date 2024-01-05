@@ -94,6 +94,7 @@
         [self unlock];
         return nil;
     }
+    NSAssert(self->_calledPrepare == YES, @"Prepare api must be called befor read data.");
     NSData *data = [self.sourceManager readDataOfLength:length];
     if (data.length > 0) {
         self->_readedLength += data.length;
