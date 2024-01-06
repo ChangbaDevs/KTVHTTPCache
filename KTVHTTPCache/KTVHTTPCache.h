@@ -238,7 +238,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 /**
  *  Set the acceptable content types.
  *  The following values are only supported by default:
- *      video/x, audio/x, application/mp4, application/octet-stream, binary/octet-stream
+ *      text/x, video/x, audio/x, application/x-mpegURL, vnd.apple.mpegURL, application/mp4, application/octet-stream, binary/octet-stream
  *  If you want to allow other content types, set them here.
  *
  *  @param acceptableContentTypes : The content types can be allowed.

@@ -16,6 +16,7 @@
 #import "HTTPMessage.h"
 #import "HTTPResponse.h"
 #import "HTTPDataResponse.h"
+#import "HTTPErrorResponse.h"
 
 
 #endif /* KTVHCHTTPHeader_h */

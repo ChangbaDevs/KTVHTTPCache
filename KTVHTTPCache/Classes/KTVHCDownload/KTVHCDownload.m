@@ -15,8 +15,11 @@
 
 #import <UIKit/UIKit.h>
 
+NSString * const KTVHCContentTypeText                   = @"text/";
 NSString * const KTVHCContentTypeVideo                  = @"video/";
 NSString * const KTVHCContentTypeAudio                  = @"audio/";
+NSString * const KTVHCContentTypeAppleHLS1              = @"vnd.apple.mpegURL";
+NSString * const KTVHCContentTypeAppleHLS2              = @"application/x-mpegURL";
 NSString * const KTVHCContentTypeApplicationMPEG4       = @"application/mp4";
 NSString * const KTVHCContentTypeApplicationOctetStream = @"application/octet-stream";
 NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream";
@@ -64,8 +67,11 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
         self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
                                                      delegate:self
                                                 delegateQueue:self.sessionDelegateQueue];
-        self.acceptableContentTypes = @[KTVHCContentTypeVideo,
+        self.acceptableContentTypes = @[KTVHCContentTypeText,
+                                        KTVHCContentTypeVideo,
                                         KTVHCContentTypeAudio,
+                                        KTVHCContentTypeAppleHLS1,
+                                        KTVHCContentTypeAppleHLS2,
                                         KTVHCContentTypeApplicationMPEG4,
                                         KTVHCContentTypeApplicationOctetStream,
                                         KTVHCContentTypeBinaryOctetStream];

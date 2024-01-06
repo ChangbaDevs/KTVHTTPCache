@@ -11,8 +11,11 @@
 #import "KTVHCDataRequest.h"
 #import "KTVHCMacro.h"
 
+KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeText;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeVideo;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeAudio;
+KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeAppleHLS1;
+KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeAppleHLS2;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeApplicationMPEG4;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeApplicationOctetStream;
 KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeBinaryOctetStream;

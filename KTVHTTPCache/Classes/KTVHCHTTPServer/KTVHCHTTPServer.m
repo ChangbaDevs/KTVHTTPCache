@@ -92,11 +92,13 @@
     if (!self.isRunning) {
         return URL;
     }
-    NSString *original = [[KTVHCURLTool tool] URLEncode:URL.absoluteString];
-    NSString *host = bindToLocalhost ? @"localhost" : [self getPrimaryIPAddress];
-    NSString *server = [NSString stringWithFormat:@"http://%@:%d/", host, self.server.listeningPort];
-    NSString *extension = URL.pathExtension.length > 0 ? [NSString stringWithFormat:@".%@", URL.pathExtension] : @"";
-    NSString *URLString = [NSString stringWithFormat:@"%@request%@?url=%@", server, extension, original];
+    NSString *URLString = [NSString stringWithFormat:@"http://%@:%d/%@/%@/%@%@",
+                           bindToLocalhost ? @"localhost" : [self getPrimaryIPAddress],
+                           self.server.listeningPort,
+                           [[KTVHCURLTool tool] URLEncode:URL.absoluteString],
+                           [KTVHCHTTPConnection URITokenPlaceHolder],
+                           [KTVHCHTTPConnection URITokenLastPathComponent],
+                           URL.pathExtension.length > 0 ? [NSString stringWithFormat:@".%@", URL.pathExtension] : @""];
     URL = [NSURL URLWithString:URLString];
     KTVHCLogHTTPServer(@"%p, Return URL\nURL : %@", self, URL);
     return URL;
@@ -132,7 +134,7 @@
     });
     __block BOOL result = NO;
     __weak typeof(self) weakSelf = self;
-    NSURL *URL = [self URLWithOriginalURL:[KTVHCHTTPConnection pingURL]];
+    NSURL *URL = [self URLWithOriginalURL:[NSURL URLWithString:[KTVHCHTTPConnection URITokenPing]]];
     self.pingTask = [session dataTaskWithURL:URL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (!error && data.length > 0) {
             result = YES;

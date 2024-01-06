@@ -19,7 +19,6 @@
 
 - (NSString *)keyWithURL:(NSURL *)URL;
 - (NSString *)URLEncode:(NSString *)URLString;
-
-- (NSDictionary<NSString *, NSString *> *)parseQuery:(NSString *)query;
+- (NSString *)URLDecode:(NSString *)URLString;
 
 @end

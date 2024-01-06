@@ -15,9 +15,19 @@
 
 @implementation KTVHCHTTPConnection
 
-+ (NSURL *)pingURL
++ (NSString *)URITokenPing
 {
-    return [NSURL URLWithString:@"http://ping.com"];
+    return @"KTVHTTPCachePing";
+}
+
++ (NSString *)URITokenPlaceHolder
+{
+    return @"KTVHTTPCachePlaceHolder";
+}
+
++ (NSString *)URITokenLastPathComponent
+{
+    return @"KTVHTTPCacheLastPathComponent";
 }
 
 - (id)initWithAsyncSocket:(GCDAsyncSocket *)newSocket configuration:(HTTPConfig *)aConfig
@@ -36,11 +46,33 @@
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
     KTVHCLogHTTPConnection(@"%p, Receive request\nmethod : %@\npath : %@\nURL : %@", self, method, path, request.url);
-    NSDictionary<NSString *,NSString *> *parameters = [[KTVHCURLTool tool] parseQuery:request.url.query];
-    NSURL *URL = [NSURL URLWithString:[parameters objectForKey:@"url"]];
-    if ([URL isEqual:[KTVHCHTTPConnection pingURL]]) {
+    if ([path containsString:[self.class URITokenPing]]) {
         return [[HTTPDataResponse alloc] initWithData:[@"ping" dataUsingEncoding:NSUTF8StringEncoding]];
     }
+    NSMutableArray *components = [path componentsSeparatedByString:@"/"].mutableCopy;
+    if (components.count < 3) {
+        return [[HTTPErrorResponse alloc] initWithErrorCode:404];
+    }
+    NSString *URLString = [[KTVHCURLTool tool] URLDecode:components[1]];
+    if (![URLString hasPrefix:@"http"]) {
+        return [[HTTPErrorResponse alloc] initWithErrorCode:404];
+    }
+    NSURL *URL = nil;
+    if ([path containsString:[self.class URITokenLastPathComponent]]) {
+        URL = [NSURL URLWithString:URLString];
+    } else {
+        [components removeObjectAtIndex:1];
+        URLString = URLString.stringByDeletingLastPathComponent;
+        if ([path containsString:[self.class URITokenPlaceHolder]]) {
+            [components removeObjectAtIndex:1];
+        } else {
+            URLString = URLString.stringByDeletingLastPathComponent;
+        }
+        NSString *lastPathComponent = [components componentsJoinedByString:@"/"];
+        URLString = [URLString stringByAppendingPathComponent:lastPathComponent];
+        URL = [NSURL URLWithString:URLString];
+    }
+    KTVHCLogHTTPConnection(@"%p, Accept request\nURL : %@", self, URL);
     KTVHCDataRequest *dataRequest = [[KTVHCDataRequest alloc] initWithURL:URL headers:request.allHeaderFields];
     KTVHCHTTPResponse *response = [[KTVHCHTTPResponse alloc] initWithConnection:self dataRequest:dataRequest];
     return response;
