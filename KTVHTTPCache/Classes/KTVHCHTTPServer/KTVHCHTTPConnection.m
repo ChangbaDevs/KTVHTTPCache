@@ -7,6 +7,7 @@
 //
 
 #import "KTVHCHTTPConnection.h"
+#import "KTVHCHTTPHLSResponse.h"
 #import "KTVHCHTTPResponse.h"
 #import "KTVHCDataStorage.h"
 #import "KTVHCHTTPHeader.h"
@@ -74,8 +75,10 @@
     }
     KTVHCLogHTTPConnection(@"%p, Accept request\nURL : %@", self, URL);
     KTVHCDataRequest *dataRequest = [[KTVHCDataRequest alloc] initWithURL:URL headers:request.allHeaderFields];
-    KTVHCHTTPResponse *response = [[KTVHCHTTPResponse alloc] initWithConnection:self dataRequest:dataRequest];
-    return response;
+    if ([URLString containsString:@".m3u"]) {
+        return [[KTVHCHTTPHLSResponse alloc] initWithConnection:self dataRequest:dataRequest];
+    }
+    return [[KTVHCHTTPResponse alloc] initWithConnection:self dataRequest:dataRequest];
 }
 
 
