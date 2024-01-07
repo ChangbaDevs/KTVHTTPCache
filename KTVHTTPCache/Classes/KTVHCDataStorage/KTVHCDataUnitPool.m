@@ -45,6 +45,7 @@
         for (KTVHCDataUnit *obj in self.unitQueue.allUnits) {
             obj.delegate = self;
         }
+        self.archiveQueue = dispatch_queue_create("KTVHTTPCache-archiveQueue", DISPATCH_QUEUE_SERIAL);
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
         [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
         [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
@@ -223,9 +224,6 @@
     self.expectArchiveIndex += 1;
     int64_t expectArchiveIndex = self.expectArchiveIndex;
     [self unlock];
-    if (!self.archiveQueue) {
-        self.archiveQueue = dispatch_queue_create("KTVHTTPCache-archiveQueue", DISPATCH_QUEUE_SERIAL);
-    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), self.archiveQueue, ^{
         [self lock];
         if (self.expectArchiveIndex == expectArchiveIndex) {
