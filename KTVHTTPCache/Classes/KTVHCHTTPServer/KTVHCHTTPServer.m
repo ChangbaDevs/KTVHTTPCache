@@ -45,7 +45,6 @@
         self.server = [[HTTPServer alloc] init];
         [self.server setConnectionClass:[KTVHCHTTPConnection class]];
         [self.server setType:@"_http._tcp."];
-        [self.server setPort:80];
         self.pingCondition = [[NSCondition alloc] init];
         self.pingQueue = dispatch_queue_create("KTVHCHTTPServer_pingQueue", DISPATCH_QUEUE_SERIAL);
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -60,6 +59,15 @@
 {
     KTVHCLogDealloc(self);
     [self stopInternal];
+}
+
+- (BOOL)setPort:(UInt16)port
+{
+    if (self.isRunning) {
+        return NO;
+    }
+    [self.server setPort:port];
+    return YES;
 }
 
 - (BOOL)isRunning

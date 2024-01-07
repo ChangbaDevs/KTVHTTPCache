@@ -27,6 +27,11 @@
     [[KTVHCHTTPServer server] stop];
 }
 
++ (void)proxySetPort:(UInt16)port
+{
+    [[KTVHCHTTPServer server] setPort:port];
+}
+
 + (BOOL)proxyIsRunning
 {
     return [KTVHCHTTPServer server].isRunning;

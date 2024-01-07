@@ -62,6 +62,13 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (void)proxyStop;
 
 /**
+ *  The port number to run the HTTP server on.
+ *
+ *  @param port : The default port number is zero, meaning the server will automatically use any available port.
+ */
++ (void)proxySetPort:(UInt16)port;
+
+/**
  *  Proxy service running status.
  *
  *  @return YES when the proxy service is running, otherwise NO.
