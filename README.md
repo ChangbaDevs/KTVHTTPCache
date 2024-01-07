@@ -10,6 +10,7 @@ KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and
 
 ## Features
 
+- HLS supported.
 - Thread safety.
 - Logging system, Support for console and file output.
 - Accurate view caching information.
@@ -24,7 +25,7 @@ KTVHTTPCache is a powerful media cache framework. It can cache HTTP request, and
 To integrate KTVHTTPCache into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
-pod 'KTVHTTPCache', '~> 2.0.0'
+pod 'KTVHTTPCache', '~> 3.0.0'
 ```
 
 Run `pod install`
@@ -34,7 +35,7 @@ Run `pod install`
 To integrate KTVHTTPCache into your Xcode project using Carthage, specify it in your Cartfile:
 
 ```ogdl
-github "ChangbaDevs/KTVHTTPCache" ~> 2.0.0
+github "ChangbaDevs/KTVHTTPCache" ~> 3.0.0
 ```
 
 Run `carthage update` to build the framework and drag the built `KTVHTTPCache.framework` and `KTVCocoaHTTPServer.framework` into your Xcode project.
