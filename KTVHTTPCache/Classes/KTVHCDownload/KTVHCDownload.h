@@ -51,6 +51,7 @@ KTVHTTPCACHE_EXTERN NSString * const KTVHCContentTypeBinaryOctetStream;
 @property (nonatomic, copy) NSArray<NSString *> *acceptableContentTypes;
 @property (nonatomic, copy) BOOL (^unacceptableContentTypeDisposer)(NSURL *URL, NSString *contentType);
 
+- (NSURLRequest *)requestWithDataRequest:(KTVHCDataRequest *)request;
 - (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate;
 
 @end

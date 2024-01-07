@@ -62,16 +62,22 @@
     if ([path containsString:[self.class URITokenLastPathComponent]]) {
         URL = [NSURL URLWithString:URLString];
     } else {
-        [components removeObjectAtIndex:1];
+        [components removeObjectAtIndex:0];
+        [components removeObjectAtIndex:0];
         URLString = URLString.stringByDeletingLastPathComponent;
         if ([path containsString:[self.class URITokenPlaceHolder]]) {
-            [components removeObjectAtIndex:1];
+            [components removeObjectAtIndex:0];
         } else {
             URLString = URLString.stringByDeletingLastPathComponent;
         }
         NSString *lastPathComponent = [components componentsJoinedByString:@"/"];
-        URLString = [URLString stringByAppendingPathComponent:lastPathComponent];
+        if ([lastPathComponent hasPrefix:@"http"]) {
+            URLString = lastPathComponent;
+        } else {
+            URLString = [URLString stringByAppendingPathComponent:lastPathComponent];
+        }
         URL = [NSURL URLWithString:URLString];
+        KTVHCLogHTTPConnection(@"%p, Receive redirect request\nURL : %@", self, URLString);
     }
     KTVHCLogHTTPConnection(@"%p, Accept request\nURL : %@", self, URL);
     KTVHCDataRequest *dataRequest = [[KTVHCDataRequest alloc] initWithURL:URL headers:request.allHeaderFields];

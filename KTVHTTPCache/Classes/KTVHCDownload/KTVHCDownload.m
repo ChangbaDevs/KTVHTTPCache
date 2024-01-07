@@ -108,9 +108,8 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     return obj;
 }
 
-- (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate
+- (NSURLRequest *)requestWithDataRequest:(KTVHCDataRequest *)request
 {
-    [self lock];
     NSMutableURLRequest *mRequest = [NSMutableURLRequest requestWithURL:request.URL];
     mRequest.timeoutInterval = self.timeoutInterval;
     mRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
@@ -123,6 +122,13 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     [self.additionalHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
         [mRequest setValue:obj forHTTPHeaderField:key];
     }];
+    return mRequest;;
+}
+
+- (NSURLSessionTask *)downloadWithRequest:(KTVHCDataRequest *)request delegate:(id<KTVHCDownloadDelegate>)delegate
+{
+    [self lock];
+    NSURLRequest *mRequest = [self requestWithDataRequest:request];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:mRequest];
     [self.requestDictionary setObject:request forKey:task];
     [self.delegateDictionary setObject:delegate forKey:task];

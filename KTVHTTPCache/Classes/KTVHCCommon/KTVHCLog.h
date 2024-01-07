@@ -29,6 +29,7 @@ KTVHCLogEnable(Common,            YES, YES)
 KTVHCLogEnable(HTTPServer,        YES, YES)
 KTVHCLogEnable(HTTPConnection,    YES, YES)
 KTVHCLogEnable(HTTPResponse,      YES, YES)
+KTVHCLogEnable(HTTPHLSResponse,   YES, YES)
 
 /**
  *  Data Storage
@@ -87,6 +88,7 @@ if (([KTVHCLog log].consoleLogEnable && console_log_enable) || ([KTVHCLog log].r
 #define KTVHCLogHTTPServer(...)             KTVHCLogging(@"KTVHCHTTPServer       ", KTVHCLogEnableValueConsoleLog(HTTPServer),        KTVHCLogEnableValueRecordLog(HTTPServer),        ##__VA_ARGS__)
 #define KTVHCLogHTTPConnection(...)         KTVHCLogging(@"KTVHCHTTPConnection   ", KTVHCLogEnableValueConsoleLog(HTTPConnection),    KTVHCLogEnableValueRecordLog(HTTPConnection),    ##__VA_ARGS__)
 #define KTVHCLogHTTPResponse(...)           KTVHCLogging(@"KTVHCHTTPResponse     ", KTVHCLogEnableValueConsoleLog(HTTPResponse),      KTVHCLogEnableValueRecordLog(HTTPResponse),      ##__VA_ARGS__)
+#define KTVHCLogHTTPHLSResponse(...)        KTVHCLogging(@"KTVHCHTTPHLSResponse  ", KTVHCLogEnableValueConsoleLog(HTTPHLSResponse),   KTVHCLogEnableValueRecordLog(HTTPHLSResponse),   ##__VA_ARGS__)
 
 /**
  *  Data Storage
