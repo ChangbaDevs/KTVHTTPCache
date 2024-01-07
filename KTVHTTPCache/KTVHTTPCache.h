@@ -339,28 +339,3 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (void)logCleanErrorForURL:(NSURL *)URL;
 
 @end
-
-/**
- *  Deprecated
- *
- *  This part is for compatibility with historical versions.
- *
- *  @warning This part will be removed in future versions.
- */
-#pragma mark - Deprecated
-
-@interface KTVHTTPCache (Deprecated)
-
-+ (void)logDeleteRecordLog                                                      __attribute__((deprecated("Use +logDeleteRecordLogFile instead.")));
-+ (NSString *)logRecordLogFilePath                                              __attribute__((deprecated("Use +logRecordLogFileURL instead.")));
-+ (NSString *)proxyURLStringWithOriginalURLString:(NSString *)URLString         __attribute__((deprecated("Use +proxyURLWithOriginalURL: instead.")));
-+ (NSURL *)cacheCompleteFileURLIfExistedWithURL:(NSURL *)URL                    __attribute__((deprecated("Use +cacheCompleteFileURLWithURL: instead.")));
-+ (NSString *)cacheCompleteFilePathIfExistedWithURLString:(NSString *)URLString __attribute__((deprecated("Use +cacheCompleteFileURLWithURL: instead.")));
-+ (KTVHCDataCacheItem *)cacheCacheItemWithURLString:(NSString *)URLString       __attribute__((deprecated("Use +cacheCacheItemWithURL: instead.")));
-+ (void)cacheDeleteCacheWithURLString:(NSString *)URLString                     __attribute__((deprecated("Use +cacheDeleteCacheWithURL: instead.")));
-+ (void)tokenSetURLFilter:(NSURL * (^)(NSURL * URL))URLFilter                   __attribute__((deprecated("Use +encodeSetURLConverter: instead.")));
-+ (void)downloadSetAcceptContentTypes:(NSArray<NSString *> *)acceptContentTypes __attribute__((deprecated("Use +downloadSetAcceptableContentTypes: instead.")));
-+ (NSArray<NSString *> *)downloadAcceptContentTypes                             __attribute__((deprecated("Use +downloadAcceptableContentTypes instead.")));
-+ (void)downloadSetUnsupportContentTypeFilter:(BOOL(^)(NSURL *URL, NSString *contentType))contentTypeFilter __attribute__((deprecated("Use +downloadSetUnacceptableContentTypeDisposer: instead.")));
-
-@end
