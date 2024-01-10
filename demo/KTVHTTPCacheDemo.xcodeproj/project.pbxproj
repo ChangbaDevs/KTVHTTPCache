@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9C76736A21F70D090092B84B /* KTVHTTPCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736921F70CF40092B84B /* KTVHTTPCache.framework */; };
-		9C76736C21F70D160092B84B /* KTVCocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */; };
 		9C7A44BD1F3C09CF00ED01BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BC1F3C09CF00ED01BA /* main.m */; };
 		9C7A44C01F3C09CF00ED01BA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BF1F3C09CF00ED01BA /* AppDelegate.m */; };
 		9C7A44C31F3C09CF00ED01BA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44C21F3C09CF00ED01BA /* ViewController.m */; };
@@ -20,7 +19,6 @@
 		9C9E98CA1F40978C00914D89 /* CacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C21F40978C00914D89 /* CacheViewController.m */; };
 		9C9E98CB1F40978C00914D89 /* MediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C51F40978C00914D89 /* MediaCell.m */; };
 		9C9E98CC1F40978C00914D89 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9E98C71F40978C00914D89 /* MediaItem.m */; };
-		9CAF35E421F822180097820C /* KTVCocoaHTTPServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CAF35E721F822280097820C /* KTVHTTPCache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736921F70CF40092B84B /* KTVHTTPCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CD2D4901F4142FC0052E85A /* MediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD2D48F1F4142FC0052E85A /* MediaViewController.m */; };
 /* End PBXBuildFile section */
@@ -49,7 +47,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9CAF35E421F822180097820C /* KTVCocoaHTTPServer.framework in Embed Frameworks */,
 				9CAF35E721F822280097820C /* KTVHTTPCache.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -91,7 +88,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C76736C21F70D160092B84B /* KTVCocoaHTTPServer.framework in Frameworks */,
 				9C76736A21F70D090092B84B /* KTVHTTPCache.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,7 +433,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
-				DEVELOPMENT_TEAM = TW8SS868PP;
+				DEVELOPMENT_TEAM = SWXNKT9754;
 				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -455,7 +451,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
-				DEVELOPMENT_TEAM = TW8SS868PP;
+				DEVELOPMENT_TEAM = SWXNKT9754;
 				INFOPLIST_FILE = KTVHTTPCacheDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
