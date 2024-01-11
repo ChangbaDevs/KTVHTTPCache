@@ -42,9 +42,9 @@
 - (NSArray<KTVHCDataCacheItem *> *)allCacheItems;
 
 /**
- *  Get cache length.
+ *  Get cache length, default is 500m..
  */
-@property (nonatomic) long long maxCacheLength;     // Default is 500M.
+@property (nonatomic) long long maxCacheLength;
 - (long long)totalCacheLength;
 
 /**
