@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+#if defined(__cplusplus)
+#define KTVHTTPCACHE_EXTERN extern "C"
+#else
+#define KTVHTTPCACHE_EXTERN extern
+#endif
+
+KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorUserInfoKeyURL;
+KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorUserInfoKeyRequest;
+KTVHTTPCACHE_EXTERN NSString * const KTVHCErrorUserInfoKeyResponse;
+
 typedef NS_ENUM(NSInteger, KTVHCErrorCode) {
     KTVHCErrorCodeException             = -192700,
     KTVHCErrorCodeNotEnoughDiskSpace    = -192701,
