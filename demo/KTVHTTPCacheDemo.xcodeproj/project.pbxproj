@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		364D08BD2B511E8E00A5DDDD /* SGPreloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 364D08BC2B511E8E00A5DDDD /* SGPreloadViewController.m */; };
+		364D08C02B51236A00A5DDDD /* SGPreloadItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 364D08BF2B51236A00A5DDDD /* SGPreloadItemCell.m */; };
 		9C76736A21F70D090092B84B /* KTVHTTPCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C76736921F70CF40092B84B /* KTVHTTPCache.framework */; };
 		9C7A44BD1F3C09CF00ED01BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BC1F3C09CF00ED01BA /* main.m */; };
 		9C7A44C01F3C09CF00ED01BA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A44BF1F3C09CF00ED01BA /* AppDelegate.m */; };
@@ -55,6 +57,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		364D08BB2B511E8E00A5DDDD /* SGPreloadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGPreloadViewController.h; sourceTree = "<group>"; };
+		364D08BC2B511E8E00A5DDDD /* SGPreloadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGPreloadViewController.m; sourceTree = "<group>"; };
+		364D08BE2B51236A00A5DDDD /* SGPreloadItemCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGPreloadItemCell.h; sourceTree = "<group>"; };
+		364D08BF2B51236A00A5DDDD /* SGPreloadItemCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGPreloadItemCell.m; sourceTree = "<group>"; };
 		9C29F2B21F4064280079C49B /* CocoaHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServer.framework; path = "../../Vendors/CocoaHTTPServer/build/Debug-iphoneos/CocoaHTTPServer.framework"; sourceTree = "<group>"; };
 		9C76736321F70CF40092B84B /* KTVHTTPCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KTVHTTPCache.xcodeproj; path = ../Framework/KTVHTTPCache.xcodeproj; sourceTree = "<group>"; };
 		9C76736B21F70D160092B84B /* KTVCocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KTVCocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +114,17 @@
 			path = SGMediaViewController;
 			sourceTree = "<group>";
 		};
+		364D08BA2B511E7000A5DDDD /* SGPreloadViewController */ = {
+			isa = PBXGroup;
+			children = (
+				364D08BB2B511E8E00A5DDDD /* SGPreloadViewController.h */,
+				364D08BC2B511E8E00A5DDDD /* SGPreloadViewController.m */,
+				364D08BE2B51236A00A5DDDD /* SGPreloadItemCell.h */,
+				364D08BF2B51236A00A5DDDD /* SGPreloadItemCell.m */,
+			);
+			path = SGPreloadViewController;
+			sourceTree = "<group>";
+		};
 		9C76736421F70CF40092B84B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +159,7 @@
 				3625DDE72B510E9F0093529D /* SGMediaViewController */,
 				9C9E98BC1F40978C00914D89 /* SGCacheViewController */,
 				9C9E98C31F40978C00914D89 /* SGPlayerViewController */,
+				364D08BA2B511E7000A5DDDD /* SGPreloadViewController */,
 				9C7A44C41F3C09CF00ED01BA /* Main.storyboard */,
 				9C7A44C71F3C09CF00ED01BA /* Assets.xcassets */,
 				9C7A44C91F3C09CF00ED01BA /* LaunchScreen.storyboard */,
@@ -282,6 +300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				364D08BD2B511E8E00A5DDDD /* SGPreloadViewController.m in Sources */,
 				9C9E98C81F40978C00914D89 /* SGCacheItemView.m in Sources */,
 				9C7A44C31F3C09CF00ED01BA /* SGMediaViewController.m in Sources */,
 				9C9E98C91F40978C00914D89 /* SGCacheItemZoneCell.m in Sources */,
@@ -290,6 +309,7 @@
 				9C7A44C01F3C09CF00ED01BA /* AppDelegate.m in Sources */,
 				9C9E98CC1F40978C00914D89 /* SGMediaItem.m in Sources */,
 				9C9E98CB1F40978C00914D89 /* SGMediaItemCell.m in Sources */,
+				364D08C02B51236A00A5DDDD /* SGPreloadItemCell.m in Sources */,
 				9C7A44BD1F3C09CF00ED01BA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

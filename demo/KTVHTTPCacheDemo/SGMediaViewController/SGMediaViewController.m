@@ -54,12 +54,7 @@
 
 - (void)setupItems
 {
-    self.items = @[
-        [[SGMediaItem alloc] initWithURL:[NSURL URLWithString:@"http://aliuwmp3.changba.com/userdata/video/45F6BD5E445E4C029C33DC5901307461.mp4"]
-                                   title:@"萧亚轩 - 冲动"],
-        [[SGMediaItem alloc] initWithURL:[NSURL URLWithString:@"http://aliuwmp3.changba.com/userdata/video/3B1DDE764577E0529C33DC5901307461.mp4"]
-                                   title:@"张惠妹 - 你是爱我的"],
-    ];
+    self.items = [SGMediaItem items];
     [self.tableView reloadData];
 }
 
@@ -84,10 +79,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SGMediaItem *item = [self.items objectAtIndex:indexPath.row];
-    NSURL *URL = [KTVHTTPCache proxyURLWithOriginalURL:item.URL];
+    NSURL *URL = nil;
+    if ([item.title containsString:@"AirPlay"]) {
+        URL = [KTVHTTPCache proxyURLWithOriginalURL:item.URL bindToLocalhost:NO];
+    } else {
+        URL = [KTVHTTPCache proxyURLWithOriginalURL:item.URL];
+    }
     SGPlayerViewController *vc = [[SGPlayerViewController alloc] initWithURL:URL];
     [self presentViewController:vc animated:YES completion:nil];
 }
-
 
 @end

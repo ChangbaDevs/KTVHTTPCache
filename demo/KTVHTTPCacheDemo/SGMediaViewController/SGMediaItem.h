@@ -10,7 +10,7 @@
 
 @interface SGMediaItem : NSObject
 
-- (instancetype)initWithURL:(NSURL *)URL title:(NSString *)title;
++ (NSArray<SGMediaItem *> *)items;
 
 @property (nonatomic, copy) NSURL *URL;
 @property (nonatomic, copy) NSString *title;
