@@ -28,8 +28,13 @@
     NSArray *items = [SGMediaItem items];
     NSMutableArray *loaders = [NSMutableArray array];
     for (SGMediaItem *obj in items) {
+        if ([obj.URL.absoluteString containsString:@".m3u"]) {
+            NSLog(@"HLS files do not support preloading using KTVHCDataLoader");
+            continue;
+        }
         NSDictionary *headers = @{
-//            @"Range" : @"bytes=0-1"
+            // Set preload length if needed.
+            // @"Range" : @"bytes=0-1"
         };
         KTVHCDataRequest *request = [[KTVHCDataRequest alloc] initWithURL:obj.URL headers:headers];
         KTVHCDataLoader *loader = [KTVHTTPCache cacheLoaderWithRequest:request];
@@ -39,6 +44,13 @@
     }
     self.loaders = loaders;
     [self.loaders.firstObject prepare];
+}
+
+- (void)dealloc
+{
+    for (KTVHCDataLoader *obj in self.loaders) {
+        [obj close];
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
