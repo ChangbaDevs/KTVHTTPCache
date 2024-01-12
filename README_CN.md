@@ -1,6 +1,10 @@
 # KTVHTTPCache
 
+![Cocoapods Version](https://img.shields.io/cocoapods/v/KTVHTTPCache) ![Cocoapods License](https://img.shields.io/cocoapods/l/KTVHTTPCache?color=red) ![Cocoapods platforms](https://img.shields.io/cocoapods/p/KTVHTTPCache?color=green)
+
 KTVHTTPCache 是一个强大的 HTTP 缓存框架，非常适合用于多媒体资源的缓存。
+
+- [English](https://github.com/ChangbaDevs/KTVHTTPCache/blob/master/README.md)
 
 
 ## Flow Chart
@@ -204,7 +208,7 @@ KTVHTTPCache is released under the MIT license.
 - Email : libobjc@gmail.com
 
 
-## Developed by Single
+## Developed by Author
 
 - [SGPlayer](https://github.com/libobjc/SGPlayer) - A powerful media player framework for iOS, macOS, and tvOS.
 - [KTVVideoProcess](https://github.com/ChangbaDevs/KTVVideoProcess) - A High-Performance video effects processing framework.
