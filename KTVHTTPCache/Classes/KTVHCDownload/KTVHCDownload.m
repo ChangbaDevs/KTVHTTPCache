@@ -168,17 +168,17 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
         HTTPURLResponse = (NSHTTPURLResponse *)response;
         if (HTTPURLResponse.statusCode > 400) {
-            error = [KTVHCError errorForResponseUnavailable:task.currentRequest.URL
-                                                    request:task.currentRequest
-                                                   response:task.response];
+            error = [KTVHCError errorForResponseStatusCode:task.currentRequest.URL
+                                                   request:task.currentRequest
+                                                  response:task.response];
         } else {
             dataRequest = [self.requestDictionary objectForKey:task];
             dataResponse = [[KTVHCDataResponse alloc] initWithURL:dataRequest.URL headers:HTTPURLResponse.allHeaderFields];
         }
     } else {
-        error = [KTVHCError errorForResponseUnavailable:task.currentRequest.URL
-                                                request:task.currentRequest
-                                               response:task.response];
+        error = [KTVHCError errorForResponseClass:task.currentRequest.URL
+                                          request:task.currentRequest
+                                         response:task.response];
     }
     if (!error) {
         BOOL vaild = NO;
@@ -193,18 +193,18 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
             }
         }
         if (!vaild) {
-            error = [KTVHCError errorForUnsupportContentType:task.currentRequest.URL
-                                                     request:task.currentRequest
-                                                    response:task.response];
+            error = [KTVHCError errorForResponseContentType:task.currentRequest.URL
+                                                    request:task.currentRequest
+                                                   response:task.response];
         }
     }
     if (!error) {
         if (dataResponse.contentLength <= 0 ||
             (!KTVHCRangeIsFull(dataRequest.range) &&
              (dataResponse.contentLength != KTVHCRangeGetLength(dataRequest.range)))) {
-                error = [KTVHCError errorForResponseUnavailable:task.currentRequest.URL
-                                                        request:task.currentRequest
-                                                       response:task.response];
+                error = [KTVHCError errorForResponseContentLength:task.currentRequest.URL
+                                                          request:task.currentRequest
+                                                         response:task.response];
             }
     }
     if (!error) {

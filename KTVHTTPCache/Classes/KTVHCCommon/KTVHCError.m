@@ -14,43 +14,11 @@ NSString * const KTVHCErrorUserInfoKeyResponse = @"KTVHCErrorUserInfoKeyResponse
 
 @implementation KTVHCError
 
-+ (NSError *)errorForResponseUnavailable:(NSURL *)URL
-                                 request:(NSURLRequest *)request
-                                response:(NSURLResponse *)response
++ (NSError *)errorForException:(NSException *)exception
 {
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    if (URL) {
-        [userInfo setObject:URL forKey:KTVHCErrorUserInfoKeyURL];
-    }
-    if (request) {
-        [userInfo setObject:request forKey:KTVHCErrorUserInfoKeyRequest];
-    }
-    if (response) {
-        [userInfo setObject:response forKey:KTVHCErrorUserInfoKeyResponse];
-    }
     NSError *error = [NSError errorWithDomain:@"KTVHTTPCache error"
-                                         code:KTVHCErrorCodeResponseUnavailable
-                                     userInfo:userInfo];
-    return error;
-}
-
-+ (NSError *)errorForUnsupportContentType:(NSURL *)URL
-                                  request:(NSURLRequest *)request
-                                 response:(NSURLResponse *)response
-{
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    if (URL) {
-        [userInfo setObject:URL forKey:KTVHCErrorUserInfoKeyURL];
-    }
-    if (request) {
-        [userInfo setObject:request forKey:KTVHCErrorUserInfoKeyRequest];
-    }
-    if (response) {
-        [userInfo setObject:response forKey:KTVHCErrorUserInfoKeyResponse];
-    }
-    NSError *error = [NSError errorWithDomain:@"KTVHTTPCache error"
-                                         code:KTVHCErrorCodeUnsupportContentType
-                                     userInfo:userInfo];
+                                        code:KTVHCErrorCodeException
+                                    userInfo:exception.userInfo];
     return error;
 }
 
@@ -68,13 +36,84 @@ NSString * const KTVHCErrorUserInfoKeyResponse = @"KTVHCErrorUserInfoKeyResponse
     return error;
 }
 
-+ (NSError *)errorForException:(NSException *)exception
++ (NSError *)errorForResponseClass:(NSURL *)URL 
+                           request:(NSURLRequest *)request 
+                          response:(NSURLResponse *)response
 {
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (URL) {
+        [userInfo setObject:URL forKey:KTVHCErrorUserInfoKeyURL];
+    }
+    if (request) {
+        [userInfo setObject:request forKey:KTVHCErrorUserInfoKeyRequest];
+    }
+    if (response) {
+        [userInfo setObject:response forKey:KTVHCErrorUserInfoKeyResponse];
+    }
     NSError *error = [NSError errorWithDomain:@"KTVHTTPCache error"
-                                        code:KTVHCErrorCodeException
-                                    userInfo:exception.userInfo];
+                                         code:KTVHCErrorCodeResponseClass
+                                     userInfo:userInfo];
     return error;
 }
 
++ (NSError *)errorForResponseStatusCode:(NSURL *)URL
+                                request:(NSURLRequest *)request
+                               response:(NSURLResponse *)response
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (URL) {
+        [userInfo setObject:URL forKey:KTVHCErrorUserInfoKeyURL];
+    }
+    if (request) {
+        [userInfo setObject:request forKey:KTVHCErrorUserInfoKeyRequest];
+    }
+    if (response) {
+        [userInfo setObject:response forKey:KTVHCErrorUserInfoKeyResponse];
+    }
+    NSError *error = [NSError errorWithDomain:@"KTVHTTPCache error"
+                                         code:KTVHCErrorCodeResponseStatusCode
+                                     userInfo:userInfo];
+    return error;
+}
+
++ (NSError *)errorForResponseContentType:(NSURL *)URL
+                                 request:(NSURLRequest *)request
+                                response:(NSURLResponse *)response
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (URL) {
+        [userInfo setObject:URL forKey:KTVHCErrorUserInfoKeyURL];
+    }
+    if (request) {
+        [userInfo setObject:request forKey:KTVHCErrorUserInfoKeyRequest];
+    }
+    if (response) {
+        [userInfo setObject:response forKey:KTVHCErrorUserInfoKeyResponse];
+    }
+    NSError *error = [NSError errorWithDomain:@"KTVHTTPCache error"
+                                         code:KTVHCErrorCodeResponseContentType
+                                     userInfo:userInfo];
+    return error;
+}
+
++ (NSError *)errorForResponseContentLength:(NSURL *)URL 
+                                   request:(NSURLRequest *)request 
+                                  response:(NSURLResponse *)response
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (URL) {
+        [userInfo setObject:URL forKey:KTVHCErrorUserInfoKeyURL];
+    }
+    if (request) {
+        [userInfo setObject:request forKey:KTVHCErrorUserInfoKeyRequest];
+    }
+    if (response) {
+        [userInfo setObject:response forKey:KTVHCErrorUserInfoKeyResponse];
+    }
+    NSError *error = [NSError errorWithDomain:@"KTVHTTPCache error"
+                                         code:KTVHCErrorCodeResponseContentLength
+                                     userInfo:userInfo];
+    return error;
+}
 
 @end
