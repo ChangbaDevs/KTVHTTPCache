@@ -1,21 +1,21 @@
 //
-//  CacheItemZoneCell.m
+//  SGCacheItemZoneCell.m
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/13.
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "CacheItemZoneCell.h"
+#import "SGCacheItemZoneCell.h"
 
-@interface CacheItemZoneCell ()
+@interface SGCacheItemZoneCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *offsetLabel;
 @property (nonatomic, weak) IBOutlet UILabel *lengthLabel;
 
 @end
 
-@implementation CacheItemZoneCell
+@implementation SGCacheItemZoneCell
 
 - (void)configureWithOffset:(long long)offset length:(long long)length
 {

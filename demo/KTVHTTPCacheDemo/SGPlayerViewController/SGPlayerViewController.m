@@ -1,26 +1,26 @@
 //
-//  MediaViewController.m
+//  SGPlayerViewController.m
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/14.
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "MediaViewController.h"
+#import "SGPlayerViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface MediaViewController ()
+@interface SGPlayerViewController ()
 
-@property (nonatomic, strong) NSString *URLString;
+@property (nonatomic, copy) NSURL *URL;
 
 @end
 
-@implementation MediaViewController
+@implementation SGPlayerViewController
 
-- (instancetype)initWithURLString:(NSString *)URLString
+- (instancetype)initWithURL:(NSURL *)URL
 {
     if (self = [super init]) {
-        self.URLString = URLString;
+        self.URL = URL;
     }
     return self;
 }
@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.player = [AVPlayer playerWithURL:[NSURL URLWithString:self.URLString]];
+        self.player = [AVPlayer playerWithURL:self.URL];
         [self.player play];
     });
 }

@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  SGMediaViewController.h
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/10.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface SGMediaViewController : UIViewController
 
 @end
 

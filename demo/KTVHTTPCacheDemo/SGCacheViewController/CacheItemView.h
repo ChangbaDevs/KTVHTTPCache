@@ -1,5 +1,5 @@
 //
-//  CacheItemView.h
+//  SGCacheItemView.h
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/13.
@@ -8,18 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@class CacheItemView;
+@class SGCacheItemView;
 
-@protocol  CacheItemViewDelegate <NSObject>
+@protocol  SGCacheItemViewDelegate <NSObject>
 
-- (void)cacheItemView:(CacheItemView *)view deleteButtonDidClick:(NSString *)URLString;
+- (void)cacheItemView:(SGCacheItemView *)view deleteButtonDidClick:(NSString *)URLString;
 
 @end
 
-@interface CacheItemView : UIView
+@interface SGCacheItemView : UIView
 
 - (instancetype)initWithURLString:(NSString *)URLString totalLength:(long long)totalLength cacheLength:(long long)cacheLength;
 
-@property (nonatomic, weak) id<CacheItemViewDelegate> delegate;
+@property (nonatomic, weak) id<SGCacheItemViewDelegate> delegate;
 
 @end

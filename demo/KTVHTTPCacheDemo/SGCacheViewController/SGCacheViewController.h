@@ -1,5 +1,5 @@
 //
-//  CacheViewController.h
+//  SGCacheViewController.h
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CacheViewController : UIViewController
+@interface SGCacheViewController : UIViewController
 
 @end

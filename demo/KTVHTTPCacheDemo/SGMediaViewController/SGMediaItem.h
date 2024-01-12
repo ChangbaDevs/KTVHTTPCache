@@ -1,5 +1,5 @@
 //
-//  MediaItem.h
+//  SGMediaItem.h
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/13.
@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MediaItem : NSObject
+@interface SGMediaItem : NSObject
 
-- (instancetype)initWithTitle:(NSString *)title URLString:(NSString *)URLString;
+- (instancetype)initWithURL:(NSURL *)URL title:(NSString *)title;
 
+@property (nonatomic, copy) NSURL *URL;
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *URLString;
 
 @end

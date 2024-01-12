@@ -1,5 +1,5 @@
 //
-//  MediaCell.h
+//  SGCacheItemZoneCell.h
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/13.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MediaCell : UITableViewCell
+@interface SGCacheItemZoneCell : UITableViewCell
 
-- (void)configureWithTitle:(NSString *)title;
+- (void)configureWithOffset:(long long)offset length:(long long)length;
 
 @end

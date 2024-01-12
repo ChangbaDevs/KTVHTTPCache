@@ -1,14 +1,14 @@
 //
-//  CacheItemView.m
+//  SGCacheItemView.m
 //  KTVHTTPCacheDemo
 //
 //  Created by Single on 2017/8/13.
 //  Copyright © 2017年 Single. All rights reserved.
 //
 
-#import "CacheItemView.h"
+#import "SGCacheItemView.h"
 
-@interface CacheItemView ()
+@interface SGCacheItemView ()
 
 @property (nonatomic, strong) UILabel *totalLengthLabel;
 @property (nonatomic, strong) UILabel *cacheLengthLabel;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation CacheItemView
+@implementation SGCacheItemView
 
 - (instancetype)initWithURLString:(NSString *)URLString
                       totalLength:(long long)totalLength
