@@ -156,7 +156,8 @@ KTVHCRange KTVHCRangeWithResponseHeaderValue(NSString *value, long long *totalLe
 
 KTVHCRange KTVHCRangeWithEnsureLength(KTVHCRange range, long long ensureLength)
 {
-    if (range.end == KTVHCNotFound && ensureLength > 0) {
+    if (ensureLength > 0 &&
+        (range.end == KTVHCNotFound || range.end >= ensureLength)) {
         return KTVHCMakeRange(range.start, ensureLength - 1);
     }
     return range;

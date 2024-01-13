@@ -144,7 +144,7 @@
         return NSOrderedDescending;
     }];
     long long offset = self.request.range.start;
-    long long length = KTVHCRangeIsFull(self.request.range) ? KTVHCRangeGetLength(self.request.range) : (self.request.range.end - offset + 1);
+    long long length = KTVHCRangeGetLength(self.request.range);
     for (KTVHCDataFileSource *obj in fileSources) {
         long long delta = obj.range.start + obj.readRange.start - offset;
         if (delta > 0) {

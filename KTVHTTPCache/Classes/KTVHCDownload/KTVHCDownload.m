@@ -201,6 +201,7 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     if (!error) {
         if (dataResponse.contentLength <= 0 ||
             (!KTVHCRangeIsFull(dataRequest.range) &&
+             dataRequest.range.end < dataResponse.totalLength &&
              (dataResponse.contentLength != KTVHCRangeGetLength(dataRequest.range)))) {
                 error = [KTVHCError errorForResponseContentLength:task.currentRequest.URL
                                                           request:task.currentRequest
