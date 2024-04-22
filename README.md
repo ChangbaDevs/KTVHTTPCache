@@ -9,7 +9,7 @@ KTVHTTPCache is a powerful HTTP caching framework, very suitable for caching mul
 
 ## Flow Chart
 
-![KTVHTTPCache Flow Chart](http://libobjc-libs.oss-cn-beijing.aliyuncs.com/Resource/KTVHTTPCache-flow-chart-thin.jpeg)
+![KTVHTTPCache Flow Chart](https://github.com/ChangbaDevs/KTVHTTPCache/blob/master/documents/flow-chart.jpg?raw=true)
 
 
 ## Features
