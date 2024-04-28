@@ -49,6 +49,7 @@
     if (self.reader.isFinished) {
         KTVHCLogHTTPResponse(@"%p, Read data did finished", self);
         [self.reader close];
+        [self.connection responseDidAbort:self];
     }
     return data;
 }
