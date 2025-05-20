@@ -153,6 +153,10 @@
     [KTVHCDownload download].unacceptableContentTypeDisposer = unacceptableContentTypeDisposer;
 }
 
++ (void)downloadSetRequestHeaderRangeLength:(long long(^)(NSURL *URL, long long totalLength))requestHeaderRangeLength{
+    [KTVHCDataStorage storage].requestHeaderRangeLength = requestHeaderRangeLength;
+}
+
 #pragma mark - Log
 
 + (void)logAddLog:(NSString *)log

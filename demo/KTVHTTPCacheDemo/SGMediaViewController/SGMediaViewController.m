@@ -50,6 +50,14 @@
         NSLog(@"Unsupport Content-Type Filter reviced URL : %@, %@", URL, contentType);
         return NO;
     }];
+    
+    // 外部根据连接或者自己的规则设置请求分片大小，未设置block还是走播放器请求的request http range，如果设置分片大小，
+    // 播放器请求http range超过限制会内部分割成多个request串行请求数据
+    /*
+    [KTVHTTPCache downloadSetRequestHeaderRangeLength:^long long(NSURL *URL, long long totalLength) {
+        return 2 * 1000 * 1000;
+    }];
+    */
 }
 
 - (void)setupItems
