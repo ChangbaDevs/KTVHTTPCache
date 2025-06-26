@@ -78,6 +78,11 @@ NSDictionary *KTVHCRangeFillToResponseHeaders(KTVHCRange range, NSDictionary *he
     return ret;
 }
 
+NSString *KTVHCResponseRangeStringWithContentLength(long long contentLength)
+{
+    return [NSString stringWithFormat:@"bytes 0-%lld/%lld", contentLength - 1, contentLength];
+}
+
 KTVHCRange KTVHCMakeRange(long long start, long long end)
 {
     KTVHCRange range = {start, end};

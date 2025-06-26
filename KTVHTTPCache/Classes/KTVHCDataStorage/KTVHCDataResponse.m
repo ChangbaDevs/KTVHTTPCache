@@ -19,8 +19,11 @@
         self->_URL = URL;
         self->_headers = headers;
         self->_contentType = [self headerValueWithKey:@"Content-Type"];
-        self->_contentRangeString = [self headerValueWithKey:@"Content-Range"];
         self->_contentLength = [self headerValueWithKey:@"Content-Length"].longLongValue;
+        self->_contentRangeString = [self headerValueWithKey:@"Content-Range"];
+        if (self->_contentRangeString == nil && self->_contentLength > 0) {
+            self->_contentRangeString = KTVHCResponseRangeStringWithContentLength(self->_contentLength);
+        }
         self->_contentRange = KTVHCRangeWithResponseHeaderValue(self.contentRangeString, &self->_totalLength);
         KTVHCLogDataResponse(@"%p Create data response\nURL : %@\nHeaders : %@\ncontentType : %@\ntotalLength : %lld\ncurrentLength : %lld", self, self.URL, self.headers, self.contentType, self.totalLength, self.contentLength);
     }
