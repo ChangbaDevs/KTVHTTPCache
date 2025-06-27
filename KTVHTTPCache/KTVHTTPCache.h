@@ -193,6 +193,33 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (void)encodeSetURLConverter:(NSURL * (^)(NSURL *URL))URLConverter;
 
 /**
+ *  HLS
+ *
+ *  This part is HLS handling module.
+ *  Contains APIs for processing HLS playlists and managing proxy behavior.
+ */
+#pragma mark - HLS
+
+/**
+ *  Set the HLS content handler.
+ *
+ *  This handler allows preprocessing of HLS content (such as m3u8 playlists)
+ *  before it is cached or served. It is typically used to rewrite certain URLs
+ *  to route through the local proxy server.
+ *
+ *  For example, if an HTTP link in the playlist should be proxied locally,
+ *  the handler can replace it with a relative path (e.g., add a `./` prefix).
+ *  Otherwise, the content can be returned unchanged.
+ *
+ *  @note This method is called frequently, such as during playlist parsing and updates.
+ *        Ensure the handler is lightweight and optimized for performance.
+ *
+ *  @param contentHandler A block that takes the original HLS content as input,
+ *                        and returns the modified content as needed.
+ */
++ (void)hlsSetContentHandler:(NSString * (^)(NSString *content))contentHandler;
+
+/**
  *  Download
  *
  *  This part is used to access the download module.

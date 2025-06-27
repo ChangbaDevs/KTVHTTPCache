@@ -11,6 +11,7 @@
 #import "KTVHCHTTPServer.h"
 #import "KTVHCDownload.h"
 #import "KTVHCURLTool.h"
+#import "KTVHCHLSTool.h"
 #import "KTVHCLog.h"
 
 @implementation KTVHTTPCache
@@ -101,9 +102,16 @@
 
 #pragma mark - Encode
 
-+ (void)encodeSetURLConverter:(NSURL * (^)(NSURL *URL))URLConverter;
++ (void)encodeSetURLConverter:(NSURL * (^)(NSURL *URL))URLConverter
 {
     [KTVHCURLTool tool].URLConverter = URLConverter;
+}
+
+#pragma mark - HLS
+
++ (void)hlsSetContentHandler:(NSString *(^)(NSString *))contentHandler
+{
+    [KTVHCHLSTool tool].contentHandler = contentHandler;
 }
 
 #pragma mark - Download

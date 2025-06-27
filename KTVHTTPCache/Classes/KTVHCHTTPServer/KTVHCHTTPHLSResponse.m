@@ -12,6 +12,7 @@
 #import "KTVHCDataStorage.h"
 #import "KTVHCDownload.h"
 #import "KTVHCPathTool.h"
+#import "KTVHCHLSTool.h"
 #import "KTVHCLog.h"
 
 
@@ -89,22 +90,10 @@
 
 - (NSData *)handleResponeWithData:(NSData *)data
 {
-    NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    KTVHCLogHTTPHLSResponse(@"%p, Handle response data : %@", self, string);
-    if ([string containsString:@"\nhttp"]) {
-        NSMutableArray *array = [string componentsSeparatedByString:@"\n"].mutableCopy;
-        for (NSUInteger index = 0; index < array.count; index++) {
-            NSString *line = array[index];
-            if ([line hasPrefix:@"http"]) {
-                line = [@"./" stringByAppendingString:line];
-                [array replaceObjectAtIndex:index withObject:line];
-            }
-        }
-        string = [array componentsJoinedByString:@"\n"];
-        data = [string dataUsingEncoding:NSUTF8StringEncoding];
-        KTVHCLogHTTPHLSResponse(@"%p, Handle response data changed : %@", self, string);
-    }
-    return data;
+    NSString *src = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString *dst = [[KTVHCHLSTool tool] handleContent:src];
+    KTVHCLogHTTPHLSResponse(@"%p, Handle response data src : %@, dst : %@", self, src, dst);
+    return [dst dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length
