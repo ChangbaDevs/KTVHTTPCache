@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                = "KTVHTTPCache"
-  s.version             = "3.0.4"
+  s.version             = "3.1.0"
   s.summary             = "A powerful media cache framework."
   s.homepage            = "https://github.com/ChangbaDevs/KTVHTTPCache"
   s.license             = { :type => "MIT", :file => "LICENSE" }
@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
                           "KTVHTTPCache/Classes/KTVHCCommon/KTVHCRange.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataReader.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataLoader.h",
+                          "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataHLSLoader.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataRequest.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataResponse.h",
                           "KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItem.h",
