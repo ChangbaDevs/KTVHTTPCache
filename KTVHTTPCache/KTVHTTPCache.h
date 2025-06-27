@@ -17,6 +17,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import <KTVHTTPCache/KTVHCRange.h>
 #import <KTVHTTPCache/KTVHCDataReader.h>
 #import <KTVHTTPCache/KTVHCDataLoader.h>
+#import <KTVHTTPCache/KTVHCDataHLSLoader.h>
 #import <KTVHTTPCache/KTVHCDataRequest.h>
 #import <KTVHTTPCache/KTVHCDataResponse.h>
 #import <KTVHTTPCache/KTVHCDataCacheItem.h>
@@ -28,6 +29,7 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 #import "KTVHCRange.h"
 #import "KTVHCDataReader.h"
 #import "KTVHCDataLoader.h"
+#import "KTVHCDataHLSLoader.h"
 #import "KTVHCDataRequest.h"
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
@@ -144,6 +146,16 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  *  @return The data loader for request.
  */
 + (KTVHCDataLoader *)cacheLoaderWithRequest:(KTVHCDataRequest *)request;
+
+/**
+ *  Creates a data loader for the given HLS URL.
+ *
+ *  This loader handles data loading, caching, and proxying for HLS playback.
+ *
+ *  @param request The request of HLS content (e.g., a .m3u8 playlist).
+ *  @return A data loader instance configured for the specified request.
+ */
++ (KTVHCDataHLSLoader *)cacheHLSLoaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
  *  Set the maximum cache length.

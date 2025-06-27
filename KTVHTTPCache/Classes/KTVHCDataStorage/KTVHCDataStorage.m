@@ -59,6 +59,16 @@
     return loader;
 }
 
+- (KTVHCDataHLSLoader *)HLSLoaderWithRequest:(KTVHCDataRequest *)request
+{
+    if (!request || request.URL.absoluteString.length <= 0) {
+        KTVHCLogDataStorage(@"Invaild hls loader request, %@", request.URL);
+        return nil;
+    }
+    KTVHCDataHLSLoader *loader = [[KTVHCDataHLSLoader alloc] initWithRequest:request];
+    return loader;
+}
+
 - (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL
 {
     return [[KTVHCDataUnitPool pool] cacheItemWithURL:URL];

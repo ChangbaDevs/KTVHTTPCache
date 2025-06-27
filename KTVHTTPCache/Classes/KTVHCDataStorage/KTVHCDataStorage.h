@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "KTVHCDataReader.h"
 #import "KTVHCDataLoader.h"
+#import "KTVHCDataHLSLoader.h"
 #import "KTVHCDataRequest.h"
 #import "KTVHCDataResponse.h"
 #import "KTVHCDataCacheItem.h"
@@ -34,6 +35,11 @@
  *  Loader for certain request.
  */
 - (KTVHCDataLoader *)loaderWithRequest:(KTVHCDataRequest *)request;
+
+/**
+ *  HLS loader certain request.
+ */
+- (KTVHCDataHLSLoader *)HLSLoaderWithRequest:(KTVHCDataRequest *)request;
 
 /**
  *  Get cache item.

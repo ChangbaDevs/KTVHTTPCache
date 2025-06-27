@@ -19,4 +19,8 @@
 
 - (NSString *)handleContent:(NSString *)content;
 
+- (NSArray<NSURL *> *)makeURLsForContent:(NSString *)content sourceURL:(NSURL *)sourceURL;
+
+- (NSURLSessionDataTask *)taskWithURL:(NSURL *)URL completionHandler:(void (^)(NSData *, NSError *))completionHandler;
+
 @end

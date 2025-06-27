@@ -13,6 +13,7 @@
 #import "KTVHCDataRequest.h"
 #import "KTVHCDataReader.h"
 #import "KTVHCDataLoader.h"
+#import "KTVHCDataHLSLoader.h"
 
 #pragma mark - KTVHCDataReader
 
@@ -25,6 +26,12 @@
 #pragma mark - KTVHCDataLoader
 
 @interface KTVHCDataLoader ()
+
+- (instancetype)initWithRequest:(KTVHCDataRequest *)request NS_DESIGNATED_INITIALIZER;
+
+@end
+
+@interface KTVHCDataHLSLoader ()
 
 - (instancetype)initWithRequest:(KTVHCDataRequest *)request NS_DESIGNATED_INITIALIZER;
 
