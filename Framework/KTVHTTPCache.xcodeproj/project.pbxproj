@@ -114,6 +114,7 @@
 		4E50B1EF2E0E4F6B005249C8 /* KTVHCHLSTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVHCHLSTool.m; sourceTree = "<group>"; };
 		4E50B1F42E0E7EC0005249C8 /* KTVHCDataHLSLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVHCDataHLSLoader.h; sourceTree = "<group>"; };
 		4E50B1F52E0E7EC0005249C8 /* KTVHCDataHLSLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVHCDataHLSLoader.m; sourceTree = "<group>"; };
+		4E50B1F82E0ECB7B005249C8 /* README_CN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README_CN.md; path = ../README_CN.md; sourceTree = SOURCE_ROOT; };
 		4EE21B652B4846BF008EFC11 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		4EE21B662B4846BF008EFC11 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		4EE21B6A2B4847FD008EFC11 /* HTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPConnection.h; sourceTree = "<group>"; };
@@ -309,6 +310,7 @@
 				9CBD87E621F70AFC006BCBF5 /* module.modulemap */,
 				9CF672C32213BEB4008CEFBE /* LICENSE */,
 				9CF672C52213BEB4008CEFBE /* README.md */,
+				4E50B1F82E0ECB7B005249C8 /* README_CN.md */,
 				9CF672C42213BEB4008CEFBE /* KTVHTTPCache.podspec */,
 				9CA86E8821F709700007B098 /* KTVHTTPCache */,
 				9CD8C1FB20AF2B5C00949350 /* Vendors */,

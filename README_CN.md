@@ -119,6 +119,14 @@ loader.delegate = self;
 [loader prepare];
 ```
 
+```objc
+// 预加载 HLS 内容
+KTVHCDataRequest *request= [[KTVHCDataRequest alloc] initWithURL:URL headers:nil];
+KTVHCDataHLSLoader *loader = [KTVHTTPCache cacheHLSLoaderWithRequest:request];
+loader.delegate = self;
+[loader prepare];
+```
+
 #### 激活 AirPlay
 
 - 出于稳定性的考虑，Local Server 默认仅接受来自 localhost 的请求，这导致 AirPlay 默认未激活，使用如下 API 可进行更改

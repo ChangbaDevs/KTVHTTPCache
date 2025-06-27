@@ -119,6 +119,14 @@ loader.delegate = self;
 [loader prepare];
 ```
 
+```objc
+// For HLS content.
+KTVHCDataRequest *request= [[KTVHCDataRequest alloc] initWithURL:URL headers:nil];
+KTVHCDataHLSLoader *loader = [KTVHTTPCache cacheHLSLoaderWithRequest:request];
+loader.delegate = self;
+[loader prepare];
+```
+
 #### Activate AirPlay
 
 - For stability reasons, Local Server only accepts requests from localhost by default, which causes AirPlay to be inactive by default. This can be changed using the following API.
