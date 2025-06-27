@@ -38,6 +38,11 @@
     return [KTVHCHTTPServer server].isRunning;
 }
 
++ (BOOL)proxyIsProxyURL:(NSURL *)URL
+{
+    return [[KTVHCHTTPServer server] isProxyURL:URL];
+}
+
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL
 {
     return [[KTVHCHTTPServer server] URLWithOriginalURL:URL];
@@ -46,6 +51,11 @@
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL bindToLocalhost:(BOOL)bindToLocalhost
 {
     return [[KTVHCHTTPServer server] URLWithOriginalURL:URL bindToLocalhost:bindToLocalhost];
+}
+
++ (NSURL *)proxyOriginalURLWithURL:(NSURL *)URL
+{
+    return [[KTVHCHTTPServer server] originalURLWithURL:URL];
 }
 
 #pragma mark - Data Storage

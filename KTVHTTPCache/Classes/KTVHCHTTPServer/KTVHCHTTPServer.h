@@ -22,7 +22,9 @@
 - (BOOL)start:(NSError **)error;
 - (void)stop;
 
+- (BOOL)isProxyURL:(NSURL *)URL;
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL;
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL bindToLocalhost:(BOOL)bindToLocalhost;
+- (NSURL *)originalURLWithURL:(NSURL *)URL;
 
 @end

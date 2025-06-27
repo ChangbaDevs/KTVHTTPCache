@@ -76,6 +76,14 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (BOOL)proxyIsRunning;
 
 /**
+ *  Check if the given URL is a local proxy URL.
+ *
+ *  @param URL The URL to check.
+ *  @return YES if it's a proxy URL; otherwise, NO.
+ */
++ (BOOL)proxyIsProxyURL:(NSURL *)URL;
+
+/**
  *  Convert the URL to the proxy URL.
  *  Only accept HTTP requests coming from localhost i.e. not from the outside network.
  *
@@ -92,6 +100,18 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  *  @return If the param is a file URL or the proxy service isn't running, return URL. Otherwise reutrn the proxy URL.
  */
 + (NSURL *)proxyURLWithOriginalURL:(NSURL *)URL bindToLocalhost:(BOOL)bindToLocalhost;
+
+/**
+ *  Restores the original URL from a proxy URL.
+ *
+ *  This is typically used to retrieve the actual HTTP content URL
+ *  from a previously generated local proxy URL.
+ *
+ *  @param URL The proxy URL to be converted back.
+ *  @return The original URL if the input is a valid proxy URL;
+ *          otherwise, returns the input URL unchanged.
+ */
++ (NSURL *)proxyOriginalURLWithURL:(NSURL *)URL;
 
 /**
  *  Data Storage
