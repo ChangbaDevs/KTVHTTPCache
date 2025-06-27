@@ -17,8 +17,6 @@
 @property (nonatomic, copy, readonly) NSURL *URL;
 @property (nonatomic, copy, readonly) NSDictionary *headers;
 @property (nonatomic, copy, readonly) NSString *contentType;
-@property (nonatomic, copy, readonly) NSString *contentRangeString;
-@property (nonatomic, readonly) KTVHCRange contentRange;
 @property (nonatomic, readonly) long long contentLength;
 @property (nonatomic, readonly) long long totalLength;
 
