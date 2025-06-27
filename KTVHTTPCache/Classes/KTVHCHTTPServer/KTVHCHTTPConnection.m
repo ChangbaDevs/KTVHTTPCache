@@ -64,24 +64,23 @@
     } else {
         [components removeObjectAtIndex:0];
         [components removeObjectAtIndex:0];
-        URLString = URLString.stringByDeletingLastPathComponent;
+        NSURL *baseURL = [NSURL URLWithString:URLString].URLByDeletingLastPathComponent;
         if ([path containsString:[self.class URITokenPlaceHolder]]) {
             [components removeObjectAtIndex:0];
         } else {
-            URLString = URLString.stringByDeletingLastPathComponent;
+            baseURL = baseURL.URLByDeletingLastPathComponent;
         }
         NSString *lastPathComponent = [components componentsJoinedByString:@"/"];
         if ([lastPathComponent hasPrefix:@"http"]) {
-            URLString = lastPathComponent;
+            URL = [NSURL URLWithString:lastPathComponent];
         } else {
-            URLString = [URLString stringByAppendingPathComponent:lastPathComponent];
+            URL = [baseURL URLByAppendingPathComponent:lastPathComponent];
         }
-        URL = [NSURL URLWithString:URLString];
-        KTVHCLogHTTPConnection(@"%p, Receive redirect request\nURL : %@", self, URLString);
+        KTVHCLogHTTPConnection(@"%p, Receive redirect request\nURL : %@", self, URL);
     }
     KTVHCLogHTTPConnection(@"%p, Accept request\nURL : %@", self, URL);
     KTVHCDataRequest *dataRequest = [[KTVHCDataRequest alloc] initWithURL:URL headers:request.allHeaderFields];
-    if ([URLString containsString:@".m3u"]) {
+    if ([URL.absoluteString containsString:@".m3u"]) {
         return [[KTVHCHTTPHLSResponse alloc] initWithConnection:self dataRequest:dataRequest];
     }
     return [[KTVHCHTTPResponse alloc] initWithConnection:self dataRequest:dataRequest];

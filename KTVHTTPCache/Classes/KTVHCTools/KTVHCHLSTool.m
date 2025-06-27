@@ -38,15 +38,15 @@
         return self.contentHandler(content);
     }
     if ([content containsString:@"\nhttp"]) {
-        NSMutableArray *array = [content componentsSeparatedByString:@"\n"].mutableCopy;
-        for (NSUInteger index = 0; index < array.count; index++) {
-            NSString *line = array[index];
+        NSMutableArray *components = [content componentsSeparatedByString:@"\n"].mutableCopy;
+        for (NSUInteger index = 0; index < components.count; index++) {
+            NSString *line = components[index];
             if ([line hasPrefix:@"http"]) {
                 line = [@"./" stringByAppendingString:line];
-                [array replaceObjectAtIndex:index withObject:line];
+                [components replaceObjectAtIndex:index withObject:line];
             }
         }
-        content = [array componentsJoinedByString:@"\n"];
+        content = [components componentsJoinedByString:@"\n"];
     }
     return content;
 }
