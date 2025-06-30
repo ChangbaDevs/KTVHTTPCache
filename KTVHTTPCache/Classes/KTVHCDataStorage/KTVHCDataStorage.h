@@ -59,4 +59,6 @@
 - (void)deleteCacheWithURL:(NSURL *)URL;
 - (void)deleteAllCaches;
 
+@property (nonatomic, copy) long long (^requestHeaderRangeLength)(NSURL *URL, long long totalLength);
+
 @end

@@ -326,6 +326,14 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (void)downloadSetUnacceptableContentTypeDisposer:(BOOL(^)(NSURL *URL, NSString *contentType))unacceptableContentTypeDisposer;
 
 /**
+ *  设置下载文件 request range 分片长度
+ *  解决 AVPlayer 播放器频繁取消再发起request请求，http range 区间有重叠，阿里云服务器流量统计过大问题。
+ *
+ *  @param requestHeaderRangeLength : 分片参数
+ */
++ (void)downloadSetRequestHeaderRangeLength:(long long(^)(NSURL *URL, long long totalLength))requestHeaderRangeLength;
+
+/**
  *  Log
  *
  *  This part is used to access the Log module.
