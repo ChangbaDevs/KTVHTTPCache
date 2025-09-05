@@ -12,6 +12,7 @@
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCDataCallback.h"
 #import "KTVHCLog.h"
+#import "KTVHCDataStorage.h"
 
 @interface KTVHCDataReader () <KTVHCDataSourceManagerDelegate>
 
@@ -145,24 +146,36 @@
     }];
     long long offset = self.request.range.start;
     long long length = KTVHCRangeGetLength(self.request.range);
+    long long chunkSize = 0;
+    if ([KTVHCDataStorage storage].requestHeaderRangeLength) {
+        chunkSize = [KTVHCDataStorage storage].requestHeaderRangeLength(self.request.URL, self.unit.totalLength);
+    }
     for (KTVHCDataFileSource *obj in fileSources) {
         long long delta = obj.range.start + obj.readRange.start - offset;
         if (delta > 0) {
-            KTVHCRange range = KTVHCMakeRange(offset, offset + delta - 1);
-            KTVHCDataRequest *request = [self.request newRequestWithRange:range];
-            KTVHCDataNetworkSource *source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
-            [networkSources addObject:source];
+            if (chunkSize > 0) {
+                // 使用公共方法处理分片下载
+                [self addNetworkSourcesWithOffset:offset length:delta chunkSize:chunkSize toArray:networkSources];
+            }else {
+                // 单个网络源的情况
+                [self addSingleNetworkSourceWithStart:offset end:offset + delta - 1 toArray:networkSources];
+            }
             offset += delta;
             length -= delta;
         }
         offset += KTVHCRangeGetLength(obj.readRange);
         length -= KTVHCRangeGetLength(obj.readRange);
     }
+    
+    // 处理剩余需要下载的部分
     if (length > 0) {
-        KTVHCRange range = KTVHCMakeRange(offset, self.request.range.end);
-        KTVHCDataRequest *request = [self.request newRequestWithRange:range];
-        KTVHCDataNetworkSource *source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
-        [networkSources addObject:source];
+        if (chunkSize > 0) {
+            // 使用公共方法处理分片下载
+            [self addNetworkSourcesWithOffset:offset length:length chunkSize:chunkSize toArray:networkSources];
+        } else {
+            // 单个网络源的情况
+            [self addSingleNetworkSourceWithStart:offset end:self.request.range.end toArray:networkSources];
+        }
     }
     NSMutableArray<id<KTVHCDataSource>> *sources = [NSMutableArray array];
     [sources addObjectsFromArray:fileSources];
@@ -263,6 +276,43 @@
 - (void)unlock
 {
     [self.coreLock unlock];
+}
+
+#pragma mark - Private Methods
+
+// 添加单个网络源
+- (void)addSingleNetworkSourceWithStart:(long long)start
+                                    end:(long long)end
+                                toArray:(NSMutableArray<KTVHCDataNetworkSource *> *)networkSources
+{
+    KTVHCRange range = KTVHCMakeRange(start, end);
+    KTVHCDataRequest *request = [self.request newRequestWithRange:range];
+    KTVHCDataNetworkSource *source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
+    [networkSources addObject:source];
+}
+
+// 添加分片网络源
+- (void)addNetworkSourcesWithOffset:(long long)offset
+                           length:(long long)length
+                       chunkSize:(long long)chunkSize
+                        toArray:(NSMutableArray<KTVHCDataNetworkSource *> *)networkSources
+{
+    long long remainingLength = length;
+    long long currentOffset = offset;
+    while (remainingLength > 0) {
+        // 计算当前分片的大小
+        long long chunkLength = MIN(remainingLength, chunkSize);
+        // 确保最后一个分片的结束位置不超过原始请求范围
+        long long endOffset = MIN(currentOffset + chunkLength - 1, self.request.range.end);
+        
+        KTVHCRange chunkRange = KTVHCMakeRange(currentOffset, endOffset);
+        KTVHCDataRequest *request = [self.request newRequestWithRange:chunkRange];
+        KTVHCDataNetworkSource *source = [[KTVHCDataNetworkSource alloc] initWithRequest:request];
+        [networkSources addObject:source];
+        
+        currentOffset += chunkLength;
+        remainingLength -= chunkLength;
+    }
 }
 
 @end
