@@ -13,7 +13,7 @@ typedef struct KTVHCRange {
     long long end;
 } KTVHCRange;
 
-static const long long KTVHCNotFound = LONG_LONG_MAX;
+static const long long KTVHCNotFound = LLONG_MAX;
 
 BOOL KTVHCRangeIsFull(KTVHCRange range);
 BOOL KTVHCRangeIsVaild(KTVHCRange range);
