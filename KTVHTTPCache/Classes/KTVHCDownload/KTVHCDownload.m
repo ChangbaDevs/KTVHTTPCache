@@ -178,7 +178,8 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
     NSHTTPURLResponse *HTTPURLResponse = nil;
     if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
         HTTPURLResponse = (NSHTTPURLResponse *)response;
-        if (HTTPURLResponse.statusCode > 400) {
+        // HTTP client and server error responses must not be cached as downloaded content.
+        if (HTTPURLResponse.statusCode >= 400) {
             error = [KTVHCError errorForResponseStatusCode:task.currentRequest.URL
                                                    request:task.currentRequest
                                                   response:task.response];
